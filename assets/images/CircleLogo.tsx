@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { G, Circle } from 'react-native-svg';
+import useTheme from '../../app/Theme';
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 
 const styles = StyleSheet.create({
@@ -11,13 +12,16 @@ const styles = StyleSheet.create({
 });
 
 function SvgComponent() {
+  const theme = useTheme();
+  const innerColor = theme.colors.primary;
+  const outterColor = theme.colors.backgroundTertiary;
   return (
     <Svg
       viewBox="0 0 315 315"
       style={styles.svgSquare}
     >
       <G fill="none" fillRule="evenodd">
-        <G transform="translate(220 220)" fill="#D9D9D9">
+        <G transform="translate(220 220)" fill={outterColor}>
           <Circle cx={27.5} cy={87.5} r={7.5} />
           <Circle cx={67.5} cy={67.5} r={7.5} />
           <Circle cx={67.5} cy={47.5} r={7.5} />
@@ -31,7 +35,7 @@ function SvgComponent() {
           <Circle cx={87.5} cy={7.5} r={7.5} />
           <Circle cx={87.5} cy={87.5} r={7.5} />
         </G>
-        <G transform="translate(0 220)" fill="#D9D9D9">
+        <G transform="translate(0 220)" fill={outterColor}>
           <Circle cx={7.5} cy={27.5} r={7.5} />
           <Circle cx={7.5} cy={67.5} r={7.5} />
           <Circle cx={7.5} cy={47.5} r={7.5} />
@@ -45,7 +49,7 @@ function SvgComponent() {
           <Circle cx={27.5} cy={87.5} r={7.5} />
           <Circle cx={67.5} cy={87.5} r={7.5} />
         </G>
-        <G transform="translate(220)" fill="#D9D9D9">
+        <G transform="translate(220)" fill={outterColor}>
           <Circle cx={27.5} cy={7.5} r={7.5} />
           <Circle cx={67.5} cy={7.5} r={7.5} />
           <Circle cx={67.5} cy={47.5} r={7.5} />
@@ -59,7 +63,7 @@ function SvgComponent() {
           <Circle cx={87.5} cy={27.5} r={7.5} />
           <Circle cx={87.5} cy={67.5} r={7.5} />
         </G>
-        <G fill="#D9D9D9">
+        <G fill={outterColor}>
           <Circle cx={7.5} cy={7.5} r={7.5} />
           <Circle cx={7.5} cy={87.5} r={7.5} />
           <Circle cx={7.5} cy={47.5} r={7.5} />
@@ -73,7 +77,7 @@ function SvgComponent() {
           <Circle cx={27.5} cy={27.5} r={7.5} />
           <Circle cx={67.5} cy={7.5} r={7.5} />
         </G>
-        <G fill="#8944AB">
+        <G fill={innerColor}>
           <Circle cx={7.5} cy={167.5} r={7.5} />
           <Circle cx={167.5} cy={7.5} r={7.5} />
           <Circle cx={167.5} cy={167.5} r={7.5} />

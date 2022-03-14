@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
-  useColorScheme,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -12,58 +10,64 @@ import CircleLogo from '../assets/images/CircleLogo';
 import AutoscaledText from './AutoscaledText';
 import PrimaryButton from './PrimaryButton';
 import SecondaryButton from './SecondaryButton';
-import Theme from './Theme';
+import useTheme from './Theme';
 
 const buttonHeight = 50;
 
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor: Theme.colors.background,
-    flex: 1,
-  },
-  baseText: {
-    color: Theme.colors.foreground,
-    fontFamily: Theme.font.weights.regular,
-  },
-  button: {
-    height: buttonHeight,
-    marginHorizontal: Theme.spacing.s,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: Theme.spacing.s,
-    paddingVertical: Theme.spacing.m,
-  },
-  buttonRowScrollEnabled: {
-    backgroundColor: Theme.colors.background,
-    borderTopColor: Theme.colors.foregroundSecondary,
-    borderTopWidth: 0.5,
-  },
-  scrollView: {
-    flexGrow: 1,
-    marginTop: Theme.spacing.m,
-    paddingHorizontal: Theme.spacing.m,
-  },
-  title: {
-    fontFamily: Theme.font.weights.medium,
-  },
-});
+const useStyles = () => {
+  const theme = useTheme();
+
+  const buttonRowHeight = buttonHeight + 4 * theme.spacing.m;
+
+  const styles = StyleSheet.create({
+    background: {
+      backgroundColor: theme.colors.background,
+      flex: 1,
+    },
+    button: {
+      height: buttonHeight,
+      marginHorizontal: theme.spacing.s,
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingHorizontal: theme.spacing.s,
+      paddingVertical: theme.spacing.m,
+    },
+    buttonRowScrollEnabled: {
+      backgroundColor: theme.colors.background,
+      borderTopColor: theme.colors.foregroundSecondary,
+      borderTopWidth: 0.5,
+    },
+    scrollView: {
+      flexGrow: 1,
+      marginTop: theme.spacing.m,
+      paddingHorizontal: theme.spacing.m,
+    },
+    subtitle: {
+      color: theme.colors.foregroundSecondary,
+      fontFamily: theme.font.weights.regular,
+    },
+    title: {
+      color: theme.colors.foreground,
+      fontFamily: theme.font.weights.medium,
+    },
+  });
+
+  return { buttonRowHeight, styles };
+};
 
 export default function App() {
   const [scrollEnabled, setScrollEnabled] = useState(false);
-  const isDarkMode = useColorScheme() === 'dark';
-
   const { height: screenHeight } = useWindowDimensions();
+  const { buttonRowHeight, styles } = useStyles();
 
   const onContentSizeChange = (_: number, contentHeight: number) => {
-    const buttonRowHeight = buttonHeight + 4 * Theme.spacing.m;
     setScrollEnabled(contentHeight > screenHeight - buttonRowHeight);
   };
 
   return (
     <SafeAreaView style={styles.background}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         onContentSizeChange={onContentSizeChange}
@@ -71,10 +75,10 @@ export default function App() {
         scrollEnabled={scrollEnabled}
       >
         <CircleLogo />
-        <AutoscaledText style={[styles.baseText, styles.title]}>
+        <AutoscaledText style={styles.title}>
           Organize
         </AutoscaledText>
-        <AutoscaledText style={styles.baseText}>
+        <AutoscaledText style={styles.subtitle}>
           Strength in Numbers
         </AutoscaledText>
       </ScrollView>

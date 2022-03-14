@@ -1,13 +1,16 @@
-import { Platform } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 
 const palette = {
-  purple: '#8944AB',
+  purpleDarker: '#AF52DE',
+  purpleLighter: '#BF5AF2',
   green: '#66AB44',
   red: '#FF3B30',
-  dark: '#09040B',
+  dark: '#09020D',
   darkSecondary: '#8A8A8E',
+  darkTertiary: '#262626',
   light: '#F8F4FB',
   lightSecondary: '#908E97',
+  lightTertiary: '#D9D9D9',
 };
 
 const weights = Platform.select({
@@ -21,13 +24,15 @@ const weights = Platform.select({
   },
 });
 
-const theme = {
+const lightTheme = {
   colors: {
     background: palette.light,
     backgroundSecondary: palette.lightSecondary,
+    backgroundTertiary: palette.lightTertiary,
     foreground: palette.dark,
     foregroundSecondary: palette.darkSecondary,
-    primary: palette.purple,
+    foregroundTertiary: palette.darkTertiary,
+    primary: palette.purpleDarker,
     success: palette.green,
     danger: palette.red,
     failure: palette.red,
@@ -45,13 +50,24 @@ const theme = {
     xl: 40,
   },
 };
-export default theme;
 
-export const darkTheme = {
-  ...theme,
+const darkTheme = {
+  ...lightTheme,
   colors: {
-    ...theme.colors,
+    ...lightTheme.colors,
     background: palette.dark,
+    backgroundSecondary: palette.darkSecondary,
+    backgroundTertiary: palette.darkTertiary,
     foreground: palette.light,
+    foregroundSecondary: palette.lightSecondary,
+    foregroundTertiary: palette.lightTertiary,
+    primary: palette.purpleLighter,
   },
 };
+
+const useTheme = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+  return isDarkMode ? darkTheme : lightTheme;
+};
+
+export default useTheme;
