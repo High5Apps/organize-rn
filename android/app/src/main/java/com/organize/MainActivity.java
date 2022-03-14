@@ -1,5 +1,7 @@
 package com.organize;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -11,5 +13,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "Organize";
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    // Required by React Navigation 6
+    super.onCreate(null);
   }
 }
