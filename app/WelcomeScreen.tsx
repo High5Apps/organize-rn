@@ -38,7 +38,7 @@ const useStyles = () => {
     },
     buttonRowScrollEnabled: {
       backgroundColor: theme.colors.background,
-      borderTopColor: theme.colors.foregroundSecondary,
+      borderTopColor: theme.colors.separator,
       borderTopWidth: 0.5,
     },
     scrollView: {
@@ -47,11 +47,11 @@ const useStyles = () => {
       paddingHorizontal: theme.spacing.m,
     },
     subtitle: {
-      color: theme.colors.foregroundSecondary,
+      color: theme.colors.labelSecondary,
       fontFamily: theme.font.weights.regular,
     },
     title: {
-      color: theme.colors.foreground,
+      color: theme.colors.label,
       fontFamily: theme.font.weights.medium,
     },
   });

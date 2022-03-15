@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 function SvgComponent() {
   const theme = useTheme();
   const innerColor = theme.colors.primary;
-  const outterColor = theme.colors.backgroundTertiary;
+  const outterColor = theme.colors.fillSecondary;
   return (
     <Svg
       viewBox="0 0 315 315"
