@@ -41,6 +41,7 @@ const lightTheme = {
   },
   font: {
     sizes: {
+      largeTitle: 34,
       paragraph: 17,
     },
     weights,

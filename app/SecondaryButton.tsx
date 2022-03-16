@@ -16,6 +16,7 @@ const useStyles = () => {
     pressable: {
       flex: 1,
       flexDirection: 'row',
+      height: 50,
       justifyContent: 'center',
       alignItems: 'center',
     },

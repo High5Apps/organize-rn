@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   useWindowDimensions,
@@ -10,6 +9,7 @@ import {
 import CircleLogo from '../assets/images/CircleLogo';
 import AutoscaledText from './AutoscaledText';
 import PrimaryButton from './PrimaryButton';
+import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
 import { RootStackParamList } from './types';
@@ -22,10 +22,6 @@ const useStyles = () => {
   const buttonRowHeight = buttonHeight + 4 * theme.spacing.m;
 
   const styles = StyleSheet.create({
-    background: {
-      backgroundColor: theme.colors.background,
-      flex: 1,
-    },
     button: {
       height: buttonHeight,
       marginHorizontal: theme.spacing.s,
@@ -71,7 +67,7 @@ export default function WelcomeScreen({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.background}>
+    <ScreenBackground>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         onContentSizeChange={onContentSizeChange}
@@ -95,7 +91,7 @@ export default function WelcomeScreen({ navigation }: Props) {
         <SecondaryButton
           iconName="add"
           label="Create Org"
-          onPress={() => navigation.navigate('NewOrg')}
+          onPress={() => navigation.navigate('NameOrg')}
           style={styles.button}
         />
         <PrimaryButton
@@ -105,6 +101,6 @@ export default function WelcomeScreen({ navigation }: Props) {
           style={styles.button}
         />
       </View>
-    </SafeAreaView>
+    </ScreenBackground>
   );
 }
