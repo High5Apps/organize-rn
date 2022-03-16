@@ -10,7 +10,9 @@ import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
 
   const styles = StyleSheet.create({
     message: {
@@ -22,9 +24,9 @@ const useStyles = () => {
     textInput: {
       backgroundColor: colors.fill,
       borderBottomColor: colors.separator,
-      borderBottomWidth: 0.5,
+      borderBottomWidth: sizes.separator,
       color: colors.label,
-      height: 50,
+      height: sizes.buttonHeight,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.paragraph,
       paddingHorizontal: spacing.m,

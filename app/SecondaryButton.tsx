@@ -6,17 +6,19 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from './Theme';
 
 const useStyles = () => {
-  const theme = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
   const styles = StyleSheet.create({
     icon: {
-      color: theme.colors.primary,
+      color: colors.primary,
       fontSize: 24,
-      marginEnd: theme.spacing.s,
+      marginEnd: spacing.s,
     },
     pressable: {
       flex: 1,
       flexDirection: 'row',
-      height: 50,
+      height: sizes.buttonHeight,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -24,9 +26,9 @@ const useStyles = () => {
       opacity: 0.5,
     },
     text: {
-      color: theme.colors.primary,
-      fontSize: theme.font.sizes.paragraph,
-      fontFamily: theme.font.weights.regular,
+      color: colors.primary,
+      fontSize: font.sizes.paragraph,
+      fontFamily: font.weights.regular,
     },
   });
   return { styles };

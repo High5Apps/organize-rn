@@ -6,16 +6,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from './Theme';
 
 const useStyles = () => {
-  const theme = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
   const styles = StyleSheet.create({
     icon: {
-      color: theme.colors.background,
-      fontSize: 24,
-      marginEnd: theme.spacing.s,
+      color: colors.background,
+      fontSize: sizes.icon,
+      marginEnd: spacing.s,
     },
     pressable: {
       alignItems: 'center',
-      backgroundColor: theme.colors.primary,
+      backgroundColor: colors.primary,
       borderRadius: 25,
       elevation: 4, // Android only
       flex: 1,
@@ -38,9 +40,9 @@ const useStyles = () => {
       shadowRadius: 1,
     },
     text: {
-      color: theme.colors.background,
-      fontSize: theme.font.sizes.paragraph,
-      fontFamily: theme.font.weights.regular,
+      color: colors.background,
+      fontSize: font.sizes.paragraph,
+      fontFamily: font.weights.regular,
     },
   });
   return { styles };

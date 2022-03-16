@@ -14,41 +14,42 @@ import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
 import { RootStackParamList } from './types';
 
-const buttonHeight = 50;
-
 const useStyles = () => {
-  const theme = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
+  const { buttonHeight } = sizes;
 
-  const buttonRowHeight = buttonHeight + 4 * theme.spacing.m;
+  const buttonRowHeight = buttonHeight + 4 * spacing.m;
 
   const styles = StyleSheet.create({
     button: {
       height: buttonHeight,
-      marginHorizontal: theme.spacing.s,
+      marginHorizontal: spacing.s,
     },
     buttonRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingHorizontal: theme.spacing.s,
-      paddingVertical: theme.spacing.m,
+      paddingHorizontal: spacing.s,
+      paddingVertical: spacing.m,
     },
     buttonRowScrollEnabled: {
-      backgroundColor: theme.colors.background,
-      borderTopColor: theme.colors.separator,
-      borderTopWidth: 0.5,
+      backgroundColor: colors.background,
+      borderTopColor: colors.separator,
+      borderTopWidth: sizes.separator,
     },
     scrollView: {
       flexGrow: 1,
-      marginTop: theme.spacing.m,
-      paddingHorizontal: theme.spacing.m,
+      marginTop: spacing.m,
+      paddingHorizontal: spacing.m,
     },
     subtitle: {
-      color: theme.colors.labelSecondary,
-      fontFamily: theme.font.weights.regular,
+      color: colors.labelSecondary,
+      fontFamily: font.weights.regular,
     },
     title: {
-      color: theme.colors.label,
-      fontFamily: theme.font.weights.medium,
+      color: colors.label,
+      fontFamily: font.weights.medium,
     },
   });
 

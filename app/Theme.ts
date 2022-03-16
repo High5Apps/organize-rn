@@ -46,6 +46,11 @@ const lightTheme = {
     },
     weights,
   },
+  sizes: {
+    buttonHeight: 50,
+    icon: 24,
+    separator: 0.5,
+  },
   spacing: {
     s: 8,
     m: 16,
