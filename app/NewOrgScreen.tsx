@@ -17,6 +17,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     message: {
+      color: colors.label,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.paragraph,
       margin: spacing.m,

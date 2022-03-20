@@ -26,6 +26,7 @@ const useStyles = () => {
       margin: spacing.m,
     },
     headline: {
+      color: colors.label,
       fontFamily: font.weights.semiBold,
       fontSize: font.sizes.paragraph,
       marginVertical: spacing.m,
@@ -36,6 +37,7 @@ const useStyles = () => {
       fontSize: sizes.largeIcon,
     },
     paragraph: {
+      color: colors.label,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.paragraph,
       textAlign: 'center',
