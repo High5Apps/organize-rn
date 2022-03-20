@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import {
-  Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View,
+  Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconButton from './IconButton';
+import Scrim from './Scrim';
 import useTheme from './Theme';
 
 const useStyles = () => {
@@ -47,8 +48,6 @@ const useStyles = () => {
       textAlign: 'center',
     },
     scrim: {
-      backgroundColor: 'rgba(0,0,0,0.4)',
-      flex: 1,
       justifyContent: 'center',
     },
   });
@@ -80,12 +79,8 @@ export default function NewOrgModal({
         setVisible(false);
       }}
     >
-      <Pressable
-        onPress={() => setVisible(false)}
-        style={styles.scrim}
-      >
-        {/* This negates the parent scrim's onPress */}
-        <Pressable style={styles.container}>
+      <Scrim onPress={() => setVisible(false)} style={styles.scrim}>
+        <View style={styles.container}>
           <IconButton
             iconName="close"
             onPress={() => setVisible(false)}
@@ -102,8 +97,8 @@ export default function NewOrgModal({
               </Text>
             </View>
           </ScrollView>
-        </Pressable>
-      </Pressable>
+        </View>
+      </Scrim>
     </Modal>
   );
 }
