@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
 } from 'react-native';
+import NewOrgModal, { StaticProps as NewOrgModalProps } from './NewOrgModal';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
@@ -43,7 +44,7 @@ const useStyles = () => {
   return { styles, colors };
 };
 
-type Props = {
+type Props = NewOrgModalProps & {
   maxLength: number,
   message: string,
   placeholder: string,
@@ -51,11 +52,21 @@ type Props = {
 };
 
 export default function NewOrgScreen({
-  maxLength, message, placeholder, title,
+  body, headline, iconName, maxLength, message, placeholder, title,
 }: Props) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const { styles, colors } = useStyles();
+
   return (
     <ScreenBackground>
+      <NewOrgModal
+        body={body}
+        headline={headline}
+        iconName={iconName}
+        setVisible={setModalVisible}
+        visible={modalVisible}
+      />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <Text style={styles.title}>
           {title}
@@ -74,7 +85,7 @@ export default function NewOrgScreen({
         <SecondaryButton
           iconName="help-outline"
           label="Learn More"
-          onPress={() => console.log('Learn more pressed!')}
+          onPress={() => setModalVisible(true)}
         />
       </ScrollView>
     </ScreenBackground>

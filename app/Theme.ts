@@ -19,10 +19,12 @@ const weights = Platform.select({
   android: {
     regular: 'opensans_regular',
     medium: 'opensans_medium',
+    semiBold: 'opensans_semibold',
   },
   default: {
     regular: 'OpenSans-Regular',
     medium: 'OpenSans-Medium',
+    semiBold: 'OpenSans-SemiBold',
   },
 });
 
@@ -49,6 +51,7 @@ const lightTheme = {
   sizes: {
     buttonHeight: 50,
     icon: 24,
+    largeIcon: 48,
     separator: 0.5,
   },
   spacing: {
