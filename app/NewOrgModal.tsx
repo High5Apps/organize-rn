@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import {
-  Modal, Pressable, StyleSheet, Text,
+  Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconButton from './IconButton';
@@ -10,6 +10,8 @@ const useStyles = () => {
   const {
     colors, font, spacing, sizes,
   } = useTheme();
+
+  const { height: screenHeight } = useWindowDimensions();
 
   const styles = StyleSheet.create({
     closeButton: {
@@ -22,8 +24,9 @@ const useStyles = () => {
       backgroundColor: colors.background,
       borderColor: colors.primary,
       borderWidth: spacing.s,
-      padding: spacing.m,
+      paddingVertical: spacing.m,
       margin: spacing.m,
+      maxHeight: screenHeight - 2 * spacing.m,
     },
     headline: {
       color: colors.label,
@@ -40,10 +43,10 @@ const useStyles = () => {
       color: colors.label,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.paragraph,
+      marginHorizontal: spacing.m,
       textAlign: 'center',
     },
     scrim: {
-      alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.4)',
       flex: 1,
       justifyContent: 'center',
@@ -81,11 +84,8 @@ export default function NewOrgModal({
         onPress={() => setVisible(false)}
         style={styles.scrim}
       >
-        <Pressable
-          // This no-op onPress negates the parent scrim's onPress
-          onPress={() => {}}
-          style={styles.container}
-        >
+        {/* This negates the parent scrim's onPress */}
+        <Pressable style={styles.container}>
           <IconButton
             iconName="close"
             onPress={() => setVisible(false)}
@@ -95,9 +95,13 @@ export default function NewOrgModal({
           <Text style={styles.headline}>
             {headline}
           </Text>
-          <Text style={styles.paragraph}>
-            {body}
-          </Text>
+          <ScrollView>
+            <View onStartShouldSetResponder={() => true}>
+              <Text style={styles.paragraph}>
+                {body}
+              </Text>
+            </View>
+          </ScrollView>
         </Pressable>
       </Pressable>
     </Modal>
