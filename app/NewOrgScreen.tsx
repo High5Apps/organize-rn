@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import NewOrgModal, { StaticProps as NewOrgModalProps } from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import ScreenBackground from './ScreenBackground';
@@ -89,6 +90,8 @@ export default function NewOrgScreen({
           label="Learn More"
           onPress={() => setModalVisible(true)}
         />
+      </ScrollView>
+      <KeyboardAccessoryView alwaysVisible androidAdjustResize>
         <NewOrgNavigationBar
           backPressed={() => console.log('back pressed')}
           currentStep={1}
@@ -96,7 +99,7 @@ export default function NewOrgScreen({
           nextPressed={() => console.log('next pressed')}
           totalStepCount={4}
         />
-      </ScrollView>
+      </KeyboardAccessoryView>
     </ScreenBackground>
   );
 }
