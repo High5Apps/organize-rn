@@ -6,6 +6,7 @@ import {
   TextInput,
 } from 'react-native';
 import NewOrgModal, { StaticProps as NewOrgModalProps } from './NewOrgModal';
+import NewOrgNavigationBar from './NewOrgNavigationBar';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
@@ -87,6 +88,13 @@ export default function NewOrgScreen({
           iconName="help-outline"
           label="Learn More"
           onPress={() => setModalVisible(true)}
+        />
+        <NewOrgNavigationBar
+          backPressed={() => console.log('back pressed')}
+          currentStep={1}
+          nextDisabled={false}
+          nextPressed={() => console.log('next pressed')}
+          totalStepCount={4}
         />
       </ScrollView>
     </ScreenBackground>

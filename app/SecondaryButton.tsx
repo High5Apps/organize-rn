@@ -13,7 +13,7 @@ const useStyles = () => {
     icon: {
       color: colors.primary,
       fontSize: 24,
-      marginEnd: spacing.s,
+      marginHorizontal: spacing.xs,
     },
     pressable: {
       flex: 1,
@@ -25,6 +25,9 @@ const useStyles = () => {
     pressed: {
       opacity: 0.5,
     },
+    reversed: {
+      flexDirection: 'row-reverse',
+    },
     text: {
       color: colors.primary,
       fontSize: font.sizes.paragraph,
@@ -35,25 +38,29 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   iconName: string;
-  onPress?: () => void;
-  style?: StyleProp<ViewStyle>;
   label: string;
+  onPress?: () => void;
+  reversed?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
 const SecondaryButton = (props: Props) => {
   const {
-    iconName, onPress, label, style,
+    disabled, iconName, label, onPress, reversed, style,
   } = props;
 
   const { styles } = useStyles();
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.pressable,
-        pressed && styles.pressed,
+        reversed && styles.reversed,
+        (disabled || pressed) && styles.pressed,
         style,
       ]}
     >
@@ -68,6 +75,8 @@ const SecondaryButton = (props: Props) => {
 export default SecondaryButton;
 
 SecondaryButton.defaultProps = {
+  disabled: false,
   onPress: () => {},
+  reversed: false,
   style: {},
 };
