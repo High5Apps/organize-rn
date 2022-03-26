@@ -6,7 +6,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator \"iPhone 8 (15.4)\" --verbose",
     "start": "react-native start",
-    "test": "npm run lint && jest",
+    "test": "npm run type-check && npm run lint && jest",
+    "type-check": "tsc",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
