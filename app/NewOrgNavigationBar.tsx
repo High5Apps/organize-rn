@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import NewOrgSteps from './NewOrgSteps';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
+import { NewOrgScreenParams, RootStackNavigationProp } from './types';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -30,35 +32,68 @@ const useStyles = () => {
 };
 
 type Props = {
-  backPressed?: () => void;
   currentStep: number,
   nextDisabled?: boolean;
-  nextPressed?: () => void;
-  totalStepCount: number,
+  params: NewOrgScreenParams;
+  navigation: RootStackNavigationProp;
 };
 
+const name = 'NewOrg';
+
+export const navigateToStep = (
+  step: number,
+  navigation: Props['navigation'],
+  params?: Props['params'],
+) => navigation.navigate({
+  key: `${name}${step}`,
+  name,
+  params: {
+    ...params,
+    step,
+  },
+});
+
 export default function NewOrgNavigationBar({
-  backPressed, currentStep, nextDisabled, nextPressed, totalStepCount,
+  currentStep, params, navigation, nextDisabled,
 }: Props) {
   const { styles } = useStyles();
+
+  const navigateToStepHelper = (
+    step: number,
+  ) => navigateToStep(step, navigation, params);
+
   return (
     <View style={styles.container}>
       <SecondaryButton
         iconName="navigate-before"
         label="Back"
-        onPress={backPressed}
+        onPress={() => {
+          if (currentStep > 0) {
+            navigateToStepHelper(currentStep - 1);
+          } else {
+            navigation.goBack();
+          }
+        }}
       />
       <Text style={styles.currentStep}>
-        {`Step ${currentStep} `}
+        {`Step ${1 + currentStep} `}
         <Text style={styles.totalSteps}>
-          {`of ${totalStepCount}`}
+          {/* The extra step is for the review page */}
+          {`of ${1 + NewOrgSteps.length}`}
         </Text>
       </Text>
       <SecondaryButton
         disabled={nextDisabled}
         iconName="navigate-next"
         label="Next"
-        onPress={nextPressed}
+        onPress={() => {
+          if (currentStep < NewOrgSteps.length - 1) {
+            navigateToStepHelper(currentStep + 1);
+          } else {
+            const json = JSON.stringify(params, null, 2);
+            console.log(`navigate to review: ${json}`);
+          }
+        }}
         reversed
       />
     </View>
@@ -66,7 +101,5 @@ export default function NewOrgNavigationBar({
 }
 
 NewOrgNavigationBar.defaultProps = {
-  backPressed: () => {},
   nextDisabled: false,
-  nextPressed: () => {},
 };

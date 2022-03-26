@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
   ScrollView,
@@ -8,11 +7,12 @@ import {
 } from 'react-native';
 import CircleLogo from '../assets/images/CircleLogo';
 import AutoscaledText from './AutoscaledText';
+import { navigateToStep } from './NewOrgNavigationBar';
 import PrimaryButton from './PrimaryButton';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
-import { RootStackParamList } from './types';
+import { WelcomeScreenProps } from './types';
 
 const useStyles = () => {
   const {
@@ -56,9 +56,7 @@ const useStyles = () => {
   return { buttonRowHeight, styles };
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
-
-export default function WelcomeScreen({ navigation }: Props) {
+export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const { height: screenHeight } = useWindowDimensions();
   const { buttonRowHeight, styles } = useStyles();
@@ -92,7 +90,7 @@ export default function WelcomeScreen({ navigation }: Props) {
         <SecondaryButton
           iconName="add"
           label="Create Org"
-          onPress={() => navigation.navigate('NameOrg')}
+          onPress={() => navigateToStep(0, navigation)}
           style={styles.button}
         />
         <PrimaryButton

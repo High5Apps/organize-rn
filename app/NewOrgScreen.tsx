@@ -6,11 +6,13 @@ import {
   TextInput,
 } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
-import NewOrgModal, { StaticProps as NewOrgModalProps } from './NewOrgModal';
+import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
+import NewOrgSteps from './NewOrgSteps';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
+import { NewOrgScreenProps } from './types';
 
 const useStyles = () => {
   const {
@@ -47,19 +49,23 @@ const useStyles = () => {
   return { styles, colors };
 };
 
-type Props = NewOrgModalProps & {
-  maxLength: number,
-  message: string,
-  placeholder: string,
-  title: string;
-};
+export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
+  const currentStep = route.params.step;
+  const {
+    body, headline, iconName, maxLength, message, param, placeholder, title,
+  } = NewOrgSteps[currentStep];
 
-export default function NewOrgScreen({
-  body, headline, iconName, maxLength, message, placeholder, title,
-}: Props) {
+  const initialInput: string = route.params[param]?.toString() || '';
+
+  const [input, setInput] = useState(initialInput);
   const [modalVisible, setModalVisible] = useState(false);
 
   const { styles, colors } = useStyles();
+
+  const params = {
+    ...route.params,
+    [param]: input,
+  };
 
   return (
     <ScreenBackground>
@@ -77,10 +83,12 @@ export default function NewOrgScreen({
         <TextInput
           autoFocus
           maxLength={maxLength}
+          onChangeText={setInput}
           placeholder={placeholder}
           placeholderTextColor={colors.labelSecondary}
           selectionColor={colors.primary}
           style={styles.textInput}
+          value={input}
         />
         <Text style={styles.message}>
           {message}
@@ -93,11 +101,10 @@ export default function NewOrgScreen({
       </ScrollView>
       <KeyboardAccessoryView alwaysVisible androidAdjustResize>
         <NewOrgNavigationBar
-          backPressed={() => console.log('back pressed')}
-          currentStep={1}
-          nextDisabled={false}
-          nextPressed={() => console.log('next pressed')}
-          totalStepCount={4}
+          currentStep={currentStep}
+          nextDisabled={input.length === 0}
+          params={params}
+          navigation={navigation}
         />
       </KeyboardAccessoryView>
     </ScreenBackground>
