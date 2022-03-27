@@ -1,4 +1,4 @@
-type NewOrgParam = 'name' | 'definition' | 'estimate';
+import { NewOrgParam } from './types';
 
 type NewOrgStep = {
   body: string,
@@ -7,6 +7,7 @@ type NewOrgStep = {
   maxLength: number,
   message: string,
   param: NewOrgParam,
+  paramType: 'number' | 'string',
   placeholder: string,
   title: string,
 };
@@ -19,6 +20,7 @@ const NewOrgSteps: NewOrgStep[] = [
     maxLength: 35,
     message: "Don't worry- you can change the info in any of these steps later.",
     param: 'name',
+    paramType: 'string',
     placeholder: 'ex. Local 9918',
     title: 'Name Your Org',
   },
@@ -29,6 +31,7 @@ const NewOrgSteps: NewOrgStep[] = [
     maxLength: 75,
     message: 'Choose the broadest definition that still allows you to recruit at least 30% of all potential members.',
     param: 'definition',
+    paramType: 'string',
     placeholder: 'ex. An employee at Company Store #11235',
     title: 'Define a Potential Member',
   },
@@ -39,6 +42,7 @@ const NewOrgSteps: NewOrgStep[] = [
     maxLength: 5,
     message: 'How many people fit the definition of "an employee at Compnay Store #11235?"',
     param: 'estimate',
+    paramType: 'number',
     placeholder: 'ex. 218',
     title: 'Estimate Potential Member Count',
   },

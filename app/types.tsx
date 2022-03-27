@@ -8,6 +8,8 @@ export type NewOrgScreenParams = {
   step: number;
 };
 
+export type NewOrgParam = Exclude<keyof NewOrgScreenParams, 'step'>;
+
 export type RootStackParamList = {
   Welcome: undefined;
   NewOrg: NewOrgScreenParams;

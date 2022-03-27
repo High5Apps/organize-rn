@@ -52,9 +52,9 @@ const useStyles = () => {
 export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const currentStep = route.params.step;
   const {
-    body, headline, iconName, maxLength, message, param, placeholder, title,
+    body, headline, iconName, maxLength, message, param, paramType, placeholder,
+    title,
   } = NewOrgSteps[currentStep];
-
   const initialInput: string = route.params[param]?.toString() || '';
 
   const [input, setInput] = useState(initialInput);
@@ -82,6 +82,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         </Text>
         <TextInput
           autoFocus
+          keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
           maxLength={maxLength}
           onChangeText={setInput}
           placeholder={placeholder}
