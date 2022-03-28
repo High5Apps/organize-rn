@@ -9,7 +9,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       alignItems: 'center',
-      backgroundColor: 'rgba(255,255,255,0.5)',
+      backgroundColor: colors.fill,
       borderTopColor: colors.separator,
       borderTopWidth: sizes.separator,
       flexDirection: 'row',

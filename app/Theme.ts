@@ -31,15 +31,15 @@ const weights = Platform.select({
 const lightTheme = {
   colors: {
     background: palette.purpleLight2,
+    danger: palette.red,
+    error: palette.red,
     fill: palette.grayLight2,
     fillSecondary: palette.grayLight1,
-    separator: palette.grayLight0,
     label: palette.purpleDark2,
     labelSecondary: palette.grayDark0,
     primary: palette.purpleDark0,
+    separator: palette.grayLight0,
     success: palette.green,
-    danger: palette.red,
-    failure: palette.red,
   },
   font: {
     sizes: {
@@ -68,10 +68,10 @@ const darkTheme = {
     background: palette.purpleDark2,
     fill: palette.grayDark2,
     fillSecondary: palette.grayDark1,
-    separator: palette.grayDark0,
     label: palette.purpleLight2,
     labelSecondary: palette.grayLight0,
     primary: palette.purpleLight0,
+    separator: palette.grayDark0,
   },
 };
 

@@ -107,7 +107,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           onPress={() => setModalVisible(true)}
         />
       </ScrollView>
-      <KeyboardAccessoryView alwaysVisible androidAdjustResize>
+      <KeyboardAccessoryView alwaysVisible androidAdjustResize hideBorder>
         <NewOrgNavigationBar
           backPressed={() => {
             stepNavigator.navigateToPrevious(currentStep, params);
