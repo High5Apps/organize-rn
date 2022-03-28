@@ -1,5 +1,7 @@
 import { NewOrgSteps } from '../model';
-import { NewOrgScreenParams, RootStackNavigationProp } from './types';
+import {
+  NewOrgScreenParams, OrgReviewParams, RootStackNavigationProp,
+} from './types';
 
 const name = 'NewOrg';
 
@@ -21,8 +23,10 @@ const NewOrgStepNavigator = (navigation: RootStackNavigationProp) => {
       if (currentStep < NewOrgSteps.length - 1) {
         navigateToStep(currentStep + 1, params);
       } else {
-        const json = JSON.stringify(params, null, 2);
-        console.log(`navigate to review: ${json}`);
+        navigation.navigate({
+          name: 'OrgReview',
+          params: (params as OrgReviewParams),
+        });
       }
     },
     navigateToPrevious: (currentStep: number, params: NewOrgScreenParams) => {

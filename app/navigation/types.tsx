@@ -8,11 +8,14 @@ export type NewOrgScreenParams = {
   step: number;
 };
 
-export type NewOrgParam = Exclude<keyof NewOrgScreenParams, 'step'>;
+export type OrgReviewParams = Required<Omit<NewOrgScreenParams, 'step'>>;
+
+export type NewOrgParam = keyof OrgReviewParams;
 
 export type RootStackParamList = {
-  Welcome: undefined;
   NewOrg: NewOrgScreenParams;
+  OrgReview: OrgReviewParams;
+  Welcome: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
@@ -20,6 +23,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 
 export type WelcomeScreenProps = RootStackScreenProps<'Welcome'>;
 export type NewOrgScreenProps = RootStackScreenProps<'NewOrg'>;
+export type OrgReviewScreenProps = RootStackScreenProps<'OrgReview'>;
 
 export type RootStackNavigationProp = NavigationProp<RootStackParamList>;
 
