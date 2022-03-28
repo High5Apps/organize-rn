@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import useTheme from './Theme';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const { colors } = useTheme();

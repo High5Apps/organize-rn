@@ -1,4 +1,4 @@
-import NewOrgSteps from './NewOrgSteps';
+import { NewOrgSteps } from '../model';
 import { NewOrgScreenParams, RootStackNavigationProp } from './types';
 
 const name = 'NewOrg';

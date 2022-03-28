@@ -1,4 +1,4 @@
-import { NewOrgParam } from './types';
+import { NewOrgParam } from '../navigation';
 
 type NewOrgStep = {
   body: string,

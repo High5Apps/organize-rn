@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
+  ScrollView, StyleSheet, Text, TextInput,
 } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
-import NewOrgStepNavigator from './NewOrgStepNavigator';
-import NewOrgSteps from './NewOrgSteps';
-import ScreenBackground from './ScreenBackground';
-import SecondaryButton from './SecondaryButton';
-import useTheme from './Theme';
-import { NewOrgScreenProps } from './types';
+import { ScreenBackground, SecondaryButton } from '../../components';
+import { NewOrgSteps } from '../../model';
+import { NewOrgScreenProps, NewOrgStepNavigator } from '../../navigation';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {

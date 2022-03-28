@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WelcomeScreen from './WelcomeScreen';
-import { RootStackParamList } from './types';
-import NewOrgScreen from './NewOrgScreen';
+import { RootStackParamList } from './navigation';
+import { NewOrgScreen, WelcomeScreen } from './screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

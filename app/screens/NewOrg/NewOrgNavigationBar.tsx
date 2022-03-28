@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import NewOrgSteps from './NewOrgSteps';
-import SecondaryButton from './SecondaryButton';
-import useTheme from './Theme';
+import { SecondaryButton } from '../../components';
+import { NewOrgSteps } from '../../model';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();

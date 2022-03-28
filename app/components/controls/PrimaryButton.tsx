@@ -3,7 +3,7 @@ import {
   Pressable, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import useTheme from './Theme';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {

@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import {
-  ScrollView,
-  StyleSheet,
-  useWindowDimensions,
-  View,
+  ScrollView, StyleSheet, useWindowDimensions, View,
 } from 'react-native';
-import CircleLogo from '../assets/images/CircleLogo';
-import AutoscaledText from './AutoscaledText';
-import NewOrgStepNavigator from './NewOrgStepNavigator';
-import PrimaryButton from './PrimaryButton';
-import ScreenBackground from './ScreenBackground';
-import SecondaryButton from './SecondaryButton';
-import useTheme from './Theme';
-import { WelcomeScreenProps } from './types';
+import { CircleLogo } from '../../assets';
+import {
+  AutoscaledText, PrimaryButton, ScreenBackground, SecondaryButton,
+} from '../components';
+import { NewOrgStepNavigator, WelcomeScreenProps } from '../navigation';
+import useTheme from '../Theme';
 
 const useStyles = () => {
   const {

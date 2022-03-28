@@ -3,9 +3,8 @@ import {
   Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconButton from './IconButton';
-import Scrim from './Scrim';
-import useTheme from './Theme';
+import { IconButton, Scrim } from '../../components';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {
