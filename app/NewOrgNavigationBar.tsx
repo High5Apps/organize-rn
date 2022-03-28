@@ -20,7 +20,7 @@ const useStyles = () => {
       color: colors.label,
       flexGrow: 1,
       fontFamily: font.weights.regular,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       textAlign: 'center',
     },
     totalSteps: {

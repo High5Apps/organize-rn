@@ -41,7 +41,7 @@ const useStyles = () => {
     },
     text: {
       color: colors.background,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
   });

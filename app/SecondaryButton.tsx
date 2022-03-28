@@ -30,7 +30,7 @@ const useStyles = () => {
     },
     text: {
       color: colors.primary,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
   });

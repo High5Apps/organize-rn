@@ -15,6 +15,13 @@ const useStyles = () => {
   const { height: screenHeight } = useWindowDimensions();
 
   const styles = StyleSheet.create({
+    body: {
+      color: colors.label,
+      fontFamily: font.weights.regular,
+      fontSize: font.sizes.body,
+      marginHorizontal: spacing.m,
+      textAlign: 'center',
+    },
     closeButton: {
       position: 'absolute',
       right: 0,
@@ -32,20 +39,13 @@ const useStyles = () => {
     headline: {
       color: colors.label,
       fontFamily: font.weights.semiBold,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       marginVertical: spacing.m,
       textAlign: 'center',
     },
     icon: {
       color: colors.primary,
       fontSize: sizes.largeIcon,
-    },
-    paragraph: {
-      color: colors.label,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.paragraph,
-      marginHorizontal: spacing.m,
-      textAlign: 'center',
     },
     scrim: {
       justifyContent: 'center',
@@ -92,7 +92,7 @@ export default function NewOrgModal({
           </Text>
           <ScrollView>
             <View onStartShouldSetResponder={() => true}>
-              <Text style={styles.paragraph}>
+              <Text style={styles.body}>
                 {body}
               </Text>
             </View>

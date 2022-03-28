@@ -24,7 +24,7 @@ const useStyles = () => {
     message: {
       color: colors.label,
       fontFamily: font.weights.regular,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       padding: spacing.m,
       paddingBottom: spacing.s,
       textAlign: 'center',
@@ -36,7 +36,7 @@ const useStyles = () => {
       color: colors.label,
       height: sizes.buttonHeight,
       fontFamily: font.weights.regular,
-      fontSize: font.sizes.paragraph,
+      fontSize: font.sizes.body,
       paddingHorizontal: spacing.m,
       paddingVertical: spacing.s,
     },
