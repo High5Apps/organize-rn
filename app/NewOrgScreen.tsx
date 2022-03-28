@@ -25,7 +25,8 @@ const useStyles = () => {
       color: colors.label,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.paragraph,
-      margin: spacing.m,
+      padding: spacing.m,
+      paddingBottom: spacing.s,
       textAlign: 'center',
     },
     textInput: {
