@@ -21,7 +21,7 @@ const NewOrgSteps: NewOrgStep[] = [
     message: "Don't worry- you can change the info in any of these steps later.",
     param: 'name',
     paramType: 'string',
-    placeholder: 'ex. Local 9918',
+    placeholder: 'Name',
     title: 'Name Your Org',
   },
   {
@@ -32,7 +32,7 @@ const NewOrgSteps: NewOrgStep[] = [
     message: 'Choose the broadest definition that still allows you to recruit at least 30% of all potential members.',
     param: 'definition',
     paramType: 'string',
-    placeholder: 'ex. An employee at Company Store #11235',
+    placeholder: 'Definition',
     title: 'Define a Potential Member',
   },
   {
@@ -43,7 +43,7 @@ const NewOrgSteps: NewOrgStep[] = [
     message: 'How many people fit the definition of "an employee at Compnay Store #11235?"',
     param: 'estimate',
     paramType: 'number',
-    placeholder: 'ex. 218',
+    placeholder: 'Estimate',
     title: 'Estimate Potential Member Count',
   },
 ];
