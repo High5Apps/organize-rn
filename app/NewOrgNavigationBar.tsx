@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import NewOrgSteps from './NewOrgSteps';
 import SecondaryButton from './SecondaryButton';
 import useTheme from './Theme';
-import { NewOrgScreenParams, RootStackNavigationProp } from './types';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -32,48 +31,23 @@ const useStyles = () => {
 };
 
 type Props = {
+  backPressed: () => void;
   currentStep: number,
   nextDisabled?: boolean;
-  params: NewOrgScreenParams;
-  navigation: RootStackNavigationProp;
+  nextPressed: () => void;
 };
 
-const name = 'NewOrg';
-
-export const navigateToStep = (
-  step: number,
-  navigation: Props['navigation'],
-  params?: Props['params'],
-) => navigation.navigate({
-  key: `${name}${step}`,
-  name,
-  params: {
-    ...params,
-    step,
-  },
-});
-
 export default function NewOrgNavigationBar({
-  currentStep, params, navigation, nextDisabled,
+  backPressed, currentStep, nextDisabled, nextPressed,
 }: Props) {
   const { styles } = useStyles();
-
-  const navigateToStepHelper = (
-    step: number,
-  ) => navigateToStep(step, navigation, params);
 
   return (
     <View style={styles.container}>
       <SecondaryButton
         iconName="navigate-before"
         label="Back"
-        onPress={() => {
-          if (currentStep > 0) {
-            navigateToStepHelper(currentStep - 1);
-          } else {
-            navigation.goBack();
-          }
-        }}
+        onPress={backPressed}
       />
       <Text style={styles.currentStep}>
         {`Step ${1 + currentStep} `}
@@ -86,14 +60,7 @@ export default function NewOrgNavigationBar({
         disabled={nextDisabled}
         iconName="navigate-next"
         label="Next"
-        onPress={() => {
-          if (currentStep < NewOrgSteps.length - 1) {
-            navigateToStepHelper(currentStep + 1);
-          } else {
-            const json = JSON.stringify(params, null, 2);
-            console.log(`navigate to review: ${json}`);
-          }
-        }}
+        onPress={nextPressed}
         reversed
       />
     </View>

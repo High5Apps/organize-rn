@@ -8,6 +8,7 @@ import {
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
+import NewOrgStepNavigator from './NewOrgStepNavigator';
 import NewOrgSteps from './NewOrgSteps';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
@@ -67,6 +68,10 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
     [param]: input,
   };
 
+  const stepNavigator = NewOrgStepNavigator(navigation);
+  const navigateNext = () => stepNavigator.navigateToNext(currentStep, params);
+  const nextDisabled = (input.length === 0);
+
   return (
     <ScreenBackground>
       <NewOrgModal
@@ -82,11 +87,17 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         </Text>
         <TextInput
           autoFocus
+          blurOnSubmit={false}
           keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
           maxLength={maxLength}
           onChangeText={setInput}
+          onSubmitEditing={() => {
+            if (nextDisabled) { return; }
+            navigateNext();
+          }}
           placeholder={placeholder}
           placeholderTextColor={colors.labelSecondary}
+          returnKeyType="next"
           selectionColor={colors.primary}
           style={styles.textInput}
           value={input}
@@ -102,10 +113,12 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
       </ScrollView>
       <KeyboardAccessoryView alwaysVisible androidAdjustResize>
         <NewOrgNavigationBar
+          backPressed={() => {
+            stepNavigator.navigateToPrevious(currentStep, params);
+          }}
           currentStep={currentStep}
-          nextDisabled={input.length === 0}
-          params={params}
-          navigation={navigation}
+          nextDisabled={nextDisabled}
+          nextPressed={navigateNext}
         />
       </KeyboardAccessoryView>
     </ScreenBackground>

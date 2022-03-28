@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import CircleLogo from '../assets/images/CircleLogo';
 import AutoscaledText from './AutoscaledText';
-import { navigateToStep } from './NewOrgNavigationBar';
+import NewOrgStepNavigator from './NewOrgStepNavigator';
 import PrimaryButton from './PrimaryButton';
 import ScreenBackground from './ScreenBackground';
 import SecondaryButton from './SecondaryButton';
@@ -90,7 +90,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         <SecondaryButton
           iconName="add"
           label="Create Org"
-          onPress={() => navigateToStep(0, navigation)}
+          onPress={() => NewOrgStepNavigator(navigation).navigateToStep(0)}
           style={styles.button}
         />
         <PrimaryButton
