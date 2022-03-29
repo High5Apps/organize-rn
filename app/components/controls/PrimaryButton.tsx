@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Pressable, StyleProp, StyleSheet, Text, ViewStyle,
+  Pressable, StyleProp, StyleSheet, Text, useColorScheme, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -9,6 +9,9 @@ const useStyles = () => {
   const {
     colors, font, sizes, spacing,
   } = useTheme();
+
+  const isDarkMode = useColorScheme() === 'dark';
+
   const styles = StyleSheet.create({
     icon: {
       color: colors.background,
@@ -32,7 +35,7 @@ const useStyles = () => {
     },
     pressed: {
       elevation: 1,
-      opacity: 0.5,
+      opacity: isDarkMode ? 0.5 : 1,
       shadowOffset: {
         height: 1,
         width: 0,
