@@ -43,8 +43,9 @@ const lightTheme = {
   },
   font: {
     sizes: {
-      body: 17,
       largeTitle: 34,
+      title1: 28,
+      body: 17,
     },
     weights,
   },
@@ -58,6 +59,7 @@ const lightTheme = {
     xs: 4,
     s: 8,
     m: 16,
+    l: 32,
   },
 };
 

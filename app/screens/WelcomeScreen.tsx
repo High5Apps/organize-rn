@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import {
-  ScrollView, StyleSheet, useWindowDimensions, View,
-} from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { CircleLogo } from '../../assets';
 import {
-  AutoscaledText, PrimaryButton, ScreenBackground, SecondaryButton,
+  AutoscaledText, ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
 } from '../components';
 import { NewOrgStepNavigator, WelcomeScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -21,17 +19,6 @@ const useStyles = () => {
     button: {
       height: buttonHeight,
       marginHorizontal: spacing.s,
-    },
-    buttonRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: spacing.s,
-      paddingVertical: spacing.m,
-    },
-    buttonRowScrollEnabled: {
-      backgroundColor: colors.background,
-      borderTopColor: colors.separator,
-      borderTopWidth: sizes.separator,
     },
     scrollView: {
       flexGrow: 1,
@@ -76,12 +63,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           Strength in Numbers
         </AutoscaledText>
       </ScrollView>
-      <View
-        style={[
-          styles.buttonRow,
-          scrollEnabled && styles.buttonRowScrollEnabled,
-        ]}
-      >
+      <ButtonRow elevated={scrollEnabled}>
         <SecondaryButton
           iconName="add"
           label="Create Org"
@@ -94,7 +76,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           onPress={() => console.log('Join pressed!')}
           style={styles.button}
         />
-      </View>
+      </ButtonRow>
     </ScreenBackground>
   );
 }
