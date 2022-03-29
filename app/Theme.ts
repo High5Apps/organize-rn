@@ -53,6 +53,7 @@ const lightTheme = {
     buttonHeight: 50,
     icon: 24,
     largeIcon: 48,
+    extraLargeIcon: 96,
     separator: 0.5,
   },
   spacing: {

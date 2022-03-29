@@ -73,7 +73,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         <PrimaryButton
           iconName="qr-code-2"
           label="Join Org"
-          onPress={() => console.log('Join pressed!')}
+          onPress={() => navigation.navigate('JoinOrg')}
           style={styles.button}
         />
       </ButtonRow>

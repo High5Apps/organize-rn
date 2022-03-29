@@ -13,6 +13,7 @@ export type OrgReviewParams = Required<Omit<NewOrgScreenParams, 'step'>>;
 export type NewOrgParam = keyof OrgReviewParams;
 
 export type RootStackParamList = {
+  JoinOrg: undefined;
   NewOrg: NewOrgScreenParams;
   OrgReview: OrgReviewParams;
   Welcome: undefined;
@@ -24,6 +25,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 export type WelcomeScreenProps = RootStackScreenProps<'Welcome'>;
 export type NewOrgScreenProps = RootStackScreenProps<'NewOrg'>;
 export type OrgReviewScreenProps = RootStackScreenProps<'OrgReview'>;
+export type JoinOrgScreenProps = RootStackScreenProps<'JoinOrg'>;
 
 export type RootStackNavigationProp = NavigationProp<RootStackParamList>;
 
