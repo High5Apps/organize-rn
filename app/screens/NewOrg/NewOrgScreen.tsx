@@ -7,7 +7,7 @@ import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import { ScreenBackground, SecondaryButton } from '../../components';
 import { NewOrgSteps } from '../../model';
-import { NewOrgScreenProps, NewOrgStepNavigator } from '../../navigation';
+import { NewOrgScreenParams, NewOrgScreenProps, NewOrgStepNavigator } from '../../navigation';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -59,7 +59,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
 
   const { styles, colors } = useStyles();
 
-  const params = {
+  const params: NewOrgScreenParams = {
     ...route.params,
     [param]: input,
   };
@@ -99,7 +99,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           value={input}
         />
         <Text style={styles.message}>
-          {message}
+          {typeof message === 'function' ? message(params) : message}
         </Text>
         <SecondaryButton
           iconName="help-outline"

@@ -1,11 +1,11 @@
-import { NewOrgParam } from '../navigation';
+import { NewOrgParam, NewOrgScreenParams } from '../navigation';
 
 type NewOrgStep = {
   body: string,
   headline: string,
   iconName: string,
   maxLength: number,
-  message: string,
+  message?: string | ((params: NewOrgScreenParams) => string),
   param: NewOrgParam,
   paramType: 'number' | 'string',
   placeholder: string,
@@ -40,7 +40,9 @@ const NewOrgSteps: NewOrgStep[] = [
     headline: 'Count me in!',
     iconName: 'groups',
     maxLength: 5,
-    message: 'How many people fit the definition of "an employee at Compnay Store #11235?"',
+    message: ({ definition }: NewOrgScreenParams) => (
+      `How many people fit the definition of "${definition}?"`
+    ),
     param: 'estimate',
     paramType: 'number',
     placeholder: 'Estimate',
