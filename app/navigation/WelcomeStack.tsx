@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   WelcomeScreen, NewOrgScreen, OrgReview, JoinOrgScreen,
 } from '../screens';
-import { RootStackParamList } from './types';
+import { WelcomeStackParamList } from './types';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStack() {
   return (

@@ -12,27 +12,27 @@ export type OrgReviewParams = Required<Omit<NewOrgScreenParams, 'step'>>;
 
 export type NewOrgParam = keyof OrgReviewParams;
 
-export type RootStackParamList = {
+export type WelcomeStackParamList = {
   JoinOrg: undefined;
   NewOrg: NewOrgScreenParams;
   OrgReview: OrgReviewParams;
   Welcome: undefined;
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, T>;
+export type WelcomeStackScreenProps<T extends keyof WelcomeStackParamList> =
+  NativeStackScreenProps<WelcomeStackParamList, T>;
 
-export type WelcomeScreenProps = RootStackScreenProps<'Welcome'>;
-export type NewOrgScreenProps = RootStackScreenProps<'NewOrg'>;
-export type OrgReviewScreenProps = RootStackScreenProps<'OrgReview'>;
-export type JoinOrgScreenProps = RootStackScreenProps<'JoinOrg'>;
+export type WelcomeScreenProps = WelcomeStackScreenProps<'Welcome'>;
+export type NewOrgScreenProps = WelcomeStackScreenProps<'NewOrg'>;
+export type OrgReviewScreenProps = WelcomeStackScreenProps<'OrgReview'>;
+export type JoinOrgScreenProps = WelcomeStackScreenProps<'JoinOrg'>;
 
-export type RootStackNavigationProp = NavigationProp<RootStackParamList>;
+export type WelcomeStackNavigationProp = NavigationProp<WelcomeStackParamList>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends WelcomeStackParamList {}
   }
 }
