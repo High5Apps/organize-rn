@@ -1,12 +1,12 @@
 import { NewOrgSteps } from '../model';
 import {
-  NewOrgScreenParams, OrgReviewParams, WelcomeStackNavigationProp,
+  NewOrgScreenNavigationProp, NewOrgScreenParams, OrgReviewParams,
 } from './types';
 
 const name = 'NewOrg';
 
-const NewOrgStepNavigator = (navigation: WelcomeStackNavigationProp) => {
-  function navigateToStep(step: number, params?: NewOrgScreenParams) {
+const NewOrgStepNavigator = (navigation: NewOrgScreenNavigationProp) => {
+  function navigateToStep(step: number, params: NewOrgScreenParams) {
     navigation.navigate(name, { ...params, step });
   }
 

@@ -59,6 +59,15 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           onPress={navigation.goBack}
           style={styles.backButton}
         />
+        <SecondaryButton
+          iconName="navigate-next"
+          label="Skip"
+          onPress={() => navigation.navigate('OrgTabs', {
+            screen: 'ConnectStack',
+          })}
+          style={styles.backButton}
+          reversed
+        />
       </ButtonRow>
     </ScreenBackground>
   );

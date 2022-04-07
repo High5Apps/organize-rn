@@ -4,7 +4,7 @@ import { CircleLogo } from '../../assets';
 import {
   AutoscaledText, ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
 } from '../components';
-import { NewOrgStepNavigator, WelcomeScreenProps } from '../navigation';
+import { WelcomeScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -67,7 +67,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         <SecondaryButton
           iconName="add"
           label="Create Org"
-          onPress={() => NewOrgStepNavigator(navigation).navigateToStep(0)}
+          onPress={() => navigation.navigate('NewOrg', { step: 0 })}
           style={styles.button}
         />
         <PrimaryButton
