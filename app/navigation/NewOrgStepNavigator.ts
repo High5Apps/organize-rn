@@ -7,14 +7,7 @@ const name = 'NewOrg';
 
 const NewOrgStepNavigator = (navigation: WelcomeStackNavigationProp) => {
   function navigateToStep(step: number, params?: NewOrgScreenParams) {
-    navigation.navigate({
-      key: `${name}${step}`,
-      name,
-      params: {
-        ...params,
-        step,
-      },
-    });
+    navigation.navigate(name, { ...params, step });
   }
 
   return {

@@ -14,7 +14,11 @@ export default function WelcomeStack() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="NewOrg" component={NewOrgScreen} />
+      <Stack.Screen
+        name="NewOrg"
+        component={NewOrgScreen}
+        getId={({ params }) => String(params.step)}
+      />
       <Stack.Screen name="OrgReview" component={OrgReview} />
       <Stack.Screen name="JoinOrg" component={JoinOrgScreen} />
     </Stack.Navigator>
