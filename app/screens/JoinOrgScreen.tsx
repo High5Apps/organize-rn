@@ -3,7 +3,7 @@ import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import {
-  ButtonRow, QRButton, ScreenBackground, SecondaryButton,
+  ButtonRow, CameraControl, ScreenBackground, SecondaryButton,
 } from '../components';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -46,7 +46,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         style={styles.scrollView}
       >
         <View style={styles.topContainer}>
-          <QRButton onPress={() => console.log('Allow camera access')} />
+          <CameraControl />
           <Text style={styles.prompt}>
             To join an Org, scan the secret code of a current member.
           </Text>

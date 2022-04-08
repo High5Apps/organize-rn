@@ -1,4 +1,5 @@
 export { default as ButtonRow } from './ButtonRow';
+export { default as CameraControl } from './CameraControl';
 export { default as IconButton } from './IconButton';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as QRButton } from './QRButton';
