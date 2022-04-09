@@ -5,10 +5,12 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator \"iPhone 8 (15.4)\" --verbose",
+    "deeplink:android": "adb shell am start -W -a android.intent.action.VIEW -d organize://$npm_config_path com.organize",
+    "deeplink:ios": "xcrun simctl openurl booted organize://$npm_config_path",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "react-native start",
     "test": "npm run type-check && npm run lint && jest",
-    "type-check": "tsc",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "type-check": "tsc"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.2.0",

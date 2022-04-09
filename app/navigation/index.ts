@@ -1,3 +1,4 @@
+export { default as LinkingConfig } from './LinkingConfig';
 export { default as OrgTabs } from './OrgTabs';
 export { default as NewOrgStepNavigator } from './NewOrgStepNavigator';
 export * from './types';
