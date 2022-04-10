@@ -30,7 +30,6 @@ type Props = {
 const TabBarIcon = (iconName: string) => ({ focused, color, size }: Props) => {
   const { styles } = useStyles();
 
-  console.log({ focused, color, size });
   return (
     <Icon
       size={size}

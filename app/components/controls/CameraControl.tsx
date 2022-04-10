@@ -15,8 +15,6 @@ export default function CameraControl(): JSX.Element {
     setPermissions().catch(console.error);
   }, []);
 
-  console.log({ cameraPermission });
-
   if (cameraPermission === 'authorized') {
     return <QRCamera />;
   }

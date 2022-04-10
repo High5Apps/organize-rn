@@ -22,7 +22,6 @@ export default function QRCamera() {
 
   const devices = useCameraDevices();
   const device = devices.back;
-  console.log({ device });
 
   let content;
   if (device) {
