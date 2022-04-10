@@ -23,11 +23,10 @@ const useStyles = () => {
 
 type Props = {
   focused: boolean;
-  color: string;
   size: number;
 };
 
-const TabBarIcon = (iconName: string) => ({ focused, color, size }: Props) => {
+const TabBarIcon = (iconName: string) => ({ focused, size }: Props) => {
   const { styles } = useStyles();
 
   return (

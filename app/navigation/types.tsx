@@ -83,13 +83,37 @@ export type DiscussStackParamList = {
   Discuss: undefined;
 };
 
+export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<DiscussStackParamList, T>,
+    OrgTabsScreenProps<keyof OrgTabsParamList>
+  >;
+
+export type DiscussScreenProps = DiscussStackScreenProps<'Discuss'>;
+
 export type VoteStackParamList = {
   Vote: undefined;
 };
 
+export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<VoteStackParamList, T>,
+    OrgTabsScreenProps<keyof OrgTabsParamList>
+  >;
+
+export type VoteScreenProps = VoteStackScreenProps<'Vote'>;
+
 export type OrgStackParamList = {
   Org: undefined;
 };
+
+export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<OrgStackParamList, T>,
+    OrgTabsScreenProps<keyof OrgTabsParamList>
+  >;
+
+export type OrgScreenProps = OrgStackScreenProps<'Org'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc

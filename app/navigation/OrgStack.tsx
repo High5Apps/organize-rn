@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ConnectScreen } from '../screens';
+import { OrgScreen } from '../screens';
 import { OrgStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -11,7 +11,7 @@ export default function OrgStack() {
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Org" component={ConnectScreen} />
+      <Stack.Screen name="Org" component={OrgScreen} />
     </Stack.Navigator>
   );
 }

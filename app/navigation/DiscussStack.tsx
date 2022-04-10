@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ConnectScreen } from '../screens';
+import { DiscussScreen } from '../screens';
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -11,7 +11,7 @@ export default function DiscussStack() {
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Discuss" component={ConnectScreen} />
+      <Stack.Screen name="Discuss" component={DiscussScreen} />
     </Stack.Navigator>
   );
 }
