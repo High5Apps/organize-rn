@@ -6,7 +6,8 @@ const palette = {
   purpleLight0: '#BF5AF2',
   purpleLight2: '#F8F4FB',
   green: '#66AB44',
-  red: '#FF3B30',
+  redLight: '#FF3B30',
+  redDark: '#FF453A',
   grayDark2: '#000000',
   grayDark1: '#262626',
   grayDark0: '#8A8A8A',
@@ -31,8 +32,8 @@ const weights = Platform.select({
 const lightTheme = {
   colors: {
     background: palette.purpleLight2,
-    danger: palette.red,
-    error: palette.red,
+    danger: palette.redLight,
+    error: palette.redLight,
     fill: palette.grayLight2,
     fillSecondary: palette.grayLight1,
     label: palette.purpleDark2,
@@ -71,6 +72,8 @@ const darkTheme = {
   colors: {
     ...lightTheme.colors,
     background: palette.purpleDark2,
+    danger: palette.redDark,
+    error: palette.redDark,
     fill: palette.grayDark2,
     fillSecondary: palette.grayDark1,
     label: palette.purpleLight2,

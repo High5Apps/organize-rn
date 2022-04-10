@@ -1,23 +1,15 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import {
-  Pressable, StyleSheet, Text, useColorScheme, ViewStyle,
+  Pressable, PressableStateCallbackType, StyleSheet, useColorScheme, ViewStyle,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { colors, spacing } = useTheme();
 
   const isDarkMode = useColorScheme() === 'dark';
 
   const styles = StyleSheet.create({
-    icon: {
-      color: colors.primary,
-      fontSize: sizes.extraLargeIcon,
-      marginBottom: spacing.s,
-    },
     pressable: {
       alignItems: 'center',
       aspectRatio: 1,
@@ -42,44 +34,45 @@ const useStyles = () => {
       },
       shadowRadius: 1,
     },
-    prompt: {
-      color: colors.labelSecondary,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.body,
-      textAlign: 'center',
-    },
   });
-  return { styles };
+  return { isDarkMode, styles };
 };
 
 type Props = {
+  disabled?: boolean;
   onPress?: () => void;
+  showPressedInLightMode?: boolean;
   style?: ViewStyle;
 };
 
-export default function QRButton(props: Props) {
-  const { onPress, style } = props;
+export default function FrameButton(props: PropsWithChildren<Props>) {
+  const {
+    children, disabled, onPress, showPressedInLightMode, style,
+  } = props;
 
-  const { styles } = useStyles();
+  const { isDarkMode, styles } = useStyles();
+  function shouldShowPressed({ pressed }: PressableStateCallbackType) {
+    return (showPressedInLightMode && !isDarkMode) || pressed;
+  }
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.pressable,
-        pressed && styles.pressed,
+        shouldShowPressed({ pressed }) && styles.pressed,
         style,
       ]}
     >
-      <Icon name="qr-code-scanner" style={styles.icon} />
-      <Text style={styles.prompt}>
-        {'Tap to allow\ncamera access'}
-      </Text>
+      {children}
     </Pressable>
   );
 }
 
-QRButton.defaultProps = {
+FrameButton.defaultProps = {
+  disabled: false,
   onPress: () => {},
+  showPressedInLightMode: false,
   style: {},
 };

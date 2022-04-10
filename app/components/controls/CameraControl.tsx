@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
-import QRButton from './QRButton';
+import CameraPermissionsButton from './CameraPermissionsButton';
+import QRCamera from './QRCamera';
 
 export default function CameraControl(): JSX.Element {
   const [
@@ -15,20 +15,17 @@ export default function CameraControl(): JSX.Element {
     setPermissions().catch(console.error);
   }, []);
 
-  switch (cameraPermission) {
-    case 'authorized':
-      return (
-        <Text>
-          {cameraPermission}
-        </Text>
-      );
-    default:
-      return (
-        <QRButton
-          onPress={async () => {
-            setCameraPermission(await Camera.requestCameraPermission());
-          }}
-        />
-      );
+  console.log({ cameraPermission });
+
+  if (cameraPermission === 'authorized') {
+    return <QRCamera />;
   }
+
+  return (
+    <CameraPermissionsButton
+      onPress={async () => {
+        setCameraPermission(await Camera.requestCameraPermission());
+      }}
+    />
+  );
 }
