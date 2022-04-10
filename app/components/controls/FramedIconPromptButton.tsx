@@ -26,22 +26,26 @@ const useStyles = () => {
 };
 
 type Props = {
+  iconName: string;
   onPress?: () => void;
+  prompt: string;
 };
 
-export default function CameraPermissionsButton({ onPress }: Props) {
+export default function FramedIconPromptButton({
+  iconName, onPress, prompt,
+}: Props) {
   const { styles } = useStyles();
 
   return (
     <FrameButton onPress={onPress}>
-      <Icon name="qr-code-scanner" style={styles.icon} />
+      <Icon name={iconName} style={styles.icon} />
       <Text style={styles.prompt}>
-        {'Tap to allow\ncamera access'}
+        {prompt}
       </Text>
     </FrameButton>
   );
 }
 
-CameraPermissionsButton.defaultProps = {
+FramedIconPromptButton.defaultProps = {
   onPress: () => {},
 };
