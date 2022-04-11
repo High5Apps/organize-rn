@@ -10,11 +10,11 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     circleLogo: {
       backgroundColor: colors.primary,
-      borderColor: colors.background,
+      borderColor: colors.fill,
       position: 'absolute',
     },
   });
-  return { spacing, styles };
+  return { colors, spacing, styles };
 };
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 export default function QRCodeButton({ onPress }: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
-  const { spacing, styles } = useStyles();
+  const { colors, spacing, styles } = useStyles();
 
   const qrCodeSize = frameSize - spacing.l;
   const qrLogoSize = 0.33 * qrCodeSize;
@@ -35,6 +35,8 @@ export default function QRCodeButton({ onPress }: Props) {
       onPress={onPress}
     >
       <QRCode
+        color={colors.label}
+        backgroundColor={colors.fill}
         size={qrCodeSize}
         value="TODO: Add real data to the QR code"
       />
