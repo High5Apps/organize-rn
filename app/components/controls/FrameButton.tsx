@@ -38,16 +38,23 @@ const useStyles = () => {
   return { isDarkMode, styles };
 };
 
+type Size = {
+  height: number;
+  width: number;
+};
+
 type Props = {
   disabled?: boolean;
   onPress?: () => void;
+  onContainerSizeChange?: ({ height, width }: Size) => void;
   showPressedInLightMode?: boolean;
   style?: ViewStyle;
 };
 
 export default function FrameButton(props: PropsWithChildren<Props>) {
   const {
-    children, disabled, onPress, showPressedInLightMode, style,
+    children, disabled, onContainerSizeChange, onPress, showPressedInLightMode,
+    style,
   } = props;
 
   const { isDarkMode, styles } = useStyles();
@@ -58,6 +65,12 @@ export default function FrameButton(props: PropsWithChildren<Props>) {
   return (
     <Pressable
       disabled={disabled}
+      onLayout={(event) => {
+        let { height, width } = event.nativeEvent.layout;
+        height -= 2 * styles.pressable.borderWidth;
+        width -= 2 * styles.pressable.borderWidth;
+        onContainerSizeChange?.({ height, width });
+      }}
       onPress={onPress}
       style={({ pressed }) => [
         styles.pressable,
@@ -72,6 +85,7 @@ export default function FrameButton(props: PropsWithChildren<Props>) {
 
 FrameButton.defaultProps = {
   disabled: false,
+  onContainerSizeChange: () => {},
   onPress: () => {},
   showPressedInLightMode: false,
   style: {},

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import { FramedIconPromptButton, ScreenBackground } from '../components';
+import { QRCodeControl, ScreenBackground } from '../components';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -32,11 +32,7 @@ export default function ConnectScreen() {
         contentInsetAdjustmentBehavior="automatic"
         style={styles.scrollView}
       >
-        <FramedIconPromptButton
-          iconName="qr-code-2"
-          onPress={() => console.log('qr code button')}
-          prompt={'Tap to reveal\nyour secret code'}
-        />
+        <QRCodeControl />
         <Text style={styles.prompt}>
           Recruit or connect with members by letting them scan your secret code.
         </Text>
