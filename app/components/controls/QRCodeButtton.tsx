@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import useTheme from '../../Theme';
 import FrameButton from './FrameButton';
+import { QRCodeValue } from '../../model';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();
@@ -19,9 +20,10 @@ const useStyles = () => {
 
 type Props = {
   onPress?: () => void;
+  qrCodeValue: QRCodeValue;
 };
 
-export default function QRCodeButton({ onPress }: Props) {
+export default function QRCodeButton({ onPress, qrCodeValue }: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
   const { colors, spacing, styles } = useStyles();
@@ -38,7 +40,7 @@ export default function QRCodeButton({ onPress }: Props) {
         color={colors.label}
         backgroundColor={colors.fill}
         size={qrCodeSize}
-        value="TODO: Add real data to the QR code"
+        value={JSON.stringify(qrCodeValue)}
       />
       <View
         style={[
