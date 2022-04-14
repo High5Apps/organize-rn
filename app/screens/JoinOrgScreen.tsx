@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
@@ -37,6 +37,7 @@ const useStyles = () => {
 };
 
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
+  const [scanned, setScanned] = useState(false);
   const { styles } = useStyles();
 
   return (
@@ -46,10 +47,12 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         style={styles.scrollView}
       >
         <View style={styles.topContainer}>
-          <CameraControl />
-          <Text style={styles.prompt}>
-            To join an Org, scan the secret code of a current member.
-          </Text>
+          <CameraControl onQRCodeValueScanned={() => setScanned(true)} />
+          {!scanned && (
+            <Text style={styles.prompt}>
+              To join an Org, scan the secret code of a current member.
+            </Text>
+          )}
         </View>
       </ScrollView>
       <ButtonRow>

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
+import { isQRCodeValue, QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
 import FrameButton from './FrameButton';
 
@@ -19,7 +20,12 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function QRCamera() {
+type Props = {
+  enabled: boolean;
+  onQRValueScanned: (value: QRCodeValue) => void;
+};
+
+export default function QRCamera({ enabled, onQRValueScanned }: Props) {
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
@@ -28,7 +34,20 @@ export default function QRCamera() {
     const contentData = barcodes.map((b) => b.content.data);
     const contentDataSet = new Set(contentData);
     const uniqueData = [...contentDataSet];
-    console.log({ uniqueData });
+    try {
+      uniqueData.forEach((json) => {
+        const object = JSON.parse(String(json));
+        if (isQRCodeValue(object)) {
+          onQRValueScanned(object);
+        } else {
+          console.log(
+            `parsed unexpected value: ${JSON.stringify(object, null, 2)}`,
+          );
+        }
+      });
+    } catch (e) {
+      console.warn(e);
+    }
   }, [barcodes]);
 
   const { styles } = useStyles();
@@ -45,7 +64,7 @@ export default function QRCamera() {
         device={device}
         frameProcessor={frameProcessor}
         frameProcessorFps={1}
-        isActive={isFocused}
+        isActive={enabled && isFocused}
         style={StyleSheet.absoluteFill}
       />
     );
