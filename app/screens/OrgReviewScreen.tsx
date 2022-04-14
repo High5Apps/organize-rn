@@ -3,6 +3,7 @@ import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import {
+  Agreement,
   ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
 } from '../components';
 import { OrgReviewScreenProps } from '../navigation';
@@ -70,6 +71,8 @@ export default function OrgReviewScreen({
 
   const { styles } = useStyles();
 
+  const buttonLabel = 'Create';
+
   return (
     <ScreenBackground>
       <Text style={styles.title}>Review Your Org</Text>
@@ -91,22 +94,7 @@ export default function OrgReviewScreen({
         </View>
       </ScrollView>
       <>
-        <Text style={styles.agreement}>
-          {'By tapping Create, I agree to the Organize '}
-          <Text
-            onPress={() => console.log('Terms pressed')}
-            style={styles.agreementLink}
-          >
-            Terms
-          </Text>
-          {' and '}
-          <Text
-            onPress={() => console.log('Privacy policy pressed')}
-            style={styles.agreementLink}
-          >
-            Privacy Policy
-          </Text>
-        </Text>
+        <Agreement buttonLabel={buttonLabel} />
         <ButtonRow>
           <SecondaryButton
             iconName="navigate-before"
@@ -116,7 +104,7 @@ export default function OrgReviewScreen({
           />
           <PrimaryButton
             iconName="add"
-            label="Create"
+            label={buttonLabel}
             onPress={() => console.log('Create pressed')}
             style={[styles.button, styles.createButton]}
           />

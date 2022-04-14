@@ -3,7 +3,8 @@ import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import {
-  ButtonRow, CameraControl, PrimaryButton, ScreenBackground, SecondaryButton,
+  Agreement, ButtonRow, CameraControl, PrimaryButton, ScreenBackground,
+  SecondaryButton,
 } from '../components';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -45,6 +46,8 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [scanned, setScanned] = useState(false);
   const { styles } = useStyles();
 
+  const primaryButtonLabel = 'Join';
+
   return (
     <ScreenBackground>
       <ScrollView
@@ -60,24 +63,27 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           )}
         </View>
       </ScrollView>
-      <ButtonRow>
-        <SecondaryButton
-          iconName="navigate-before"
-          label="Back"
-          onPress={navigation.goBack}
-          style={[styles.button, styles.backButton]}
-        />
-        {scanned && (
-          <PrimaryButton
-            iconName="person-add"
-            label="Join"
-            onPress={() => navigation.replace('OrgTabs', {
-              screen: 'ConnectStack',
-            })}
-            style={[styles.button, styles.joinButton]}
+      <>
+        {scanned && <Agreement buttonLabel={primaryButtonLabel} />}
+        <ButtonRow>
+          <SecondaryButton
+            iconName="navigate-before"
+            label="Back"
+            onPress={navigation.goBack}
+            style={[styles.button, styles.backButton]}
           />
-        )}
-      </ButtonRow>
+          {scanned && (
+            <PrimaryButton
+              iconName="person-add"
+              label={primaryButtonLabel}
+              onPress={() => navigation.replace('OrgTabs', {
+                screen: 'ConnectStack',
+              })}
+              style={[styles.button, styles.joinButton]}
+            />
+          )}
+        </ButtonRow>
+      </>
     </ScreenBackground>
   );
 }
