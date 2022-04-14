@@ -10,7 +10,8 @@ const useStyles = () => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: spacing.s,
-      paddingVertical: spacing.m,
+      paddingBottom: spacing.m,
+      paddingTop: spacing.s,
     },
     elevated: {
       backgroundColor: colors.background,
