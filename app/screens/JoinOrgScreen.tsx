@@ -3,7 +3,7 @@ import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import {
-  ButtonRow, CameraControl, ScreenBackground, SecondaryButton,
+  ButtonRow, CameraControl, PrimaryButton, ScreenBackground, SecondaryButton,
 } from '../components';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -13,9 +13,14 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     backButton: {
+      paddingEnd: spacing.l,
+    },
+    button: {
       flex: 0,
       marginHorizontal: spacing.s,
-      paddingEnd: spacing.l,
+    },
+    joinButton: {
+      paddingHorizontal: spacing.m,
     },
     prompt: {
       color: colors.label,
@@ -60,17 +65,18 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           iconName="navigate-before"
           label="Back"
           onPress={navigation.goBack}
-          style={styles.backButton}
+          style={[styles.button, styles.backButton]}
         />
-        <SecondaryButton
-          iconName="navigate-next"
-          label="Skip"
-          onPress={() => navigation.replace('OrgTabs', {
-            screen: 'ConnectStack',
-          })}
-          style={styles.backButton}
-          reversed
-        />
+        {scanned && (
+          <PrimaryButton
+            iconName="person-add"
+            label="Join"
+            onPress={() => navigation.replace('OrgTabs', {
+              screen: 'ConnectStack',
+            })}
+            style={[styles.button, styles.joinButton]}
+          />
+        )}
       </ButtonRow>
     </ScreenBackground>
   );
