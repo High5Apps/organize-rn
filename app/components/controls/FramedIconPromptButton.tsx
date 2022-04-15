@@ -10,6 +10,9 @@ const useStyles = () => {
   } = useTheme();
 
   const styles = StyleSheet.create({
+    frameButton: {
+      padding: spacing.s,
+    },
     icon: {
       color: colors.primary,
       fontSize: sizes.extraLargeIcon,
@@ -37,7 +40,7 @@ export default function FramedIconPromptButton({
   const { styles } = useStyles();
 
   return (
-    <FrameButton onPress={onPress}>
+    <FrameButton onPress={onPress} style={styles.frameButton}>
       <Icon name={iconName} style={styles.icon} />
       <Text style={styles.prompt}>
         {prompt}

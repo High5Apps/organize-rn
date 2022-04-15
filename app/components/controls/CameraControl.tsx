@@ -48,21 +48,27 @@ export default function CameraControl({
   }
 
   let onPress: () => void | Promise<void>;
-  if (cameraPermission === 'authorized') {
+  let iconName: string = 'qr-code-scanner';
+  let prompt: string = 'Tap to allow\ncamera access';
+  if (cameraPermission === 'not-determined') {
+    onPress = async () => setCameraPermission(
+      await Camera.requestCameraPermission(),
+    );
+  } else if (cameraPermission === 'authorized') {
     onPress = () => setCameraEnabled(true);
   } else if (cameraPermission === 'denied') {
     onPress = Linking.openSettings;
   } else {
-    onPress = async () => setCameraPermission(
-      await Camera.requestCameraPermission(),
-    );
+    onPress = () => {};
+    iconName = 'error';
+    prompt = 'Camera access is restricted on your device. Unfortunately you won\'t be able to use Organize.';
   }
 
   return (
     <FramedIconPromptButton
-      iconName="qr-code-scanner"
+      iconName={iconName}
       onPress={onPress}
-      prompt={'Tap to allow\ncamera access'}
+      prompt={prompt}
     />
   );
 }
