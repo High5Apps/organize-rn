@@ -41,7 +41,11 @@ export default function MembershipReview({ qrValue }: Props) {
   const { styles } = useStyles();
 
   return (
-    <FrameButton style={styles.frameButton}>
+    <FrameButton
+      disabled
+      style={styles.frameButton}
+      showPressedInLightMode
+    >
       <View style={styles.valueContainer}>
         <Text style={[styles.text, styles.label]}>
           I am
