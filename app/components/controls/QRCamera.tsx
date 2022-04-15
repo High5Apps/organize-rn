@@ -74,7 +74,7 @@ export default function QRCamera({
       <Camera
         device={device}
         frameProcessor={frameProcessor}
-        frameProcessorFps={1}
+        frameProcessorFps={4}
         isActive={enabled && isFocused}
         style={[StyleSheet.absoluteFill, styles.qrOverlay]}
       >
