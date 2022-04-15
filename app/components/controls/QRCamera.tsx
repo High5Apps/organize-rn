@@ -1,6 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { isQRCodeValue, QRCodeValue } from '../../model';
@@ -8,7 +9,7 @@ import useTheme from '../../Theme';
 import FrameButton from './FrameButton';
 
 const useStyles = () => {
-  const { colors, font } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     noDevicesFound: {
@@ -16,8 +17,11 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
+    qrOverlay: {
+      padding: spacing.m,
+    },
   });
-  return { styles };
+  return { colors, spacing, styles };
 };
 
 type Props = {
@@ -26,6 +30,8 @@ type Props = {
 };
 
 export default function QRCamera({ enabled, onQRValueScanned }: Props) {
+  const [frameSize, setFrameSize] = useState(0);
+
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
@@ -50,7 +56,7 @@ export default function QRCamera({ enabled, onQRValueScanned }: Props) {
     }
   }, [barcodes]);
 
-  const { styles } = useStyles();
+  const { colors, spacing, styles } = useStyles();
 
   const devices = useCameraDevices();
   const device = devices.back;
@@ -59,14 +65,23 @@ export default function QRCamera({ enabled, onQRValueScanned }: Props) {
 
   let content;
   if (device) {
+    const qrCodeSize = frameSize - spacing.l;
+
     content = (
       <Camera
         device={device}
         frameProcessor={frameProcessor}
         frameProcessorFps={1}
         isActive={enabled && isFocused}
-        style={StyleSheet.absoluteFill}
-      />
+        style={[StyleSheet.absoluteFill, styles.qrOverlay]}
+      >
+        <QRCode
+          color={`${colors.primary}40`} // 25% alpha
+          backgroundColor="transparent"
+          size={qrCodeSize}
+          value="You rock!"
+        />
+      </Camera>
     );
   } else {
     content = (
@@ -77,7 +92,11 @@ export default function QRCamera({ enabled, onQRValueScanned }: Props) {
   }
 
   return (
-    <FrameButton disabled showPressedInLightMode>
+    <FrameButton
+      disabled
+      onContainerSizeChange={({ width }) => setFrameSize(width)}
+      showPressedInLightMode
+    >
       {content}
     </FrameButton>
   );
