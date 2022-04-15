@@ -37,17 +37,20 @@ export default function CameraControl({
     return <MembershipReview qrValue={qrValue} />;
   }
 
-  if (cameraPermission === 'authorized') {
+  if ((cameraPermission === 'authorized') && cameraEnabled) {
     return (
       <QRCamera
         enabled={cameraEnabled}
+        onPress={() => setCameraEnabled(false)}
         onQRValueScanned={setQRValue}
       />
     );
   }
 
-  let onPress: () => Promise<void>;
-  if (cameraPermission === 'denied') {
+  let onPress: () => void | Promise<void>;
+  if (cameraPermission === 'authorized') {
+    onPress = () => setCameraEnabled(true);
+  } else if (cameraPermission === 'denied') {
     onPress = Linking.openSettings;
   } else {
     onPress = async () => setCameraPermission(

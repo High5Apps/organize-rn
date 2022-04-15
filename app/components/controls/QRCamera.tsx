@@ -26,10 +26,13 @@ const useStyles = () => {
 
 type Props = {
   enabled: boolean;
+  onPress?: () => void;
   onQRValueScanned: (value: QRCodeValue) => void;
 };
 
-export default function QRCamera({ enabled, onQRValueScanned }: Props) {
+export default function QRCamera({
+  enabled, onPress, onQRValueScanned,
+}: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
@@ -93,11 +96,14 @@ export default function QRCamera({ enabled, onQRValueScanned }: Props) {
 
   return (
     <FrameButton
-      disabled
       onContainerSizeChange={({ width }) => setFrameSize(width)}
-      showPressedInLightMode
+      onPress={onPress}
     >
       {content}
     </FrameButton>
   );
 }
+
+QRCamera.defaultProps = {
+  onPress: () => {},
+};
