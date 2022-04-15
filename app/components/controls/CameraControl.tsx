@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
 import { MembershipReview } from '../views';
@@ -45,12 +46,19 @@ export default function CameraControl({
     );
   }
 
+  let onPress: () => Promise<void>;
+  if (cameraPermission === 'denied') {
+    onPress = Linking.openSettings;
+  } else {
+    onPress = async () => setCameraPermission(
+      await Camera.requestCameraPermission(),
+    );
+  }
+
   return (
     <FramedIconPromptButton
       iconName="qr-code-scanner"
-      onPress={async () => {
-        setCameraPermission(await Camera.requestCameraPermission());
-      }}
+      onPress={onPress}
       prompt={'Tap to allow\ncamera access'}
     />
   );
