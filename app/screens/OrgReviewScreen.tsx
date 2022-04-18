@@ -105,7 +105,9 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={() => console.log('Create pressed')}
+            onPress={() => navigation.replace('OrgTabs', {
+              screen: 'ConnectStack',
+            })}
             style={[styles.button, styles.createButton]}
           />
         </ButtonRow>
