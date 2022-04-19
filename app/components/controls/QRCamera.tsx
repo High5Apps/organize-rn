@@ -6,6 +6,7 @@ import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { isQRCodeValue, QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
+import { FadeInView } from '../views';
 import FrameButton from './FrameButton';
 
 const useStyles = () => {
@@ -87,9 +88,11 @@ export default function QRCamera({
     );
   } else {
     content = (
-      <Text style={styles.noDevicesFound}>
-        No camera found
-      </Text>
+      <FadeInView delay={2000}>
+        <Text style={styles.noDevicesFound}>
+          No camera found
+        </Text>
+      </FadeInView>
     );
   }
 
