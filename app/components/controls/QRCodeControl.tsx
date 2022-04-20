@@ -20,7 +20,9 @@ export default function QRCodeControl() {
     return (
       <QRCodeButton
         onPress={() => setRevealed(false)}
+        onTimeout={() => setRevealed(false)}
         qrCodeValue={qrCodeData}
+        timeout={30000}
       />
     );
   }

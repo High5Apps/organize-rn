@@ -4,6 +4,7 @@ import QRCode from 'react-native-qrcode-svg';
 import useTheme from '../../Theme';
 import FrameButton from './FrameButton';
 import { QRCodeValue } from '../../model';
+import { CountdownClockBorder } from '../views';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();
@@ -20,10 +21,14 @@ const useStyles = () => {
 
 type Props = {
   onPress?: () => void;
+  onTimeout?: () => void;
   qrCodeValue: QRCodeValue;
+  timeout: number;
 };
 
-export default function QRCodeButton({ onPress, qrCodeValue }: Props) {
+export default function QRCodeButton({
+  onPress, onTimeout, qrCodeValue, timeout,
+}: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
   const { colors, spacing, styles } = useStyles();
@@ -35,7 +40,14 @@ export default function QRCodeButton({ onPress, qrCodeValue }: Props) {
     <FrameButton
       onContainerSizeChange={({ width }) => setFrameSize(width)}
       onPress={onPress}
+      style={{ borderWidth: 0 }}
     >
+      <CountdownClockBorder
+        duration={timeout}
+        onFinished={onTimeout}
+        // Add back the removed border width
+        sideLength={frameSize + 2 * spacing.s}
+      />
       <QRCode
         color={colors.label}
         backgroundColor={colors.fill}
@@ -59,4 +71,5 @@ export default function QRCodeButton({ onPress, qrCodeValue }: Props) {
 
 QRCodeButton.defaultProps = {
   onPress: () => {},
+  onTimeout: () => {},
 };
