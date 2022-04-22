@@ -1,6 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { QRCodeControl, ScreenBackground } from '../components';
+import { StyleSheet, Text } from 'react-native';
+import {
+  LockingScrollView, QRCodeControl, ScreenBackground,
+} from '../components';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -15,7 +17,6 @@ const useStyles = () => {
       textAlign: 'center',
     },
     scrollView: {
-      flexGrow: 1,
       padding: spacing.m,
     },
   });
@@ -28,15 +29,12 @@ export default function ConnectScreen() {
 
   return (
     <ScreenBackground>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-      >
+      <LockingScrollView style={styles.scrollView}>
         <QRCodeControl />
         <Text style={styles.prompt}>
           Recruit or connect with members by letting them scan your secret code.
         </Text>
-      </ScrollView>
+      </LockingScrollView>
     </ScreenBackground>
   );
 }

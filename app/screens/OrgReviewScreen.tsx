@@ -1,10 +1,8 @@
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import {
-  ScrollView, StyleSheet, Text, View,
-} from 'react-native';
-import {
-  Agreement,
-  ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
+  Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
+  SecondaryButton,
 } from '../components';
 import { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -43,7 +41,6 @@ const useStyles = () => {
       marginBottom: spacing.l,
     },
     scrollView: {
-      flexGrow: 1,
       paddingHorizontal: spacing.m,
     },
     title: {
@@ -76,10 +73,7 @@ export default function OrgReviewScreen({
   return (
     <ScreenBackground>
       <Text style={styles.title}>Review Your Org</Text>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-      >
+      <LockingScrollView style={styles.scrollView}>
         <View style={styles.paramContainer}>
           <Text style={styles.label}>Name of Org:</Text>
           <Text style={styles.value}>{name}</Text>
@@ -92,7 +86,7 @@ export default function OrgReviewScreen({
           <Text style={styles.label}>Estimate of potential member count:</Text>
           <Text style={styles.value}>{estimate}</Text>
         </View>
-      </ScrollView>
+      </LockingScrollView>
       <>
         <Agreement buttonLabel={buttonLabel} />
         <ButtonRow>

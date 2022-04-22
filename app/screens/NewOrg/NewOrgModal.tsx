@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import {
-  Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View,
+  Modal, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { IconButton, Scrim } from '../../components';
+import { IconButton, LockingScrollView, Scrim } from '../../components';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -89,13 +89,13 @@ export default function NewOrgModal({
           <Text style={styles.headline}>
             {headline}
           </Text>
-          <ScrollView>
+          <LockingScrollView>
             <View onStartShouldSetResponder={() => true}>
               <Text style={styles.body}>
                 {body}
               </Text>
             </View>
-          </ScrollView>
+          </LockingScrollView>
         </View>
       </Scrim>
     </Modal>

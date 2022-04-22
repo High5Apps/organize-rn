@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import {
-  ScrollView, StyleSheet, Text, View,
-} from 'react-native';
-import {
-  Agreement, ButtonRow, CameraControl, PrimaryButton, ScreenBackground,
-  SecondaryButton,
+  Agreement, ButtonRow, CameraControl, LockingScrollView, PrimaryButton,
+  ScreenBackground, SecondaryButton,
 } from '../components';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -43,6 +41,7 @@ const useStyles = () => {
 };
 
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
+  const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [scanned, setScanned] = useState(false);
   const { styles } = useStyles();
 
@@ -50,8 +49,8 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
   return (
     <ScreenBackground>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+      <LockingScrollView
+        onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
       >
         <View style={styles.topContainer}>
@@ -62,10 +61,10 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             </Text>
           )}
         </View>
-      </ScrollView>
+      </LockingScrollView>
       <>
         {scanned && <Agreement buttonLabel={primaryButtonLabel} />}
-        <ButtonRow>
+        <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
             iconName="navigate-before"
             label="Back"

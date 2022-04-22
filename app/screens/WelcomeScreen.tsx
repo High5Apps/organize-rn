@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { CircleLogo } from '../../assets';
 import {
-  AutoscaledText, ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
+  AutoscaledText, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
+  SecondaryButton,
 } from '../components';
 import { WelcomeScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -11,17 +12,13 @@ const useStyles = () => {
   const {
     colors, font, sizes, spacing,
   } = useTheme();
-  const { buttonHeight } = sizes;
-
-  const buttonRowHeight = buttonHeight + 4 * spacing.m;
 
   const styles = StyleSheet.create({
     button: {
-      height: buttonHeight,
+      height: sizes.buttonHeight,
       marginHorizontal: spacing.s,
     },
     scrollView: {
-      flexGrow: 1,
       marginTop: spacing.m,
       paddingHorizontal: spacing.m,
     },
@@ -35,25 +32,18 @@ const useStyles = () => {
     },
   });
 
-  return { buttonRowHeight, styles };
+  return { styles };
 };
 
 export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
-  const [scrollEnabled, setScrollEnabled] = useState(false);
-  const { height: screenHeight } = useWindowDimensions();
-  const { buttonRowHeight, styles } = useStyles();
-
-  const onContentSizeChange = (_: number, contentHeight: number) => {
-    setScrollEnabled(contentHeight > screenHeight - buttonRowHeight);
-  };
+  const [buttonRowElevated, setButtonRowElevated] = useState(false);
+  const { styles } = useStyles();
 
   return (
     <ScreenBackground>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        onContentSizeChange={onContentSizeChange}
+      <LockingScrollView
+        onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
-        scrollEnabled={scrollEnabled}
       >
         <CircleLogo />
         <AutoscaledText style={styles.title}>
@@ -62,8 +52,8 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         <AutoscaledText style={styles.subtitle}>
           Strength in Numbers
         </AutoscaledText>
-      </ScrollView>
-      <ButtonRow elevated={scrollEnabled}>
+      </LockingScrollView>
+      <ButtonRow elevated={buttonRowElevated}>
         <SecondaryButton
           iconName="add"
           label="Create Org"
