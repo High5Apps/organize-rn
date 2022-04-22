@@ -69,6 +69,7 @@ export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
 
 export type ConnectStackParamList = {
   Connect: undefined;
+  NewConnection: undefined;
 };
 
 export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
@@ -78,6 +79,7 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
   >;
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
+export type NewConnectionScreenProps = ConnectStackScreenProps<'NewConnection'>;
 
 export type DiscussStackParamList = {
   Discuss: undefined;

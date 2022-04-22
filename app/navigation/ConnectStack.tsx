@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ConnectScreen } from '../screens';
+import { ConnectScreen, NewConnectionScreen } from '../screens';
 import { ConnectStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -12,6 +12,11 @@ export default function ConnectStack() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen component={ConnectScreen} name="Connect" />
+      <Stack.Screen
+        component={NewConnectionScreen}
+        name="NewConnection"
+        options={{ presentation: 'modal' }}
+      />
     </Stack.Navigator>
   );
 }

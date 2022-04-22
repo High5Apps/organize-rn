@@ -1,14 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
-  LockingScrollView, QRCodeControl, ScreenBackground,
+  ButtonRow, LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
 } from '../components';
+import { ConnectScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
 
   const styles = StyleSheet.create({
+    button: {
+      flex: 0,
+      height: sizes.buttonHeight,
+      paddingHorizontal: spacing.m,
+      marginHorizontal: spacing.s,
+    },
+    buttonRow: {
+      flexDirection: 'row-reverse',
+    },
     prompt: {
       color: colors.label,
       fontFamily: font.weights.regular,
@@ -24,7 +36,7 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function ConnectScreen() {
+export default function ConnectScreen({ navigation }: ConnectScreenProps) {
   const { styles } = useStyles();
 
   return (
@@ -35,6 +47,14 @@ export default function ConnectScreen() {
           Recruit or connect with members by letting them scan your secret code.
         </Text>
       </LockingScrollView>
+      <ButtonRow elevated={false} style={styles.buttonRow}>
+        <PrimaryButton
+          iconName="qr-code-scanner"
+          label="Scan"
+          onPress={() => navigation.navigate('NewConnection')}
+          style={styles.button}
+        />
+      </ButtonRow>
     </ScreenBackground>
   );
 }
