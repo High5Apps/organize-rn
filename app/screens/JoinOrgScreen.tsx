@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
-  Agreement, ButtonRow, CameraControl, LockingScrollView, PrimaryButton,
+  Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const { spacing } = useTheme();
 
   const styles = StyleSheet.create({
     backButton: {
@@ -21,19 +21,9 @@ const useStyles = () => {
     joinButton: {
       paddingHorizontal: spacing.m,
     },
-    prompt: {
-      color: colors.label,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.body,
-      marginTop: spacing.m,
-      textAlign: 'center',
-    },
     scrollView: {
       flexGrow: 1,
       marginTop: spacing.m,
-    },
-    topContainer: {
-      padding: spacing.m,
     },
   });
 
@@ -53,14 +43,11 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
       >
-        <View style={styles.topContainer}>
-          <CameraControl onQRCodeValueScanned={() => setScanned(true)} />
-          {!scanned && (
-            <Text style={styles.prompt}>
-              To join an Org, scan the secret code of a current member.
-            </Text>
-          )}
-        </View>
+        <NewConnectionControl
+          onQRCodeValueScanned={() => setScanned(true)}
+          prompt="To join an Org, scan the secret code of a current member."
+          promptHidden={scanned}
+        />
       </LockingScrollView>
       <>
         {scanned && <Agreement buttonLabel={primaryButtonLabel} />}
