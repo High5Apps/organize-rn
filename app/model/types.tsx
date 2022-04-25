@@ -18,11 +18,16 @@ export function isOrg(object: unknown): object is Org {
 export type User = {
   id: string;
   name?: string;
+  // TODO: Determine pseduonym from id
+  pseduonym: string;
 };
 
 export function isUser(object: unknown): object is User {
   const user = (object as User);
-  return user?.id?.length > 0;
+  return (
+    user?.id?.length > 0
+      && user?.pseduonym?.length > 0
+  );
 }
 
 export type QRCodeValue = {

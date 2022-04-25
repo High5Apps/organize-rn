@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
-import { MembershipReview } from '../views';
+import { ConnectionReview, MembershipReview } from '../views';
 import FramedIconPromptButton from './FramedIconPromptButton';
 import QRCamera from './QRCamera';
 
 type Props = {
+  expectedOrgId?: string;
   onQRCodeValueScanned?: (value: QRCodeValue) => void;
 };
 
 export default function CameraControl({
-  onQRCodeValueScanned,
+  expectedOrgId, onQRCodeValueScanned,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
@@ -34,6 +35,10 @@ export default function CameraControl({
   }, [qrValue]);
 
   if (qrValue) {
+    if (expectedOrgId) {
+      return <ConnectionReview qrValue={qrValue} />;
+    }
+
     return <MembershipReview qrValue={qrValue} />;
   }
 
@@ -42,7 +47,10 @@ export default function CameraControl({
       <QRCamera
         enabled={cameraEnabled}
         onPress={() => setCameraEnabled(false)}
-        onQRValueScanned={setQRValue}
+        onQRValueScanned={(value) => {
+          if (expectedOrgId && (expectedOrgId !== value.org.id)) { return; }
+          setQRValue(value);
+        }}
       />
     );
   }
@@ -74,5 +82,6 @@ export default function CameraControl({
 }
 
 CameraControl.defaultProps = {
+  expectedOrgId: null,
   onQRCodeValueScanned: () => {},
 };

@@ -23,24 +23,29 @@ const useStyles = () => {
 };
 
 type Props = {
+  expectedOrgId?: string;
   onQRCodeValueScanned: () => void;
   prompt: string;
   promptHidden?: boolean;
 };
 
 export default function NewConnectionControl({
-  onQRCodeValueScanned, prompt, promptHidden,
+  expectedOrgId, onQRCodeValueScanned, prompt, promptHidden,
 }: Props) {
   const { styles } = useStyles();
 
   return (
     <View style={styles.topContainer}>
-      <CameraControl onQRCodeValueScanned={onQRCodeValueScanned} />
+      <CameraControl
+        expectedOrgId={expectedOrgId}
+        onQRCodeValueScanned={onQRCodeValueScanned}
+      />
       {!promptHidden && <Text style={styles.prompt}>{prompt}</Text>}
     </View>
   );
 }
 
 NewConnectionControl.defaultProps = {
+  expectedOrgId: null,
   promptHidden: false,
 };

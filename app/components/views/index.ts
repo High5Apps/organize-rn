@@ -1,5 +1,6 @@
 export { default as Agreement } from './Agreement';
 export { default as AutoscaledText } from './AutoscaledText';
+export { default as ConnectionReview } from './ConnectionReview';
 export { default as CountdownClockBorder } from './CountdownClockBorder';
 export { default as FadeInView } from './FadeInView';
 export { default as LockingScrollView } from './LockingScrollView';
