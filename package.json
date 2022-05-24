@@ -34,6 +34,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-vector-icons": "^9.1.0",
     "react-native-vision-camera": "^2.13.1",
+    "uuid": "^8.3.2",
     "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
@@ -44,6 +45,7 @@
     "@types/react-native": "^0.66.15",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "babel-jest": "^26.6.3",

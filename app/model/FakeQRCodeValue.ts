@@ -21,7 +21,7 @@ export default function fakeQRCodeValue({
     },
     sharedBy: {
       id: 'a9f12113-766c-454d-8ee5-2f5a5effe5b5',
-      pseduonym: 'Adorable Giraffe',
+      orgId: placeholderOrgId,
     },
   };
 }

@@ -15,25 +15,23 @@ export function isOrg(object: unknown): object is Org {
   );
 }
 
-export type User = {
+export type UserData = {
   id: string;
-  name?: string;
-  // TODO: Determine pseduonym from id
-  pseduonym: string;
+  orgId: string;
 };
 
-export function isUser(object: unknown): object is User {
-  const user = (object as User);
+export function isUserData(object: unknown): object is UserData {
+  const user = (object as UserData);
   return (
     user?.id?.length > 0
-      && user?.pseduonym?.length > 0
+      && user?.orgId.length > 0
   );
 }
 
 export type QRCodeValue = {
   expiration: number;
   org: Org;
-  sharedBy: User;
+  sharedBy: UserData;
 };
 
 export function isQRCodeValue(object: unknown): object is QRCodeValue {
@@ -41,6 +39,6 @@ export function isQRCodeValue(object: unknown): object is QRCodeValue {
   return (
     qrCodeValue?.expiration > 0
       && isOrg(qrCodeValue.org)
-      && isUser(qrCodeValue.sharedBy)
+      && isUserData(qrCodeValue.sharedBy)
   );
 }
