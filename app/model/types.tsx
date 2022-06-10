@@ -42,3 +42,5 @@ export function isQRCodeValue(object: unknown): object is QRCodeValue {
       && isUserData(qrCodeValue.sharedBy)
   );
 }
+
+export type { UserContextProviderProps, UserContextType } from './UserContext';

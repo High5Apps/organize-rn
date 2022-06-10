@@ -20,3 +20,5 @@ export default function User({
     ...userData,
   };
 }
+
+export type UserType = ReturnType<typeof User>;
