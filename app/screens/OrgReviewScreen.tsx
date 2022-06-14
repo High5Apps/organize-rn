@@ -4,6 +4,8 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
 } from '../components';
+import { User, useUserContext } from '../model';
+import { placeholderOrgId } from '../model/FakeQRCodeValue';
 import { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
@@ -67,6 +69,7 @@ export default function OrgReviewScreen({
   const { definition, estimate, name } = route.params;
 
   const { styles } = useStyles();
+  const { setCurrentUser } = useUserContext();
 
   const buttonLabel = 'Create';
 
@@ -99,9 +102,13 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={() => navigation.replace('OrgTabs', {
-              screen: 'ConnectStack',
-            })}
+            onPress={() => {
+              // TODO: OrgsController#create and use the returned user
+              setCurrentUser(User({ orgId: placeholderOrgId }));
+              navigation.replace('OrgTabs', {
+                screen: 'ConnectStack',
+              });
+            }}
             style={[styles.button, styles.createButton]}
           />
         </ButtonRow>

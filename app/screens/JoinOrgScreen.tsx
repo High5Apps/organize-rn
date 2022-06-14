@@ -4,6 +4,8 @@ import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
+import { User, useUserContext } from '../model';
+import { placeholderOrgId } from '../model/FakeQRCodeValue';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
@@ -34,6 +36,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [scanned, setScanned] = useState(false);
   const { styles } = useStyles();
+  const { setCurrentUser } = useUserContext();
 
   const primaryButtonLabel = 'Join';
 
@@ -62,9 +65,13 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             <PrimaryButton
               iconName="person-add"
               label={primaryButtonLabel}
-              onPress={() => navigation.replace('OrgTabs', {
-                screen: 'ConnectStack',
-              })}
+              onPress={() => {
+                // TODO: UsersController#create
+                setCurrentUser(User({ orgId: placeholderOrgId }));
+                navigation.replace('OrgTabs', {
+                  screen: 'ConnectStack',
+                });
+              }}
               style={[styles.button, styles.joinButton]}
             />
           )}
