@@ -1,6 +1,6 @@
-import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { NavigationAction, useNavigation } from '@react-navigation/native';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
@@ -26,15 +26,20 @@ const useStyles = () => {
 };
 
 type Props = {
+  buttonDisabled?: boolean;
   enabled: boolean;
   onPress?: () => void;
   onQRValueScanned: (value: QRCodeValue) => void;
+  setEnabled: (enabled: boolean) => void;
 };
 
 export default function QRCamera({
-  enabled, onPress, onQRValueScanned,
-}: Props) {
+  buttonDisabled, children, enabled, onPress, onQRValueScanned, setEnabled,
+}: PropsWithChildren<Props>) {
   const [frameSize, setFrameSize] = useState(0);
+  const [
+    preventedAction, setPreventedAction,
+  ] = useState<NavigationAction | undefined>();
 
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
@@ -65,7 +70,30 @@ export default function QRCamera({
   const devices = useCameraDevices();
   const device = devices.back;
 
-  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const removeListener = navigation.addListener('beforeRemove', (e) => {
+      if (enabled) {
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        setEnabled(false);
+        setPreventedAction(e.data.action);
+      }
+    });
+    return () => removeListener();
+  }, [enabled, navigation, setEnabled]);
+
+  useEffect(() => {
+    if (!enabled && preventedAction) {
+      // This delay prevents a memory leak caused by a race between camera
+      // shutdown and unmount
+      setTimeout(() => {
+        navigation.dispatch(preventedAction);
+      }, 50);
+    }
+  }, [enabled, preventedAction, navigation]);
 
   let content;
   if (device) {
@@ -75,15 +103,17 @@ export default function QRCamera({
       <Camera
         device={device}
         frameProcessor={frameProcessor}
-        isActive={enabled && isFocused}
-        style={[StyleSheet.absoluteFill, styles.qrOverlay]}
+        isActive={enabled}
+        style={[StyleSheet.absoluteFill]}
       >
-        <QRCode
-          color={`${colors.primary}40`} // 25% alpha
-          backgroundColor="transparent"
-          size={qrCodeSize}
-          value="You rock!"
-        />
+        <View style={styles.qrOverlay}>
+          <QRCode
+            color={`${colors.primary}40`} // 25% alpha
+            backgroundColor="transparent"
+            size={qrCodeSize}
+            value="You rock!"
+          />
+        </View>
       </Camera>
     );
   } else {
@@ -98,14 +128,17 @@ export default function QRCamera({
 
   return (
     <FrameButton
+      disabled={buttonDisabled}
       onContainerSizeChange={({ width }) => setFrameSize(width)}
       onPress={onPress}
     >
       {content}
+      {!preventedAction && children}
     </FrameButton>
   );
 }
 
 QRCamera.defaultProps = {
+  buttonDisabled: false,
   onPress: () => {},
 };

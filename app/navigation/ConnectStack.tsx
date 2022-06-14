@@ -16,7 +16,13 @@ export default function ConnectStack() {
       <Stack.Screen
         component={NewConnectionScreen}
         name="NewConnection"
-        options={{ presentation: 'modal', title: 'Create Connection' }}
+        options={{
+          // The swipe down gesture is incompatible with the beforeRemove
+          // listener
+          gestureEnabled: false,
+          presentation: 'modal',
+          title: 'Create Connection',
+        }}
       />
     </Stack.Navigator>
   );

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import {
-  Pressable, PressableStateCallbackType, StyleSheet, useColorScheme, ViewStyle,
+  Pressable, PressableStateCallbackType, StyleProp, StyleSheet, useColorScheme, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
 
@@ -48,7 +48,7 @@ type Props = {
   onPress?: () => void;
   onContainerSizeChange?: ({ height, width }: Size) => void;
   showPressedInLightMode?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 export default function FrameButton(props: PropsWithChildren<Props>) {

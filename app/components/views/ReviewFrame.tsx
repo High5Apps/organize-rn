@@ -1,14 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleProp, StyleSheet, Text, View, ViewStyle,
+} from 'react-native';
 import useTheme from '../../Theme';
-import { FrameButton } from '../controls';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     frameButton: {
+      alignItems: 'center',
       backgroundColor: colors.fill,
+      justifyContent: 'center',
       padding: spacing.m,
     },
     label: {
@@ -39,17 +42,14 @@ type LabeledValue = {
 
 type Props = {
   labeledValues: LabeledValue[];
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function ReviewFrame({ labeledValues }: Props) {
+export default function ReviewFrame({ labeledValues, style }: Props) {
   const { styles } = useStyles();
 
   return (
-    <FrameButton
-      disabled
-      style={styles.frameButton}
-      showPressedInLightMode
-    >
+    <View style={[styles.frameButton, style]}>
       {labeledValues.map(({ label, value }) => (
         <View key={label} style={styles.valueContainer}>
           <Text style={[styles.text, styles.label]}>
@@ -60,6 +60,10 @@ export default function ReviewFrame({ labeledValues }: Props) {
           </Text>
         </View>
       ))}
-    </FrameButton>
+    </View>
   );
 }
+
+ReviewFrame.defaultProps = {
+  style: {},
+};

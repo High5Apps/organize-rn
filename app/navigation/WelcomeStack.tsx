@@ -20,7 +20,12 @@ export default function WelcomeStack() {
         getId={({ params }) => String(params.step)}
       />
       <Stack.Screen name="OrgReview" component={OrgReview} />
-      <Stack.Screen name="JoinOrg" component={JoinOrgScreen} />
+      <Stack.Screen
+        name="JoinOrg"
+        component={JoinOrgScreen}
+        // The swipe back gesture is incompatible with the beforeRemove listener
+        options={{ gestureEnabled: false }}
+      />
     </Stack.Navigator>
   );
 }
