@@ -15,7 +15,13 @@ export default function User({
     orgId,
   };
 
+  function equals(user: UserType): boolean {
+    return user.id === userData.id
+      && user.orgId === userData.orgId;
+  }
+
   return {
+    equals,
     pseudonym: () => 'Adorable Giraffe',
     ...userData,
   };
