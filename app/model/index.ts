@@ -1,3 +1,4 @@
+export { default as useCurrentUser } from './CurrentUser';
 export { UserContextProvider, useUserContext } from './UserContext';
 export { default as FakeQRCodeValue } from './FakeQRCodeValue';
 export { default as NewOrgSteps } from './NewOrgSteps';
