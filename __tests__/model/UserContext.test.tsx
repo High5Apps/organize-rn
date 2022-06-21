@@ -1,83 +1,107 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
+import { DelayedActivityIndicator } from '../../app/components';
 import { User, UserContextProvider, useUserContext } from '../../app/model';
+import useCurrentUser from '../../app/model/CurrentUser';
 import { UserType } from '../../app/model/User';
+
+jest.useFakeTimers();
+jest.mock('../../app/model/CurrentUser');
+const mockUseCurrentUser = useCurrentUser as jest.Mock;
 
 const testID = 'currentUserId';
 const fakeCurrentUserId = 'fakeCurrentUserId';
 const otherFakeCurrentUserId = 'otherFakeCurrentUserId';
 const orgId = 'fakeOrgId';
 const fakeUser = User({ id: fakeCurrentUserId, orgId });
-const fakeUser2 = User({ id: otherFakeCurrentUserId, orgId });
+const otherFakeUser = User({ id: otherFakeCurrentUserId, orgId });
 
-function TestConsumerReader() {
-  const { currentUser } = useUserContext();
+function TestComponent() {
+  const { currentUser, setCurrentUser } = useUserContext();
 
-  return (
-    <Text testID={testID}>
-      {currentUser?.id}
-    </Text>
-  );
+  useEffect(() => {
+    setCurrentUser(otherFakeUser);
+  }, []);
+
+  return <Text testID={testID}>{currentUser?.id}</Text>;
 }
 
-type TestConsumerWriterProps = {
-  children: JSX.Element;
+type Props = {
   user?: UserType;
 };
 
-function TestConsumerWriter({ children, user }: TestConsumerWriterProps) {
-  const { setCurrentUser } = useUserContext();
-
-  useEffect(() => {
-    if (!user) { return; }
-    setCurrentUser(user);
-  }, [user]);
-
-  return children;
-}
-
-type TestProviderProps = {
-  initialUser?: UserType;
-  newUser?: UserType;
-};
-
-function createTestProvider({ initialUser, newUser }: TestProviderProps) {
+async function renderTestComponent({ user }: Props) {
   let renderer: ReactTestRenderer | undefined;
-  act(() => {
+  await act(async () => {
     renderer = create((
-      <UserContextProvider user={initialUser}>
-        <TestConsumerWriter user={newUser}>
-          <TestConsumerReader />
-        </TestConsumerWriter>
+      <UserContextProvider user={user}>
+        <TestComponent />
       </UserContextProvider>
     ));
   });
   const root = renderer?.root;
-  const currentUserId = root?.findByProps({ testID }).props.children;
-  return currentUserId;
+  return { root };
 }
 
-describe('UserContext', () => {
-  describe('currentUser', () => {
-    it('is initially undefined', async () => {
-      const currentUserId = createTestProvider({});
-      expect(currentUserId).toBeUndefined();
-    });
+const defaultReturnValue = {
+  currentUser: null,
+  initialized: false,
+  setCurrentUser: jest.fn(),
+};
 
-    it('uses prop as initial value', () => {
-      const currentUserId = createTestProvider({ initialUser: fakeUser });
-      expect(currentUserId).toBe(fakeUser.id);
-    });
+describe('UserContext', () => {
+  it('uses user prop to initialize useCurrentUser', async () => {
+    mockUseCurrentUser.mockReturnValue(defaultReturnValue);
+    await renderTestComponent({ user: fakeUser });
+    expect(mockUseCurrentUser).toBeCalledWith(fakeUser);
   });
 
-  describe('setCurrentUser', () => {
-    it('updates currentUser', () => {
-      const currentUserId = createTestProvider({
-        initialUser: fakeUser,
-        newUser: fakeUser2,
+  it('renders spinner until currentUser intialized', async () => {
+    mockUseCurrentUser.mockReturnValue({
+      ...defaultReturnValue,
+      initialized: false,
+    });
+    const { root } = await renderTestComponent({});
+    const spinner = root?.findByType(DelayedActivityIndicator);
+    expect(spinner).toBeTruthy();
+    const children = root?.findAllByType(TestComponent);
+    expect(children?.length).toBeFalsy();
+  });
+
+  it('renders children after currentUser initialized', async () => {
+    mockUseCurrentUser.mockReturnValue({
+      ...defaultReturnValue,
+      initialized: true,
+    });
+    const { root } = await renderTestComponent({});
+    const spinner = root?.findAllByType(DelayedActivityIndicator);
+    expect(spinner?.length).toBeFalsy();
+    const children = root?.findByType(TestComponent);
+    expect(children).toBeTruthy();
+  });
+
+  describe('userContext', () => {
+    it('contains currentUser from useCurrentUser', async () => {
+      mockUseCurrentUser.mockReturnValue({
+        ...defaultReturnValue,
+        currentUser: fakeUser,
+        initialized: true,
       });
-      expect(currentUserId).toBe(fakeUser2.id);
+      const { root } = await renderTestComponent({});
+      const currentUserId = root?.findByProps({ testID }).props.children;
+      expect(currentUserId).toBe(fakeUser.id);
+    });
+
+    it('contains setCurrentUser from useCurrentUser', async () => {
+      mockUseCurrentUser.mockReturnValue({
+        ...defaultReturnValue,
+        initialized: true,
+      });
+      const mockSetCurrentUser = defaultReturnValue.setCurrentUser;
+      expect(mockSetCurrentUser).not.toBeCalled();
+      await renderTestComponent({});
+      expect(mockSetCurrentUser).toBeCalled();
     });
   });
 });

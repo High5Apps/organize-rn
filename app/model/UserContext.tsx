@@ -1,27 +1,41 @@
 import React, {
   createContext, Dispatch, PropsWithChildren, SetStateAction, useContext,
-  useMemo, useState,
+  useMemo,
 } from 'react';
+import { StyleSheet } from 'react-native';
+import { DelayedActivityIndicator } from '../components';
+import useCurrentUser from './CurrentUser';
 import { UserType } from './User';
 
-export type UserContextType = {
-  currentUser: UserType | undefined;
-  setCurrentUser: Dispatch<SetStateAction<UserType | undefined>>;
+const useStyles = () => {
+  const styles = StyleSheet.create({
+    delayedActivityIndicator: {
+      flex: 1,
+    },
+  });
+
+  return { styles };
+};
+
+type UserContextType = {
+  currentUser: UserType | null;
+  setCurrentUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
-  currentUser: undefined,
-  setCurrentUser: () => undefined,
+  currentUser: null,
+  setCurrentUser: () => {},
 });
 
-export type UserContextProviderProps = {
+type Props = {
   user?: UserType;
 };
 
 export function UserContextProvider({
   children, user,
-}: PropsWithChildren<UserContextProviderProps>) {
-  const [currentUser, setCurrentUser] = useState<UserType | undefined >(user);
+}: PropsWithChildren<Props>) {
+  const { styles } = useStyles();
+  const { currentUser, initialized, setCurrentUser } = useCurrentUser(user);
 
   const userContext = useMemo<UserContextType>(() => ({
     currentUser, setCurrentUser,
@@ -29,7 +43,12 @@ export function UserContextProvider({
 
   return (
     <UserContext.Provider value={userContext}>
-      {children}
+      {initialized ? children : (
+        <DelayedActivityIndicator
+          delay={1000}
+          style={styles.delayedActivityIndicator}
+        />
+      )}
     </UserContext.Provider>
   );
 }
