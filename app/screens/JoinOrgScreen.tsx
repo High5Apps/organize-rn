@@ -5,7 +5,7 @@ import {
   ScreenBackground, SecondaryButton,
 } from '../components';
 import { QRCodeValue, User, useUserContext } from '../model';
-import { JoinOrgScreenProps } from '../navigation';
+import type { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {

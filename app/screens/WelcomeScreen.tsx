@@ -5,7 +5,7 @@ import {
   AutoscaledText, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
 } from '../components';
-import { WelcomeScreenProps } from '../navigation';
+import type { WelcomeScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {

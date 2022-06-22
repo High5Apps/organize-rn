@@ -6,7 +6,7 @@ import {
 } from '../components';
 import { User, useUserContext } from '../model';
 import { placeholderOrgId } from '../model/FakeQRCodeValue';
-import { OrgReviewScreenProps } from '../navigation';
+import type { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {

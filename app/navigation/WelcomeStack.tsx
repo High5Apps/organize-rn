@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   WelcomeScreen, NewOrgScreen, OrgReview, JoinOrgScreen,
 } from '../screens';
-import { WelcomeStackParamList } from './types';
+import type { WelcomeStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 

@@ -1,5 +1,4 @@
-export { default as LinkingConfig } from './LinkingConfig';
-export { default as OrgTabs } from './OrgTabs';
-export { default as NewOrgStepNavigator } from './NewOrgStepNavigator';
+import Navigation from './Navigation';
+
+export default Navigation;
 export * from './types';
-export { default as WelcomeStack } from './WelcomeStack';

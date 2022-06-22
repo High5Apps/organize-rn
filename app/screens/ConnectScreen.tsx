@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import {
   ButtonRow, LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
 } from '../components';
-import { ConnectScreenProps } from '../navigation';
+import type { ConnectScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {

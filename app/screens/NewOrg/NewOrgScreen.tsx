@@ -7,8 +7,9 @@ import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import { ScreenBackground, SecondaryButton } from '../../components';
 import { NewOrgSteps } from '../../model';
-import { NewOrgScreenParams, NewOrgScreenProps, NewOrgStepNavigator } from '../../navigation';
+import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
+import NewOrgStepNavigator from './NewOrgStepNavigator';
 
 const useStyles = () => {
   const {

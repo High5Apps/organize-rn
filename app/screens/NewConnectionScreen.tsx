@@ -4,7 +4,7 @@ import {
   ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
-import { NewConnectionScreenProps } from '../navigation';
+import type { NewConnectionScreenProps } from '../navigation';
 import useTheme from '../Theme';
 import { placeholderOrgId } from '../model/FakeQRCodeValue';
 

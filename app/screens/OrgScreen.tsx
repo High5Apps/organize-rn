@@ -1,5 +1,5 @@
 import React from 'react';
-import { OrgScreenProps } from '../navigation';
+import type { OrgScreenProps } from '../navigation';
 import PlaceholderScreen from './PlaceholderScreen';
 
 export default function OrgScreen({ route }: OrgScreenProps) {

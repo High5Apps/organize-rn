@@ -1,5 +1,5 @@
 import React from 'react';
-import { DiscussScreenProps } from '../navigation';
+import type { DiscussScreenProps } from '../navigation';
 import PlaceholderScreen from './PlaceholderScreen';
 
 export default function DiscussScreen({ route }: DiscussScreenProps) {
