@@ -104,7 +104,16 @@ export default function OrgReviewScreen({
             label={buttonLabel}
             onPress={() => {
               // TODO: OrgsController#create and use the returned user
-              setCurrentUser(User({ orgId: placeholderOrgId }));
+              const user = User({
+                org: {
+                  id: placeholderOrgId,
+                  name,
+                  potentialMemberCount: estimate,
+                  potentialMemberDefinition: definition,
+                },
+                orgId: placeholderOrgId,
+              });
+              setCurrentUser(user);
               navigation.replace('OrgTabs', {
                 screen: 'ConnectStack',
               });
