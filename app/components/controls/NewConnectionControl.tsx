@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
 import CameraControl from './CameraControl';
 
@@ -24,7 +25,7 @@ const useStyles = () => {
 
 type Props = {
   expectedOrgId?: string;
-  onQRCodeValueScanned: () => void;
+  onQRCodeValueScanned: (value: QRCodeValue) => void;
   prompt: string;
   promptHidden?: boolean;
 };

@@ -4,8 +4,7 @@ import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
-import { User, useUserContext } from '../model';
-import { placeholderOrgId } from '../model/FakeQRCodeValue';
+import { QRCodeValue, User, useUserContext } from '../model';
 import { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
@@ -34,7 +33,7 @@ const useStyles = () => {
 
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
-  const [scanned, setScanned] = useState(false);
+  const [qrValue, setQRValue] = useState<QRCodeValue>();
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
@@ -47,13 +46,13 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         style={styles.scrollView}
       >
         <NewConnectionControl
-          onQRCodeValueScanned={() => setScanned(true)}
+          onQRCodeValueScanned={setQRValue}
           prompt="To join an Org, scan the secret code of a current member."
-          promptHidden={scanned}
+          promptHidden={!!qrValue}
         />
       </LockingScrollView>
       <>
-        {scanned && <Agreement buttonLabel={primaryButtonLabel} />}
+        {qrValue && <Agreement buttonLabel={primaryButtonLabel} />}
         <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
             iconName="navigate-before"
@@ -61,13 +60,15 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             onPress={navigation.goBack}
             style={[styles.button, styles.backButton]}
           />
-          {scanned && (
+          {qrValue && (
             <PrimaryButton
               iconName="person-add"
               label={primaryButtonLabel}
               onPress={() => {
                 // TODO: UsersController#create
-                setCurrentUser(User({ orgId: placeholderOrgId }));
+                const { org } = qrValue;
+                const newUser = User({ org, orgId: org.id });
+                setCurrentUser(newUser);
                 navigation.replace('OrgTabs', {
                   screen: 'ConnectStack',
                 });
