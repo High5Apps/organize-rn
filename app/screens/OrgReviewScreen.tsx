@@ -114,9 +114,6 @@ export default function OrgReviewScreen({
                 orgId: placeholderOrgId,
               });
               setCurrentUser(user);
-              navigation.replace('OrgTabs', {
-                screen: 'ConnectStack',
-              });
             }}
             style={[styles.button, styles.createButton]}
           />

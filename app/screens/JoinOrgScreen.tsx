@@ -69,9 +69,6 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
                 const { org } = qrValue;
                 const newUser = User({ org, orgId: org.id });
                 setCurrentUser(newUser);
-                navigation.replace('OrgTabs', {
-                  screen: 'ConnectStack',
-                });
               }}
               style={[styles.button, styles.joinButton]}
             />
