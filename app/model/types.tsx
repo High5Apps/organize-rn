@@ -28,6 +28,16 @@ export function isUserData(object: unknown): object is UserData {
   );
 }
 
+export type CurrentUserData = UserData & {
+  org: Org;
+};
+
+export function isCurrentUserData(object: unknown): object is CurrentUserData {
+  if (!isUserData(object)) { return false; }
+  const currentUserData = (object as CurrentUserData);
+  return isOrg(currentUserData.org);
+}
+
 export type QRCodeValue = {
   expiration: number;
   org: Org;

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isUserData, UserData } from './types';
+import { isCurrentUserData } from './types';
 import User, { UserType } from './User';
 
 const STORAGE_KEY = 'currentUser';
@@ -12,9 +12,7 @@ export async function getStoredUser(): Promise<UserType | null> {
     console.warn(`Error while accessing stored user data: ${e}`);
   }
 
-  if (storedData === null) {
-    return null;
-  }
+  if (!storedData) { return null; }
 
   let userData;
   try {
@@ -23,7 +21,9 @@ export async function getStoredUser(): Promise<UserType | null> {
     console.warn(`Error parsing stored user data: ${e}`);
   }
 
-  if (!isUserData(userData)) {
+  if (!userData) { return null; }
+
+  if (!isCurrentUserData(userData)) {
     const json = JSON.stringify(userData, null, 2);
     console.warn(`Stored user data is invalid: ${json}`);
     return null;
@@ -33,10 +33,11 @@ export async function getStoredUser(): Promise<UserType | null> {
 }
 
 export async function setStoredUser(user: UserType | null) {
-  let userData: UserData | null = null;
-  if (user) {
-    const { id, orgId } = user;
-    userData = { id, orgId };
+  if (user && !isCurrentUserData(user)) {
+    const json = JSON.stringify(user, null, 2);
+    console.warn(`Attempted to store invalid current user data: ${json}`);
+    return;
   }
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+
+  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(user));
 }
