@@ -2,26 +2,22 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
-import { User, UserContextProvider, useUserContext } from '../../app/model';
+import { UserContextProvider, useUserContext } from '../../app/model';
 import useCurrentUser from '../../app/model/CurrentUser';
 import { UserType } from '../../app/model/User';
+import { fakeOtherUser, fakeUser } from '../FakeData';
 
 jest.useFakeTimers();
 jest.mock('../../app/model/CurrentUser');
 const mockUseCurrentUser = useCurrentUser as jest.Mock;
 
 const testID = 'currentUserId';
-const fakeCurrentUserId = 'fakeCurrentUserId';
-const otherFakeCurrentUserId = 'otherFakeCurrentUserId';
-const orgId = 'fakeOrgId';
-const fakeUser = User({ id: fakeCurrentUserId, orgId });
-const otherFakeUser = User({ id: otherFakeCurrentUserId, orgId });
 
 function TestComponent() {
   const { currentUser, setCurrentUser } = useUserContext();
 
   useEffect(() => {
-    setCurrentUser(otherFakeUser);
+    setCurrentUser(fakeOtherUser);
   }, []);
 
   return <Text testID={testID}>{currentUser?.id}</Text>;

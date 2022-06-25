@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { useCurrentUser } from '../../app/model';
-import User, { UserType } from '../../app/model/User';
+import { UserType } from '../../app/model/User';
 import { getStoredUser, setStoredUser } from '../../app/model/UserStorage';
+import { fakeOtherUser, fakeUser } from '../FakeData';
 
 jest.mock('../../app/model/UserStorage');
 const mockGetStoredUser = getStoredUser as jest.Mock;
@@ -11,11 +12,6 @@ const mockSetStoredUser = setStoredUser as jest.Mock;
 
 const currentUserTestId = 'currentUserTestId';
 const intializedTestId = 'intializedTestId';
-const fakeCurrentUserId = 'fakeCurrentUserId';
-const otherFakeCurrentUserId = 'otherFakeCurrentUserId';
-const orgId = 'fakeOrgId';
-const fakeUser = User({ id: fakeCurrentUserId, orgId });
-const otherFakeUser = User({ id: otherFakeCurrentUserId, orgId });
 
 type Props = {
   user?: UserType;
@@ -95,18 +91,18 @@ describe('useCurrentUser', () => {
     it('updates currentUser', async () => {
       const { currentUserId } = await renderTestComponent({
         user: fakeUser,
-        newUser: otherFakeUser,
+        newUser: fakeOtherUser,
       });
-      expect(currentUserId).toBe(otherFakeUser.id);
+      expect(currentUserId).toBe(fakeOtherUser.id);
     });
 
     it('updates storedUser', async () => {
       await renderTestComponent({
         user: fakeUser,
-        newUser: otherFakeUser,
+        newUser: fakeOtherUser,
       });
       expect(mockSetStoredUser).toHaveBeenNthCalledWith(1, fakeUser);
-      expect(mockSetStoredUser).toHaveBeenNthCalledWith(2, otherFakeUser);
+      expect(mockSetStoredUser).toHaveBeenNthCalledWith(2, fakeOtherUser);
     });
   });
 });

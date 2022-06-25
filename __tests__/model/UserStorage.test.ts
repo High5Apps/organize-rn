@@ -1,14 +1,6 @@
-import { isCurrentUserData, Org, User } from '../../app/model';
+import { isCurrentUserData } from '../../app/model';
 import { getStoredUser, setStoredUser } from '../../app/model/UserStorage';
-
-const fakeOrg: Org = {
-  id: 'fakeOrgId',
-  name: 'fakeOrgName',
-  potentialMemberCount: 99,
-  potentialMemberDefinition: 'fakeDefinition',
-};
-const fakeUser = User({ org: fakeOrg, orgId: fakeOrg.id });
-const otherFakeUser = User({ org: fakeOrg, orgId: 'otherFakeOrgId' });
+import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
 
 describe('UserStorage', () => {
   beforeEach(async () => {
@@ -19,25 +11,25 @@ describe('UserStorage', () => {
 
   describe('getStoredUser', () => {
     it('returns the last user stored with setStoredUser', async () => {
-      await setStoredUser(fakeUser);
+      await setStoredUser(fakeCurrentUser);
       let storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeUser)).toBeTruthy();
+      expect(storedUser?.equals(fakeCurrentUser)).toBeTruthy();
 
-      await setStoredUser(otherFakeUser);
+      await setStoredUser(fakeOtherCurrentUser);
       storedUser = await getStoredUser();
-      expect(storedUser?.equals(otherFakeUser)).toBeTruthy();
+      expect(storedUser?.equals(fakeOtherCurrentUser)).toBeTruthy();
     });
   });
 
   describe('setStoredUser', () => {
     it('should store valid user data', async () => {
-      await setStoredUser(fakeUser);
+      await setStoredUser(fakeOtherCurrentUser);
       const storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeUser)).toBeTruthy();
+      expect(storedUser?.equals(fakeOtherCurrentUser)).toBeTruthy();
     });
 
     it('should store null user data', async () => {
-      await setStoredUser(fakeUser);
+      await setStoredUser(fakeOtherCurrentUser);
       let storedUser = await getStoredUser();
       expect(storedUser).toBeTruthy();
 
@@ -46,9 +38,12 @@ describe('UserStorage', () => {
       expect(storedUser).toBeNull();
     });
 
-    it('should not store invalid user data', () => {
-      const userWithoutOrgData = User({ orgId: fakeOrg.id });
-      expect(isCurrentUserData(userWithoutOrgData)).toBeFalsy();
+    it('should not store invalid user data', async () => {
+      jest.spyOn(console, 'warn').mockImplementation();
+      expect(isCurrentUserData(fakeUser)).toBeFalsy();
+      setStoredUser(fakeUser);
+      const storedUser = await getStoredUser();
+      expect(storedUser?.equals(fakeUser)).toBeFalsy();
     });
   });
 });
