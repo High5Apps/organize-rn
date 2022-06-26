@@ -1,9 +1,11 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
-  ButtonRow, LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
+  ButtonRow, IconButton, LockingScrollView, PrimaryButton, QRCodeControl,
+  ScreenBackground,
 } from '../components';
-import type { ConnectScreenProps } from '../navigation';
+import type { ConnectScreenProps, SettingsScreenNavigationProp } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -36,8 +38,24 @@ const useStyles = () => {
   return { styles };
 };
 
+function SettingsButton() {
+  const navigation: SettingsScreenNavigationProp = useNavigation();
+  return (
+    <IconButton
+      iconName="settings"
+      onPress={() => navigation.navigate('Settings')}
+    />
+  );
+}
+
 export default function ConnectScreen({ navigation }: ConnectScreenProps) {
   const { styles } = useStyles();
+
+  const headerLeft = () => <SettingsButton />;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerLeft });
+  }, [navigation]);
 
   return (
     <ScreenBackground>

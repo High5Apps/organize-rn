@@ -12,6 +12,11 @@ const useStyles = () => {
     },
     icon: {
       color: colors.primary,
+    },
+    iconDefault: {
+      fontSize: sizes.icon,
+    },
+    iconLarge: {
       fontSize: sizes.largeIcon,
     },
   });
@@ -19,13 +24,18 @@ const useStyles = () => {
   return { styles };
 };
 
+type IconSize = 'default' | 'large';
+
 type Props = {
   iconName: string;
+  iconSize?: IconSize;
   onPress?: () => void;
   style?: ViewStyle,
 };
 
-export default function IconButton({ iconName, onPress, style }: Props) {
+export default function IconButton({
+  iconName, iconSize, onPress, style,
+}: Props) {
   const { styles } = useStyles();
   return (
     <Pressable
@@ -35,12 +45,20 @@ export default function IconButton({ iconName, onPress, style }: Props) {
         style,
       ]}
     >
-      <Icon name={iconName} style={styles.icon} />
+      <Icon
+        name={iconName}
+        style={[
+          styles.icon,
+          (iconSize === 'default') && styles.iconDefault,
+          (iconSize === 'large') && styles.iconLarge,
+        ]}
+      />
     </Pressable>
   );
 }
 
 IconButton.defaultProps = {
+  iconSize: 'default',
   onPress: () => {},
   style: {},
 };

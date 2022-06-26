@@ -82,6 +82,7 @@ export default function NewOrgModal({
         <View style={styles.container}>
           <IconButton
             iconName="close"
+            iconSize="large"
             onPress={() => setVisible(false)}
             style={styles.closeButton}
           />
