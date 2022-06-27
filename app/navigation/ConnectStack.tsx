@@ -17,10 +17,13 @@ export default function ConnectStack() {
         component={NewConnectionScreen}
         name="NewConnection"
         options={{
-          // The swipe down gesture is incompatible with the beforeRemove
-          // listener
+          // On iOS, the swipe down gesture is incompatible with the
+          // beforeRemove listener
           gestureEnabled: false,
           presentation: 'modal',
+          // On Android, the header back button is incompatible with the
+          // beforeRemove listener
+          headerBackVisible: false,
           title: 'Create Connection',
         }}
       />
