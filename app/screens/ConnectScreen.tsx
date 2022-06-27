@@ -51,10 +51,10 @@ function SettingsButton() {
 export default function ConnectScreen({ navigation }: ConnectScreenProps) {
   const { styles } = useStyles();
 
-  const headerLeft = () => <SettingsButton />;
+  const headerRight = () => <SettingsButton />;
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerLeft });
+    navigation.setOptions({ headerRight });
   }, [navigation]);
 
   return (

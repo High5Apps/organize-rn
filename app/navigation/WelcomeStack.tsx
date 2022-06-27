@@ -13,7 +13,11 @@ export default function WelcomeStack() {
       initialRouteName="Welcome"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ animation: 'none' }}
+      />
       <Stack.Screen
         name="NewOrg"
         component={NewOrgScreen}

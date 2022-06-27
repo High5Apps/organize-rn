@@ -52,3 +52,14 @@ export function isQRCodeValue(object: unknown): object is QRCodeValue {
       && isUserData(qrCodeValue.sharedBy)
   );
 }
+
+export type SettingsItem = {
+  iconName: string;
+  onPress: () => void;
+  title: string;
+};
+
+export type SettingsSection = {
+  title: string;
+  data: SettingsItem[];
+};
