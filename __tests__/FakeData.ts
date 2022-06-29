@@ -10,5 +10,9 @@ export const fakeOrg: Org = {
 export const fakeUser = User({ orgId: fakeOrg.id });
 export const fakeOtherUser = User({ orgId: fakeOrg.id });
 
-export const fakeCurrentUser = User({ org: fakeOrg, orgId: fakeOrg.id });
-export const fakeOtherCurrentUser = User({ org: fakeOrg, orgId: fakeOrg.id });
+export const fakeCurrentUser = User({
+  org: fakeOrg, orgId: fakeOrg.id, publicKeyId: 'fakeKeyId',
+});
+export const fakeOtherCurrentUser = User({
+  org: fakeOrg, orgId: fakeOrg.id, publicKeyId: 'otherFakeKeyId',
+});

@@ -14,9 +14,12 @@ type Props = {
 
 function expectUsersEqual({ equal, user, otherUser }: Props) {
   // See https://github.com/facebook/jest/issues/8475#issuecomment-496011355
-  const pseudonym = expect.any(Function);
+  const deleteKeyPair = expect.any(Function);
   const equals = expect.any(Function);
-  const expected = { ...otherUser, equals, pseudonym };
+  const pseudonym = expect.any(Function);
+  const expected = {
+    ...otherUser, deleteKeyPair, equals, pseudonym,
+  };
   if (equal) {
     expect(user).toEqual(expected);
   } else {

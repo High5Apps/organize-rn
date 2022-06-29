@@ -7,6 +7,8 @@ describe('UserStorage', () => {
     await setStoredUser(null);
     const storedUser = await getStoredUser();
     expect(storedUser).toBeNull();
+    expect(isCurrentUserData(fakeCurrentUser)).toBeTruthy();
+    expect(isCurrentUserData(fakeOtherCurrentUser)).toBeTruthy();
   });
 
   describe('getStoredUser', () => {
