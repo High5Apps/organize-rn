@@ -4,10 +4,13 @@ import type { SettingsSection } from './types';
 import { UserType } from './User';
 
 type Props = {
+  currentUser: UserType | null;
   setCurrentUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
-export default function Settings({ setCurrentUser }: Props): SettingsSection[] {
+export default function Settings({
+  currentUser, setCurrentUser,
+}: Props): SettingsSection[] {
   return [
     {
       title: 'Org',
@@ -17,7 +20,10 @@ export default function Settings({ setCurrentUser }: Props): SettingsSection[] {
           onPress: ConfirmationAlert({
             destructiveAction: 'Leave Org',
             destructiveActionInTitle: 'leave this Org',
-            onConfirm: () => setCurrentUser(null),
+            onConfirm: async () => {
+              currentUser?.deleteKeyPair().catch(console.error);
+              setCurrentUser(null);
+            },
           }).show,
           title: 'Leave Org',
         },
