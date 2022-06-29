@@ -4,7 +4,9 @@ import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
-import { QRCodeValue, User, useUserContext } from '../model';
+import {
+  Keys, QRCodeValue, User, useUserContext,
+} from '../model';
 import type { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
@@ -37,6 +39,16 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
+  async function createCurrentUser() {
+    if (!qrValue) { return; }
+    const { publicKeyId } = await Keys().rsa.create(2048);
+
+    // TODO: UsersController#create
+    const { org } = qrValue;
+    const newUser = User({ org, orgId: org.id, publicKeyId });
+    setCurrentUser(newUser);
+  }
+
   const primaryButtonLabel = 'Join';
 
   return (
@@ -64,12 +76,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             <PrimaryButton
               iconName="person-add"
               label={primaryButtonLabel}
-              onPress={() => {
-                // TODO: UsersController#create
-                const { org } = qrValue;
-                const newUser = User({ org, orgId: org.id });
-                setCurrentUser(newUser);
-              }}
+              onPress={() => createCurrentUser().catch(console.error)}
               style={[styles.button, styles.joinButton]}
             />
           )}

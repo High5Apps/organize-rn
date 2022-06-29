@@ -4,7 +4,7 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
 } from '../components';
-import { User, useUserContext } from '../model';
+import { Keys, User, useUserContext } from '../model';
 import { placeholderOrgId } from '../model/FakeQRCodeValue';
 import type { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
@@ -71,6 +71,23 @@ export default function OrgReviewScreen({
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
+  async function createCurrentUser() {
+    const { publicKeyId } = await Keys().rsa.create(2048);
+
+    // TODO: OrgsController#create and use the returned user
+    const user = User({
+      org: {
+        id: placeholderOrgId,
+        name,
+        potentialMemberCount: estimate,
+        potentialMemberDefinition: definition,
+      },
+      orgId: placeholderOrgId,
+      publicKeyId,
+    });
+    setCurrentUser(user);
+  }
+
   const buttonLabel = 'Create';
 
   return (
@@ -102,19 +119,7 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={() => {
-              // TODO: OrgsController#create and use the returned user
-              const user = User({
-                org: {
-                  id: placeholderOrgId,
-                  name,
-                  potentialMemberCount: estimate,
-                  potentialMemberDefinition: definition,
-                },
-                orgId: placeholderOrgId,
-              });
-              setCurrentUser(user);
-            }}
+            onPress={() => createCurrentUser().catch(console.error)}
             style={[styles.button, styles.createButton]}
           />
         </ButtonRow>
