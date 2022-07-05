@@ -65,3 +65,6 @@ export type SettingsSection = {
   title: string;
   data: SettingsItem[];
 };
+
+// Must return a base64 encoded signature (not base64Url)
+export type Signer = ({ message }: { message: string }) => Promise<string>;
