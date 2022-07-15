@@ -42,6 +42,7 @@ export function isCurrentUserData(object: unknown): object is CurrentUserData {
 
 export type QRCodeValue = {
   expiration: number;
+  jwt: string;
   org: Org;
   sharedBy: UserData;
 };
@@ -50,6 +51,7 @@ export function isQRCodeValue(object: unknown): object is QRCodeValue {
   const qrCodeValue = (object as QRCodeValue);
   return (
     qrCodeValue?.expiration > 0
+      && (qrCodeValue?.jwt?.length > 0)
       && isOrg(qrCodeValue.org)
       && isUserData(qrCodeValue.sharedBy)
   );
