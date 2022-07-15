@@ -21,30 +21,19 @@ export function utf8ToBase64Url(utf8: string) {
 }
 
 type Props = {
-  currentTimeMilliseconds?: number;
-  lifespanSeconds: number;
+  expirationSecondsSinceEpoch: number;
   signer: Signer;
   subject: string;
 };
 
 // JWT Standard: https://www.rfc-editor.org/rfc/rfc7519.html
 export default function JWT({
-  currentTimeMilliseconds: currentTimeMS, lifespanSeconds, signer, subject,
+  expirationSecondsSinceEpoch: exp, signer, subject,
 }: Props) {
   async function toString() {
-    const currentTimeMilliseconds = currentTimeMS ?? new Date().getTime();
+    const header = { alg: 'RS256', typ: 'JWT' };
 
-    const header = {
-      alg: 'RS256',
-      typ: 'JWT',
-    };
-
-    const expirationSeconds = (currentTimeMilliseconds / 1000) + lifespanSeconds;
-
-    const payload = {
-      sub: subject,
-      exp: expirationSeconds,
-    };
+    const payload = { sub: subject, exp };
 
     const encodedHeader = utf8ToBase64Url(JSON.stringify(header));
     const encodedPayload = utf8ToBase64Url(JSON.stringify(payload));

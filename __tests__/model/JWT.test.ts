@@ -12,8 +12,7 @@ describe('JWT', () => {
 
   beforeAll(async () => {
     const jwt = await JWT({
-      currentTimeMilliseconds: 1516239022000,
-      lifespanSeconds: 0,
+      expirationSecondsSinceEpoch: 1516239022,
       signer: shimSigner,
       subject: '1234567890',
     }).toString();
