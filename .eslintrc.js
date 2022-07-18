@@ -17,6 +17,7 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
         'react/function-component-definition': 'off',
+        'no-empty': ['error', { 'allowEmptyCatch': true }],
       },
     },
   ],

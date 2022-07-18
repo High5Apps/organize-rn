@@ -44,3 +44,24 @@ export default function JWT({
 
   return { toString };
 }
+
+export function base64UrlToUtf8(base64url: string) {
+  const buffer = Buffer.from(base64url, 'base64url');
+  const base64 = buffer.toString('utf8');
+  return base64;
+}
+
+export function JWTParser(jwt: string | null) {
+  const encodedPayload = jwt?.split('.')[1];
+
+  let payload = { exp: null, sub: null };
+  try {
+    const payloadJson = base64UrlToUtf8(encodedPayload || '');
+    payload = JSON.parse(payloadJson);
+  } catch {}
+
+  const expiration: string | null = payload.exp;
+  const subject: number | null = payload.sub;
+
+  return { expiration, subject };
+}
