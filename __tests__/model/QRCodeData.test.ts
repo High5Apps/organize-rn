@@ -1,8 +1,10 @@
 import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
-import { fakeJwtString } from '../../app/model/FakeQRCodeValue';
-import JWT from '../../app/model/JWT';
+import {
+  fakeJwtExpiration, fakeJwtString, fakeJwtSubject,
+} from '../../app/model/FakeQRCodeValue';
+import JWT, { JWTParser } from '../../app/model/JWT';
 import { fakeCurrentUser, fakeOrg } from '../FakeData';
 
 const currentTime = new Date().getTime();
@@ -11,6 +13,12 @@ jest.mock('../../app/model/JWT');
 const mockJwt = JWT as jest.Mock;
 const mockToString = jest.fn().mockReturnValue(fakeJwtString);
 mockJwt.mockReturnValue({ toString: mockToString });
+
+const mockJwtParser = JWTParser as jest.Mock;
+mockJwtParser.mockReturnValue({
+  expiration: fakeJwtExpiration,
+  subject: fakeJwtSubject,
+});
 
 const consoleWarnSpy = jest.spyOn(global.console, 'warn').mockImplementation();
 

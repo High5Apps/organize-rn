@@ -1,4 +1,4 @@
-import JWT from './JWT';
+import JWT, { JWTParser } from './JWT';
 import Keys from './Keys';
 import {
   isCurrentUserData, isQRCodeValue, Org, QRCodeValue,
@@ -11,8 +11,6 @@ const JWT_PARAM = 'jwt';
 const ORG_NAME_PARAM = 'org_name';
 const ORG_POTENTIAL_MEMBER_COUNT_PARAM = 'org_potential_member_count';
 const ORG_POTENTIAL_MEMBER_DEFINITION_PARAM = 'org_potential_member_definition';
-const EXPIRATION_PARAM = 'expiration';
-const SHARED_BY_USER_ID = 'shared_by_user_id';
 
 type FormatterProps = {
   currentTime: number;
@@ -53,11 +51,6 @@ export function QRCodeDataFormatter({
     url.searchParams.set(
       ORG_POTENTIAL_MEMBER_DEFINITION_PARAM,
       org.potentialMemberDefinition,
-    );
-    url.searchParams.set(SHARED_BY_USER_ID, currentUser.id);
-    url.searchParams.set(
-      EXPIRATION_PARAM,
-      expirationSecondsSinceEpoch.toString(),
     );
 
     return url.href;
@@ -100,11 +93,8 @@ export function QRCodeDataParser({ url }: ParserProps) {
       id: orgId, name, potentialMemberCount, potentialMemberDefinition,
     };
 
-    const userId = parsedUrl.searchParams.get(SHARED_BY_USER_ID);
+    const { expiration, subject: userId } = JWTParser(jwt);
     const sharedBy = { id: userId, orgId };
-
-    const expirationString = parsedUrl.searchParams.get(EXPIRATION_PARAM);
-    const expiration = 1000 * Number(expirationString);
 
     const value = {
       expiration, jwt, org, sharedBy,
