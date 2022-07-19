@@ -3,16 +3,29 @@ import sha256 from 'crypto-js/sha256';
 import { Buffer } from 'buffer';
 import { Signer } from './types';
 
+const BASE64_CHAR_62 = '+';
+const BASE64_CHAR_63 = '/';
+const BASE64URL_CHAR_62 = '-';
+const BASE64URL_CHAR_63 = '_';
+const BASE64_PADDING = '=';
+
 function base64ToBase64Url(base64: string) {
-  const buffer = Buffer.from(base64, 'base64');
-  const base64Url = buffer.toString('base64url');
+  const base64Url = (
+    base64
+      .split(BASE64_CHAR_62).join(BASE64URL_CHAR_62)
+      .split(BASE64_CHAR_63).join(BASE64URL_CHAR_63)
+      .split(BASE64_PADDING).join('')
+  );
   return base64Url;
 }
 
 export function utf8ToBase64Url(utf8: string) {
   const buffer = Buffer.from(utf8);
-  const base64 = buffer.toString('base64url');
-  return base64;
+
+  // buffer@6.0.3 polyfill does not yet include the base64url encoding
+  const base64 = buffer.toString('base64');
+
+  return base64ToBase64Url(base64);
 }
 
 type Props = {
@@ -45,10 +58,18 @@ export default function JWT({
   return { toString };
 }
 
-export function base64UrlToUtf8(base64url: string) {
-  const buffer = Buffer.from(base64url, 'base64url');
-  const base64 = buffer.toString('utf8');
-  return base64;
+export function base64UrlToUtf8(base64Url: string) {
+  const base64 = (
+    base64Url
+      .split(BASE64URL_CHAR_62).join(BASE64_CHAR_62)
+      .split(BASE64URL_CHAR_63).join(BASE64_CHAR_63)
+      .split(BASE64_PADDING).join('')
+  );
+
+  // buffer@6.0.3 polyfill does not yet include the base64url encoding
+  const buffer = Buffer.from(base64, 'base64');
+  const utf8 = buffer.toString('utf8');
+  return utf8;
 }
 
 export function JWTParser(jwt: string | null) {
