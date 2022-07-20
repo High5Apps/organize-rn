@@ -65,28 +65,30 @@ type ParserProps = {
 
 export function QRCodeDataParser({ url }: ParserProps) {
   function parse(): QRCodeValue | null {
-    let parsedUrl;
+    let parsedUrl: URL;
     try {
       parsedUrl = new URL(url);
     } catch (_) {
-      console.warn('Failed to parse url');
+      console.warn(`Failed to parse url from: ${url}`);
       return null;
     }
 
-    if (parsedUrl.origin !== BASE_URL) {
-      console.warn('QRCodeDataParser failure: Unexpected origin');
+    const { origin, pathname, searchParams } = parsedUrl;
+
+    if (origin !== BASE_URL) {
+      console.warn(`Unexpected origin: ${origin}`);
       return null;
     }
 
-    const jwt = parsedUrl.searchParams.get(JWT_PARAM);
+    const jwt = searchParams.get(JWT_PARAM);
 
-    const orgId = parsedUrl.pathname.split('/')[2];
-    const name = parsedUrl.searchParams.get(ORG_NAME_PARAM);
-    const potentialMemberCountString = parsedUrl.searchParams.get(
+    const orgId = pathname.split('/')[2];
+    const name = searchParams.get(ORG_NAME_PARAM);
+    const potentialMemberCountString = searchParams.get(
       ORG_POTENTIAL_MEMBER_COUNT_PARAM,
     );
     const potentialMemberCount = parseInt(potentialMemberCountString || '', 10);
-    const potentialMemberDefinition = parsedUrl.searchParams.get(
+    const potentialMemberDefinition = searchParams.get(
       ORG_POTENTIAL_MEMBER_DEFINITION_PARAM,
     );
     const org = {

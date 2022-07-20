@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import useTheme from '../../Theme';
 import FrameButton from './FrameButton';
-import { QRCodeValue } from '../../model';
 import { CountdownClockBorder } from '../views';
 
 const useStyles = () => {
@@ -22,7 +21,7 @@ const useStyles = () => {
 type Props = {
   onPress?: () => void;
   onTimeout?: () => void;
-  qrCodeValue: QRCodeValue;
+  qrCodeValue: string;
   timeout: number;
 };
 
@@ -52,7 +51,7 @@ export default function QRCodeButton({
         color={colors.label}
         backgroundColor={colors.fill}
         size={qrCodeSize}
-        value={JSON.stringify(qrCodeValue)}
+        value={qrCodeValue}
       />
       <View
         style={[

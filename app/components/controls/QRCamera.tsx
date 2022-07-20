@@ -3,8 +3,10 @@ import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
-import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
-import { isQRCodeValue, QRCodeValue } from '../../model';
+import {
+  BarcodeFormat, UrlBookmark, useScanBarcodes,
+} from 'vision-camera-code-scanner';
+import { QRCodeDataParser, QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
 import { FadeInView } from '../views';
 import FrameButton from './FrameButton';
@@ -46,18 +48,20 @@ export default function QRCamera({
   });
 
   useEffect(() => {
-    const contentData = barcodes.map((b) => b.content.data);
-    const contentDataSet = new Set(contentData);
-    const uniqueData = [...contentDataSet];
+    const contentDataUrls: string[] = [];
+    barcodes.forEach((b) => {
+      const url = (b.content.data as UrlBookmark)?.url;
+      if (url) {
+        contentDataUrls.push(url);
+      }
+    });
+    const urlSet = new Set(contentDataUrls);
+    const uniqueUrls = [...urlSet];
     try {
-      uniqueData.forEach((json) => {
-        const object = JSON.parse(String(json));
-        if (isQRCodeValue(object)) {
-          onQRValueScanned(object);
-        } else {
-          console.log(
-            `parsed unexpected value: ${JSON.stringify(object, null, 2)}`,
-          );
+      uniqueUrls.forEach((url) => {
+        const qrValue = QRCodeDataParser({ url }).parse();
+        if (qrValue) {
+          onQRValueScanned(qrValue);
         }
       });
     } catch (e) {
