@@ -5,7 +5,6 @@ export { default as FakeQRCodeValue } from './FakeQRCodeValue';
 export { default as JWT, JWTParser } from './JWT';
 export { default as Keys } from './Keys';
 export { default as NewOrgSteps } from './NewOrgSteps';
-export { default as QRCode, QR_CODE_TIME_TO_LIVE_MS } from './QRCode';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from './QRCodeData';
