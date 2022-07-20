@@ -16,7 +16,7 @@ export default function ConnectionReview({ qrValue, style }: Props) {
       labeledValues={[
         {
           label: 'I want to connect with',
-          value: user.pseudonym(),
+          value: user.pseudonym,
         },
       ]}
       style={style}

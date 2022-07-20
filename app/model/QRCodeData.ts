@@ -11,6 +11,7 @@ const JWT_PARAM = 'jwt';
 const ORG_NAME_PARAM = 'org_name';
 const ORG_POTENTIAL_MEMBER_COUNT_PARAM = 'org_potential_member_count';
 const ORG_POTENTIAL_MEMBER_DEFINITION_PARAM = 'org_potential_member_definition';
+const USER_PSEUDONYM = 'user_pseudonym';
 
 type FormatterProps = {
   currentTime: number;
@@ -52,6 +53,7 @@ export function QRCodeDataFormatter({
       ORG_POTENTIAL_MEMBER_DEFINITION_PARAM,
       org.potentialMemberDefinition,
     );
+    url.searchParams.set(USER_PSEUDONYM, currentUser.pseudonym);
 
     return url.href;
   }
@@ -95,8 +97,10 @@ export function QRCodeDataParser({ url }: ParserProps) {
       id: orgId, name, potentialMemberCount, potentialMemberDefinition,
     };
 
+    const pseudonym = searchParams.get(USER_PSEUDONYM);
+
     const { expiration, subject: userId } = JWTParser(jwt);
-    const sharedBy = { id: userId, orgId };
+    const sharedBy = { id: userId, orgId, pseudonym };
 
     const value = {
       expiration, jwt, org, sharedBy,

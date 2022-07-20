@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { fakePseudonym } from './FakeQRCodeValue';
 import Keys from './Keys';
 import type { Org, UserData } from './types';
 
@@ -15,6 +16,7 @@ export default function User({
   const userData: UserData = {
     id: initialId || uuidv4(),
     orgId,
+    pseudonym: fakePseudonym,
   };
 
   async function deleteKeyPair() {
@@ -36,7 +38,6 @@ export default function User({
     deleteKeyPair,
     equals,
     org,
-    pseudonym: () => 'Adorable Giraffe',
     publicKeyId,
     ...userData,
   };

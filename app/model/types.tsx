@@ -18,14 +18,14 @@ export function isOrg(object: unknown): object is Org {
 export type UserData = {
   id: string;
   orgId: string;
+  pseudonym: string;
 };
 
 export function isUserData(object: unknown): object is UserData {
   const user = (object as UserData);
-  return (
-    user?.id?.length > 0
-      && user?.orgId.length > 0
-  );
+  return user?.id?.length > 0
+    && user?.orgId?.length > 0
+    && user?.pseudonym?.length > 0;
 }
 
 export type CurrentUserData = UserData & {
