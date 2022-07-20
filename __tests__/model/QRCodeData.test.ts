@@ -1,11 +1,10 @@
 import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
-import {
-  fakeJwtExpiration, fakeJwtString, fakeJwtSubject,
-} from '../../app/model/FakeQRCodeValue';
 import JWT, { JWTParser } from '../../app/model/JWT';
-import { fakeCurrentUser, fakeOrg } from '../FakeData';
+import {
+  fakeCurrentUser, fakeJwtExpiration, fakeJwtString, fakeJwtSubject, fakeOrg,
+} from '../FakeData';
 
 const currentTime = new Date().getTime();
 

@@ -6,7 +6,7 @@ import {
 } from '../components';
 import type { NewConnectionScreenProps } from '../navigation';
 import useTheme from '../Theme';
-import { placeholderOrgId } from '../model/FakeQRCodeValue';
+import { placeholderOrgId } from '../model/FakeQRCodeData';
 
 const useStyles = () => {
   const { spacing } = useTheme();

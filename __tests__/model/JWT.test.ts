@@ -1,6 +1,6 @@
 import { JWT, JWTParser, Signer } from '../../app/model';
-import { fakeJwtString } from '../../app/model/FakeQRCodeValue';
 import { utf8ToBase64Url } from '../../app/model/JWT';
+import { fakeJwtString } from '../FakeData';
 
 const shimSigner: Signer = (
   { message }: { message: string },

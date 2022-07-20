@@ -5,7 +5,7 @@ import {
   SecondaryButton,
 } from '../components';
 import { Keys, User, useUserContext } from '../model';
-import { placeholderOrgId } from '../model/FakeQRCodeValue';
+import { placeholderOrgId } from '../model/FakeQRCodeData';
 import type { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
 

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { fakePseudonym } from './FakeQRCodeValue';
+import { fakePseudonym } from './FakeQRCodeData';
 import Keys from './Keys';
 import type { Org, UserData } from './types';
 

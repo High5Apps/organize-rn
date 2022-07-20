@@ -1,7 +1,6 @@
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as useCurrentUser } from './CurrentUser';
 export { UserContextProvider, useUserContext } from './UserContext';
-export { default as FakeQRCodeValue } from './FakeQRCodeValue';
 export { default as JWT, JWTParser } from './JWT';
 export { default as Keys } from './Keys';
 export { default as NewOrgSteps } from './NewOrgSteps';
