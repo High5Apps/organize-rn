@@ -1,16 +1,11 @@
-import { Dispatch, SetStateAction } from 'react';
 import ConfirmationAlert from './ConfirmationAlert';
 import type { SettingsSection } from './types';
-import { UserType } from './User';
 
 type Props = {
-  currentUser: UserType | null;
-  setCurrentUser: Dispatch<SetStateAction<UserType | null>>;
+  logOut: () => Promise<void>;
 };
 
-export default function Settings({
-  currentUser, setCurrentUser,
-}: Props): SettingsSection[] {
+export default function Settings({ logOut }: Props): SettingsSection[] {
   return [
     {
       title: 'Org',
@@ -20,10 +15,7 @@ export default function Settings({
           onPress: ConfirmationAlert({
             destructiveAction: 'Leave Org',
             destructiveActionInTitle: 'leave this Org',
-            onConfirm: async () => {
-              currentUser?.deleteKeyPair().catch(console.error);
-              setCurrentUser(null);
-            },
+            onConfirm: logOut,
           }).show,
           title: 'Leave Org',
         },

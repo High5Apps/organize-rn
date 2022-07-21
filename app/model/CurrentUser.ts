@@ -8,6 +8,12 @@ export default function useCurrentUser(user: UserType | null = null) {
   ] = useState<UserType | null >(user || null);
   const [initialized, setInitialized] = useState(false);
 
+  const logOut = async () => {
+    await currentUser?.deleteKeyPair();
+    setStoredUser(null);
+    setCurrentUser(null);
+  };
+
   useEffect(() => {
     let subscribed = true;
     const unsubscribe = () => { subscribed = false; };
@@ -35,8 +41,13 @@ export default function useCurrentUser(user: UserType | null = null) {
   }, []);
 
   useEffect(() => {
-    setStoredUser(currentUser);
+    // Don't want to accidentally delete the stored user
+    if (currentUser) {
+      setStoredUser(currentUser);
+    }
   }, [currentUser]);
 
-  return { currentUser, initialized, setCurrentUser };
+  return {
+    currentUser, initialized, logOut, setCurrentUser,
+  };
 }

@@ -19,11 +19,13 @@ const useStyles = () => {
 
 type UserContextType = {
   currentUser: UserType | null;
+  logOut: () => Promise<void>;
   setCurrentUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
   currentUser: null,
+  logOut: async () => {},
   setCurrentUser: () => {},
 });
 
@@ -35,10 +37,12 @@ export function UserContextProvider({
   children, user,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
-  const { currentUser, initialized, setCurrentUser } = useCurrentUser(user);
+  const {
+    currentUser, initialized, logOut, setCurrentUser,
+  } = useCurrentUser(user);
 
   const userContext = useMemo<UserContextType>(() => ({
-    currentUser, setCurrentUser,
+    currentUser, logOut, setCurrentUser,
   }), [currentUser, setCurrentUser]);
 
   return (

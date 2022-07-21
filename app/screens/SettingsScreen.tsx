@@ -56,9 +56,9 @@ const useStyles = () => {
 
 export default function SettingsScreen() {
   const { styles } = useStyles();
-  const { currentUser, setCurrentUser } = useUserContext();
+  const { logOut } = useUserContext();
 
-  const sections = Settings({ currentUser, setCurrentUser });
+  const sections = Settings({ logOut });
 
   const ItemSeparator = useCallback(() => (
     <View style={styles.itemSeparator} />

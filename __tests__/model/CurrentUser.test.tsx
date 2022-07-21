@@ -14,20 +14,29 @@ const currentUserTestId = 'currentUserTestId';
 const intializedTestId = 'intializedTestId';
 
 type Props = {
+  newUser?: UserType | null;
+  shouldLogOut?: boolean;
   user?: UserType;
-  newUser?: UserType;
 };
 
-function TestComponent({ newUser, user }: Props) {
-  const { currentUser, initialized, setCurrentUser } = useCurrentUser(user);
+function TestComponent({ newUser, shouldLogOut, user }: Props) {
+  const {
+    currentUser, initialized, logOut, setCurrentUser,
+  } = useCurrentUser(user);
 
   useEffect(() => {
     expect(initialized).toBeFalsy();
   }, []);
 
   useEffect(() => {
-    if (newUser) {
+    if (newUser !== undefined) {
       setCurrentUser(newUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shouldLogOut) {
+      logOut();
     }
   }, []);
 
@@ -40,15 +49,20 @@ function TestComponent({ newUser, user }: Props) {
 }
 
 TestComponent.defaultProps = {
-  user: undefined,
   newUser: undefined,
+  shouldLogOut: false,
+  user: undefined,
 };
 
-async function renderTestComponent({ newUser, user }: Props) {
+async function renderTestComponent({ newUser, shouldLogOut, user }: Props) {
   let renderer: ReactTestRenderer | undefined;
   await act(async () => {
     renderer = create((
-      <TestComponent newUser={newUser} user={user} />
+      <TestComponent
+        newUser={newUser}
+        shouldLogOut={shouldLogOut}
+        user={user}
+      />
     ));
   });
   const root = renderer?.root;
@@ -103,6 +117,36 @@ describe('useCurrentUser', () => {
       });
       expect(mockSetStoredUser).toHaveBeenNthCalledWith(1, fakeUser);
       expect(mockSetStoredUser).toHaveBeenNthCalledWith(2, fakeOtherUser);
+    });
+
+    it('should not clear stored user', async () => {
+      await renderTestComponent({
+        user: fakeUser,
+        newUser: null,
+      });
+      expect(mockSetStoredUser).not.toBeCalledWith(null);
+    });
+  });
+
+  describe('logOut', () => {
+    const mockDeleteKeyPair = jest.fn();
+    let currentUserId: string;
+    beforeEach(async () => {
+      const user = { ...fakeUser, deleteKeyPair: mockDeleteKeyPair };
+      const result = await renderTestComponent({ shouldLogOut: true, user });
+      currentUserId = result.currentUserId;
+    });
+
+    it('should delete key pair', () => {
+      expect(mockDeleteKeyPair).toBeCalled();
+    });
+
+    it('should clear storedUser', () => {
+      expect(mockSetStoredUser).toBeCalledWith(null);
+    });
+
+    it('should clear currentUser', () => {
+      expect(currentUserId).toBeFalsy();
     });
   });
 });
