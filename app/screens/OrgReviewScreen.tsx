@@ -1,12 +1,15 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  ActivityIndicator, StyleSheet, Text, View,
+} from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
 } from '../components';
 import { Keys, User, useUserContext } from '../model';
-import { placeholderOrgId } from '../model/FakeQRCodeData';
 import type { OrgReviewScreenProps } from '../navigation';
+import { createOrg, ErrorResponse } from '../networking';
+import { isErrorResponse } from '../networking/apis/types';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -32,6 +35,13 @@ const useStyles = () => {
     createButton: {
       flex: 0,
       paddingHorizontal: spacing.m,
+    },
+    errorMessage: {
+      color: colors.error,
+      fontFamily: font.weights.regular,
+      fontSize: font.sizes.body,
+      paddingHorizontal: spacing.m,
+      textAlign: 'center',
     },
     label: {
       color: colors.labelSecondary,
@@ -68,23 +78,45 @@ export default function OrgReviewScreen({
 }: OrgReviewScreenProps) {
   const { definition, estimate, name } = route.params;
 
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
   async function createCurrentUser() {
     const { publicKeyId } = await Keys().rsa.create(2048);
 
-    // TODO: OrgsController#create and use the returned user
-    const user = User({
-      org: {
-        id: placeholderOrgId,
+    let orgId: string;
+    try {
+      const response = await createOrg({
         name,
         potentialMemberCount: estimate,
         potentialMemberDefinition: definition,
-      },
-      orgId: placeholderOrgId,
-      publicKeyId,
-    });
+      });
+
+      if (isErrorResponse(response)) {
+        setErrorMessage(ErrorResponse(response).errorMessage);
+        return;
+      }
+
+      orgId = response;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+      setErrorMessage('Something unexpected happened. Please try again later.');
+      return;
+    }
+
+    const org = {
+      id: orgId,
+      name,
+      potentialMemberCount: estimate,
+      potentialMemberDefinition: definition,
+    };
+    // TODO: UsersController#create
+    const user = User({ org, orgId, publicKeyId });
     setCurrentUser(user);
   }
 
@@ -108,6 +140,8 @@ export default function OrgReviewScreen({
         </View>
       </LockingScrollView>
       <>
+        {loading && <ActivityIndicator />}
+        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
         <Agreement buttonLabel={buttonLabel} />
         <ButtonRow>
           <SecondaryButton
@@ -119,7 +153,12 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={() => createCurrentUser().catch(console.error)}
+            onPress={() => {
+              setLoading(true);
+              createCurrentUser()
+                .catch(console.error)
+                .finally(() => setLoading(false));
+            }}
             style={[styles.button, styles.createButton]}
           />
         </ButtonRow>
