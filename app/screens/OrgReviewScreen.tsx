@@ -7,6 +7,7 @@ import {
   SecondaryButton,
 } from '../components';
 import { Keys, User, useUserContext } from '../model';
+import { UserType } from '../model/User';
 import type { OrgReviewScreenProps } from '../navigation';
 import { createOrg, ErrorResponse } from '../networking';
 import { isErrorResponse } from '../networking/apis/types';
@@ -84,7 +85,7 @@ export default function OrgReviewScreen({
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
-  async function createCurrentUser() {
+  async function createCurrentUser(): Promise<UserType | null> {
     const { publicKeyId } = await Keys().rsa.create(2048);
 
     let orgId: string;
@@ -97,7 +98,7 @@ export default function OrgReviewScreen({
 
       if (isErrorResponse(response)) {
         setErrorMessage(ErrorResponse(response).errorMessage);
-        return;
+        return null;
       }
 
       orgId = response;
@@ -106,7 +107,7 @@ export default function OrgReviewScreen({
         console.error(error.message);
       }
       setErrorMessage('Something unexpected happened. Please try again later.');
-      return;
+      return null;
     }
 
     const org = {
@@ -117,7 +118,7 @@ export default function OrgReviewScreen({
     };
     // TODO: UsersController#create
     const user = User({ org, orgId, publicKeyId });
-    setCurrentUser(user);
+    return user;
   }
 
   const buttonLabel = 'Create';
@@ -153,11 +154,14 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={() => {
+            onPress={async () => {
               setLoading(true);
               createCurrentUser()
-                .catch(console.error)
-                .finally(() => setLoading(false));
+                .then(async (user) => {
+                  setLoading(false);
+                  if (!user) { return; }
+                  setCurrentUser(user);
+                }).catch(console.error);
             }}
             style={[styles.button, styles.createButton]}
           />
