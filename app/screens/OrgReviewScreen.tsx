@@ -9,7 +9,7 @@ import {
 import { Keys, User, useUserContext } from '../model';
 import { UserType } from '../model/User';
 import type { OrgReviewScreenProps } from '../navigation';
-import { createOrg, ErrorResponse } from '../networking';
+import { createOrg, createUser, ErrorResponse } from '../networking';
 import { isErrorResponse } from '../networking/apis/types';
 import useTheme from '../Theme';
 
@@ -85,9 +85,8 @@ export default function OrgReviewScreen({
   const { styles } = useStyles();
   const { setCurrentUser } = useUserContext();
 
+  // TODO: Extract into CurrentUser
   async function createCurrentUser(): Promise<UserType | null> {
-    const { publicKeyId } = await Keys().rsa.create(2048);
-
     let orgId: string;
     try {
       const response = await createOrg({
@@ -116,8 +115,30 @@ export default function OrgReviewScreen({
       potentialMemberCount: estimate,
       potentialMemberDefinition: definition,
     };
-    // TODO: UsersController#create
-    const user = User({ org, orgId, publicKeyId });
+
+    const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
+
+    let userId: string;
+    try {
+      const response = await createUser({ orgId, publicKey });
+
+      if (isErrorResponse(response)) {
+        setErrorMessage(ErrorResponse(response).errorMessage);
+        return null;
+      }
+
+      userId = response;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+      setErrorMessage('Something unexpected happened. Please try again later.');
+      return null;
+    }
+
+    const user = User({
+      id: userId, org, orgId, publicKeyId,
+    });
     return user;
   }
 
@@ -156,6 +177,7 @@ export default function OrgReviewScreen({
             label={buttonLabel}
             onPress={async () => {
               setLoading(true);
+              setErrorMessage(null);
               createCurrentUser()
                 .then(async (user) => {
                   setLoading(false);

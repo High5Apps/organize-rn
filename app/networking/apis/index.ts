@@ -1,3 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
-export { createOrg } from './OrgAPI';
 export { default as ErrorResponse } from './ErrorResponse';
+export { createOrg } from './OrgAPI';
+export { createUser } from './UserAPI';

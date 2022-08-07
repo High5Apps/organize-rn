@@ -19,3 +19,12 @@ export function isCreateOrgResponse(object: unknown): object is CreateOrgRespons
 }
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
+
+export type CreateUserResponse = {
+  id: string;
+};
+
+export function isCreateUserResponse(object: unknown): object is CreateUserResponse {
+  const response = (object as CreateUserResponse);
+  return response?.id.length > 0;
+}

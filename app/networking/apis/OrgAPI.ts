@@ -1,7 +1,8 @@
 import { post } from './API';
+import { parseErrorResponse } from './ErrorResponse';
 import { orgsURI } from './Routes';
 import {
-  ErrorResponseType, isCreateOrgResponse, isErrorResponse, UnpublishedOrg,
+  ErrorResponseType, isCreateOrgResponse, UnpublishedOrg,
 } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -20,10 +21,7 @@ export async function createOrg({
   const json = await response.json();
 
   if (!response.ok) {
-    if (!isErrorResponse(json)) {
-      throw new Error('Failed to parse error message from response');
-    }
-    return json;
+    return parseErrorResponse(json);
   }
 
   if (!isCreateOrgResponse(json)) {
