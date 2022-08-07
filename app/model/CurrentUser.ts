@@ -1,6 +1,64 @@
 import { useEffect, useState } from 'react';
-import { UserType } from './User';
+import {
+  createOrg, createUser, ErrorResponse, isErrorResponse, UnpublishedOrg,
+} from '../networking';
+import Keys from './Keys';
+import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
+
+const GENERIC_ERROR_MESSAGE = 'Something unexpected happened. Please try again later.';
+
+export type CreateCurrentUserProps = {
+  unpublishedOrg: UnpublishedOrg;
+};
+
+async function createCurrentUser({
+  unpublishedOrg,
+}: CreateCurrentUserProps): Promise<UserType | string> {
+  let orgId: string;
+  try {
+    const response = await createOrg(unpublishedOrg);
+
+    if (isErrorResponse(response)) {
+      return ErrorResponse(response).errorMessage;
+    }
+
+    orgId = response;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    return GENERIC_ERROR_MESSAGE;
+  }
+
+  const org = {
+    id: orgId,
+    ...unpublishedOrg,
+  };
+
+  const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
+
+  let userId: string;
+  try {
+    const response = await createUser({ orgId, publicKey });
+
+    if (isErrorResponse(response)) {
+      return ErrorResponse(response).errorMessage;
+    }
+
+    userId = response;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    return GENERIC_ERROR_MESSAGE;
+  }
+
+  const user = User({
+    id: userId, org, orgId, publicKeyId,
+  });
+  return user;
+}
 
 export default function useCurrentUser(user: UserType | null = null) {
   const [
@@ -48,6 +106,6 @@ export default function useCurrentUser(user: UserType | null = null) {
   }, [currentUser]);
 
   return {
-    currentUser, initialized, logOut, setCurrentUser,
+    createCurrentUser, currentUser, initialized, logOut, setCurrentUser,
   };
 }

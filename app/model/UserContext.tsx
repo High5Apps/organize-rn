@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { DelayedActivityIndicator } from '../components';
-import useCurrentUser from './CurrentUser';
+import useCurrentUser, { CreateCurrentUserProps } from './CurrentUser';
 import { UserType } from './User';
 
 const useStyles = () => {
@@ -18,12 +18,14 @@ const useStyles = () => {
 };
 
 type UserContextType = {
+  createCurrentUser: (props: CreateCurrentUserProps) => Promise<UserType | string>
   currentUser: UserType | null;
   logOut: () => Promise<void>;
   setCurrentUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
+  createCurrentUser: async () => 'Uninitialized Error',
   currentUser: null,
   logOut: async () => {},
   setCurrentUser: () => {},
@@ -38,11 +40,11 @@ export function UserContextProvider({
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   const {
-    currentUser, initialized, logOut, setCurrentUser,
+    createCurrentUser, currentUser, initialized, logOut, setCurrentUser,
   } = useCurrentUser(user);
 
   const userContext = useMemo<UserContextType>(() => ({
-    currentUser, logOut, setCurrentUser,
+    createCurrentUser, currentUser, logOut, setCurrentUser,
   }), [currentUser, setCurrentUser]);
 
   return (

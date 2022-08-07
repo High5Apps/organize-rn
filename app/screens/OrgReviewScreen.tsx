@@ -6,11 +6,8 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
 } from '../components';
-import { Keys, User, useUserContext } from '../model';
-import { UserType } from '../model/User';
+import { useUserContext } from '../model';
 import type { OrgReviewScreenProps } from '../navigation';
-import { createOrg, createUser, ErrorResponse } from '../networking';
-import { isErrorResponse } from '../networking/apis/types';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -83,66 +80,30 @@ export default function OrgReviewScreen({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { styles } = useStyles();
-  const { setCurrentUser } = useUserContext();
+  const { createCurrentUser, setCurrentUser } = useUserContext();
 
-  // TODO: Extract into CurrentUser
-  async function createCurrentUser(): Promise<UserType | null> {
-    let orgId: string;
-    try {
-      const response = await createOrg({
-        name,
-        potentialMemberCount: estimate,
-        potentialMemberDefinition: definition,
-      });
+  const buttonLabel = 'Create';
 
-      if (isErrorResponse(response)) {
-        setErrorMessage(ErrorResponse(response).errorMessage);
-        return null;
-      }
+  const onCreatePressed = async () => {
+    setLoading(true);
+    setErrorMessage(null);
 
-      orgId = response;
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      setErrorMessage('Something unexpected happened. Please try again later.');
-      return null;
-    }
-
-    const org = {
-      id: orgId,
+    const unpublishedOrg = {
       name,
       potentialMemberCount: estimate,
       potentialMemberDefinition: definition,
     };
 
-    const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
-
-    let userId: string;
-    try {
-      const response = await createUser({ orgId, publicKey });
-
-      if (isErrorResponse(response)) {
-        setErrorMessage(ErrorResponse(response).errorMessage);
-        return null;
-      }
-
-      userId = response;
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      setErrorMessage('Something unexpected happened. Please try again later.');
-      return null;
-    }
-
-    const user = User({
-      id: userId, org, orgId, publicKeyId,
-    });
-    return user;
-  }
-
-  const buttonLabel = 'Create';
+    createCurrentUser({ unpublishedOrg })
+      .then(async (userOrErrorMessage) => {
+        setLoading(false);
+        if (typeof userOrErrorMessage === 'string') {
+          setErrorMessage(userOrErrorMessage);
+          return;
+        }
+        setCurrentUser(userOrErrorMessage);
+      }).catch(console.error);
+  };
 
   return (
     <ScreenBackground>
@@ -175,16 +136,7 @@ export default function OrgReviewScreen({
           <PrimaryButton
             iconName="add"
             label={buttonLabel}
-            onPress={async () => {
-              setLoading(true);
-              setErrorMessage(null);
-              createCurrentUser()
-                .then(async (user) => {
-                  setLoading(false);
-                  if (!user) { return; }
-                  setCurrentUser(user);
-                }).catch(console.error);
-            }}
+            onPress={onCreatePressed}
             style={[styles.button, styles.createButton]}
           />
         </ButtonRow>
