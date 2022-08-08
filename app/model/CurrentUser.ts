@@ -9,26 +9,32 @@ import { getStoredUser, setStoredUser } from './UserStorage';
 const GENERIC_ERROR_MESSAGE = 'Something unexpected happened. Please try again later.';
 
 export type CreateCurrentUserProps = {
+  orgId?: string;
   unpublishedOrg: UnpublishedOrg;
 };
 
 async function createCurrentUser({
+  orgId: maybeOrgId,
   unpublishedOrg,
 }: CreateCurrentUserProps): Promise<UserType | string> {
   let orgId: string;
-  try {
-    const response = await createOrg(unpublishedOrg);
+  if (maybeOrgId) {
+    orgId = maybeOrgId;
+  } else {
+    try {
+      const response = await createOrg(unpublishedOrg);
 
-    if (isErrorResponse(response)) {
-      return ErrorResponse(response).errorMessage;
-    }
+      if (isErrorResponse(response)) {
+        return ErrorResponse(response).errorMessage;
+      }
 
-    orgId = response;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
+      orgId = response;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+      return GENERIC_ERROR_MESSAGE;
     }
-    return GENERIC_ERROR_MESSAGE;
   }
 
   const org = {
