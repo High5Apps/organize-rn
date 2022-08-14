@@ -17,6 +17,24 @@ async function createCurrentUser({
   orgId: maybeOrgId,
   unpublishedOrg,
 }: CreateCurrentUserProps): Promise<UserType | string> {
+  const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
+
+  let userId: string;
+  try {
+    const response = await createUser({ publicKey });
+
+    if (isErrorResponse(response)) {
+      return ErrorResponse(response).errorMessage;
+    }
+
+    userId = response;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    return GENERIC_ERROR_MESSAGE;
+  }
+
   let orgId: string;
   if (maybeOrgId) {
     orgId = maybeOrgId;
@@ -41,24 +59,6 @@ async function createCurrentUser({
     id: orgId,
     ...unpublishedOrg,
   };
-
-  const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
-
-  let userId: string;
-  try {
-    const response = await createUser({ orgId, publicKey });
-
-    if (isErrorResponse(response)) {
-      return ErrorResponse(response).errorMessage;
-    }
-
-    userId = response;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-    return GENERIC_ERROR_MESSAGE;
-  }
 
   const user = User({
     id: userId, org, orgId, publicKeyId,
