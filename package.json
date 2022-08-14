@@ -6,7 +6,6 @@
     "android": "react-native run-android",
     "android:device": "npm run android -- --deviceId=$(adb devices | tail -n +2 | grep -m 1 -v emulator | cut -f1)",
     "android:device:release": "npm run android:device -- --variant=release",
-    "android:tether": "adb reverse tcp:3000 tcp:3000",
     "ios": "react-native run-ios --simulator \"iPhone 8 (15.5)\"",
     "ios:device": "react-native run-ios --device",
     "ios:device:release": "npm run ios:device -- --configuration=Release",
@@ -15,6 +14,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "react-native start",
     "test": "npm run type-check && npm run lint && jest",
+    "tether:android": "adb reverse tcp:3000 tcp:3000",
     "type-check": "tsc"
   },
   "dependencies": {
