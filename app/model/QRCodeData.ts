@@ -1,5 +1,4 @@
-import JWT, { JWTParser } from './JWT';
-import Keys from './Keys';
+import { JWTParser } from './JWT';
 import {
   isCurrentUserData, isQRCodeValue, Org, QRCodeValue,
 } from './types';
@@ -27,21 +26,10 @@ export function QRCodeDataFormatter({
       throw new Error('Expected QRCode user to be the current user');
     }
 
-    const signer = (
-      { message }: { message: string },
-    ) => Keys().rsa.sign({ message, publicKeyId: currentUser.publicKeyId });
-
-    const expirationSecondsSinceEpoch = (
-      (currentTime / 1000) + QR_CODE_TIME_TO_LIVE_SECONDS
-    );
-
-    const jwt = JWT({
-      expirationSecondsSinceEpoch,
-      signer,
-      subject: currentUser.id,
+    const jwtString = await currentUser.createAuthToken({
+      currentTime, timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
     });
 
-    const jwtString = await jwt.toString();
     const url = new URL(`${BASE_URL}/orgs/${org.id}/connections`);
     url.searchParams.set(JWT_PARAM, jwtString);
     url.searchParams.set(ORG_NAME_PARAM, org.name);
