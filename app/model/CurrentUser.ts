@@ -40,7 +40,11 @@ async function createCurrentUser({
     orgId = maybeOrgId;
   } else {
     try {
-      const response = await createOrg(unpublishedOrg);
+      // `as any` is needed since users are required to have an Org
+      const userWithoutOrg = User({ id: userId, publicKeyId } as any);
+      const jwt = await userWithoutOrg.createAuthToken();
+
+      const response = await createOrg({ ...unpublishedOrg, jwt });
 
       if (isErrorResponse(response)) {
         return ErrorResponse(response).errorMessage;

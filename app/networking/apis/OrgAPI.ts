@@ -7,15 +7,16 @@ import {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function createOrg({
-  name, potentialMemberCount, potentialMemberDefinition,
-}: UnpublishedOrg): Promise<string | ErrorResponseType> {
+  jwt, name, potentialMemberCount, potentialMemberDefinition,
+}: UnpublishedOrg & { jwt: string }): Promise<string | ErrorResponseType> {
   const response = await post({
-    uri: orgsURI,
     bodyObject: {
       name,
       potential_member_definition: potentialMemberDefinition,
       potential_member_estimate: potentialMemberCount,
     },
+    jwt,
+    uri: orgsURI,
   });
 
   const json = await response.json();
