@@ -20,7 +20,7 @@ export default function Keys() {
       async sign(
         { publicKeyId, message }: { publicKeyId: string, message: string },
       ) {
-        const messageSignature = await RSAKeychain.sign(message, publicKeyId);
+        const messageSignature = await RSAKeychain.signWithAlgorithm(message, publicKeyId, 'SHA256withRSA');
         return messageSignature;
       },
     },

@@ -21,7 +21,7 @@ describe('JWT', () => {
   });
 
   it('has expected header', () => {
-    expect(encodedHeader).toBe('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9');
+    expect(encodedHeader).toBe('eyJhbGciOiJSUzI1NiJ9');
   });
 
   it('has expected payload', () => {
@@ -31,7 +31,7 @@ describe('JWT', () => {
   });
 
   it('has expected signature', () => {
-    expect(encodedSignature).toBe('NDlmMzMwNzkwN2I2MTVlMTIwODkyODlmOTRmMjJhNDg5NGM4MDllNzIwNTBjZTBmZmRlYTIyOGFlZWU0OGU5Yg');
+    expect(encodedSignature).toBe('ZXlKaGJHY2lPaUpTVXpJMU5pSjkuZXlKemRXSWlPaUl4TWpNME5UWTNPRGt3SWl3aVpYaHdJam94TlRFMk1qTTVNREl5ZlE');
   });
 });
 
