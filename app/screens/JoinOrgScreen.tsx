@@ -5,7 +5,9 @@ import {
   ScreenBackground, SecondaryButton,
 } from '../components';
 import { QRCodeValue, useUserContext } from '../model';
+import { UserType } from '../model/User';
 import type { JoinOrgScreenProps } from '../navigation';
+import { createConnection } from '../networking';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -38,6 +40,8 @@ const useStyles = () => {
   return { styles };
 };
 
+const GENERIC_ERROR_MESSAGE = 'Something unexpected happened. Please try again later.';
+
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useState<QRCodeValue>();
@@ -57,15 +61,34 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
     const { id: orgId, ...unpublishedOrg } = qrValue.org;
 
-    createCurrentUser({ orgId, unpublishedOrg })
-      .then(async (userOrErrorMessage) => {
+    let currentUser: UserType | null = null;
+    try {
+      const userOrErrorMessage = await createCurrentUser({
+        orgId, unpublishedOrg,
+      });
+
+      if (typeof userOrErrorMessage === 'string') {
+        setErrorMessage(userOrErrorMessage);
         setLoading(false);
-        if (typeof userOrErrorMessage === 'string') {
-          setErrorMessage(userOrErrorMessage);
-          return;
-        }
-        setCurrentUser(userOrErrorMessage);
-      }).catch(console.error);
+        return;
+      }
+
+      currentUser = userOrErrorMessage;
+
+      const jwt = await currentUser.createAuthToken();
+      const sharerJwt = qrValue.jwt;
+      const maybeErrorMessage = await createConnection({ jwt, sharerJwt });
+
+      if (maybeErrorMessage) {
+        setErrorMessage(maybeErrorMessage);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(GENERIC_ERROR_MESSAGE);
+    }
+
+    setLoading(false);
+    setCurrentUser(currentUser);
   };
 
   return (
