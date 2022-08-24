@@ -28,3 +28,7 @@ export function isCreateUserResponse(object: unknown): object is CreateUserRespo
   const response = (object as CreateUserResponse);
   return response?.id.length > 0;
 }
+
+export type Authorization = {
+  jwt: string;
+};
