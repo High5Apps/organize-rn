@@ -2,13 +2,13 @@ import { post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgsURI } from './Routes';
 import {
-  ErrorResponseType, isCreateOrgResponse, UnpublishedOrg,
+  Authorization, ErrorResponseType, isCreateOrgResponse, UnpublishedOrg,
 } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function createOrg({
   jwt, name, potentialMemberCount, potentialMemberDefinition,
-}: UnpublishedOrg & { jwt: string }): Promise<string | ErrorResponseType> {
+}: UnpublishedOrg & Authorization): Promise<string | ErrorResponseType> {
   const response = await post({
     bodyObject: {
       name,
