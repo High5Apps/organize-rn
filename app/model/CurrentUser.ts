@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import {
   createOrg, createUser, ErrorResponse, isErrorResponse, UnpublishedOrg,
 } from '../networking';
+import { GENERIC_ERROR_MESSAGE } from './Errors';
 import Keys from './Keys';
 import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
-
-const GENERIC_ERROR_MESSAGE = 'Something unexpected happened. Please try again later.';
 
 export type CreateCurrentUserProps = {
   orgId?: string;

@@ -4,7 +4,7 @@ import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
-import { QRCodeValue, useUserContext } from '../model';
+import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { UserType } from '../model/User';
 import type { JoinOrgScreenProps } from '../navigation';
 import { createConnection } from '../networking';
@@ -39,8 +39,6 @@ const useStyles = () => {
 
   return { styles };
 };
-
-const GENERIC_ERROR_MESSAGE = 'Something unexpected happened. Please try again later.';
 
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
