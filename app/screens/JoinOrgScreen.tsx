@@ -39,7 +39,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
-  const { RequestProgress, setErrorMessage, setLoading } = useRequestProgress();
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
   const primaryButtonLabel = 'Join';
 
@@ -47,7 +47,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     if (!qrValue) { return; }
 
     setLoading(true);
-    setErrorMessage(null);
+    setResult('none');
 
     const { id: orgId, ...unpublishedOrg } = qrValue.org;
 
@@ -58,7 +58,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       });
 
       if (typeof userOrErrorMessage === 'string') {
-        setErrorMessage(userOrErrorMessage);
+        setResult('error', userOrErrorMessage);
         setLoading(false);
         return;
       }
@@ -70,11 +70,11 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       const maybeErrorMessage = await createConnection({ jwt, sharerJwt });
 
       if (maybeErrorMessage) {
-        setErrorMessage(maybeErrorMessage);
+        setResult('error', maybeErrorMessage);
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage(GENERIC_ERROR_MESSAGE);
+      setResult('error', GENERIC_ERROR_MESSAGE);
     }
 
     setLoading(false);

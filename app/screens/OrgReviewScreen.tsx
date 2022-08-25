@@ -69,13 +69,13 @@ export default function OrgReviewScreen({
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
-  const { RequestProgress, setErrorMessage, setLoading } = useRequestProgress();
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
   const buttonLabel = 'Create';
 
   const onCreatePressed = async () => {
     setLoading(true);
-    setErrorMessage(null);
+    setResult('none');
 
     const unpublishedOrg = {
       name,
@@ -87,7 +87,7 @@ export default function OrgReviewScreen({
       .then(async (userOrErrorMessage) => {
         setLoading(false);
         if (typeof userOrErrorMessage === 'string') {
-          setErrorMessage(userOrErrorMessage);
+          setResult('error', userOrErrorMessage);
           return;
         }
         setCurrentUser(userOrErrorMessage);
