@@ -4,9 +4,9 @@ import {
   ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../components';
+import { useUserContext } from '../model';
 import type { NewConnectionScreenProps } from '../navigation';
 import useTheme from '../Theme';
-import { placeholderOrgId } from '../model/FakeQRCodeData';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -32,7 +32,9 @@ export default function NewConnectionScreen({
 }: NewConnectionScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [scanned, setScanned] = useState(false);
+
   const { styles } = useStyles();
+  const { currentUser } = useUserContext();
 
   return (
     <ScreenBackground>
@@ -42,7 +44,7 @@ export default function NewConnectionScreen({
       >
         <NewConnectionControl
           // TODO: Use real orgId
-          expectedOrgId={placeholderOrgId}
+          expectedOrgId={currentUser?.orgId}
           onQRCodeValueScanned={() => setScanned(true)}
           prompt="To join an Org, scan the secret code of a current member."
           promptHidden={scanned}
