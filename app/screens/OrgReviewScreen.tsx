@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import {
-  ActivityIndicator, StyleSheet, Text, View,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
-  SecondaryButton,
+  SecondaryButton, useRequestProgress,
 } from '../components';
 import { useUserContext } from '../model';
 import type { OrgReviewScreenProps } from '../navigation';
@@ -33,13 +31,6 @@ const useStyles = () => {
     createButton: {
       flex: 0,
       paddingHorizontal: spacing.m,
-    },
-    errorMessage: {
-      color: colors.error,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.body,
-      paddingHorizontal: spacing.m,
-      textAlign: 'center',
     },
     label: {
       color: colors.labelSecondary,
@@ -76,11 +67,9 @@ export default function OrgReviewScreen({
 }: OrgReviewScreenProps) {
   const { definition, estimate, name } = route.params;
 
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
+  const { RequestProgress, setErrorMessage, setLoading } = useRequestProgress();
 
   const buttonLabel = 'Create';
 
@@ -123,8 +112,7 @@ export default function OrgReviewScreen({
         </View>
       </LockingScrollView>
       <>
-        {loading && <ActivityIndicator />}
-        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+        <RequestProgress />
         <Agreement buttonLabel={buttonLabel} />
         <ButtonRow>
           <SecondaryButton

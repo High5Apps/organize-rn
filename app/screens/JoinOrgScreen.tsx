@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
-  ScreenBackground, SecondaryButton,
+  ScreenBackground, SecondaryButton, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { UserType } from '../model/User';
@@ -11,7 +11,7 @@ import { createConnection } from '../networking';
 import useTheme from '../Theme';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const { spacing } = useTheme();
 
   const styles = StyleSheet.create({
     backButton: {
@@ -20,13 +20,6 @@ const useStyles = () => {
     button: {
       flex: 0,
       marginHorizontal: spacing.s,
-    },
-    errorMessage: {
-      color: colors.error,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.body,
-      paddingHorizontal: spacing.m,
-      textAlign: 'center',
     },
     joinButton: {
       paddingHorizontal: spacing.m,
@@ -43,11 +36,10 @@ const useStyles = () => {
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useState<QRCodeValue>();
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
+  const { RequestProgress, setErrorMessage, setLoading } = useRequestProgress();
 
   const primaryButtonLabel = 'Join';
 
@@ -102,8 +94,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         />
       </LockingScrollView>
       <>
-        {loading && <ActivityIndicator />}
-        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+        <RequestProgress />
         {qrValue && <Agreement buttonLabel={primaryButtonLabel} />}
         <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
