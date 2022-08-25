@@ -52,6 +52,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     const { id: orgId, ...unpublishedOrg } = qrValue.org;
 
     let currentUser: UserType | null = null;
+    let succeeded = false;
     try {
       const userOrErrorMessage = await createCurrentUser({
         orgId, unpublishedOrg,
@@ -71,14 +72,20 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
       if (maybeErrorMessage) {
         setResult('error', maybeErrorMessage);
+        setLoading(false);
+        return;
       }
+
+      succeeded = true;
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
+      setLoading(false);
     }
 
-    setLoading(false);
-    setCurrentUser(currentUser);
+    if (succeeded) {
+      setCurrentUser(currentUser);
+    }
   };
 
   return (
