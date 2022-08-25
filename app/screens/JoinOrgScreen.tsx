@@ -60,7 +60,6 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
       if (typeof userOrErrorMessage === 'string') {
         setResult('error', userOrErrorMessage);
-        setLoading(false);
         return;
       }
 
@@ -72,7 +71,6 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
       if (maybeErrorMessage) {
         setResult('error', maybeErrorMessage);
-        setLoading(false);
         return;
       }
 
@@ -80,7 +78,6 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
-      setLoading(false);
     }
 
     if (succeeded) {

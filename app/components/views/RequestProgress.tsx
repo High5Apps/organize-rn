@@ -33,6 +33,10 @@ export default function useRequestProgress() {
   function setResult(type: ResultType, message?: string) {
     setResultType(type);
 
+    if (type !== 'none') {
+      setLoading(false);
+    }
+
     if (message) {
       setResultMessage(message);
     } else {
