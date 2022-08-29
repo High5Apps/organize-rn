@@ -1,11 +1,11 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   WelcomeScreen, NewOrgScreen, OrgReview, JoinOrgScreen,
 } from '../screens';
 import type { WelcomeStackParamList } from './types';
 
-const Stack = createNativeStackNavigator<WelcomeStackParamList>();
+const Stack = createStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStack() {
   return (
@@ -16,7 +16,7 @@ export default function WelcomeStack() {
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
-        options={{ animation: 'none' }}
+        options={{ animationEnabled: false }}
       />
       <Stack.Screen
         name="NewOrg"
@@ -27,8 +27,6 @@ export default function WelcomeStack() {
       <Stack.Screen
         name="JoinOrg"
         component={JoinOrgScreen}
-        // The swipe back gesture is incompatible with the beforeRemove listener
-        options={{ gestureEnabled: false }}
       />
     </Stack.Navigator>
   );

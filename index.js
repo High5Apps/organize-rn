@@ -5,6 +5,9 @@
 // Reanimated must be the first import
 import 'react-native-reanimated';
 
+// Required by React Navigation Stack Navigator
+import 'react-native-gesture-handler';
+
 // Polyfills
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';

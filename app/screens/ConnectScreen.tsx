@@ -33,6 +33,9 @@ const useStyles = () => {
     scrollView: {
       padding: spacing.m,
     },
+    settingsButton: {
+      marginEnd: spacing.m,
+    },
   });
 
   return { styles };
@@ -40,10 +43,12 @@ const useStyles = () => {
 
 function SettingsButton() {
   const navigation: SettingsScreenNavigationProp = useNavigation();
+  const { styles } = useStyles();
   return (
     <IconButton
       iconName="settings"
       onPress={() => navigation.navigate('Settings')}
+      style={styles.settingsButton}
     />
   );
 }
