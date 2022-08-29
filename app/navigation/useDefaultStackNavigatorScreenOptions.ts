@@ -6,6 +6,7 @@ export default function useDefaultStackNavigatorScreenOptions() {
     headerStyle: {
       backgroundColor: colors.fill,
     },
-    headerTintColor: colors.label,
+    headerTintColor: colors.primary,
+    headerTitleStyle: { color: colors.label },
   };
 }
