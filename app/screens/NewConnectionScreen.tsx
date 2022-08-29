@@ -2,22 +2,24 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
-  ScreenBackground, SecondaryButton,
+  ScreenBackground,
 } from '../components';
 import { useUserContext } from '../model';
 import type { NewConnectionScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
 const useStyles = () => {
-  const { spacing } = useTheme();
+  const { sizes, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     button: {
       flex: 0,
+      height: sizes.buttonHeight,
+      paddingHorizontal: spacing.m,
       marginHorizontal: spacing.s,
     },
-    primaryButton: {
-      paddingHorizontal: spacing.m,
+    buttonRow: {
+      flexDirection: 'row-reverse',
     },
     scrollView: {
       marginTop: spacing.m,
@@ -50,19 +52,13 @@ export default function NewConnectionScreen({
           promptHidden={scanned}
         />
       </LockingScrollView>
-      <ButtonRow elevated={buttonRowElevated}>
-        <SecondaryButton
-          iconName="cancel"
-          label="Cancel"
-          onPress={navigation.goBack}
-          style={styles.button}
-        />
+      <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
         {scanned && (
           <PrimaryButton
             iconName="person-add"
             label="Connect"
             onPress={navigation.goBack}
-            style={[styles.button, styles.primaryButton]}
+            style={[styles.button]}
           />
         )}
       </ButtonRow>

@@ -16,10 +16,7 @@ export default function ConnectStack() {
       <Stack.Screen
         component={NewConnectionScreen}
         name="NewConnection"
-        options={{
-          presentation: 'modal',
-          title: 'Create Connection',
-        }}
+        options={{ title: 'Create Connection' }}
       />
       <Stack.Screen component={SettingsScreen} name="Settings" />
     </Stack.Navigator>
