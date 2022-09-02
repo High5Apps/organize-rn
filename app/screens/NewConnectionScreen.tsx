@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl, PrimaryButton,
@@ -84,9 +84,14 @@ export default function NewConnectionScreen() {
   };
 
   const expectedOrgId = currentUser?.orgId;
-  const qrValueFilter = (
-    (value: QRCodeValue) => (!expectedOrgId || (expectedOrgId === value.org.id))
-  );
+  const qrValueFilter = useCallback((value: QRCodeValue) => {
+    if (expectedOrgId && (expectedOrgId !== value.org.id)) {
+      setResult('warning', "You can't connect with users in another Org");
+      return false;
+    }
+
+    return true;
+  }, [expectedOrgId]);
 
   return (
     <ScreenBackground>

@@ -23,7 +23,7 @@ const useStyles = () => {
   return { styles };
 };
 
-type ResultType = 'error' | 'none' | 'success';
+type ResultType = 'error' | 'none' | 'success' | 'warning';
 
 export default function useRequestProgress() {
   const [loading, setLoading] = useState(false);
@@ -55,6 +55,7 @@ export default function useRequestProgress() {
             styles.message,
             (resultType === 'error') && styles.error,
             (resultType === 'success') && styles.success,
+            (resultType === 'warning') && styles.error,
           ]}
         >
           {resultMessage}
