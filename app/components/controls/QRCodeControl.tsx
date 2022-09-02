@@ -21,8 +21,8 @@ export default function QRCodeControl() {
     throw new Error('Expected currentUser to have org');
   }
 
-  const currentTime = new Date().getTime();
   const refreshedQRCodeData = async () => {
+    const currentTime = new Date().getTime();
     const formatter = QRCodeDataFormatter({ currentTime, org, currentUser });
     return formatter.toUrl();
   };
