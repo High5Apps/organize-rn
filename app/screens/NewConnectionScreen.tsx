@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
@@ -40,6 +40,18 @@ export default function NewConnectionScreen() {
     RequestProgress, result, setLoading, setResult,
   } = useRequestProgress();
 
+  useEffect(() => {
+    if (result === 'error') {
+      setQRValue(null);
+    }
+  }, [result]);
+
+  useEffect(() => {
+    if (qrValue) {
+      setResult('none');
+    }
+  }, [qrValue]);
+
   const onConnectPressed = async () => {
     if (!qrValue || !currentUser) {
       console.warn('Expected qrValue and currentUser to be set');
@@ -79,9 +91,10 @@ export default function NewConnectionScreen() {
       >
         <NewConnectionControl
           expectedOrgId={currentUser?.orgId}
-          onQRCodeValueScanned={setQRValue}
           prompt="To join an Org, scan the secret code of a current member."
           promptHidden={!!qrValue}
+          qrValue={qrValue}
+          setQRValue={setQRValue}
         />
       </LockingScrollView>
       <>

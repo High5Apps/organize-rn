@@ -35,7 +35,7 @@ const useStyles = () => {
 
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
-  const [qrValue, setQRValue] = useState<QRCodeValue>();
+  const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
@@ -94,9 +94,10 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         style={styles.scrollView}
       >
         <NewConnectionControl
-          onQRCodeValueScanned={setQRValue}
           prompt="To join an Org, scan the secret code of a current member."
           promptHidden={!!qrValue}
+          qrValue={qrValue}
+          setQRValue={setQRValue}
         />
       </LockingScrollView>
       <>

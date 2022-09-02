@@ -1,5 +1,7 @@
 import { NavigationAction, useNavigation } from '@react-navigation/native';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, {
+  Dispatch, PropsWithChildren, SetStateAction, useEffect, useState,
+} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
@@ -31,12 +33,14 @@ type Props = {
   buttonDisabled?: boolean;
   enabled: boolean;
   onPress?: () => void;
-  onQRValueScanned: (value: QRCodeValue) => void;
+  qrValueFilter: (value: QRCodeValue) => boolean;
   setEnabled: (enabled: boolean) => void;
+  setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
 };
 
 export default function QRCamera({
-  buttonDisabled, children, enabled, onPress, onQRValueScanned, setEnabled,
+  buttonDisabled, children, enabled, onPress, qrValueFilter, setEnabled,
+  setQRValue,
 }: PropsWithChildren<Props>) {
   const [frameSize, setFrameSize] = useState(0);
   const [
@@ -60,8 +64,8 @@ export default function QRCamera({
     try {
       uniqueUrls.forEach((url) => {
         const qrValue = QRCodeDataParser({ url }).parse();
-        if (qrValue) {
-          onQRValueScanned(qrValue);
+        if (qrValue && qrValueFilter(qrValue)) {
+          setQRValue(qrValue);
         }
       });
     } catch (e) {

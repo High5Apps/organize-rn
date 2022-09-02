@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  Dispatch, SetStateAction, useEffect, useState,
+} from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
@@ -7,16 +9,16 @@ import QRCamera from './QRCamera';
 
 type Props = {
   expectedOrgId?: string;
-  onQRCodeValueScanned?: (value: QRCodeValue) => void;
+  qrValue: QRCodeValue | null;
+  setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
 };
 
 export default function CameraControl({
-  expectedOrgId, onQRCodeValueScanned,
+  expectedOrgId, qrValue, setQRValue,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
   ] = useState<CameraPermissionStatus>();
-  const [qrValue, setQRValue] = useState<QRCodeValue>();
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
   useEffect(() => {
@@ -27,10 +29,7 @@ export default function CameraControl({
   }, []);
 
   useEffect(() => {
-    if (qrValue) {
-      setCameraEnabled(false);
-      onQRCodeValueScanned?.(qrValue);
-    }
+    setCameraEnabled(!qrValue);
   }, [qrValue]);
 
   let onPress: () => void | Promise<void>;
@@ -80,6 +79,10 @@ export default function CameraControl({
     );
   }
 
+  const qrValueFilter = (
+    (value: QRCodeValue) => (!expectedOrgId || (expectedOrgId === value.org.id))
+  );
+
   return (
     <QRCamera
       buttonDisabled={!!qrValue}
@@ -90,11 +93,9 @@ export default function CameraControl({
           onPress();
         }
       }}
-      onQRValueScanned={(value) => {
-        if (expectedOrgId && (expectedOrgId !== value.org.id)) { return; }
-        setQRValue(value);
-      }}
+      qrValueFilter={qrValueFilter}
       setEnabled={setCameraEnabled}
+      setQRValue={setQRValue}
     >
       {CameraCover}
     </QRCamera>
@@ -103,5 +104,4 @@ export default function CameraControl({
 
 CameraControl.defaultProps = {
   expectedOrgId: null,
-  onQRCodeValueScanned: () => {},
 };

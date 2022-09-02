@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
@@ -25,13 +25,14 @@ const useStyles = () => {
 
 type Props = {
   expectedOrgId?: string;
-  onQRCodeValueScanned: (value: QRCodeValue) => void;
   prompt: string;
   promptHidden?: boolean;
+  qrValue: QRCodeValue | null;
+  setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
 };
 
 export default function NewConnectionControl({
-  expectedOrgId, onQRCodeValueScanned, prompt, promptHidden,
+  expectedOrgId, prompt, promptHidden, qrValue, setQRValue,
 }: Props) {
   const { styles } = useStyles();
 
@@ -39,7 +40,8 @@ export default function NewConnectionControl({
     <View style={styles.topContainer}>
       <CameraControl
         expectedOrgId={expectedOrgId}
-        onQRCodeValueScanned={onQRCodeValueScanned}
+        qrValue={qrValue}
+        setQRValue={setQRValue}
       />
       {!promptHidden && <Text style={styles.prompt}>{prompt}</Text>}
     </View>
