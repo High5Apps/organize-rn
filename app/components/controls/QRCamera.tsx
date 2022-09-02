@@ -109,6 +109,7 @@ export default function QRCamera({
       <Camera
         device={device}
         frameProcessor={frameProcessor}
+        frameProcessorFps={5}
         isActive={enabled}
         style={[StyleSheet.absoluteFill]}
       >
