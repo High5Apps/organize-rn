@@ -91,7 +91,7 @@ export default function NewConnectionScreen() {
       >
         <NewConnectionControl
           expectedOrgId={currentUser?.orgId}
-          prompt="To join an Org, scan the secret code of a current member."
+          prompt="Connect with other members of your Org by scanning their secret code."
           promptHidden={!!qrValue}
           qrValue={qrValue}
           setQRValue={setQRValue}
