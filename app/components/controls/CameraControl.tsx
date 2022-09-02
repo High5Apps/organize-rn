@@ -1,21 +1,20 @@
-import React, {
-  Dispatch, ReactNode, SetStateAction, useEffect, useState,
-} from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
+import { QRValueFilter, SetQRValue } from './types';
 
 type Props = {
-  expectedOrgId?: string;
   qrValue: QRCodeValue | null;
+  qrValueFilter?: QRValueFilter;
   ReviewComponent: ReactNode;
-  setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
+  setQRValue: SetQRValue;
 };
 
 export default function CameraControl({
-  expectedOrgId, qrValue, ReviewComponent, setQRValue,
+  qrValue, qrValueFilter, ReviewComponent, setQRValue,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
@@ -66,10 +65,6 @@ export default function CameraControl({
     );
   }
 
-  const qrValueFilter = (
-    (value: QRCodeValue) => (!expectedOrgId || (expectedOrgId === value.org.id))
-  );
-
   return (
     <QRCamera
       buttonDisabled={!!qrValue}
@@ -90,5 +85,5 @@ export default function CameraControl({
 }
 
 CameraControl.defaultProps = {
-  expectedOrgId: null,
+  qrValueFilter: undefined,
 };

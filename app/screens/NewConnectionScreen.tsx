@@ -83,6 +83,11 @@ export default function NewConnectionScreen() {
     setLoading(false);
   };
 
+  const expectedOrgId = currentUser?.orgId;
+  const qrValueFilter = (
+    (value: QRCodeValue) => (!expectedOrgId || (expectedOrgId === value.org.id))
+  );
+
   return (
     <ScreenBackground>
       <LockingScrollView
@@ -90,10 +95,10 @@ export default function NewConnectionScreen() {
         style={styles.scrollView}
       >
         <NewConnectionControl
-          expectedOrgId={currentUser?.orgId}
           prompt="Connect with other members of your Org by scanning their secret code."
           promptHidden={!!qrValue}
           qrValue={qrValue}
+          qrValueFilter={qrValueFilter}
           ReviewComponent={!!qrValue && (
             <ConnectionReview
               qrValue={qrValue}
