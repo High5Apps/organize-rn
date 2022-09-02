@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
@@ -33,15 +33,29 @@ const useStyles = () => {
   return { styles };
 };
 
+const primaryButtonLabel = 'Join';
+
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const {
+    RequestProgress, result, setLoading, setResult,
+  } = useRequestProgress();
 
-  const primaryButtonLabel = 'Join';
+  useEffect(() => {
+    if (result === 'error') {
+      setQRValue(null);
+    }
+  }, [result]);
+
+  useEffect(() => {
+    if (qrValue) {
+      setResult('none');
+    }
+  }, [qrValue]);
 
   const onJoinPressed = async () => {
     if (!qrValue) { return; }
