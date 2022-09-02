@@ -67,7 +67,9 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
       const jwt = await currentUser.createAuthToken();
       const sharerJwt = qrValue.jwt;
-      const maybeErrorMessage = await createConnection({ jwt, sharerJwt });
+      const { errorMessage: maybeErrorMessage } = await createConnection({
+        jwt, sharerJwt,
+      });
 
       if (maybeErrorMessage) {
         setResult('error', maybeErrorMessage);

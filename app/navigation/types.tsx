@@ -80,7 +80,6 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
   >;
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
-export type NewConnectionScreenProps = ConnectStackScreenProps<'NewConnection'>;
 export type SettingsScreenProps = ConnectStackScreenProps<'Settings'>;
 
 export type ConnectStackNavigationProp<T extends keyof ConnectStackParamList> =

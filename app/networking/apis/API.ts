@@ -1,3 +1,8 @@
+export enum Status {
+  Success = 200,
+  Unauthorized = 401,
+}
+
 type Props = {
   bodyObject: any;
   jwt?: string;

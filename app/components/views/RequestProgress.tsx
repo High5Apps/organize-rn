@@ -65,6 +65,7 @@ export default function useRequestProgress() {
 
   return {
     RequestProgress,
+    result: resultType,
     setLoading,
     setResult,
   };

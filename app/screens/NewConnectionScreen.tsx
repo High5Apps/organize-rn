@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
-  ScreenBackground,
+  ScreenBackground, useRequestProgress,
 } from '../components';
-import { useUserContext } from '../model';
-import type { NewConnectionScreenProps } from '../navigation';
+import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
+import { createConnection } from '../networking';
+import { Status } from '../networking/apis/API';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -29,14 +30,46 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function NewConnectionScreen({
-  navigation,
-}: NewConnectionScreenProps) {
+export default function NewConnectionScreen() {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
-  const [scanned, setScanned] = useState(false);
+  const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
 
   const { styles } = useStyles();
   const { currentUser } = useUserContext();
+  const {
+    RequestProgress, result, setLoading, setResult,
+  } = useRequestProgress();
+
+  const onConnectPressed = async () => {
+    if (!qrValue || !currentUser) {
+      console.warn('Expected qrValue and currentUser to be set');
+      return;
+    }
+
+    setLoading(true);
+    setResult('none');
+
+    try {
+      const jwt = await currentUser.createAuthToken();
+      const sharerJwt = qrValue.jwt;
+      const {
+        errorMessage, status,
+      } = await createConnection({ jwt, sharerJwt });
+
+      if (errorMessage) {
+        setResult('error', errorMessage);
+      } else if (status === Status.Success) {
+        setResult('success', 'Reconnected successfully');
+      } else {
+        setResult('success', 'Connected successfully');
+      }
+    } catch (error) {
+      console.error(error);
+      setResult('error', GENERIC_ERROR_MESSAGE);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <ScreenBackground>
@@ -45,23 +78,25 @@ export default function NewConnectionScreen({
         style={styles.scrollView}
       >
         <NewConnectionControl
-          // TODO: Use real orgId
           expectedOrgId={currentUser?.orgId}
-          onQRCodeValueScanned={() => setScanned(true)}
+          onQRCodeValueScanned={setQRValue}
           prompt="To join an Org, scan the secret code of a current member."
-          promptHidden={scanned}
+          promptHidden={!!qrValue}
         />
       </LockingScrollView>
-      <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
-        {scanned && (
-          <PrimaryButton
-            iconName="person-add"
-            label="Connect"
-            onPress={navigation.goBack}
-            style={[styles.button]}
-          />
-        )}
-      </ButtonRow>
+      <>
+        <RequestProgress />
+        <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
+          {qrValue && (result !== 'success') && (
+            <PrimaryButton
+              iconName="person-add"
+              label="Connect"
+              onPress={onConnectPressed}
+              style={[styles.button]}
+            />
+          )}
+        </ButtonRow>
+      </>
     </ScreenBackground>
   );
 }
