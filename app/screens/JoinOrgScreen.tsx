@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  Agreement, ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
+  Agreement, ButtonRow, LockingScrollView, MembershipReview, NewConnectionControl, PrimaryButton,
   ScreenBackground, SecondaryButton, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
@@ -111,6 +111,12 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           prompt="To join an Org, scan the secret code of a current member."
           promptHidden={!!qrValue}
           qrValue={qrValue}
+          ReviewComponent={!!qrValue && (
+            <MembershipReview
+              qrValue={qrValue}
+              style={StyleSheet.absoluteFill}
+            />
+          )}
           setQRValue={setQRValue}
         />
       </LockingScrollView>

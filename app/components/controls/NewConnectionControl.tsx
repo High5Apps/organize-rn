@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
@@ -28,11 +28,12 @@ type Props = {
   prompt: string;
   promptHidden?: boolean;
   qrValue: QRCodeValue | null;
+  ReviewComponent: ReactNode;
   setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
 };
 
 export default function NewConnectionControl({
-  expectedOrgId, prompt, promptHidden, qrValue, setQRValue,
+  expectedOrgId, prompt, promptHidden, qrValue, ReviewComponent, setQRValue,
 }: Props) {
   const { styles } = useStyles();
 
@@ -41,6 +42,7 @@ export default function NewConnectionControl({
       <CameraControl
         expectedOrgId={expectedOrgId}
         qrValue={qrValue}
+        ReviewComponent={ReviewComponent}
         setQRValue={setQRValue}
       />
       {!promptHidden && <Text style={styles.prompt}>{prompt}</Text>}

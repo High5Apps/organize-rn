@@ -1,20 +1,21 @@
 import React, {
-  Dispatch, SetStateAction, useEffect, useState,
+  Dispatch, ReactNode, SetStateAction, useEffect, useState,
 } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
-import { ConnectionReview, IconPrompt, MembershipReview } from '../views';
+import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
 
 type Props = {
   expectedOrgId?: string;
   qrValue: QRCodeValue | null;
+  ReviewComponent: ReactNode;
   setQRValue: Dispatch<SetStateAction<QRCodeValue | null>>;
 };
 
 export default function CameraControl({
-  expectedOrgId, qrValue, setQRValue,
+  expectedOrgId, qrValue, ReviewComponent, setQRValue,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
@@ -52,23 +53,9 @@ export default function CameraControl({
   const isAuthorized = cameraPermission === 'authorized';
   const shoudlShowCamera = isAuthorized && cameraEnabled && !qrValue;
 
-  let CameraCover: JSX.Element | undefined;
+  let CameraCover: ReactNode;
   if (qrValue) {
-    if (expectedOrgId) {
-      CameraCover = (
-        <ConnectionReview
-          qrValue={qrValue}
-          style={StyleSheet.absoluteFill}
-        />
-      );
-    } else {
-      CameraCover = (
-        <MembershipReview
-          qrValue={qrValue}
-          style={StyleSheet.absoluteFill}
-        />
-      );
-    }
+    CameraCover = ReviewComponent;
   } else if (!shoudlShowCamera) {
     CameraCover = (
       <IconPrompt

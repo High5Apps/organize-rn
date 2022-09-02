@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ButtonRow, LockingScrollView, NewConnectionControl, PrimaryButton,
+  ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl, PrimaryButton,
   ScreenBackground, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
@@ -94,6 +94,12 @@ export default function NewConnectionScreen() {
           prompt="Connect with other members of your Org by scanning their secret code."
           promptHidden={!!qrValue}
           qrValue={qrValue}
+          ReviewComponent={!!qrValue && (
+            <ConnectionReview
+              qrValue={qrValue}
+              style={StyleSheet.absoluteFill}
+            />
+          )}
           setQRValue={setQRValue}
         />
       </LockingScrollView>
