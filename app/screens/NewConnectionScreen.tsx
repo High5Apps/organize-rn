@@ -6,7 +6,7 @@ import {
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { createConnection } from '../networking';
-import { Status } from '../networking/apis/API';
+import { Status } from '../networking/API';
 import useTheme from '../Theme';
 
 const useStyles = () => {

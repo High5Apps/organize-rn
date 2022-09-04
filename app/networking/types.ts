@@ -1,4 +1,4 @@
-import type { Org } from '../../model/types';
+import type { Org } from '../model/types';
 
 export type ErrorResponseType = {
   error_messages: string[];
