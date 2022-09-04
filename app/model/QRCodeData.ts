@@ -1,3 +1,4 @@
+import { orgConnectionsURI, host } from '../networking';
 import { JWTParser } from './JWT';
 import {
   isCurrentUserData, isQRCodeValue, Org, QRCodeValue,
@@ -6,7 +7,6 @@ import { UserType } from './User';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
-export const BASE_URL = 'https://getorganize.app';
 const JWT_PARAM = 'jwt';
 const ORG_NAME_PARAM = 'org_name';
 const ORG_POTENTIAL_MEMBER_COUNT_PARAM = 'org_potential_member_count';
@@ -33,7 +33,7 @@ export function QRCodeDataFormatter({
       scope: QR_CODE_JWT_SCOPE,
     });
 
-    const url = new URL(`${BASE_URL}/orgs/${org.id}/connections`);
+    const url = new URL(orgConnectionsURI(org.id));
     url.searchParams.set(JWT_PARAM, jwtString);
     url.searchParams.set(ORG_NAME_PARAM, org.name);
     url.searchParams.set(
@@ -68,14 +68,15 @@ export function QRCodeDataParser({ url }: ParserProps) {
 
     const { origin, pathname, searchParams } = parsedUrl;
 
-    if (origin !== BASE_URL) {
+    if (origin !== host) {
       console.warn(`Unexpected origin: ${origin}`);
       return null;
     }
 
     const jwt = searchParams.get(JWT_PARAM);
 
-    const orgId = pathname.split('/')[2];
+    const pathComponents = pathname.split('/');
+    const orgId = pathComponents[pathComponents.length - 2];
     const name = searchParams.get(ORG_NAME_PARAM);
     const potentialMemberCountString = searchParams.get(
       ORG_POTENTIAL_MEMBER_COUNT_PARAM,
