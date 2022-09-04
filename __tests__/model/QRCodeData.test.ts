@@ -1,18 +1,19 @@
 import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
-import JWT, { JWTParser } from '../../app/model/JWT';
+import { JWTParser } from '../../app/model/JWT';
+import { QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS } from '../../app/model/QRCodeData';
 import {
   fakeCurrentUser, fakeJwtExpiration, fakeJwtString, fakeJwtSubject, fakeOrg,
 } from '../FakeData';
 
 const currentTime = new Date().getTime();
 
-jest.mock('../../app/model/JWT');
-const mockJwt = JWT as jest.Mock;
-const mockToString = jest.fn().mockReturnValue(fakeJwtString);
-mockJwt.mockReturnValue({ toString: mockToString });
+const mockCreateAuthToken = jest.fn().mockResolvedValue(fakeJwtString);
+const mockCurrentUser = fakeCurrentUser;
+mockCurrentUser.createAuthToken = mockCreateAuthToken;
 
+jest.mock('../../app/model/JWT');
 const mockJwtParser = JWTParser as jest.Mock;
 mockJwtParser.mockReturnValue({
   expiration: fakeJwtExpiration,
@@ -24,9 +25,9 @@ const consoleWarnSpy = jest.spyOn(global.console, 'warn').mockImplementation();
 describe('toUrl', () => {
   let url: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const formatter = QRCodeDataFormatter({
-      currentTime, org: fakeOrg, currentUser: fakeCurrentUser,
+      currentTime, org: fakeOrg, currentUser: mockCurrentUser,
     });
     url = await formatter.toUrl();
   });
@@ -49,6 +50,29 @@ describe('toUrl', () => {
 
   it('contains org.potentialMemberDefinition', () => {
     expect(url).toContain(fakeOrg.potentialMemberDefinition);
+  });
+
+  describe('createAuthToken', () => {
+    it('uses QR_CODE_JWT_SCOPE', () => {
+      const expected = expect.objectContaining({ scope: QR_CODE_JWT_SCOPE });
+      expect(mockCreateAuthToken).toBeCalledWith(expected);
+    });
+
+    it('does not use the * scope', () => {
+      const unexpected = expect.objectContaining({ scope: '*' });
+      expect(mockCreateAuthToken).not.toBeCalledWith(unexpected);
+    });
+
+    it('uses the current time', () => {
+      const expected = expect.objectContaining({ currentTime });
+      expect(mockCreateAuthToken).toBeCalledWith(expected);
+    });
+
+    it('uses QR_CODE_TIME_TO_LIVE_SECONDS', () => {
+      expect(mockCreateAuthToken).toBeCalledWith(expect.objectContaining({
+        timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
+      }));
+    });
   });
 });
 

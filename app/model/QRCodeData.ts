@@ -5,6 +5,7 @@ import {
 import { UserType } from './User';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
+export const QR_CODE_JWT_SCOPE = 'create:connections';
 export const BASE_URL = 'https://getorganize.app';
 const JWT_PARAM = 'jwt';
 const ORG_NAME_PARAM = 'org_name';
@@ -27,7 +28,9 @@ export function QRCodeDataFormatter({
     }
 
     const jwtString = await currentUser.createAuthToken({
-      currentTime, timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
+      currentTime,
+      timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
+      scope: QR_CODE_JWT_SCOPE,
     });
 
     const url = new URL(`${BASE_URL}/orgs/${org.id}/connections`);

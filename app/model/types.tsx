@@ -70,3 +70,5 @@ export type SettingsSection = {
 
 // Must return a base64 encoded signature (not base64Url)
 export type Signer = ({ message }: { message: string }) => Promise<string>;
+
+export type Scope = '*' | 'create:connections';

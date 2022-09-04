@@ -1,6 +1,6 @@
 /* eslint-disable newline-per-chained-call */
 import { Buffer } from 'buffer';
-import { Signer } from './types';
+import { Scope, Signer } from './types';
 
 const BASE64_CHAR_62 = '+';
 const BASE64_CHAR_63 = '/';
@@ -29,19 +29,20 @@ export function utf8ToBase64Url(utf8: string) {
 
 type Props = {
   expirationSecondsSinceEpoch: number;
+  scope: Scope;
   signer: Signer;
   subject: string;
 };
 
 // JWT Standard: https://www.rfc-editor.org/rfc/rfc7519.html
 export default function JWT({
-  expirationSecondsSinceEpoch, signer, subject: sub,
+  expirationSecondsSinceEpoch, scope: scp, signer, subject: sub,
 }: Props) {
   async function toString() {
     const header = { alg: 'RS256' };
 
     const exp = Math.floor(expirationSecondsSinceEpoch);
-    const payload = { sub, exp };
+    const payload = { exp, scp, sub };
 
     const encodedHeader = utf8ToBase64Url(JSON.stringify(header));
     const encodedPayload = utf8ToBase64Url(JSON.stringify(payload));

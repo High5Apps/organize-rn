@@ -62,7 +62,7 @@ export default function NewConnectionScreen() {
     setResult('none');
 
     try {
-      const jwt = await currentUser.createAuthToken();
+      const jwt = await currentUser.createAuthToken({ scope: '*' });
       const sharerJwt = qrValue.jwt;
       const {
         errorMessage, status,

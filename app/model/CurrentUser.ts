@@ -41,7 +41,7 @@ async function createCurrentUser({
     try {
       // `as any` is needed since users are required to have an Org
       const userWithoutOrg = User({ id: userId, publicKeyId } as any);
-      const jwt = await userWithoutOrg.createAuthToken();
+      const jwt = await userWithoutOrg.createAuthToken({ scope: '*' });
 
       const response = await createOrg({ ...unpublishedOrg, jwt });
 

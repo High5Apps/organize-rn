@@ -14,6 +14,7 @@ describe('JWT', () => {
   beforeAll(async () => {
     const jwt = await JWT({
       expirationSecondsSinceEpoch: 1516239022,
+      scope: '*',
       signer: shimSigner,
       subject: '1234567890',
     }).toString();
@@ -26,12 +27,12 @@ describe('JWT', () => {
 
   it('has expected payload', () => {
     expect(encodedPayload).toBe(
-      'eyJzdWIiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNTE2MjM5MDIyfQ',
+      'eyJleHAiOjE1MTYyMzkwMjIsInNjcCI6IioiLCJzdWIiOiIxMjM0NTY3ODkwIn0',
     );
   });
 
   it('has expected signature', () => {
-    expect(encodedSignature).toBe('ZXlKaGJHY2lPaUpTVXpJMU5pSjkuZXlKemRXSWlPaUl4TWpNME5UWTNPRGt3SWl3aVpYaHdJam94TlRFMk1qTTVNREl5ZlE');
+    expect(encodedSignature).toBe('ZXlKaGJHY2lPaUpTVXpJMU5pSjkuZXlKbGVIQWlPakUxTVRZeU16a3dNaklzSW5OamNDSTZJaW9pTENKemRXSWlPaUl4TWpNME5UWTNPRGt3SW4w');
   });
 });
 

@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fakePseudonym } from './FakeQRCodeData';
 import JWT from './JWT';
 import Keys from './Keys';
-import type { Org, UserData } from './types';
+import type { Org, Scope, UserData } from './types';
 
 export const defaultAuthTokenTTLSeconds = 60;
 
@@ -15,6 +15,7 @@ type Props = {
 
 type CreateAuthTokenProps = {
   currentTime?: number;
+  scope: Scope;
   timeToLiveSeconds?: number;
 };
 
@@ -28,8 +29,8 @@ export default function User({
   };
 
   async function createAuthToken({
-    currentTime: maybeCurrentTime, timeToLiveSeconds: maybeTTL,
-  }: CreateAuthTokenProps | undefined = {}): Promise<string> {
+    currentTime: maybeCurrentTime, scope, timeToLiveSeconds: maybeTTL,
+  }: CreateAuthTokenProps): Promise<string> {
     if (!publicKeyId) {
       throw new Error('Can only create auth token for users with a key pair');
     }
@@ -47,6 +48,7 @@ export default function User({
 
     const jwt = JWT({
       expirationSecondsSinceEpoch,
+      scope,
       signer,
       subject: userData.id,
     });
