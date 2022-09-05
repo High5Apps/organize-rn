@@ -128,13 +128,12 @@ module.exports = {
   setupFiles: [
     "<rootDir>/__tests__/jestSetupMockAsyncStorage.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeVisionCamera.ts",
+    "<rootDir>/__tests__/jestSetupMockReactNavigation.ts",
     "<rootDir>/node_modules/react-native-gesture-handler/jestSetup.js",
   ],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    "<rootDir>/__tests__/jestSetupMockReactNavigation.ts",
-  ],
+  // setupFilesAfterEnv: [],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
