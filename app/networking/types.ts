@@ -29,6 +29,16 @@ export function isCreateUserResponse(object: unknown): object is CreateUserRespo
   return response?.id.length > 0;
 }
 
+export type GetUserResponse = {
+  id: string;
+  pseudonym: string;
+};
+
+export function isGetUserResponse(object: unknown): object is GetUserResponse {
+  const response = (object as GetUserResponse);
+  return (response?.id.length > 0) && (response?.pseudonym.length > 0);
+}
+
 export type Authorization = {
   jwt: string;
 };
