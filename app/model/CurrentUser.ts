@@ -1,22 +1,29 @@
 import { useEffect, useState } from 'react';
 import {
-  createOrg, createUser, ErrorResponse, isErrorResponse, UnpublishedOrg,
+  createConnection, createOrg, createUser, ErrorResponse, getUser,
+  isErrorResponse, UnpublishedOrg,
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
-import { fakePseudonym } from './FakeQRCodeData';
 import Keys from './Keys';
 import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
 
 export type CreateCurrentUserProps = {
   orgId?: string;
+  sharerJwt?: string;
   unpublishedOrg: UnpublishedOrg;
 };
 
 async function createCurrentUser({
   orgId: maybeOrgId,
+  sharerJwt: maybeSharerJwt,
   unpublishedOrg,
 }: CreateCurrentUserProps): Promise<UserType | string> {
+  if ((maybeOrgId && !maybeSharerJwt) || (!maybeOrgId && maybeSharerJwt)) {
+    console.error('Expected both sharerJwt and orgId if either is included');
+    return GENERIC_ERROR_MESSAGE;
+  }
+
   const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
 
   let userId: string;
@@ -35,15 +42,15 @@ async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
+  // `as any` is needed since users are required to have an Org and pseudonym
+  const partialUser = User({ id: userId, publicKeyId } as any);
+
   let orgId: string;
   if (maybeOrgId) {
     orgId = maybeOrgId;
   } else {
     try {
-      // `as any` is needed since users are required to have an Org
-      const userWithoutOrg = User({ id: userId, publicKeyId } as any);
-      const jwt = await userWithoutOrg.createAuthToken({ scope: '*' });
-
+      const jwt = await partialUser.createAuthToken({ scope: '*' });
       const response = await createOrg({ ...unpublishedOrg, jwt });
 
       if (isErrorResponse(response)) {
@@ -64,8 +71,40 @@ async function createCurrentUser({
     ...unpublishedOrg,
   };
 
-  // TODO: Get real pseudonym from backend
-  const pseudonym = fakePseudonym;
+  if (maybeSharerJwt) {
+    const sharerJwt = maybeSharerJwt;
+    try {
+      const jwt = await partialUser.createAuthToken({ scope: '*' });
+      const { errorMessage: maybeErrorMessage } = await createConnection({
+        jwt, sharerJwt,
+      });
+
+      if (maybeErrorMessage) {
+        return maybeErrorMessage;
+      }
+    } catch (error) {
+      console.error(error);
+      return GENERIC_ERROR_MESSAGE;
+    }
+  }
+
+  let pseudonym: string;
+  try {
+    const jwt = await partialUser.createAuthToken({ scope: '*' });
+    const response = await getUser({ id: userId, jwt });
+
+    if (isErrorResponse(response)) {
+      return ErrorResponse(response).errorMessage;
+    }
+
+    pseudonym = response.pseudonym;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    return GENERIC_ERROR_MESSAGE;
+  }
+
   const user = User({
     id: userId, org, orgId, pseudonym, publicKeyId,
   });

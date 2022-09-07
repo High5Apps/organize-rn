@@ -7,7 +7,6 @@ import {
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { UserType } from '../model/User';
 import type { JoinOrgScreenProps } from '../navigation';
-import { createConnection } from '../networking';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -63,13 +62,14 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     setLoading(true);
     setResult('none');
 
-    const { id: orgId, ...unpublishedOrg } = qrValue.org;
+    const { jwt: sharerJwt, org } = qrValue;
+    const { id: orgId, ...unpublishedOrg } = org;
 
     let currentUser: UserType | null = null;
     let succeeded = false;
     try {
       const userOrErrorMessage = await createCurrentUser({
-        orgId, unpublishedOrg,
+        orgId, unpublishedOrg, sharerJwt,
       });
 
       if (typeof userOrErrorMessage === 'string') {
@@ -78,17 +78,6 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       }
 
       currentUser = userOrErrorMessage;
-
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const sharerJwt = qrValue.jwt;
-      const { errorMessage: maybeErrorMessage } = await createConnection({
-        jwt, sharerJwt,
-      });
-
-      if (maybeErrorMessage) {
-        setResult('error', maybeErrorMessage);
-        return;
-      }
 
       succeeded = true;
     } catch (error) {
