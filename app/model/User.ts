@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { fakePseudonym } from './FakeQRCodeData';
 import JWT from './JWT';
 import Keys from './Keys';
 import type { Org, Scope, UserData } from './types';
@@ -10,6 +9,7 @@ type Props = {
   id?: string;
   org?: Org;
   orgId: string;
+  pseudonym: string;
   publicKeyId?: string;
 };
 
@@ -20,12 +20,12 @@ type CreateAuthTokenProps = {
 };
 
 export default function User({
-  id: initialId, org, orgId, publicKeyId,
+  id: initialId, org, orgId, pseudonym, publicKeyId,
 }: Props) {
   const userData: UserData = {
     id: initialId || uuidv4(),
     orgId,
-    pseudonym: fakePseudonym,
+    pseudonym,
   };
 
   async function createAuthToken({

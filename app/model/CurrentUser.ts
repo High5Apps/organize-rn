@@ -3,6 +3,7 @@ import {
   createOrg, createUser, ErrorResponse, isErrorResponse, UnpublishedOrg,
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { fakePseudonym } from './FakeQRCodeData';
 import Keys from './Keys';
 import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
@@ -63,8 +64,10 @@ async function createCurrentUser({
     ...unpublishedOrg,
   };
 
+  // TODO: Get real pseudonym from backend
+  const pseudonym = fakePseudonym;
   const user = User({
-    id: userId, org, orgId, publicKeyId,
+    id: userId, org, orgId, pseudonym, publicKeyId,
   });
   return user;
 }
