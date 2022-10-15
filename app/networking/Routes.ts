@@ -1,7 +1,7 @@
 // To hit a local backend development server over USB, npm run android:tether
 
 // TODO: Change based on environment
-export const host = 'http://localhost:3000';
+export const host = 'http://localhost:8080';
 
 const version = 'v1';
 const apiRoute = `${host}/api/${version}`;
