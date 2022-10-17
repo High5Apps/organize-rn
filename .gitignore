@@ -62,3 +62,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# DotEnv
+# https://github.com/goatandsheep/react-native-dotenv
+.env

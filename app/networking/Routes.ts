@@ -1,8 +1,10 @@
+import { DEV_SERVER_HOST } from '@env';
+
 // To hit a local backend development server over USB, npm run android:tether
 
 // TODO: Change based on environment
 // export const host = 'http://localhost:8080'; // Local development
-export const host = 'http://raspberrypi.local:8080'; // Remote development
+export const host = `http://${DEV_SERVER_HOST}:8080`; // Remote development
 
 const version = 'v1';
 const apiRoute = `${host}/api/${version}`;
