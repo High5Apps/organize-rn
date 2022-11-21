@@ -7,6 +7,10 @@ buildscript {
         compileSdkVersion = 31
         targetSdkVersion = 30
         ndkVersion = "21.4.7075529"
+
+        // Suggested in https://github.com/rodgomesc/vision-camera-code-scanner/issues/100#issuecomment-1296978785
+        VisionCameraCodeScanner_targetSdkVersion = 31
+        VisionCameraCodeScanner_compileSdkVersion = 31
     }
     repositories {
         google()
