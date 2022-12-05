@@ -1,4 +1,4 @@
-import { orgConnectionsURI, host } from '../networking';
+import { orgConnectionsURI, origin } from '../networking';
 import { JWTParser } from './JWT';
 import {
   isCurrentUserData, isQRCodeValue, Org, QRCodeValue,
@@ -66,10 +66,10 @@ export function QRCodeDataParser({ url }: ParserProps) {
       return null;
     }
 
-    const { origin, pathname, searchParams } = parsedUrl;
+    const { origin: parsedOrigin, pathname, searchParams } = parsedUrl;
 
-    if (origin !== host) {
-      console.warn(`Unexpected origin: ${origin}`);
+    if (parsedOrigin !== origin) {
+      console.warn(`Unexpected origin: ${parsedOrigin}`);
       return null;
     }
 

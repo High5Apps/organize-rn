@@ -1,12 +1,12 @@
 // To hit a local backend development server over USB, npm run android:tether
 // It is not currently easy to hit a local dev server over USB on iOS
 
-export const host = (
+export const origin = (
   __DEV__ ? 'http://localhost:3000' : 'https://getorganize.app'
 );
 
 const version = 'v1';
-const apiRoute = `${host}/api/${version}`;
+const apiRoute = `${origin}/api/${version}`;
 
 export const connectionsURI = `${apiRoute}/connections`;
 
