@@ -1,10 +1,9 @@
-import { DEV_SERVER_HOST } from '@env';
-
 // To hit a local backend development server over USB, npm run android:tether
+// It is not currently easy to hit a local dev server over USB on iOS
 
-// TODO: Change based on environment
-// export const host = 'http://localhost:8080'; // Local development
-export const host = `http://${DEV_SERVER_HOST}:8080`; // Remote development
+export const host = (
+  __DEV__ ? 'http://localhost:3000' : 'https://getorganize.app'
+);
 
 const version = 'v1';
 const apiRoute = `${host}/api/${version}`;
