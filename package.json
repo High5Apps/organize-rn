@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "android:device": "npm run android -- --deviceId=$(adb devices | tail -n +2 | grep -m 1 -v emulator | cut -f1)",
     "android:device:release": "npm run android:device -- --variant=release",
-    "ios": "react-native run-ios --simulator \"iPhone 8 (15.5)\"",
+    "ios": "react-native run-ios --simulator \"iPhone 8\"",
     "ios:device": "react-native run-ios --device",
     "ios:device:release": "npm run ios:device -- --configuration=Release",
     "deeplink:android": "adb shell am start -W -a android.intent.action.VIEW -d organize://$npm_config_path com.organize",
