@@ -1,4 +1,4 @@
-// To hit a local backend development server over USB, npm run android:tether
+// To hit a local backend development server over USB, npm run tether:android
 // It is not currently easy to hit a local dev server over USB on iOS
 
 export const origin = (
