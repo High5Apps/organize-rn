@@ -1,8 +1,16 @@
 import { RSAKeychain } from 'react-native-rsa-native';
 import { v4 as uuidv4 } from 'uuid';
+import ECCKeychain from './ECCKeychain';
 
 export default function Keys() {
   return {
+    ecc: {
+      async create() {
+        const publicKeyId = uuidv4();
+        const keys = await ECCKeychain.generateKeys(publicKeyId);
+        return { publicKeyId, publicKey: keys.public };
+      },
+    },
     rsa: {
       async create(bits: number) {
         const publicKeyId = uuidv4();
