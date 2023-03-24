@@ -17,6 +17,12 @@ RCT_EXTERN_METHOD(
 );
 
 RCT_EXTERN_METHOD(
+  deletePrivateKey: (NSString *) publicKeyId
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
+RCT_EXTERN_METHOD(
   getPublicKey: (NSString *) publicKeyId
   resolver: (RCTPromiseResolveBlock) resolve
   rejecter: (RCTPromiseRejectBlock) reject

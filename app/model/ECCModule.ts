@@ -4,6 +4,7 @@ const { ECCModule } = NativeModules;
 
 interface ECCInterface {
   generateKeys(publicKeyId: string): Promise<string>;
+  deletePrivateKey(publicKeyId: string): Promise<boolean>;
   getPublicKey(publicKeyId: string): Promise<string | undefined>;
 }
 

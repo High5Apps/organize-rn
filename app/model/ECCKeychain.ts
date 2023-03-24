@@ -14,6 +14,11 @@ async function generateKeys(publicKeyId: string): Promise<PublicKey> {
   return publicKey;
 }
 
+async function deletePrivateKey(publicKeyId: string): Promise<boolean> {
+  const succeeded = await ECCModule.deletePrivateKey(publicKeyId);
+  return succeeded;
+}
+
 async function getPublicKey(publicKeyId: string): Promise<string | undefined> {
   const publicKey = await ECCModule.getPublicKey(publicKeyId);
   return publicKey;
@@ -21,5 +26,6 @@ async function getPublicKey(publicKeyId: string): Promise<string | undefined> {
 
 export default {
   generateKeys,
+  deletePrivateKey,
   getPublicKey,
 };
