@@ -24,8 +24,14 @@ async function getPublicKey(publicKeyId: string): Promise<string | undefined> {
   return publicKey;
 }
 
+async function sign(publicKeyId: string, message: string): Promise<string> {
+  const signedMessage = await ECCModule.sign(publicKeyId, message);
+  return signedMessage;
+}
+
 export default {
   generateKeys,
   deletePrivateKey,
   getPublicKey,
+  sign,
 };

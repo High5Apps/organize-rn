@@ -18,6 +18,12 @@ export default function Keys() {
         const publicKey = await ECCKeychain.getPublicKey(publicKeyId);
         return publicKey;
       },
+      async sign(
+        { publicKeyId, message }: { publicKeyId: string, message: string },
+      ) {
+        const messageSignature = await ECCKeychain.sign(publicKeyId, message);
+        return messageSignature;
+      },
     },
     rsa: {
       async create(bits: number) {
