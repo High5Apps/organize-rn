@@ -19,6 +19,19 @@
 		700E13D2FFAF4BC0925F54DA /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CFE0D41D1449FABAF2895E /* OpenSans-ExtraBoldItalic.ttf */; };
 		7EF68E3733C33B6898317E18 /* libPods-Organize-OrganizeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-Organize-OrganizeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0329CC51860062FF5C /* ECCModule.m */; };
+		C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
+		C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
+		C264D8C029CC8CC70066583C /* SecKeyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */; };
+		C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */; };
+		C264D8C329CC92F80066583C /* SecKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C229CC92F80066583C /* SecKeyStore.swift */; };
+		C264D8C429CC92F80066583C /* SecKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C229CC92F80066583C /* SecKeyStore.swift */; };
+		C264D8C629CC931A0066583C /* KeyStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C529CC931A0066583C /* KeyStoreError.swift */; };
+		C264D8C729CC931A0066583C /* KeyStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C529CC931A0066583C /* KeyStoreError.swift */; };
+		C264D8C929CC93EC0066583C /* GenericPasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */; };
+		C264D8CA29CC93EC0066583C /* GenericPasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */; };
+		C264D8CC29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
+		C264D8CD29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
 		C26FABCB27DD746B00C93AB4 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */; };
 		D6DE628DE78C492FBCDBC14F /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFDE8F599D04435FA9F3B931 /* OpenSans-SemiBold.ttf */; };
 		DBD6DCA9038F4AC782D8BC51 /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BAABBD8AF184A13BFAB9497 /* OpenSans-MediumItalic.ttf */; };
@@ -63,6 +76,15 @@
 		ABFE59519B596E51CEFDCCC0 /* libPods-Organize-OrganizeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Organize-OrganizeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4E6D6674628499FAD34DCDC /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		C0A881CF5CF3F2B244570E2A /* Pods-Organize.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize.debug.xcconfig"; path = "Target Support Files/Pods-Organize/Pods-Organize.debug.xcconfig"; sourceTree = "<group>"; };
+		C24A8C0329CC51860062FF5C /* ECCModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECCModule.m; sourceTree = "<group>"; };
+		C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Organize-Bridging-Header.h"; sourceTree = "<group>"; };
+		C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OrganizeTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		C24A8C0A29CC58E70062FF5C /* ECCModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCModule.swift; sourceTree = "<group>"; };
+		C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyConvertible.swift; sourceTree = "<group>"; };
+		C264D8C229CC92F80066583C /* SecKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyStore.swift; sourceTree = "<group>"; };
+		C264D8C529CC931A0066583C /* KeyStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStoreError.swift; sourceTree = "<group>"; };
+		C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPasswordStore.swift; sourceTree = "<group>"; };
+		C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPasswordConvertible.swift; sourceTree = "<group>"; };
 		C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-Organize.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize.release.xcconfig"; path = "Target Support Files/Pods-Organize/Pods-Organize.release.xcconfig"; sourceTree = "<group>"; };
 		D41068D39BC44F64AA8B6587 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -119,6 +141,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */,
+				C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */,
+				C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */,
+				C24A8C0329CC51860062FF5C /* ECCModule.m */,
+				C24A8C0A29CC58E70062FF5C /* ECCModule.swift */,
+				C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */,
+				C264D8C229CC92F80066583C /* SecKeyStore.swift */,
+				C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */,
+				C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */,
+				C264D8C529CC931A0066583C /* KeyStoreError.swift */,
 			);
 			name = Organize;
 			sourceTree = "<group>";
@@ -251,10 +282,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 1420;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -463,6 +495,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* OrganizeTests.m in Sources */,
+				C264D8C429CC92F80066583C /* SecKeyStore.swift in Sources */,
+				C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */,
+				C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
+				C264D8CA29CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
+				C264D8CD29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */,
+				C264D8C729CC931A0066583C /* KeyStoreError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +509,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				C264D8C329CC92F80066583C /* SecKeyStore.swift in Sources */,
+				C264D8C929CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
+				C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				C264D8C029CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
+				C264D8CC29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */,
+				C264D8C629CC931A0066583C /* KeyStoreError.swift in Sources */,
+				C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +535,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-Organize-OrganizeTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -509,6 +556,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OrganizeTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Organize.app/Organize";
 			};
 			name = Debug;
@@ -517,7 +567,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D0AE47A65C8663E3B452821 /* Pods-Organize-OrganizeTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = OrganizeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -533,6 +585,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OrganizeTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Organize.app/Organize";
 			};
 			name = Release;
@@ -558,6 +612,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.high5.organize;
 				PRODUCT_NAME = Organize;
+				SWIFT_OBJC_BRIDGING_HEADER = "Organize-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -584,6 +639,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.high5.organize;
 				PRODUCT_NAME = Organize;
+				SWIFT_OBJC_BRIDGING_HEADER = "Organize-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -638,7 +694,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -696,7 +752,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
