@@ -14,6 +14,12 @@ async function generateKeys(publicKeyId: string): Promise<PublicKey> {
   return publicKey;
 }
 
+async function getPublicKey(publicKeyId: string): Promise<string | undefined> {
+  const publicKey = await ECCModule.getPublicKey(publicKeyId);
+  return publicKey;
+}
+
 export default {
   generateKeys,
+  getPublicKey,
 };

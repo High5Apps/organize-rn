@@ -10,6 +10,10 @@ export default function Keys() {
         const keys = await ECCKeychain.generateKeys(publicKeyId);
         return { publicKeyId, publicKey: keys.public };
       },
+      async getPublicKey(publicKeyId: string) {
+        const publicKey = await ECCKeychain.getPublicKey(publicKeyId);
+        return publicKey;
+      },
     },
     rsa: {
       async create(bits: number) {

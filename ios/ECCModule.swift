@@ -50,4 +50,39 @@ class ECCModule: NSObject {
 
     resolve(publicKeyPem)
   }
+  
+  @objc
+  func getPublicKey(_ publicKeyId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    let publicKeyPem: String
+    if SecureEnclave.isAvailable {
+      print("Getting SecureEnclave P256 public key with ID \(publicKeyId)")
+      
+      do {
+        guard let privateKey: SecureEnclave.P256.Signing.PrivateKey = try GenericPasswordStore().readKey(label: publicKeyId) else {
+          reject(ECC_ERROR_CODE, "Failed to find SecureEnclave PrivateKey in Keychain", nil)
+          return
+        }
+        publicKeyPem = privateKey.publicKey.pemRepresentation
+      } catch {
+        reject(ECC_ERROR_CODE, "Failed to get SecureEnclave PrivateKey from Keychain", error)
+        return
+      }
+
+    } else {
+      print("Getting P256 public key with ID \(publicKeyId)")
+      
+      do {
+        guard let privateKey: P256.Signing.PrivateKey = try SecKeyStore().readKey(label: publicKeyId) else {
+          reject(ECC_ERROR_CODE, "Failed to find PrivateKey in Keychain", nil)
+          return
+        }
+        publicKeyPem = privateKey.publicKey.pemRepresentation
+      } catch {
+        reject(ECC_ERROR_CODE, "Failed to find PrivateKey in Keychain", error)
+        return
+      }
+    }
+    
+    resolve(publicKeyPem)
+  }
 }
