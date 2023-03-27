@@ -19,7 +19,7 @@ async function deletePrivateKey(publicKeyId: string): Promise<boolean> {
   return succeeded;
 }
 
-async function getPublicKey(publicKeyId: string): Promise<string | undefined> {
+async function getPublicKey(publicKeyId: string): Promise<string> {
   const publicKey = await ECCModule.getPublicKey(publicKeyId);
   return publicKey;
 }
