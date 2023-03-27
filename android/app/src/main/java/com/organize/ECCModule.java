@@ -13,13 +13,17 @@ import com.facebook.react.bridge.ReactMethod;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -31,6 +35,7 @@ public class ECCModule extends ReactContextBaseJavaModule {
     private String PEM_PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----\n";
     private String PEM_PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----\n";
     private String MODULE_NAME = "ECCModule";
+    private String ERROR_CODE = "E_ECC";
 
     ECCModule(ReactApplicationContext context) {
         super(context);
@@ -79,6 +84,7 @@ public class ECCModule extends ReactContextBaseJavaModule {
                 | NoSuchAlgorithmException e) {
             e.printStackTrace();
             promise.reject(e);
+            return;
         }
         promise.resolve(true);
     }
@@ -96,10 +102,43 @@ public class ECCModule extends ReactContextBaseJavaModule {
                 | NoSuchAlgorithmException e) {
             e.printStackTrace();
             promise.reject(e);
+            return;
         }
 
         String publicKeyPem = toPemString(publicKey);
         promise.resolve(publicKeyPem);
+    }
+
+    @ReactMethod
+    public void sign(String publicKeyId, String message, Promise promise) {
+        byte[] signature;
+        try {
+            KeyStore keystore = getAndroidKeyStore();
+            KeyStore.Entry entry = keystore.getEntry(publicKeyId, null);
+            if (!(entry instanceof KeyStore.PrivateKeyEntry)) {
+                promise.reject(ERROR_CODE, "Not an instance of a PrivateKeyEntry");
+                return;
+            }
+
+            PrivateKey privateKey = ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
+            Signature s = Signature.getInstance("SHA256withECDSA");
+            s.initSign(privateKey);
+            s.update(message.getBytes());
+            signature = s.sign();
+        } catch (KeyStoreException
+                | CertificateException
+                | IOException
+                | NoSuchAlgorithmException
+                | UnrecoverableEntryException
+                | InvalidKeyException
+                | SignatureException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+
+        String signedMessage = Base64.encodeToString(signature, Base64.DEFAULT);
+        promise.resolve(signedMessage);
     }
 
     private KeyStore getAndroidKeyStore() throws KeyStoreException, CertificateException,
