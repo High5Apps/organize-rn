@@ -11,11 +11,18 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PublicKey;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.spec.ECGenParameterSpec;
 
 public class ECCModule extends ReactContextBaseJavaModule {
@@ -50,16 +57,41 @@ public class ECCModule extends ReactContextBaseJavaModule {
             keyPairGenerator.initialize(es256Spec);
         } catch (NoSuchAlgorithmException
                 | InvalidAlgorithmParameterException
-                | NoSuchProviderException e
-        ) {
+                | NoSuchProviderException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        String publicKeyPem = toPemString(keyPair.getPublic());
+        promise.resolve(publicKeyPem);
+    }
+
+    @ReactMethod
+    public void getPublicKey(String publicKeyId, Promise promise) {
+        PublicKey publicKey = null;
+        try {
+            KeyStore keystore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER);
+            keystore.load(null);
+            Certificate certificate = keystore.getCertificate(publicKeyId);
+            publicKey = certificate.getPublicKey();
+        } catch (KeyStoreException
+                | CertificateException
+                | IOException
+                | NoSuchAlgorithmException e) {
             e.printStackTrace();
             promise.reject(e);
         }
 
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        byte[] keyBytes = keyPair.getPublic().getEncoded();
+        String publicKeyPem = toPemString(publicKey);
+        promise.resolve(publicKeyPem);
+    }
+
+    private String toPemString(PublicKey publicKey) {
+        byte[] keyBytes = publicKey.getEncoded();
         String publicKeyBase64 = Base64.encodeToString(keyBytes, Base64.DEFAULT);
         String publicKeyPem = PEM_PUBLIC_KEY_HEADER + publicKeyBase64 + PEM_PUBLIC_KEY_FOOTER;
-        promise.resolve(publicKeyPem);
+        return publicKeyPem;
     }
 }
