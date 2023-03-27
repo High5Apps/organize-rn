@@ -69,11 +69,25 @@ public class ECCModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void deletePrivateKey(String publicKeyId, Promise promise) {
+        try {
+            KeyStore keystore = getAndroidKeyStore();
+            keystore.deleteEntry(publicKeyId);
+        } catch (KeyStoreException
+                | CertificateException
+                | IOException
+                | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            promise.reject(e);
+        }
+        promise.resolve(true);
+    }
+
+    @ReactMethod
     public void getPublicKey(String publicKeyId, Promise promise) {
         PublicKey publicKey = null;
         try {
-            KeyStore keystore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER);
-            keystore.load(null);
+            KeyStore keystore = getAndroidKeyStore();
             Certificate certificate = keystore.getCertificate(publicKeyId);
             publicKey = certificate.getPublicKey();
         } catch (KeyStoreException
@@ -86,6 +100,13 @@ public class ECCModule extends ReactContextBaseJavaModule {
 
         String publicKeyPem = toPemString(publicKey);
         promise.resolve(publicKeyPem);
+    }
+
+    private KeyStore getAndroidKeyStore() throws KeyStoreException, CertificateException,
+            IOException, NoSuchAlgorithmException {
+        KeyStore keystore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER);
+        keystore.load(null);
+        return keystore;
     }
 
     private String toPemString(PublicKey publicKey) {
