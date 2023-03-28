@@ -39,7 +39,7 @@ export default function JWT({
   expirationSecondsSinceEpoch, scope: scp, signer, subject: sub,
 }: Props) {
   async function toString() {
-    const header = { alg: 'RS256' };
+    const header = { alg: 'ES256' };
 
     const exp = Math.floor(expirationSecondsSinceEpoch);
     const payload = { exp, scp, sub };

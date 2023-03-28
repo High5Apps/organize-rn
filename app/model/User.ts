@@ -40,7 +40,7 @@ export default function User({
 
     const signer = (
       { message }: { message: string },
-    ) => Keys().rsa.sign({ message, publicKeyId });
+    ) => Keys().ecc.sign({ message, publicKeyId });
 
     const expirationSecondsSinceEpoch = (
       (currentTime / 1000) + timeToLiveSeconds
@@ -60,7 +60,7 @@ export default function User({
     let succeeded = false;
 
     if (publicKeyId) {
-      succeeded = await Keys().rsa.delete(publicKeyId);
+      succeeded = await Keys().ecc.delete(publicKeyId);
     }
 
     return succeeded;

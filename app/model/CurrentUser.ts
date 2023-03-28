@@ -24,7 +24,7 @@ async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
-  const { publicKey, publicKeyId } = await Keys().rsa.create(2048);
+  const { publicKey, publicKeyId } = await Keys().ecc.create();
 
   let userId: string;
   try {
