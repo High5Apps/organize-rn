@@ -131,7 +131,7 @@ class ECCModule: NSObject {
           reject(ECC_ERROR_CODE, "Failed to create ECDSA signature", nil)
           return
         }
-        signedMessage = ecdsaSignature.derRepresentation.base64EncodedString()
+        signedMessage = ecdsaSignature.rawRepresentation.base64EncodedString()
       } catch {
         reject(ECC_ERROR_CODE, "Failed to sign message using SecureEnclave PrivateKey", error)
         return
@@ -150,7 +150,7 @@ class ECCModule: NSObject {
           reject(ECC_ERROR_CODE, "Failed to create ECDSA signature", nil)
           return
         }
-        signedMessage = ecdsaSignature.derRepresentation.base64EncodedString()
+        signedMessage = ecdsaSignature.rawRepresentation.base64EncodedString()
       } catch {
         reject(ECC_ERROR_CODE, "Failed to sign message using PrivateKey", error)
         return

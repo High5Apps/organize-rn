@@ -36,6 +36,8 @@ public class ECCModule extends ReactContextBaseJavaModule {
     private String PEM_PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----\n";
     private String MODULE_NAME = "ECCModule";
     private String ERROR_CODE = "E_ECC";
+    private String SIGNATURE_ALGORITHM = "SHA256withECDSA";
+    private int P256_PARAMETER_SIZE = 32;
 
     ECCModule(ReactApplicationContext context) {
         super(context);
@@ -121,10 +123,11 @@ public class ECCModule extends ReactContextBaseJavaModule {
             }
 
             PrivateKey privateKey = ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
-            Signature s = Signature.getInstance("SHA256withECDSA");
+            Signature s = Signature.getInstance(SIGNATURE_ALGORITHM);
             s.initSign(privateKey);
             s.update(message.getBytes());
-            signature = s.sign();
+            byte[] signatureASN1 = s.sign();
+            signature = convertFromASN1toRS(signatureASN1, P256_PARAMETER_SIZE);
         } catch (KeyStoreException
                 | CertificateException
                 | IOException
@@ -153,5 +156,44 @@ public class ECCModule extends ReactContextBaseJavaModule {
         String publicKeyBase64 = Base64.encodeToString(keyBytes, Base64.DEFAULT);
         String publicKeyPem = PEM_PUBLIC_KEY_HEADER + publicKeyBase64 + PEM_PUBLIC_KEY_FOOTER;
         return publicKeyPem;
+    }
+
+    private static byte[] convertFromASN1toRS(byte[] signatureASN1, int size) {
+        // Get start and length
+        int sequenceR = 2;
+        int lengthR = signatureASN1[sequenceR + 1];
+        int startR = sequenceR + 2;
+
+        int sequenceS = sequenceR + lengthR + 2;
+        int lengthS = signatureASN1[sequenceS + 1];
+        int startS = sequenceS + 2;
+
+        // Get offset
+        int srcOffsetR = startR;
+        int countR = size;
+        int dstOffsetR = 0;
+        if (lengthR > size) {
+            srcOffsetR += lengthR - size;
+        } else if (lengthR < size) {
+            dstOffsetR += size - lengthR;
+            countR -= dstOffsetR;
+        }
+
+        int srcOffsetS = startS;
+        int countS = size;
+        int dstOffsetS = 0;
+        if (lengthS > size) {
+            srcOffsetS += lengthS - size;
+        } else if (lengthS < size) {
+            dstOffsetS += size - lengthS;
+            countS -= dstOffsetS;
+        }
+
+        // Concatenate
+        byte[] rs = new byte[2 * size];
+        System.arraycopy(signatureASN1, srcOffsetR, rs, dstOffsetR, countR);
+        System.arraycopy(signatureASN1, srcOffsetS, rs, dstOffsetR + countR + dstOffsetS, countS);
+
+        return rs;
     }
 }
