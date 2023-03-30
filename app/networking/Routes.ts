@@ -13,6 +13,7 @@ const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;
 
 export const connectionsURI = `${apiRoute}/connections`;
+export const connectionPreviewURI = (sharerJwt: string) => `${apiRoute}/connection_preview?sharer_jwt=${sharerJwt}`;
 
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = (orgId: string) => `${orgsURI}/${orgId}`;

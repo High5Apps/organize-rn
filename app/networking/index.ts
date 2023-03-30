@@ -1,4 +1,4 @@
-export { createConnection } from './ConnectionAPI';
+export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createOrg } from './OrgAPI';
 export { orgConnectionsURI, origin } from './Routes';

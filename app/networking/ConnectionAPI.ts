@@ -1,21 +1,25 @@
-import { post, Status } from './API';
+import { get, post, Status } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { connectionsURI } from './Routes';
-import { Authorization } from './types';
+import { connectionPreviewURI, connectionsURI } from './Routes';
+import {
+  Authorization, ErrorResponseType, isPreviewConnectionResponse,
+  PreviewConnectionResponse,
+} from './types';
 
-type Props = {
+type PreviewProps = {
   sharerJwt: string;
-} & Authorization;
+};
+
+type CreateProps = PreviewProps & Authorization;
 
 type Return = {
   errorMessage?: string;
   status: number;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export async function createConnection({
   jwt, sharerJwt,
-}: Props): Promise<Return> {
+}: CreateProps): Promise<Return> {
   const response = await post({
     bodyObject: {
       sharer_jwt: sharerJwt,
@@ -40,4 +44,23 @@ export async function createConnection({
   }
 
   return { status: response.status };
+}
+
+export async function previewConnection({
+  sharerJwt,
+}: PreviewProps): Promise<PreviewConnectionResponse | ErrorResponseType> {
+  const uri = connectionPreviewURI(sharerJwt);
+  const response = await get({ uri });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return parseErrorResponse(json);
+  }
+
+  if (!isPreviewConnectionResponse(json)) {
+    throw new Error('Failed to parse connection preview from response');
+  }
+
+  return json;
 }

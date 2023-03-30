@@ -42,3 +42,24 @@ export function isGetUserResponse(object: unknown): object is GetUserResponse {
 export type Authorization = {
   jwt: string;
 };
+
+export type PreviewConnectionResponse = {
+  org: {
+    id: string,
+    name: string,
+    potential_member_definition: string,
+    potential_member_estimate: number,
+  },
+  user: {
+    pseudonym: string,
+  }
+};
+
+export function isPreviewConnectionResponse(object: unknown): object is PreviewConnectionResponse {
+  const response = (object as PreviewConnectionResponse);
+  return (response?.org?.id.length > 0)
+    && (response?.org?.name.length > 0)
+    && (response?.org?.potential_member_definition.length > 0)
+    && (response?.org?.potential_member_estimate > 0)
+    && (response?.user?.pseudonym.length > 0);
+}
