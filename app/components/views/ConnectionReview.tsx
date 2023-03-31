@@ -1,7 +1,20 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { QRCodeValue, User } from '../../model';
+import { QRCodeValue } from '../../model';
+import { PreviewConnectionResponse } from '../../networking';
+import ConnectionRequestProgress from './ConnectionRequestProgress';
 import ReviewFrame from './ReviewFrame';
+
+const reviewFrameProvider = ({ user }: PreviewConnectionResponse) => (
+  <ReviewFrame
+    labeledValues={[
+      {
+        label: 'I want to connect with',
+        value: user.pseudonym,
+      },
+    ]}
+  />
+);
 
 type Props = {
   qrValue: QRCodeValue;
@@ -9,16 +22,12 @@ type Props = {
 };
 
 export default function ConnectionReview({ qrValue, style }: Props) {
-  const { sharedBy: userData } = qrValue;
-  const user = User(userData);
+  const { jwt: sharerJwt } = qrValue;
+
   return (
-    <ReviewFrame
-      labeledValues={[
-        {
-          label: 'I want to connect with',
-          value: user.pseudonym,
-        },
-      ]}
+    <ConnectionRequestProgress
+      reviewFrameProvider={reviewFrameProvider}
+      sharerJwt={sharerJwt}
       style={style}
     />
   );
