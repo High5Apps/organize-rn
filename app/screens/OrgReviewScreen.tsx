@@ -79,7 +79,7 @@ export default function OrgReviewScreen({
 
     const unpublishedOrg = {
       name,
-      potentialMemberCount: estimate,
+      potentialMemberEstimate: estimate,
       potentialMemberDefinition: definition,
     };
 

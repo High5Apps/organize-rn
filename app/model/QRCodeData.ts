@@ -38,7 +38,7 @@ export function QRCodeDataFormatter({
     url.searchParams.set(ORG_NAME_PARAM, org.name);
     url.searchParams.set(
       ORG_POTENTIAL_MEMBER_COUNT_PARAM,
-      org.potentialMemberCount.toString(),
+      org.potentialMemberEstimate.toString(),
     );
     url.searchParams.set(
       ORG_POTENTIAL_MEMBER_DEFINITION_PARAM,
@@ -78,15 +78,18 @@ export function QRCodeDataParser({ url }: ParserProps) {
     const pathComponents = pathname.split('/');
     const orgId = pathComponents[pathComponents.length - 2];
     const name = searchParams.get(ORG_NAME_PARAM);
-    const potentialMemberCountString = searchParams.get(
+    const potentialMemberEstimateString = searchParams.get(
       ORG_POTENTIAL_MEMBER_COUNT_PARAM,
     );
-    const potentialMemberCount = parseInt(potentialMemberCountString || '', 10);
+    const potentialMemberEstimate = parseInt(
+      potentialMemberEstimateString || '',
+      10,
+    );
     const potentialMemberDefinition = searchParams.get(
       ORG_POTENTIAL_MEMBER_DEFINITION_PARAM,
     );
     const org = {
-      id: orgId, name, potentialMemberCount, potentialMemberDefinition,
+      id: orgId, name, potentialMemberEstimate, potentialMemberDefinition,
     };
 
     const pseudonym = searchParams.get(USER_PSEUDONYM);

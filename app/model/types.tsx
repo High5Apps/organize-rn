@@ -1,7 +1,7 @@
 export type Org = {
   id: string;
   name: string;
-  potentialMemberCount: number;
+  potentialMemberEstimate: number;
   potentialMemberDefinition: string;
 };
 
@@ -10,7 +10,7 @@ export function isOrg(object: unknown): object is Org {
   return (
     org?.id?.length > 0
       && org?.name?.length > 0
-      && org?.potentialMemberCount > 0
+      && org?.potentialMemberEstimate > 0
       && org?.potentialMemberDefinition?.length > 0
   );
 }

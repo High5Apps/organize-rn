@@ -44,8 +44,8 @@ describe('toUrl', () => {
     expect(url).toContain(fakeOrg.name);
   });
 
-  it('contains org.potentialMemberCount', () => {
-    expect(url).toContain(fakeOrg.potentialMemberCount);
+  it('contains org.potentialMemberEstimate', () => {
+    expect(url).toContain(fakeOrg.potentialMemberEstimate);
   });
 
   it('contains org.potentialMemberDefinition', () => {
@@ -123,9 +123,9 @@ describe('parse', () => {
     expect(value.org.name).toBe(fakeOrg.name);
   });
 
-  it('parses org.potentialMemberCount', () => {
-    expect(value.org.potentialMemberCount)
-      .toBe(fakeOrg.potentialMemberCount);
+  it('parses org.potentialMemberEstimate', () => {
+    expect(value.org.potentialMemberEstimate)
+      .toBe(fakeOrg.potentialMemberEstimate);
   });
 
   it('parses org.potentialMemberDefinition', () => {
