@@ -4,17 +4,16 @@ import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { QRCodeValue } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
-import { QRValueFilter, SetQRValue } from './types';
+import { SetQRValue } from './types';
 
 type Props = {
   qrValue: QRCodeValue | null;
-  qrValueFilter?: QRValueFilter;
   ReviewComponent: ReactNode;
   setQRValue: SetQRValue;
 };
 
 export default function CameraControl({
-  qrValue, qrValueFilter, ReviewComponent, setQRValue,
+  qrValue, ReviewComponent, setQRValue,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
@@ -75,7 +74,6 @@ export default function CameraControl({
           onPress();
         }
       }}
-      qrValueFilter={qrValueFilter}
       setEnabled={setCameraEnabled}
       setQRValue={setQRValue}
     >
@@ -83,7 +81,3 @@ export default function CameraControl({
     </QRCamera>
   );
 }
-
-CameraControl.defaultProps = {
-  qrValueFilter: undefined,
-};

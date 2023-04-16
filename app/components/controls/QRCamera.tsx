@@ -10,7 +10,7 @@ import { QRCodeDataParser } from '../../model';
 import useTheme from '../../Theme';
 import { FadeInView } from '../views';
 import FrameButton from './FrameButton';
-import { QRValueFilter, SetQRValue } from './types';
+import { SetQRValue } from './types';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -32,13 +32,12 @@ type Props = {
   buttonDisabled?: boolean;
   enabled: boolean;
   onPress?: () => void;
-  qrValueFilter?: QRValueFilter;
   setEnabled: (enabled: boolean) => void;
   setQRValue: SetQRValue;
 };
 
 export default function QRCamera({
-  buttonDisabled, children, enabled, onPress, qrValueFilter, setEnabled,
+  buttonDisabled, children, enabled, onPress, setEnabled,
   setQRValue,
 }: PropsWithChildren<Props>) {
   const [frameSize, setFrameSize] = useState(0);
@@ -63,7 +62,7 @@ export default function QRCamera({
     try {
       uniqueUrls.forEach((url) => {
         const qrValue = QRCodeDataParser({ url }).parse();
-        if (!qrValue || !qrValueFilter?.(qrValue)) { return; }
+        if (!qrValue) { return; }
         setQRValue(qrValue);
       });
     } catch (e) {
@@ -148,5 +147,4 @@ export default function QRCamera({
 QRCamera.defaultProps = {
   buttonDisabled: false,
   onPress: () => {},
-  qrValueFilter: () => true,
 };

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { QRCodeValue } from '../../model';
 import useTheme from '../../Theme';
 import CameraControl from './CameraControl';
-import { QRValueFilter, SetQRValue } from './types';
+import { SetQRValue } from './types';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -28,13 +28,12 @@ type Props = {
   prompt: string;
   promptHidden?: boolean;
   qrValue: QRCodeValue | null;
-  qrValueFilter?: QRValueFilter;
   ReviewComponent: ReactNode;
   setQRValue: SetQRValue;
 };
 
 export default function NewConnectionControl({
-  prompt, promptHidden, qrValue, qrValueFilter, ReviewComponent, setQRValue,
+  prompt, promptHidden, qrValue, ReviewComponent, setQRValue,
 }: Props) {
   const { styles } = useStyles();
 
@@ -42,7 +41,6 @@ export default function NewConnectionControl({
     <View style={styles.topContainer}>
       <CameraControl
         qrValue={qrValue}
-        qrValueFilter={qrValueFilter}
         ReviewComponent={ReviewComponent}
         setQRValue={setQRValue}
       />
@@ -53,5 +51,4 @@ export default function NewConnectionControl({
 
 NewConnectionControl.defaultProps = {
   promptHidden: false,
-  qrValueFilter: undefined,
 };

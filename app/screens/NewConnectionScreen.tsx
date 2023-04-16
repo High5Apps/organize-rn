@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl, PrimaryButton,
-  ScreenBackground, useRequestProgress,
+  ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
+  PrimaryButton, ScreenBackground, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { createConnection } from '../networking';
@@ -83,16 +83,6 @@ export default function NewConnectionScreen() {
     setLoading(false);
   };
 
-  const expectedOrgId = currentUser?.orgId;
-  const qrValueFilter = useCallback((value: QRCodeValue) => {
-    if (expectedOrgId && (expectedOrgId !== value.org.id)) {
-      setResult('warning', "You can't connect with users in another Org");
-      return false;
-    }
-
-    return true;
-  }, [expectedOrgId]);
-
   return (
     <ScreenBackground>
       <LockingScrollView
@@ -103,7 +93,6 @@ export default function NewConnectionScreen() {
           prompt="Connect with other members of your Org by scanning their secret code."
           promptHidden={!!qrValue}
           qrValue={qrValue}
-          qrValueFilter={qrValueFilter}
           ReviewComponent={!!qrValue && (
             <ConnectionReview
               qrValue={qrValue}
