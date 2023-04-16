@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { QRCodeValue } from '../../model';
-import { PreviewConnectionResponse } from '../../networking';
+import { ConnectionPreview } from '../../networking';
 import ConnectionRequestProgress from './ConnectionRequestProgress';
 import ReviewFrame from './ReviewFrame';
 
-const reviewFrameProvider = ({ user }: PreviewConnectionResponse) => (
+const reviewFrameProvider = ({ user }: ConnectionPreview) => (
   <ReviewFrame
     labeledValues={[
       {

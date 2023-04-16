@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  Agreement, ButtonRow, LockingScrollView, MembershipReview, NewConnectionControl, PrimaryButton,
-  ScreenBackground, SecondaryButton, useRequestProgress,
+  Agreement, ButtonRow, LockingScrollView, MembershipReview,
+  NewConnectionControl, PrimaryButton, ScreenBackground, SecondaryButton,
+  useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { UserType } from '../model/User';
 import type { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
+import { ConnectionPreview } from '../networking';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -37,6 +39,9 @@ const primaryButtonLabel = 'Join';
 export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
+  const [
+    connectionPreview, setConnectionPreview,
+  ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
@@ -57,12 +62,13 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   }, [qrValue]);
 
   const onJoinPressed = async () => {
-    if (!qrValue) { return; }
+    if (!qrValue || !connectionPreview) { return; }
 
     setLoading(true);
     setResult('none');
 
-    const { jwt: sharerJwt, org } = qrValue;
+    const { jwt: sharerJwt } = qrValue;
+    const { org } = connectionPreview;
     const { id: orgId, ...unpublishedOrg } = org;
 
     let currentUser: UserType | null = null;
@@ -102,6 +108,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           qrValue={qrValue}
           ReviewComponent={!!qrValue && (
             <MembershipReview
+              onConnectionPreview={setConnectionPreview}
               qrValue={qrValue}
               style={StyleSheet.absoluteFill}
             />
@@ -111,7 +118,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       </LockingScrollView>
       <>
         <RequestProgress />
-        {qrValue && <Agreement buttonLabel={primaryButtonLabel} />}
+        {connectionPreview && <Agreement buttonLabel={primaryButtonLabel} />}
         <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
             iconName="navigate-before"
@@ -119,7 +126,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             onPress={navigation.goBack}
             style={[styles.button, styles.backButton]}
           />
-          {qrValue && (
+          {connectionPreview && (
             <PrimaryButton
               iconName="person-add"
               label={primaryButtonLabel}

@@ -1,9 +1,10 @@
 import { get, post, Status } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { connectionPreviewURI, connectionsURI } from './Routes';
+import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import {
-  Authorization, ErrorResponseType, isPreviewConnectionResponse,
-  PreviewConnectionResponse,
+  Authorization, ConnectionPreview, ErrorResponseType,
+  isPreviewConnectionResponse,
 } from './types';
 
 type PreviewProps = {
@@ -48,7 +49,7 @@ export async function createConnection({
 
 export async function previewConnection({
   sharerJwt,
-}: PreviewProps): Promise<PreviewConnectionResponse | ErrorResponseType> {
+}: PreviewProps): Promise<ConnectionPreview | ErrorResponseType> {
   const uri = connectionPreviewURI(sharerJwt);
   const response = await get({ uri });
 
@@ -62,5 +63,6 @@ export async function previewConnection({
     throw new Error('Failed to parse connection preview from response');
   }
 
-  return json;
+  const connectionPreview = recursiveSnakeToCamel(json) as ConnectionPreview;
+  return connectionPreview;
 }

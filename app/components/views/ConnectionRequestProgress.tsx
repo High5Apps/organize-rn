@@ -5,7 +5,7 @@ import {
 import useRequestProgress from './RequestProgress';
 import { GENERIC_ERROR_MESSAGE } from '../../model';
 import {
-  ErrorResponse, isErrorResponse, previewConnection, PreviewConnectionResponse,
+  ConnectionPreview, ErrorResponse, isErrorResponse, previewConnection,
 } from '../../networking';
 import useTheme from '../../Theme';
 
@@ -24,17 +24,18 @@ const useStyles = () => {
 };
 
 type Props = {
-  reviewFrameProvider: (response: PreviewConnectionResponse) => JSX.Element;
+  onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
+  reviewFrameProvider: (response: ConnectionPreview) => JSX.Element;
   sharerJwt: string;
   style?: StyleProp<ViewStyle>;
 };
 
 export default function ConnectionRequestProgress({
-  reviewFrameProvider, sharerJwt, style,
+  onConnectionPreview, reviewFrameProvider, sharerJwt, style,
 }: Props) {
   const { styles } = useStyles();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
-  const [response, setResponse] = useState<PreviewConnectionResponse>();
+  const [response, setResponse] = useState<ConnectionPreview>();
 
   useEffect(() => {
     let subscribed = true;
@@ -51,8 +52,10 @@ export default function ConnectionRequestProgress({
           return;
         }
 
-        setResponse(responseOrError);
+        const connectionPreview = responseOrError;
+        setResponse(connectionPreview);
         setResult('success');
+        onConnectionPreview?.(connectionPreview);
       } catch (error) {
         console.error(error);
         setResult('error', GENERIC_ERROR_MESSAGE);
@@ -74,5 +77,6 @@ export default function ConnectionRequestProgress({
 }
 
 ConnectionRequestProgress.defaultProps = {
+  onConnectionPreview: () => {},
   style: {},
 };

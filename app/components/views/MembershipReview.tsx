@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { QRCodeValue } from '../../model';
-import { PreviewConnectionResponse } from '../../networking';
+import { ConnectionPreview } from '../../networking';
 import ConnectionRequestProgress from './ConnectionRequestProgress';
 import ReviewFrame from './ReviewFrame';
 
-const reviewFrameProvider = ({ org }: PreviewConnectionResponse) => (
+const reviewFrameProvider = ({ org }: ConnectionPreview) => (
   <ReviewFrame
     labeledValues={[
       {
         label: 'I am',
-        value: org.potential_member_definition,
+        value: org.potentialMemberDefinition,
       },
       {
         label: 'and I want to join',
@@ -21,15 +21,19 @@ const reviewFrameProvider = ({ org }: PreviewConnectionResponse) => (
 );
 
 type Props = {
+  onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
   qrValue: QRCodeValue;
   style?: StyleProp<ViewStyle>;
 };
 
-export default function MembershipReview({ qrValue, style }: Props) {
+export default function MembershipReview({
+  onConnectionPreview, qrValue, style,
+}: Props) {
   const { jwt: sharerJwt } = qrValue;
 
   return (
     <ConnectionRequestProgress
+      onConnectionPreview={onConnectionPreview}
       reviewFrameProvider={reviewFrameProvider}
       sharerJwt={sharerJwt}
       style={style}
@@ -38,5 +42,6 @@ export default function MembershipReview({ qrValue, style }: Props) {
 }
 
 MembershipReview.defaultProps = {
+  onConnectionPreview: () => {},
   style: {},
 };

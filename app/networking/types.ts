@@ -1,4 +1,5 @@
 import type { Org } from '../model/types';
+import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
 export type ErrorResponseType = {
   error_messages: string[];
@@ -43,7 +44,7 @@ export type Authorization = {
   jwt: string;
 };
 
-export type PreviewConnectionResponse = {
+type PreviewConnectionResponse = {
   org: {
     id: string,
     name: string,
@@ -54,6 +55,8 @@ export type PreviewConnectionResponse = {
     pseudonym: string,
   }
 };
+
+export type ConnectionPreview = SnakeToCamelCaseNested<PreviewConnectionResponse>;
 
 export function isPreviewConnectionResponse(object: unknown): object is PreviewConnectionResponse {
   const response = (object as PreviewConnectionResponse);
