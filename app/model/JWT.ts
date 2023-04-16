@@ -56,32 +56,3 @@ export default function JWT({
 
   return { toString };
 }
-
-export function base64UrlToUtf8(base64Url: string) {
-  const base64 = (
-    base64Url
-      .split(BASE64URL_CHAR_62).join(BASE64_CHAR_62)
-      .split(BASE64URL_CHAR_63).join(BASE64_CHAR_63)
-      .split(BASE64_PADDING).join('')
-  );
-
-  // buffer@6.0.3 polyfill does not yet include the base64url encoding
-  const buffer = Buffer.from(base64, 'base64');
-  const utf8 = buffer.toString('utf8');
-  return utf8;
-}
-
-export function JWTParser(jwt: string | null) {
-  const encodedPayload = jwt?.split('.')[1];
-
-  let payload = { exp: null, sub: null };
-  try {
-    const payloadJson = base64UrlToUtf8(encodedPayload || '');
-    payload = JSON.parse(payloadJson);
-  } catch {}
-
-  const expiration: string | null = payload.exp;
-  const subject: number | null = payload.sub;
-
-  return { expiration, subject };
-}

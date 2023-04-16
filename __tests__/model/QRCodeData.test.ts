@@ -1,10 +1,11 @@
 import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
-import { JWTParser } from '../../app/model/JWT';
-import { QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS } from '../../app/model/QRCodeData';
 import {
-  fakeCurrentUser, fakeJwtExpiration, fakeJwtString, fakeJwtSubject, fakeOrg,
+  QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS,
+} from '../../app/model/QRCodeData';
+import {
+  fakeCurrentUser, fakeJwtString, fakeOrg,
 } from '../FakeData';
 
 const currentTime = new Date().getTime();
@@ -12,13 +13,6 @@ const currentTime = new Date().getTime();
 const mockCreateAuthToken = jest.fn().mockResolvedValue(fakeJwtString);
 const mockCurrentUser = fakeCurrentUser;
 mockCurrentUser.createAuthToken = mockCreateAuthToken;
-
-jest.mock('../../app/model/JWT');
-const mockJwtParser = JWTParser as jest.Mock;
-mockJwtParser.mockReturnValue({
-  expiration: fakeJwtExpiration,
-  subject: fakeJwtSubject,
-});
 
 const consoleWarnSpy = jest.spyOn(global.console, 'warn').mockImplementation();
 
@@ -34,22 +28,6 @@ describe('toUrl', () => {
 
   it('contains jwt', () => {
     expect(url).toContain(fakeJwtString);
-  });
-
-  it('contains org.id', () => {
-    expect(url).toContain(fakeOrg.name);
-  });
-
-  it('contains org.name', () => {
-    expect(url).toContain(fakeOrg.name);
-  });
-
-  it('contains org.potentialMemberEstimate', () => {
-    expect(url).toContain(fakeOrg.potentialMemberEstimate);
-  });
-
-  it('contains org.potentialMemberDefinition', () => {
-    expect(url).toContain(fakeOrg.potentialMemberDefinition);
   });
 
   describe('createAuthToken', () => {
@@ -113,23 +91,5 @@ describe('parse', () => {
 
   it('parses jwt', () => {
     expect(value.jwt).toBe(fakeJwtString);
-  });
-
-  it('parses org.id', () => {
-    expect(value.org.id).toBe(fakeOrg.id);
-  });
-
-  it('parses org.name', () => {
-    expect(value.org.name).toBe(fakeOrg.name);
-  });
-
-  it('parses org.potentialMemberEstimate', () => {
-    expect(value.org.potentialMemberEstimate)
-      .toBe(fakeOrg.potentialMemberEstimate);
-  });
-
-  it('parses org.potentialMemberDefinition', () => {
-    expect(value.org.potentialMemberDefinition)
-      .toBe(fakeOrg.potentialMemberDefinition);
   });
 });
