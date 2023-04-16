@@ -17,15 +17,19 @@ const reviewFrameProvider = ({ user }: ConnectionPreview) => (
 );
 
 type Props = {
+  onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
   qrValue: QRCodeValue;
   style?: StyleProp<ViewStyle>;
 };
 
-export default function ConnectionReview({ qrValue, style }: Props) {
+export default function ConnectionReview({
+  onConnectionPreview, qrValue, style,
+}: Props) {
   const { jwt: sharerJwt } = qrValue;
 
   return (
     <ConnectionRequestProgress
+      onConnectionPreview={onConnectionPreview}
       reviewFrameProvider={reviewFrameProvider}
       sharerJwt={sharerJwt}
       style={style}
@@ -34,5 +38,6 @@ export default function ConnectionReview({ qrValue, style }: Props) {
 }
 
 ConnectionReview.defaultProps = {
+  onConnectionPreview: () => {},
   style: {},
 };

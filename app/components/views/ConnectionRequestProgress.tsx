@@ -3,7 +3,9 @@ import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
 import useRequestProgress from './RequestProgress';
-import { GENERIC_ERROR_MESSAGE } from '../../model';
+import {
+  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, useUserContext,
+} from '../../model';
 import {
   ConnectionPreview, ErrorResponse, isErrorResponse, previewConnection,
 } from '../../networking';
@@ -37,6 +39,8 @@ export default function ConnectionRequestProgress({
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
   const [response, setResponse] = useState<ConnectionPreview>();
 
+  const { currentUser } = useUserContext();
+
   useEffect(() => {
     let subscribed = true;
     const unsubscribe = () => { subscribed = false; };
@@ -53,6 +57,14 @@ export default function ConnectionRequestProgress({
         }
 
         const connectionPreview = responseOrError;
+
+        if (currentUser && currentUser.org) {
+          if (currentUser.org.id !== connectionPreview.org.id) {
+            setResult('error', OTHER_ORG_ERROR_MESSAGE);
+            return;
+          }
+        }
+
         setResponse(connectionPreview);
         setResult('success');
         onConnectionPreview?.(connectionPreview);
@@ -66,7 +78,7 @@ export default function ConnectionRequestProgress({
     fetchRequestPreview();
 
     return unsubscribe;
-  }, []);
+  }, [currentUser]);
 
   return (
     <View style={[styles.frameButton, style]}>

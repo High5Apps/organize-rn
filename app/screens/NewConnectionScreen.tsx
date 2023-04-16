@@ -5,7 +5,7 @@ import {
   PrimaryButton, ScreenBackground, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
-import { createConnection } from '../networking';
+import { ConnectionPreview, createConnection } from '../networking';
 import { Status } from '../networking/API';
 import useTheme from '../Theme';
 
@@ -33,6 +33,9 @@ const useStyles = () => {
 export default function NewConnectionScreen() {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
+  const [
+    connectionPreview, setConnectionPreview,
+  ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
   const { currentUser } = useUserContext();
@@ -95,6 +98,7 @@ export default function NewConnectionScreen() {
           qrValue={qrValue}
           ReviewComponent={!!qrValue && (
             <ConnectionReview
+              onConnectionPreview={setConnectionPreview}
               qrValue={qrValue}
               style={StyleSheet.absoluteFill}
             />
@@ -105,7 +109,7 @@ export default function NewConnectionScreen() {
       <>
         <RequestProgress />
         <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
-          {qrValue && (result !== 'success') && (
+          {connectionPreview && (result !== 'success') && (
             <PrimaryButton
               iconName="person-add"
               label="Connect"
