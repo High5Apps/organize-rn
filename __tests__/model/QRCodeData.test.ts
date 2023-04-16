@@ -4,9 +4,7 @@ import {
 import {
   QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from '../../app/model/QRCodeData';
-import {
-  fakeCurrentUser, fakeJwtString, fakeOrg,
-} from '../FakeData';
+import { fakeCurrentUser, fakeJwtString } from '../FakeData';
 
 const currentTime = new Date().getTime();
 
@@ -21,7 +19,7 @@ describe('toUrl', () => {
 
   beforeEach(async () => {
     const formatter = QRCodeDataFormatter({
-      currentTime, org: fakeOrg, currentUser: mockCurrentUser,
+      currentTime, currentUser: mockCurrentUser,
     });
     url = await formatter.toUrl();
   });
@@ -60,7 +58,7 @@ describe('parse', () => {
 
   beforeAll(async () => {
     const formatter = QRCodeDataFormatter({
-      currentTime, org: fakeOrg, currentUser: fakeCurrentUser,
+      currentTime, currentUser: fakeCurrentUser,
     });
     url = await formatter.toUrl();
     value = QRCodeDataParser({ url }).parse()!;

@@ -20,7 +20,3 @@ export const orgURI = (orgId: string) => `${orgsURI}/${orgId}`;
 
 export const usersURI = `${apiRoute}/users`;
 export const userUri = (userId: string) => `${usersURI}/${userId}`;
-
-export const orgConnectionsURI = (orgId: string) => (
-  `${orgURI(orgId)}/connections`
-);

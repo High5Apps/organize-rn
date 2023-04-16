@@ -1,7 +1,5 @@
-import { orgConnectionsURI, origin } from '../networking';
-import {
-  isCurrentUserData, isQRCodeValue, Org, QRCodeValue,
-} from './types';
+import { connectionsURI, origin } from '../networking';
+import { isCurrentUserData, isQRCodeValue, QRCodeValue } from './types';
 import { UserType } from './User';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
@@ -10,12 +8,11 @@ const JWT_PARAM = 'jwt';
 
 type FormatterProps = {
   currentTime: number;
-  org: Org;
   currentUser: UserType;
 };
 
 export function QRCodeDataFormatter({
-  currentTime, org, currentUser,
+  currentTime, currentUser,
 }: FormatterProps) {
   async function toUrl(): Promise<string> {
     if (!isCurrentUserData(currentUser)) {
@@ -28,7 +25,7 @@ export function QRCodeDataFormatter({
       scope: QR_CODE_JWT_SCOPE,
     });
 
-    const url = new URL(orgConnectionsURI(org.id));
+    const url = new URL(connectionsURI);
     url.searchParams.set(JWT_PARAM, jwtString);
 
     return url.href;
