@@ -1,6 +1,6 @@
 import { NavigationAction, useNavigation } from '@react-navigation/native';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import {
   BarcodeFormat, UrlBookmark, useScanBarcodes,

@@ -5,6 +5,7 @@ import { QRCodeValue } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
 import { SetQRValue } from './types';
+import FrameButton from './FrameButton';
 
 type Props = {
   qrValue: QRCodeValue | null;
@@ -12,17 +13,38 @@ type Props = {
   setQRValue: SetQRValue;
 };
 
+function getIconPrompt(cameraPermission: CameraPermissionStatus) {
+  let iconName: string = 'qr-code-scanner';
+  let prompt: string = 'Tap to allow\ncamera access';
+
+  if (cameraPermission === 'authorized') {
+    prompt = 'Tap to show camera';
+  } else if (cameraPermission === 'restricted') {
+    iconName = 'error';
+    prompt = "Camera access is restricted on your device. Unfortunately you won't be able to use Organize.";
+  }
+
+  return (
+    <IconPrompt
+      iconName={iconName}
+      prompt={prompt}
+      style={StyleSheet.absoluteFill}
+    />
+  );
+}
+
 export default function CameraControl({
   qrValue, ReviewComponent, setQRValue,
 }: Props): JSX.Element {
   const [
     cameraPermission, setCameraPermission,
-  ] = useState<CameraPermissionStatus>();
+  ] = useState<CameraPermissionStatus>('not-determined');
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
   useEffect(() => {
     const setPermissions = async () => {
-      setCameraPermission(await Camera.getCameraPermissionStatus());
+      const permission = await Camera.getCameraPermissionStatus();
+      setCameraPermission(permission);
     };
     setPermissions().catch(console.error);
   }, []);
@@ -31,53 +53,41 @@ export default function CameraControl({
     setCameraEnabled(!qrValue);
   }, [qrValue]);
 
-  let onPress: () => void | Promise<void>;
-  let iconName: string = 'qr-code-scanner';
-  let prompt: string = 'Tap to allow\ncamera access';
+  let onPress: () => void | Promise<void> = () => {};
   if (cameraPermission === 'not-determined') {
-    onPress = async () => setCameraPermission(
-      await Camera.requestCameraPermission(),
-    );
+    onPress = async () => {
+      const permission = await Camera.requestCameraPermission();
+      setCameraPermission(permission);
+    };
   } else if (cameraPermission === 'authorized') {
-    onPress = () => setCameraEnabled(true);
+    onPress = () => setCameraEnabled(!cameraEnabled);
   } else if (cameraPermission === 'denied') {
     onPress = Linking.openSettings;
-  } else {
-    onPress = () => {};
-    iconName = 'error';
-    prompt = 'Camera access is restricted on your device. Unfortunately you won\'t be able to use Organize.';
   }
 
   const isAuthorized = cameraPermission === 'authorized';
-  const shoudlShowCamera = isAuthorized && cameraEnabled && !qrValue;
+  const IconPromptComponent = getIconPrompt(cameraPermission);
 
-  let CameraCover: ReactNode;
-  if (qrValue) {
-    CameraCover = ReviewComponent;
-  } else if (!shoudlShowCamera) {
-    CameraCover = (
-      <IconPrompt
-        iconName={iconName}
-        prompt={prompt}
-        style={StyleSheet.absoluteFill}
-      />
+  if (!isAuthorized) {
+    return (
+      <FrameButton onPress={onPress}>
+        {IconPromptComponent}
+      </FrameButton>
     );
   }
+
+  const shoudlShowCamera = isAuthorized && cameraEnabled && !qrValue;
+  const CameraCover = qrValue ? ReviewComponent : IconPromptComponent;
 
   return (
     <QRCamera
       buttonDisabled={!!qrValue}
       enabled={shoudlShowCamera}
-      onPress={() => {
-        setCameraEnabled(false);
-        if (!shoudlShowCamera) {
-          onPress();
-        }
-      }}
+      onPress={onPress}
       setEnabled={setCameraEnabled}
       setQRValue={setQRValue}
     >
-      {CameraCover}
+      {!shoudlShowCamera && CameraCover}
     </QRCamera>
   );
 }
