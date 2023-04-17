@@ -1,7 +1,6 @@
 import { NavigationAction, useNavigation } from '@react-navigation/native';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import {
   BarcodeFormat, UrlBookmark, useScanBarcodes,
@@ -13,7 +12,7 @@ import FrameButton from './FrameButton';
 import { SetQRValue } from './types';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const { colors, font } = useTheme();
 
   const styles = StyleSheet.create({
     noDevicesFound: {
@@ -21,11 +20,8 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    qrOverlay: {
-      padding: spacing.m,
-    },
   });
-  return { colors, spacing, styles };
+  return { styles };
 };
 
 type Props = {
@@ -37,10 +33,8 @@ type Props = {
 };
 
 export default function QRCamera({
-  buttonDisabled, children, enabled, onPress, setEnabled,
-  setQRValue,
+  buttonDisabled, children, enabled, onPress, setEnabled, setQRValue,
 }: PropsWithChildren<Props>) {
-  const [frameSize, setFrameSize] = useState(0);
   const [
     preventedAction, setPreventedAction,
   ] = useState<NavigationAction | undefined>();
@@ -70,7 +64,7 @@ export default function QRCamera({
     }
   }, [barcodes]);
 
-  const { colors, spacing, styles } = useStyles();
+  const { styles } = useStyles();
 
   const devices = useCameraDevices();
   const device = devices.back;
@@ -102,8 +96,6 @@ export default function QRCamera({
 
   let content;
   if (device) {
-    const qrCodeSize = frameSize - spacing.l;
-
     content = (
       <Camera
         device={device}
@@ -111,16 +103,7 @@ export default function QRCamera({
         frameProcessorFps={5}
         isActive={enabled}
         style={[StyleSheet.absoluteFill]}
-      >
-        <View style={styles.qrOverlay}>
-          <QRCode
-            color={`${colors.primary}40`} // 25% alpha
-            backgroundColor="transparent"
-            size={qrCodeSize}
-            value="You rock!"
-          />
-        </View>
-      </Camera>
+      />
     );
   } else {
     content = (
@@ -133,11 +116,7 @@ export default function QRCamera({
   }
 
   return (
-    <FrameButton
-      disabled={buttonDisabled}
-      onContainerSizeChange={({ width }) => setFrameSize(width)}
-      onPress={onPress}
-    >
+    <FrameButton disabled={buttonDisabled} onPress={onPress}>
       {content}
       {!preventedAction && children}
     </FrameButton>
