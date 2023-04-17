@@ -141,7 +141,12 @@ public class ECCModule extends ReactContextBaseJavaModule {
         }
 
         String signedMessage = Base64.encodeToString(signature, Base64.DEFAULT);
-        promise.resolve(signedMessage);
+
+        // Some Android implementations include newlines in the signedMessage, which
+        // causes issues with the JWT decoding library
+        String signedMessageWithoutWhitespace = signedMessage.replaceAll("\\s","");
+
+        promise.resolve(signedMessageWithoutWhitespace);
     }
 
     private KeyStore getAndroidKeyStore() throws KeyStoreException, CertificateException,
