@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
-import { QRCodeValue } from '../../model';
+import { QRCodeValue, useAppState } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
 import { SetQRValue } from './types';
@@ -15,7 +15,7 @@ type Props = {
 
 function getIconPrompt(cameraPermission: CameraPermissionStatus) {
   let iconName: string = 'qr-code-scanner';
-  let prompt: string = 'Tap to allow\ncamera access';
+  let prompt: string = 'Tap to allow\ncamera permissions';
 
   if (cameraPermission === 'authorized') {
     prompt = 'Tap to show camera';
@@ -41,13 +41,17 @@ export default function CameraControl({
   ] = useState<CameraPermissionStatus>('not-determined');
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
+  const appState = useAppState();
+
   useEffect(() => {
+    if (appState !== 'active') { return; }
+
     const setPermissions = async () => {
       const permission = await Camera.getCameraPermissionStatus();
       setCameraPermission(permission);
     };
     setPermissions().catch(console.error);
-  }, []);
+  }, [appState]);
 
   useEffect(() => {
     setCameraEnabled(!qrValue);
