@@ -90,7 +90,16 @@ export default function OrgReviewScreen({
           setResult('error', userOrErrorMessage);
           return;
         }
-        setCurrentUser(userOrErrorMessage);
+        const user = userOrErrorMessage;
+
+        // To spoof the newly created user as being in the seeded Org, set the
+        // spoofedOrgId below, then update the user's org_id via the backend
+        // console.
+        // const spoofedOrgId = '';
+        // user.orgId = spoofedOrgId;
+        // console.log({ userId: user.id });
+
+        setCurrentUser(user);
       }).catch(console.error);
   };
 
