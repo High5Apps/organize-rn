@@ -66,3 +66,16 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
     && (response?.org?.potential_member_estimate > 0)
     && (response?.user?.pseudonym.length > 0);
 }
+
+type OrgGraphResponse = {
+  user_ids: [string],
+  connections: [[string, string]],
+};
+
+export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
+  const response = (object as OrgGraphResponse);
+  return response?.user_ids?.length > 0
+    && response?.connections?.length > 0;
+}
+
+export type OrgGraph = SnakeToCamelCaseNested<OrgGraphResponse>;

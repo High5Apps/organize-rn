@@ -1,8 +1,10 @@
-import { post } from './API';
+import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { orgsURI } from './Routes';
+import { orgGraphURI, orgsURI } from './Routes';
+import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import {
-  Authorization, ErrorResponseType, isCreateOrgResponse, UnpublishedOrg,
+  Authorization, ErrorResponseType, isCreateOrgResponse, isOrgGraphResponse,
+  OrgGraph, UnpublishedOrg,
 } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -29,4 +31,28 @@ export async function createOrg({
     throw new Error('Failed to parse Org from response');
   }
   return json.id;
+}
+
+type FetchOrgProps = {
+  orgId: string,
+};
+
+export async function fetchOrgGraph({
+  jwt, orgId,
+}: FetchOrgProps & Authorization): Promise<OrgGraph | ErrorResponseType> {
+  const uri = orgGraphURI(orgId);
+  const response = await get({ jwt, uri });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return parseErrorResponse(json);
+  }
+
+  if (!isOrgGraphResponse(json)) {
+    throw new Error('Failed to Org graph from response');
+  }
+
+  const orgGraph = recursiveSnakeToCamel(json) as OrgGraph;
+  return orgGraph;
 }
