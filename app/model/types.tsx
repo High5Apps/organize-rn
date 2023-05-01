@@ -1,8 +1,14 @@
+export type OrgGraph = {
+  userIds: [string],
+  connections: [[string, string]],
+};
+
 export type Org = {
   id: string;
   name: string;
   potentialMemberEstimate: number;
   potentialMemberDefinition: string;
+  graph?: OrgGraph;
 };
 
 export function isOrg(object: unknown): object is Org {

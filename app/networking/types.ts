@@ -77,5 +77,3 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   return response?.user_ids?.length > 0
     && response?.connections?.length > 0;
 }
-
-export type OrgGraph = SnakeToCamelCaseNested<OrgGraphResponse>;
