@@ -7,7 +7,7 @@ import { isCurrentUserData, useUserContext } from '../model';
 export default function OrgScreen({ route }: OrgScreenProps) {
   const { name } = route;
 
-  const { currentUser } = useUserContext();
+  const { currentUser, setCurrentUser } = useUserContext();
 
   useEffect(() => {
     let subscribed = true;
@@ -29,6 +29,7 @@ export default function OrgScreen({ route }: OrgScreenProps) {
 
       const orgGraph = responseOrError;
       currentUser.org.graph = orgGraph;
+      setCurrentUser(currentUser);
     }
     updateOrgGraph().catch(console.error);
 
