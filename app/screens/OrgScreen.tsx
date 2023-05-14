@@ -1,40 +1,25 @@
-import React, { useEffect } from 'react';
-import type { OrgScreenProps } from '../navigation';
-import PlaceholderScreen from './PlaceholderScreen';
-import { ErrorResponse, fetchOrgGraph, isErrorResponse } from '../networking';
-import { isCurrentUserData, useUserContext } from '../model';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { LockingScrollView, OrgGraph, ScreenBackground } from '../components';
 
-export default function OrgScreen({ route }: OrgScreenProps) {
-  const { name } = route;
+const useStyles = () => {
+  const styles = StyleSheet.create({
+    container: {
+      aspectRatio: 1,
+    },
+  });
 
-  const { currentUser, setCurrentUser } = useUserContext();
+  return { styles };
+};
 
-  useEffect(() => {
-    let subscribed = true;
-    const unsubscribe = () => { subscribed = false; };
+export default function OrgScreen() {
+  const { styles } = useStyles();
 
-    async function updateOrgGraph() {
-      if (!isCurrentUserData(currentUser)) {
-        throw new Error('Expected currentUser to be set');
-      }
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { orgId } = currentUser;
-      const responseOrError = await fetchOrgGraph({ jwt, orgId });
-      if (!subscribed) { return; }
-
-      if (isErrorResponse(responseOrError)) {
-        const { errorMessage } = ErrorResponse(responseOrError);
-        throw new Error(errorMessage);
-      }
-
-      const orgGraph = responseOrError;
-      currentUser.org.graph = orgGraph;
-      setCurrentUser(currentUser);
-    }
-    updateOrgGraph().catch(console.error);
-
-    return unsubscribe;
-  }, []);
-
-  return <PlaceholderScreen name={name} />;
+  return (
+    <ScreenBackground>
+      <LockingScrollView>
+        <OrgGraph containerStyle={styles.container} />
+      </LockingScrollView>
+    </ScreenBackground>
+  );
 }

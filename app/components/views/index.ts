@@ -7,6 +7,7 @@ export { default as FadeInView } from './FadeInView';
 export { default as IconPrompt } from './IconPrompt';
 export { default as LockingScrollView } from './LockingScrollView';
 export { default as MembershipReview } from './MembershipReview';
+export { default as OrgGraph } from './OrgGraph';
 export { default as useRequestProgress } from './RequestProgress';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';
