@@ -1,6 +1,6 @@
 export type OrgGraph = {
-  userIds: [string],
-  connections: [[string, string]],
+  userIds: string[],
+  connections: [string, string][],
 };
 
 export type Org = {
