@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { Data } from 'react-native-vis-network';
 import {
   OrgGraph as OrgGraphType, isCurrentUserData, useUserContext,
@@ -8,24 +8,41 @@ import {
   ErrorResponse, fetchOrgGraph, isErrorResponse,
 } from '../../networking';
 import useTheme from '../../Theme';
+import ErrorMessage from './ErrorMessage';
 
-type Props = {
-  containerStyle?: ViewStyle;
-};
+const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
-function toVisNetworkData(orgGraph: OrgGraphType): Data {
+function toVisNetworkData(orgGraph?: OrgGraphType): Data | undefined {
+  if (!orgGraph) { return undefined; }
+
   return {
     nodes: orgGraph.userIds.map((id) => ({ id })) || [],
     edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
   };
 }
 
-const nullOrgGraph: OrgGraphType = { userIds: [], connections: [] };
+const useStyles = () => {
+  const { colors } = useTheme();
 
-export default function OrgGraph({ containerStyle }: Props) {
+  const styles = StyleSheet.create({
+    container: {
+      aspectRatio: 1,
+      backgroundColor: colors.fill,
+      justifyContent: 'center',
+    },
+  });
+
+  return { styles };
+};
+
+export default function OrgGraph() {
+  const [error, setError] = useState('');
+
   const { colors: { primary } } = useTheme();
 
   const { currentUser, setCurrentUser } = useUserContext();
+
+  const { styles } = useStyles();
 
   useEffect(() => {
     let subscribed = true;
@@ -50,7 +67,10 @@ export default function OrgGraph({ containerStyle }: Props) {
       updatedCurrentUser.org.graph = orgGraph;
       setCurrentUser(updatedCurrentUser);
     }
-    updateOrgGraph().catch(console.error);
+    updateOrgGraph().catch((e) => {
+      console.error(e);
+      setError(GRAPH_LOAD_ERROR_MESSAGE);
+    });
 
     return unsubscribe;
   }, []);
@@ -59,7 +79,7 @@ export default function OrgGraph({ containerStyle }: Props) {
     throw new Error('Expected currentUser');
   }
 
-  const data = toVisNetworkData(currentUser?.org?.graph || nullOrgGraph);
+  const data = toVisNetworkData(currentUser?.org?.graph);
 
   const options = {
     edges: {
@@ -81,13 +101,18 @@ export default function OrgGraph({ containerStyle }: Props) {
     },
   };
 
+  let component;
+  if (data) {
+    component = <VisNetwork data={data} options={options} />;
+  } else if (error) {
+    component = <ErrorMessage message={error} />;
+  } else {
+    component = <ActivityIndicator color={primary} />;
+  }
+
   return (
-    <View style={containerStyle}>
-      <VisNetwork data={data} options={options} />
+    <View style={styles.container}>
+      { component }
     </View>
   );
 }
-
-OrgGraph.defaultProps = {
-  containerStyle: {},
-};
