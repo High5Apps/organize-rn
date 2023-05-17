@@ -1,28 +1,14 @@
 import { NavigationAction, useNavigation } from '@react-navigation/native';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import {
   BarcodeFormat, UrlBookmark, useScanBarcodes,
 } from 'vision-camera-code-scanner';
 import { QRCodeDataParser } from '../../model';
-import useTheme from '../../Theme';
-import { FadeInView } from '../views';
+import { ErrorMessage, FadeInView } from '../views';
 import FrameButton from './FrameButton';
 import { SetQRValue } from './types';
-
-const useStyles = () => {
-  const { colors, font } = useTheme();
-
-  const styles = StyleSheet.create({
-    noDevicesFound: {
-      color: colors.error,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
-    },
-  });
-  return { styles };
-};
 
 type Props = {
   buttonDisabled?: boolean;
@@ -63,8 +49,6 @@ export default function QRCamera({
       console.warn(e);
     }
   }, [barcodes]);
-
-  const { styles } = useStyles();
 
   const devices = useCameraDevices();
   const device = devices.back;
@@ -108,9 +92,7 @@ export default function QRCamera({
   } else {
     content = (
       <FadeInView delay={2000}>
-        <Text style={styles.noDevicesFound}>
-          No camera found
-        </Text>
+        <ErrorMessage message="No camera found" />
       </FadeInView>
     );
   }
