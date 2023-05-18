@@ -32,7 +32,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { colors, styles };
 };
 
 export default function OrgGraph() {
@@ -42,7 +42,7 @@ export default function OrgGraph() {
 
   const { currentUser, setCurrentUser } = useUserContext();
 
-  const { styles } = useStyles();
+  const { colors, styles } = useStyles();
 
   useEffect(() => {
     let subscribed = true;
@@ -103,7 +103,13 @@ export default function OrgGraph() {
 
   let component;
   if (data) {
-    component = <VisNetwork data={data} options={options} />;
+    component = (
+      <VisNetwork
+        style={{ backgroundColor: colors.fill }}
+        data={data}
+        options={options}
+      />
+    );
   } else if (error) {
     component = <ErrorMessage message={error} />;
   } else {
