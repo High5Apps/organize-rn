@@ -70,7 +70,6 @@ export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
 export type ConnectStackParamList = {
   Connect: undefined;
   NewConnection: undefined;
-  Settings: undefined;
 };
 
 export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
@@ -80,16 +79,6 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
   >;
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
-export type SettingsScreenProps = ConnectStackScreenProps<'Settings'>;
-
-export type ConnectStackNavigationProp<T extends keyof ConnectStackParamList> =
-  CompositeNavigationProp<
-    NativeStackNavigationProp<ConnectStackParamList, T>,
-    RootStackNavigationProp<keyof RootStackParamList>
-  >;
-export type SettingsScreenNavigationProp = (
-  ConnectStackNavigationProp<'Settings'>
-);
 
 export type DiscussStackParamList = {
   Discuss: undefined;
@@ -117,6 +106,7 @@ export type VoteScreenProps = VoteStackScreenProps<'Vote'>;
 
 export type OrgStackParamList = {
   Org: undefined;
+  Settings: undefined;
 };
 
 export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
@@ -126,6 +116,16 @@ export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
   >;
 
 export type OrgScreenProps = OrgStackScreenProps<'Org'>;
+export type SettingsScreenProps = OrgStackScreenProps<'Settings'>;
+
+export type OrgStackNavigationProp<T extends keyof OrgStackParamList> =
+  CompositeNavigationProp<
+    NativeStackNavigationProp<OrgStackParamList, T>,
+    RootStackNavigationProp<keyof RootStackParamList>
+  >;
+export type SettingsScreenNavigationProp = (
+  OrgStackNavigationProp<'Settings'>
+);
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc

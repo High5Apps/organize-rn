@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { OrgScreen } from '../screens';
+import { OrgScreen, SettingsScreen } from '../screens';
 import { OrgStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 import { useUserContext } from '../model';
@@ -16,6 +16,7 @@ export default function OrgStack() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="Org" component={OrgScreen} options={{ title }} />
+      <Stack.Screen component={SettingsScreen} name="Settings" />
     </Stack.Navigator>
   );
 }

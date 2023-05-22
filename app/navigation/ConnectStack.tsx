@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ConnectScreen, NewConnectionScreen, SettingsScreen } from '../screens';
+import { ConnectScreen, NewConnectionScreen } from '../screens';
 import { ConnectStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions
   from './useDefaultStackNavigatorScreenOptions';
@@ -18,7 +18,6 @@ export default function ConnectStack() {
         name="NewConnection"
         options={{ title: 'Create Connection' }}
       />
-      <Stack.Screen component={SettingsScreen} name="Settings" />
     </Stack.Navigator>
   );
 }
