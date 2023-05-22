@@ -12,3 +12,4 @@ export { default as OrgGraph } from './OrgGraph';
 export { default as useRequestProgress } from './RequestProgress';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';
+export { default as SectionHeader } from './SectionHeader';

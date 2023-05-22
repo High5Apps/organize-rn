@@ -3,7 +3,7 @@ import {
   Pressable, SectionList, StyleSheet, Text, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScreenBackground } from '../components';
+import { ScreenBackground, SectionHeader } from '../components';
 import {
   Settings, SettingsItem, SettingsSection, useUserContext,
 } from '../model';
@@ -39,16 +39,6 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    sectionHeader: {
-      backgroundColor: colors.background,
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.xs,
-    },
-    sectionHeaderTitle: {
-      color: colors.label,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.semiBold,
-    },
   });
 
   return { styles };
@@ -82,11 +72,7 @@ export default function SettingsScreen() {
 
   const renderSectionHeader = ({ section }: { section: SettingsSection }) => {
     const { title } = section;
-    return (
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionHeaderTitle}>{title}</Text>
-      </View>
-    );
+    return <SectionHeader>{title}</SectionHeader>;
   };
 
   return (
