@@ -27,7 +27,6 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       aspectRatio: 1,
-      backgroundColor: colors.fill,
       justifyContent: 'center',
     },
   });
@@ -105,7 +104,8 @@ export default function OrgGraph() {
   if (data) {
     component = (
       <VisNetwork
-        style={{ backgroundColor: colors.fill }}
+        style={{ backgroundColor: 'transparent' }}
+        containerStyle={{ backgroundColor: colors.fill }}
         data={data}
         options={options}
       />
