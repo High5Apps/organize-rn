@@ -51,7 +51,7 @@ export async function fetchOrgGraph({
   }
 
   if (!isOrgGraphResponse(json)) {
-    throw new Error('Failed to Org graph from response');
+    throw new Error('Failed to parse Org graph from response');
   }
 
   const orgGraph = recursiveSnakeToCamel(json) as OrgGraph;
