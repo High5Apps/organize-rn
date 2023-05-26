@@ -4,6 +4,7 @@ export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';
 export { default as NewConnectionControl } from './NewConnectionControl';
+export { default as NotableUserList } from './NotableUserList';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';

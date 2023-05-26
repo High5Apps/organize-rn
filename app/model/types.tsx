@@ -1,5 +1,8 @@
 export type OrgGraph = {
-  userIds: string[],
+  users: {
+    id: string,
+    pseudonym: string,
+  }[],
   connections: [string, string][],
 };
 

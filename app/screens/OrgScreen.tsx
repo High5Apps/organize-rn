@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
-  IconButton, LockingScrollView, OrgGraph, ScreenBackground, SectionHeader,
+  IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
 } from '../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
@@ -26,11 +26,14 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
 
   return (
     <ScreenBackground>
-      <LockingScrollView>
-        <SectionHeader>Members and connections</SectionHeader>
-        <OrgGraph />
-        <SectionHeader>Officers</SectionHeader>
-      </LockingScrollView>
+      <NotableUserList
+        ListHeaderComponent={(
+          <>
+            <SectionHeader>Members and connections</SectionHeader>
+            <OrgGraph />
+          </>
+        )}
+      />
     </ScreenBackground>
   );
 }
