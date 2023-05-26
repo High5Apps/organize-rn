@@ -9,7 +9,7 @@ const useStyles = () => {
     text: {
       backgroundColor: colors.background,
       color: colors.label,
-      fontFamily: font.weights.semiBold,
+      fontFamily: font.weights.medium,
       fontSize: font.sizes.body,
       paddingHorizontal: spacing.m,
       paddingVertical: spacing.xs,
