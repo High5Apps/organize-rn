@@ -73,6 +73,7 @@ const useStyles = () => {
 
 export type NotableUserItem = {
   user: {
+    connectionCount: number;
     pseudonym: string;
   };
   circleColor: string;
@@ -124,18 +125,19 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
         { user: users[9], circleColor: '#FF00D0' },
       ],
     });
-  }
 
-  sections.push({
-    title: 'Me',
-    data: [
-      {
-        user: { pseudonym: currentUser.pseudonym },
-        circleBorderColor: colors.primary,
-        circleColor: colors.fill,
-      },
-    ],
-  });
+    sections.push({
+      title: 'Me',
+      data: [
+        {
+          // TODO: Use real data
+          user: users[10],
+          circleBorderColor: colors.primary,
+          circleColor: colors.fill,
+        },
+      ],
+    });
+  }
 
   const ItemSeparator = useCallback(() => (
     <View style={styles.itemSeparator} />
@@ -143,13 +145,12 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
 
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {
-      circleBorderColor, circleColor, user: { pseudonym },
+      circleBorderColor, circleColor, user: { connectionCount, pseudonym },
     } = item;
 
     // TODO: Use real data
     const fakeTitle = 'Founder';
     const fakeTenure = '99w';
-    const fakeConnectionCount = 10;
     const fakeRecruitCount = 7;
 
     return (
@@ -170,7 +171,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
           <Icon name="schedule" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{fakeTenure}</Text>
           <Icon name="link" style={styles.rowIcon} />
-          <Text style={styles.rowSubtitleText}>{fakeConnectionCount}</Text>
+          <Text style={styles.rowSubtitleText}>{connectionCount}</Text>
           <Icon name="person-add-alt" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{fakeRecruitCount}</Text>
         </View>

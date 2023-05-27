@@ -68,13 +68,14 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
 }
 
 type OrgGraphResponse = {
-  users: { id: string, pseudonym: string }[];
+  users: { connection_count: number, id: string, pseudonym: string }[];
   connections: [string, string][],
 };
 
 export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
   const response = (object as OrgGraphResponse);
   return response?.users?.length > 0
+    && response.users[0].connection_count > 0
     && response.users[0].id?.length > 0
     && response.users[0].pseudonym?.length > 0
     && response?.connections?.length > 0;

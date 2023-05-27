@@ -1,5 +1,6 @@
 export type OrgGraph = {
   users: {
+    connectionCount: number;
     id: string,
     pseudonym: string,
   }[],
