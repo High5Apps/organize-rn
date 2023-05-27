@@ -75,6 +75,7 @@ export type NotableUserItem = {
   user: {
     connectionCount: number;
     pseudonym: string;
+    recruitCount: number;
   };
   circleColor: string;
   circleBorderColor?: string;
@@ -145,13 +146,14 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
 
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {
-      circleBorderColor, circleColor, user: { connectionCount, pseudonym },
+      circleBorderColor, circleColor, user: {
+        connectionCount, pseudonym, recruitCount,
+      },
     } = item;
 
     // TODO: Use real data
     const fakeTitle = 'Founder';
     const fakeTenure = '99w';
-    const fakeRecruitCount = 7;
 
     return (
       <View style={styles.container}>
@@ -173,7 +175,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
           <Icon name="link" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{connectionCount}</Text>
           <Icon name="person-add-alt" style={styles.rowIcon} />
-          <Text style={styles.rowSubtitleText}>{fakeRecruitCount}</Text>
+          <Text style={styles.rowSubtitleText}>{recruitCount}</Text>
         </View>
       </View>
     );

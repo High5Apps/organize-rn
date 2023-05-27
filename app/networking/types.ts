@@ -68,8 +68,13 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
 }
 
 type OrgGraphResponse = {
-  users: { connection_count: number, id: string, pseudonym: string }[];
-  connections: [string, string][],
+  users: {
+    connection_count: number;
+    id: string;
+    pseudonym: string;
+    recruit_count: number;
+  }[];
+  connections: [string, string][];
 };
 
 export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
@@ -78,5 +83,6 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
     && response.users[0].connection_count > 0
     && response.users[0].id?.length > 0
     && response.users[0].pseudonym?.length > 0
+    && response.users[0].recruit_count >= 0
     && response?.connections?.length > 0;
 }
