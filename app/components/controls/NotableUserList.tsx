@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
-import { useUserContext } from '../../model';
+import { getTenure, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -74,6 +74,7 @@ const useStyles = () => {
 export type NotableUserItem = {
   user: {
     connectionCount: number;
+    joinedAt: number;
     pseudonym: string;
     recruitCount: number;
   };
@@ -147,13 +148,14 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {
       circleBorderColor, circleColor, user: {
-        connectionCount, pseudonym, recruitCount,
+        connectionCount, joinedAt, pseudonym, recruitCount,
       },
     } = item;
 
+    const tenure = getTenure(1000 * joinedAt);
+
     // TODO: Use real data
     const fakeTitle = 'Founder';
-    const fakeTenure = '99w';
 
     return (
       <View style={styles.container}>
@@ -171,7 +173,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
         </View>
         <View style={styles.rowSubtitle}>
           <Icon name="schedule" style={styles.rowIcon} />
-          <Text style={styles.rowSubtitleText}>{fakeTenure}</Text>
+          <Text style={styles.rowSubtitleText}>{tenure}</Text>
           <Icon name="link" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{connectionCount}</Text>
           <Icon name="person-add-alt" style={styles.rowIcon} />

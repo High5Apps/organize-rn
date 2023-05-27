@@ -11,5 +11,6 @@ export {
 } from './QRCodeData';
 export { default as Secret } from './Secret';
 export { default as Settings } from './Settings';
+export { default as getTenure } from './Tenure';
 export { default as User } from './User';
 export * from './types';
