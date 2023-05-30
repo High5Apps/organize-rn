@@ -72,6 +72,7 @@ type OrgGraphResponse = {
     [id: string]: {
       connection_count: number;
       joined_at: number;
+      offices?: string[];
       pseudonym: string;
       recruit_count: number;
     }

@@ -106,30 +106,23 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
   const users = currentUser?.org?.graph?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
-    const userData = Object.values(users);
-    sections.push({
-      title: 'Officers',
-      data: [
-        // TODO: Use real data
-        { user: userData[0], circleColor: '#0054FF' },
-        { user: userData[1], circleColor: '#00BFFF' },
-        { user: userData[2], circleColor: '#00FFFD' },
-        { user: userData[3], circleColor: '#54FF00' },
-        { user: userData[4], circleColor: '#FEFF00' },
-        { user: userData[5], circleColor: '#FFAB00' },
-        { user: userData[6], circleColor: '#FFAB00' },
-        { user: userData[7], circleColor: '#FFAB00' },
-        { user: userData[8], circleColor: '#FF0000' },
-        { user: userData[9], circleColor: '#FF00D0' },
-      ],
+    const officers = Object.values(users).filter((user) => user.offices);
+    const data = officers.map((officer) => {
+      // TODO: Handle officers with multiple concurrent offices
+      const officeName = officer.offices?.[0];
+      const circleColor = officeName ? colors.office[officeName] : colors.primary;
+      return {
+        user: officer,
+        circleColor,
+      };
     });
+    sections.push({ title: 'Officers', data });
 
     sections.push({
       title: 'Me',
       data: [
         {
-          // TODO: Use real data
-          user: userData[10],
+          user: users[currentUser.id],
           circleBorderColor: colors.primary,
           circleColor: colors.fill,
         },
@@ -144,14 +137,14 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {
       circleBorderColor, circleColor, user: {
-        connectionCount, joinedAt, pseudonym, recruitCount,
+        connectionCount, joinedAt, offices, pseudonym, recruitCount,
       },
     } = item;
 
     const tenure = getTenure(1000 * joinedAt);
 
-    // TODO: Use real data
-    const fakeTitle = 'Founder';
+    const firstOffice = offices?.[0];
+    const title = firstOffice ? `${pseudonym}, ${firstOffice}` : pseudonym;
 
     return (
       <View style={styles.container}>
@@ -165,7 +158,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
               },
             ]}
           />
-          <Text style={styles.rowTitleText}>{`${pseudonym}, ${fakeTitle}`}</Text>
+          <Text style={styles.rowTitleText}>{title}</Text>
         </View>
         <View style={styles.rowSubtitle}>
           <Icon name="schedule" style={styles.rowIcon} />

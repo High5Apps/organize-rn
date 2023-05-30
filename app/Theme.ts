@@ -1,5 +1,15 @@
 import { Platform, useColorScheme } from 'react-native';
 
+const office: { [key: string]: string } = {
+  Founder: '#0054FF',
+  President: '#00BFFF',
+  'Vice President': '#00FFFD',
+  Secretary: '#54FF00',
+  Treasurer: '#FEFF00',
+  Steward: '#FFAB00',
+  Trustee: '#FF00D0',
+};
+
 const palette = {
   purpleDark2: '#1F082B',
   purpleDark0: '#AF52DE',
@@ -38,6 +48,7 @@ const lightTheme = {
     fillSecondary: palette.grayLight1,
     label: palette.purpleDark2,
     labelSecondary: palette.grayDark0,
+    office,
     primary: palette.purpleDark0,
     separator: palette.grayLight0,
     success: palette.green,
@@ -78,6 +89,7 @@ const darkTheme = {
     fillSecondary: palette.grayDark1,
     label: palette.purpleLight2,
     labelSecondary: palette.grayLight0,
+    office,
     primary: palette.purpleLight0,
     separator: palette.grayDark0,
   },
