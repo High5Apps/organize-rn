@@ -1,12 +1,15 @@
+export type OrgGraphUser = {
+  connectionCount: number;
+  joinedAt: number;
+  pseudonym: string;
+  recruitCount: number;
+};
+
 export type OrgGraph = {
   users: {
-    connectionCount: number;
-    id: string,
-    joinedAt: number;
-    pseudonym: string,
-    recruitCount: number;
-  }[],
-  connections: [string, string][],
+    [id: string]: OrgGraphUser;
+  };
+  connections: [string, string][];
 };
 
 export type Org = {

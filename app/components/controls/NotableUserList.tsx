@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
-import { getTenure, useUserContext } from '../../model';
+import { OrgGraphUser, getTenure, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -72,12 +72,7 @@ const useStyles = () => {
 };
 
 export type NotableUserItem = {
-  user: {
-    connectionCount: number;
-    joinedAt: number;
-    pseudonym: string;
-    recruitCount: number;
-  };
+  user: OrgGraphUser;
   circleColor: string;
   circleBorderColor?: string;
 };
@@ -111,20 +106,21 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
   const users = currentUser?.org?.graph?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
+    const userData = Object.values(users);
     sections.push({
       title: 'Officers',
       data: [
         // TODO: Use real data
-        { user: users[0], circleColor: '#0054FF' },
-        { user: users[1], circleColor: '#00BFFF' },
-        { user: users[2], circleColor: '#00FFFD' },
-        { user: users[3], circleColor: '#54FF00' },
-        { user: users[4], circleColor: '#FEFF00' },
-        { user: users[5], circleColor: '#FFAB00' },
-        { user: users[6], circleColor: '#FFAB00' },
-        { user: users[7], circleColor: '#FFAB00' },
-        { user: users[8], circleColor: '#FF0000' },
-        { user: users[9], circleColor: '#FF00D0' },
+        { user: userData[0], circleColor: '#0054FF' },
+        { user: userData[1], circleColor: '#00BFFF' },
+        { user: userData[2], circleColor: '#00FFFD' },
+        { user: userData[3], circleColor: '#54FF00' },
+        { user: userData[4], circleColor: '#FEFF00' },
+        { user: userData[5], circleColor: '#FFAB00' },
+        { user: userData[6], circleColor: '#FFAB00' },
+        { user: userData[7], circleColor: '#FFAB00' },
+        { user: userData[8], circleColor: '#FF0000' },
+        { user: userData[9], circleColor: '#FF00D0' },
       ],
     });
 
@@ -133,7 +129,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
       data: [
         {
           // TODO: Use real data
-          user: users[10],
+          user: userData[10],
           circleBorderColor: colors.primary,
           circleColor: colors.fill,
         },

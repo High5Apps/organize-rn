@@ -16,7 +16,7 @@ function toVisNetworkData(orgGraph?: OrgGraphType): Data | undefined {
   if (!orgGraph) { return undefined; }
 
   return {
-    nodes: orgGraph.users,
+    nodes: Object.keys(orgGraph.users).map((id) => ({ id })),
     edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
   };
 }
