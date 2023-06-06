@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { Data } from 'react-native-vis-network';
 import {
-  OrgGraph as OrgGraphType, isCurrentUserData, useUserContext,
+  OrgGraph as OrgGraphType, getHighestOffice, isCurrentUserData, useUserContext,
 } from '../../model';
 import {
   ErrorResponse, fetchOrgGraph, isErrorResponse,
@@ -12,11 +12,32 @@ import ErrorMessage from './ErrorMessage';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
-function toVisNetworkData(orgGraph?: OrgGraphType): Data | undefined {
+function toVisNetworkData(
+  primary: string,
+  officeColors: { [key: string]: string },
+  currentUserId: string,
+  orgGraph?: OrgGraphType,
+): Data | undefined {
   if (!orgGraph) { return undefined; }
 
   return {
-    nodes: Object.keys(orgGraph.users).map((id) => ({ id })),
+    nodes: Object.keys(orgGraph.users).map((id) => {
+      const user = orgGraph.users[id];
+      const highestOffice = getHighestOffice(user.offices);
+
+      let color: string | undefined | { background: string; border: string; };
+
+      if (highestOffice) {
+        color = officeColors[highestOffice];
+      } else if (id === currentUserId) {
+        color = {
+          background: '#FFFFFF',
+          border: primary,
+        };
+      }
+
+      return { color, id };
+    }),
     edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
   };
 }
@@ -37,7 +58,7 @@ const useStyles = () => {
 export default function OrgGraph() {
   const [error, setError] = useState('');
 
-  const { colors: { primary } } = useTheme();
+  const { colors: { office: officeColors, primary } } = useTheme();
 
   const { currentUser, setCurrentUser } = useUserContext();
 
@@ -78,7 +99,12 @@ export default function OrgGraph() {
     throw new Error('Expected currentUser');
   }
 
-  const data = toVisNetworkData(currentUser?.org?.graph);
+  const data = toVisNetworkData(
+    primary,
+    officeColors,
+    currentUser.id,
+    currentUser.org.graph,
+  );
 
   const options = {
     edges: {
@@ -96,7 +122,11 @@ export default function OrgGraph() {
       randomSeed: currentUser.org.id,
     },
     nodes: {
-      color: primary,
+      borderWidth: 4,
+      color: {
+        border: primary,
+        background: primary,
+      },
     },
   };
 
