@@ -9,6 +9,7 @@ export { default as NewOrgSteps } from './NewOrgSteps';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from './QRCodeData';
+export { default as getHighestRank } from './Rank';
 export { default as Secret } from './Secret';
 export { default as Settings } from './Settings';
 export { default as getTenure } from './Tenure';

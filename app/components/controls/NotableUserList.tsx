@@ -4,8 +4,18 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
-import { OrgGraphUser, getTenure, useUserContext } from '../../model';
+import {
+  OrgGraphUser, getHighestRank, getTenure, useUserContext,
+} from '../../model';
 import useTheme from '../../Theme';
+
+export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
+  const officers = users.filter((user) => user.offices?.[0]);
+  const ordererdOfficers = officers.sort((officer, otherOfficer) => (
+    getHighestRank(officer.offices) - getHighestRank(otherOfficer.offices)
+  ));
+  return ordererdOfficers;
+}
 
 const useStyles = () => {
   const {
@@ -106,8 +116,9 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
   const users = currentUser?.org?.graph?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
-    const officers = Object.values(users).filter((user) => user.offices);
-    const data = officers.map((officer) => {
+    const orgGraphUsers = Object.values(users);
+    const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
+    const data = ordererdOfficers.map((officer) => {
       // TODO: Handle officers with multiple concurrent offices
       const officeName = officer.offices?.[0];
       const circleColor = officeName ? colors.office[officeName] : colors.primary;
