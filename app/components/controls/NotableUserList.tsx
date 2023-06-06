@@ -34,6 +34,7 @@ const useStyles = () => {
       height: circleSize,
       padding: circlePadding,
       marginLeft: circlePadding,
+      marginTop: circlePadding,
     },
     container: {
       backgroundColor: colors.fill,
@@ -66,7 +67,7 @@ const useStyles = () => {
       marginEnd: spacing.m,
     },
     rowTitle: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       flexDirection: 'row',
       gap: spacing.xs,
     },
@@ -154,8 +155,8 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
 
     const tenure = getTenure(1000 * joinedAt);
 
-    const firstOffice = offices?.[0];
-    const title = firstOffice ? `${pseudonym}, ${firstOffice}` : pseudonym;
+    const joinedOffices = offices?.join('/');
+    const title = [pseudonym, joinedOffices].filter((e) => e).join(', ');
 
     return (
       <View style={styles.container}>
