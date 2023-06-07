@@ -7,7 +7,7 @@ import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, shadows, sizes, spacing,
   } = useTheme();
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -22,25 +22,14 @@ const useStyles = () => {
       alignItems: 'center',
       backgroundColor: colors.primary,
       borderRadius: 25,
-      elevation: 4, // Android only
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
-      shadowOffset: { // iOS only
-        height: 2,
-        width: 0,
-      },
-      shadowOpacity: 0.5, // iOS only
-      shadowRadius: 4, // iOS only
+      ...shadows.elevation4,
     },
     pressed: {
-      elevation: 1,
       opacity: isDarkMode ? 0.5 : 1,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-      shadowRadius: 1,
+      ...shadows.elevation1,
     },
     text: {
       color: colors.background,

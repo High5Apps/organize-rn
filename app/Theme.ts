@@ -61,6 +61,25 @@ const lightTheme = {
     },
     weights,
   },
+  shadows: {
+    elevation1: {
+      elevation: 1, // Android only
+      shadowOffset: { // iOS only
+        height: 1,
+        width: 0,
+      },
+      shadowRadius: 1, // iOS only
+    },
+    elevation4: {
+      elevation: 4, // Android only
+      shadowOffset: { // iOS only
+        height: 2,
+        width: 0,
+      },
+      shadowOpacity: 0.5, // iOS only
+      shadowRadius: 4, // iOS only
+    },
+  },
   sizes: {
     buttonHeight: 50,
     icon: 24,
