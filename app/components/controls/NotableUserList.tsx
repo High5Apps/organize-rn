@@ -19,7 +19,7 @@ export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, shadows, sizes, spacing,
   } = useTheme();
 
   // Align with the clock icon below it
@@ -35,6 +35,7 @@ const useStyles = () => {
       padding: circlePadding,
       marginLeft: circlePadding,
       marginTop: circlePadding,
+      ...shadows.elevation4,
     },
     container: {
       backgroundColor: colors.fill,

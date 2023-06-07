@@ -26,6 +26,7 @@ function toVisNetworkData(
       const highestOffice = getHighestOffice(user.offices);
 
       let color: string | undefined | { background: string; border: string; };
+      let shadow = true;
 
       if (highestOffice) {
         color = officeColors[highestOffice];
@@ -34,9 +35,11 @@ function toVisNetworkData(
           background: '#FFFFFF',
           border: primary,
         };
+      } else {
+        shadow = false;
       }
 
-      return { color, id };
+      return { color, id, shadow };
     }),
     edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
   };
