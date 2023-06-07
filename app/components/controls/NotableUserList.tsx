@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
 import {
-  OrgGraphUser, getHighestRank, getTenure, useUserContext,
+  OrgGraphUser, getHighestOffice, getHighestRank, getTenure, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 
@@ -108,6 +108,7 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 
 export default function NotableUserList({ ListHeaderComponent }: Props) {
   const { colors, styles } = useStyles();
+  const { fill, office: officeColors, primary } = colors;
   const { currentUser } = useUserContext();
 
   if (!currentUser) {
@@ -120,9 +121,9 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
     const orgGraphUsers = Object.values(users);
     const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
     const data = ordererdOfficers.map((officer) => {
-      // TODO: Handle officers with multiple concurrent offices
-      const officeName = officer.offices?.[0];
-      const circleColor = officeName ? colors.office[officeName] : colors.primary;
+      const highestOfficeName = getHighestOffice(officer.offices);
+      const circleColor = highestOfficeName
+        ? officeColors[highestOfficeName] : primary;
       return {
         user: officer,
         circleColor,
@@ -135,8 +136,8 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
       data: [
         {
           user: users[currentUser.id],
-          circleBorderColor: colors.primary,
-          circleColor: colors.fill,
+          circleBorderColor: primary,
+          circleColor: fill,
         },
       ],
     });
