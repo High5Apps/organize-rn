@@ -14,6 +14,7 @@ import ProgressBar from './ProgressBar';
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
 function toVisNetworkData(
+  fill: string,
   primary: string,
   officeColors: { [key: string]: string },
   currentUserId: string,
@@ -33,7 +34,7 @@ function toVisNetworkData(
         color = officeColors[highestOffice];
       } else if (id === currentUserId) {
         color = {
-          background: '#FFFFFF',
+          background: fill,
           border: primary,
         };
       } else {
@@ -64,7 +65,7 @@ export default function OrgGraph() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { colors: { office: officeColors, primary } } = useTheme();
+  const { colors: { fill, office: officeColors, primary } } = useTheme();
 
   const { currentUser, setCurrentUser } = useUserContext();
 
@@ -129,6 +130,7 @@ export default function OrgGraph() {
   }
 
   const data = toVisNetworkData(
+    fill,
     primary,
     officeColors,
     currentUser.id,
