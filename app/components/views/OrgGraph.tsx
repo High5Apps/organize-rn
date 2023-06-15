@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import VisNetwork, { Data } from 'react-native-vis-network';
+import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
 import {
   OrgGraph as OrgGraphType, getHighestOffice, isCurrentUserData, useUserContext,
 } from '../../model';
@@ -9,6 +9,7 @@ import {
 } from '../../networking';
 import useTheme from '../../Theme';
 import ErrorMessage from './ErrorMessage';
+import ProgressBar from './ProgressBar';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -60,12 +61,16 @@ const useStyles = () => {
 
 export default function OrgGraph() {
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const { colors: { office: officeColors, primary } } = useTheme();
 
   const { currentUser, setCurrentUser } = useUserContext();
 
   const { colors, styles } = useStyles();
+
+  const visNetworkRef = useRef<VisNetworkRef>(null);
 
   useEffect(() => {
     let subscribed = true;
@@ -97,6 +102,21 @@ export default function OrgGraph() {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (!loading || !visNetworkRef.current) {
+      return () => {};
+    }
+
+    const subscription = visNetworkRef.current.addEventListener(
+      'stabilizationProgress',
+      ({ iterations, total }: any) => {
+        setProgress(iterations / total);
+      },
+    );
+
+    return subscription.remove;
+  }, [loading]);
 
   if (!isCurrentUserData(currentUser)) {
     throw new Error('Expected currentUser');
@@ -140,7 +160,9 @@ export default function OrgGraph() {
         style={{ backgroundColor: 'transparent' }}
         containerStyle={{ backgroundColor: colors.fill }}
         data={data}
+        onLoad={() => setLoading(true)}
         options={options}
+        ref={visNetworkRef}
       />
     );
   } else if (error) {
@@ -151,6 +173,7 @@ export default function OrgGraph() {
 
   return (
     <View style={styles.container}>
+      <ProgressBar progress={progress} />
       { component }
     </View>
   );
