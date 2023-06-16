@@ -100,6 +100,7 @@ type SectionHeaderProps = {
 
 type Props = {
   ListHeaderComponent?: ReactElement;
+  scrollEnabled?: boolean;
 };
 
 const renderSectionHeader = ({ section }: SectionHeaderProps) => {
@@ -107,7 +108,9 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
   return <SectionHeader>{title}</SectionHeader>;
 };
 
-export default function NotableUserList({ ListHeaderComponent }: Props) {
+export default function NotableUserList({
+  ListHeaderComponent, scrollEnabled,
+}: Props) {
   const { colors, styles } = useStyles();
   const { fill, office: officeColors, primary } = colors;
   const { currentUser } = useUserContext();
@@ -192,6 +195,7 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
+      scrollEnabled={scrollEnabled}
       sections={sections}
     />
   );
@@ -199,4 +203,5 @@ export default function NotableUserList({ ListHeaderComponent }: Props) {
 
 NotableUserList.defaultProps = {
   ListHeaderComponent: null,
+  scrollEnabled: true,
 };

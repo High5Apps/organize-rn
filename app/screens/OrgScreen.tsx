@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
@@ -18,6 +18,7 @@ function SettingsButton() {
 }
 
 export default function OrgScreen({ navigation }: OrgScreenProps) {
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const headerRight = () => <SettingsButton />;
 
   useLayoutEffect(() => {
@@ -30,9 +31,14 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
         ListHeaderComponent={(
           <>
             <SectionHeader>Members and connections</SectionHeader>
-            <OrgGraph />
+            <OrgGraph
+              onInteraction={
+                (inProgress: boolean) => setScrollEnabled(!inProgress)
+              }
+            />
           </>
         )}
+        scrollEnabled={scrollEnabled}
       />
     </ScreenBackground>
   );

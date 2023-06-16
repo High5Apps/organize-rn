@@ -60,7 +60,11 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-export default function OrgGraph() {
+type Props = {
+  onInteraction?: (inProgress: boolean) => void;
+};
+
+export default function OrgGraph({ onInteraction }: Props) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -144,10 +148,8 @@ export default function OrgGraph() {
     },
     interaction: {
       dragNodes: false,
-      dragView: false,
       keyboard: false,
       selectable: false,
-      zoomView: false,
     },
     layout: {
       randomSeed: currentUser.org.id,
@@ -169,6 +171,10 @@ export default function OrgGraph() {
         containerStyle={{ backgroundColor: colors.fill }}
         data={data}
         onLoad={() => setLoading(true)}
+        onResponderGrant={() => onInteraction?.(true)}
+        onResponderRelease={() => onInteraction?.(false)}
+        onResponderTerminate={() => onInteraction?.(false)}
+        onStartShouldSetResponder={() => true}
         options={options}
         ref={visNetworkRef}
       />
@@ -186,3 +192,7 @@ export default function OrgGraph() {
     </View>
   );
 }
+
+OrgGraph.defaultProps = {
+  onInteraction: () => {},
+};
