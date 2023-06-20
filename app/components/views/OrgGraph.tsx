@@ -108,14 +108,20 @@ export default function OrgGraph() {
       return () => {};
     }
 
-    const subscription = visNetworkRef.current.addEventListener(
+    const progressSubscription = visNetworkRef.current.addEventListener(
       'stabilizationProgress',
-      ({ iterations, total }: any) => {
-        setProgress(iterations / total);
-      },
+      ({ iterations, total }: any) => setProgress(iterations / total),
     );
 
-    return subscription.remove;
+    const doneSubscription = visNetworkRef.current.addEventListener(
+      'stabilizationIterationsDone',
+      () => setProgress(1),
+    );
+
+    return () => {
+      progressSubscription.remove();
+      doneSubscription.remove();
+    };
   }, [loading]);
 
   if (!isCurrentUserData(currentUser)) {
