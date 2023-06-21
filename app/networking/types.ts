@@ -84,9 +84,9 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   const response = (object as OrgGraphResponse);
   const firstUser = Object.values(response?.users)[0];
   return Object.keys(response?.users).length > 0
-    && firstUser?.connection_count > 0
+    && firstUser?.connection_count >= 0
     && firstUser?.joined_at > 0
     && firstUser?.pseudonym?.length > 0
     && firstUser?.recruit_count >= 0
-    && response?.connections?.length > 0;
+    && response?.connections?.length >= 0;
 }
