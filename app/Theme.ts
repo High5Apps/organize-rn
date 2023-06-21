@@ -120,3 +120,6 @@ const useTheme = () => {
 };
 
 export default useTheme;
+
+export type Theme = ReturnType<typeof useTheme>;
+export type ThemeColors = Theme['colors'];

@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
 import {
-  OrgGraphUser, getHighestOffice, getHighestRank, getTenure, useUserContext,
+  OrgGraphUser, getCircleColors, getHighestRank, getTenure, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 
@@ -85,7 +85,7 @@ const useStyles = () => {
 
 export type NotableUserItem = {
   user: OrgGraphUser;
-  circleColor: string;
+  circleBackgroundColor: string;
   circleBorderColor?: string;
 };
 
@@ -112,7 +112,6 @@ export default function NotableUserList({
   ListHeaderComponent, scrollEnabled,
 }: Props) {
   const { colors, styles } = useStyles();
-  const { fill, office: officeColors, primary } = colors;
   const { currentUser } = useUserContext();
 
   if (!currentUser) {
@@ -124,27 +123,18 @@ export default function NotableUserList({
   if (users) {
     const orgGraphUsers = Object.values(users);
     const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
-    const data = ordererdOfficers.map((officer) => {
-      const highestOfficeName = getHighestOffice(officer.offices);
-      const circleColor = highestOfficeName
-        ? officeColors[highestOfficeName] : primary;
-      return {
-        user: officer,
-        circleColor,
-      };
-    });
-    sections.push({ title: 'Officers', data });
+    const officersData = ordererdOfficers.map((officer) => ({
+      user: officer,
+      ...getCircleColors({ colors, user: officer }),
+    }));
+    sections.push({ title: 'Officers', data: officersData });
 
-    sections.push({
-      title: 'Me',
-      data: [
-        {
-          user: users[currentUser.id],
-          circleBorderColor: primary,
-          circleColor: fill,
-        },
-      ],
-    });
+    const currentOrgGraphUser = users[currentUser.id];
+    const meData = [{
+      user: currentOrgGraphUser,
+      ...getCircleColors({ colors, isMe: true, user: currentOrgGraphUser }),
+    }];
+    sections.push({ title: 'Me', data: meData });
   }
 
   const ItemSeparator = useCallback(() => (
@@ -153,7 +143,7 @@ export default function NotableUserList({
 
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {
-      circleBorderColor, circleColor, user: {
+      circleBorderColor, circleBackgroundColor, user: {
         connectionCount, joinedAt, offices, pseudonym, recruitCount,
       },
     } = item;
@@ -170,8 +160,8 @@ export default function NotableUserList({
             style={[
               styles.circle,
               {
-                backgroundColor: circleColor,
-                borderColor: circleBorderColor ?? circleColor,
+                backgroundColor: circleBackgroundColor,
+                borderColor: circleBorderColor,
               },
             ]}
           />
