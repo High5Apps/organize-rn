@@ -1,43 +1,12 @@
-import React, {
-  useEffect, useMemo, useRef, useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
-import {
-  OrgGraph as OrgGraphType, getCircleColors, isCurrentUserData, useUserContext,
-} from '../../model';
-import {
-  ErrorResponse, fetchOrgGraph, isErrorResponse,
-} from '../../networking';
-import useTheme, { ThemeColors } from '../../Theme';
+import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
+import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
+import useTheme from '../../Theme';
 import ErrorMessage from './ErrorMessage';
 import ProgressBar from './ProgressBar';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
-
-function toVisNetworkData(
-  colors: ThemeColors,
-  currentUserId: string,
-  orgGraph?: OrgGraphType,
-): Data | undefined {
-  if (!orgGraph) { return undefined; }
-
-  return {
-    nodes: Object.keys(orgGraph.users).map((id) => {
-      const user = orgGraph.users[id];
-      const isMe = (id === currentUserId);
-      const {
-        circleBorderColor, circleBackgroundColor, shadow,
-      } = getCircleColors({ colors, isMe, user });
-      return {
-        color: { background: circleBackgroundColor, border: circleBorderColor },
-        id,
-        shadow,
-      };
-    }),
-    edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
-  };
-}
 
 const useStyles = () => {
   const { colors } = useTheme();
@@ -61,39 +30,24 @@ export default function OrgGraph({ onInteraction }: Props) {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { currentUser, setCurrentUser } = useUserContext();
+  const { currentUser } = useUserContext();
 
   const { colors, styles } = useStyles();
   const { primary } = colors;
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
 
+  const { updateGraphData, visGraphData } = useGraphData();
+
   useEffect(() => {
     let subscribed = true;
     const unsubscribe = () => { subscribed = false; };
 
-    async function updateOrgGraph() {
-      if (!isCurrentUserData(currentUser)) {
-        throw new Error('Expected currentUser to be set');
-      }
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { orgId } = currentUser;
-      const responseOrError = await fetchOrgGraph({ jwt, orgId });
-      if (!subscribed) { return; }
-
-      if (isErrorResponse(responseOrError)) {
-        const { errorMessage } = ErrorResponse(responseOrError);
-        throw new Error(errorMessage);
-      }
-
-      const orgGraph = responseOrError;
-      const updatedCurrentUser = { ...currentUser };
-      updatedCurrentUser.org.graph = orgGraph;
-      setCurrentUser(updatedCurrentUser);
-    }
-    updateOrgGraph().catch((e) => {
+    updateGraphData().catch((e) => {
       console.error(e);
-      setError(GRAPH_LOAD_ERROR_MESSAGE);
+      if (subscribed) {
+        setError(GRAPH_LOAD_ERROR_MESSAGE);
+      }
     });
 
     return unsubscribe;
@@ -124,11 +78,6 @@ export default function OrgGraph({ onInteraction }: Props) {
     throw new Error('Expected currentUser');
   }
 
-  const data = useMemo(
-    () => toVisNetworkData(colors, currentUser.id, currentUser.org.graph),
-    [colors, currentUser.id, currentUser.org.graph],
-  );
-
   const options = {
     edges: {
       color: primary,
@@ -148,12 +97,12 @@ export default function OrgGraph({ onInteraction }: Props) {
   };
 
   let component;
-  if (data) {
+  if (visGraphData) {
     component = (
       <VisNetwork
         style={{ backgroundColor: 'transparent' }}
         containerStyle={{ backgroundColor: colors.fill }}
-        data={data}
+        data={visGraphData}
         onLoad={() => setLoading(true)}
         onResponderGrant={() => onInteraction?.(true)}
         onResponderRelease={() => onInteraction?.(false)}

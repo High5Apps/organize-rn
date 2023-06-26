@@ -2,6 +2,7 @@ export { default as useAppState } from './AppState';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as useCurrentUser } from './CurrentUser';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
+export { default as useGraphData } from './GraphData';
 export { UserContextProvider, useUserContext } from './UserContext';
 export { default as JWT } from './JWT';
 export { default as Keys } from './Keys';

@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionHeader from '../views/SectionHeader';
 import {
-  OrgGraphUser, getCircleColors, getHighestRank, getTenure, useUserContext,
+  OrgGraphUser, getCircleColors, getHighestRank, getTenure, useGraphData, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 
@@ -118,7 +118,7 @@ export default function NotableUserList({
     throw new Error('Expected current user to be set');
   }
 
-  const users = currentUser?.org?.graph?.users;
+  const users = useGraphData().graphData?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
     const orgGraphUsers = Object.values(users);
