@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
 import {
@@ -122,7 +124,10 @@ export default function OrgGraph({ onInteraction }: Props) {
     throw new Error('Expected currentUser');
   }
 
-  const data = toVisNetworkData(colors, currentUser.id, currentUser.org.graph);
+  const data = useMemo(
+    () => toVisNetworkData(colors, currentUser.id, currentUser.org.graph),
+    [colors, currentUser.id, currentUser.org.graph],
+  );
 
   const options = {
     edges: {
