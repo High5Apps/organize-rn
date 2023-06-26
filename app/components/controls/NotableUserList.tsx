@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import {
   SectionList, StyleSheet, Text, View,
 } from 'react-native';
@@ -111,6 +111,8 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 export default function NotableUserList({
   ListHeaderComponent, scrollEnabled,
 }: Props) {
+  const [refreshing, setRefreshing] = useState(false);
+
   const { colors, styles } = useStyles();
   const { currentUser } = useUserContext();
 
@@ -118,7 +120,8 @@ export default function NotableUserList({
     throw new Error('Expected current user to be set');
   }
 
-  const users = useGraphData().graphData?.users;
+  const { graphData, updateGraphData } = useGraphData();
+  const users = graphData?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
     const orgGraphUsers = Object.values(users);
@@ -183,6 +186,16 @@ export default function NotableUserList({
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
+      onRefresh={async () => {
+        setRefreshing(true);
+        try {
+          await updateGraphData();
+        } catch (e) {
+          console.error(e);
+        }
+        setRefreshing(false);
+      }}
+      refreshing={refreshing}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       scrollEnabled={scrollEnabled}
