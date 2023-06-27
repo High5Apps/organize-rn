@@ -57,23 +57,3 @@ export async function fetchOrg({
   const org = recursiveSnakeToCamel(json) as Org;
   return org;
 }
-
-export async function fetchOrgGraph({
-  jwt, orgId,
-}: FetchOrgProps & Authorization): Promise<OrgGraph | ErrorResponseType> {
-  const uri = orgGraphURI(orgId);
-  const response = await get({ jwt, uri });
-
-  const json = await response.json();
-
-  if (!response.ok) {
-    return parseErrorResponse(json);
-  }
-
-  if (!isOrgGraphResponse(json)) {
-    throw new Error('Failed to parse Org graph from response');
-  }
-
-  const orgGraph = recursiveSnakeToCamel(json) as OrgGraph;
-  return orgGraph;
-}
