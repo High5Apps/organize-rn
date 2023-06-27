@@ -197,6 +197,7 @@ export default function NotableUserList({
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
+      nestedScrollEnabled
       onRefresh={async () => {
         setRefreshing(true);
         try {
