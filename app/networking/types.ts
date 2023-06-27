@@ -90,3 +90,20 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
     && firstUser?.recruit_count >= 0
     && response?.connections?.length >= 0;
 }
+
+type OrgResponse = {
+  graph: OrgGraphResponse,
+  id: string,
+  name: string,
+  potential_member_definition: string,
+  potential_member_estimate: number,
+};
+
+export function isOrgResponse(object: unknown): object is OrgResponse {
+  const response = (object as OrgResponse);
+  return isOrgGraphResponse(response?.graph)
+    && response?.id?.length > 0
+    && response?.name?.length > 0
+    && response?.potential_member_definition?.length > 0
+    && response?.potential_member_estimate > 0;
+}
