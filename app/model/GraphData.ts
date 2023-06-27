@@ -21,12 +21,17 @@ function toVisNetworkData(
         circleBorderColor, circleBackgroundColor, shadow,
       } = getCircleColors({ colors, isMe, user });
       return {
+        chosen: false,
         color: { background: circleBackgroundColor, border: circleBorderColor },
         id,
         shadow,
       };
     }),
-    edges: orgGraph.connections.map(([from, to]) => ({ from, to })),
+    edges: orgGraph.connections.map(([from, to]) => ({
+      chosen: false,
+      from,
+      to,
+    })),
   };
 }
 

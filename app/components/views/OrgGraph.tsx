@@ -23,9 +23,10 @@ const useStyles = () => {
 
 type Props = {
   onInteraction?: (inProgress: boolean) => void;
+  onUserSelected?: (id?: string) => void;
 };
 
-export default function OrgGraph({ onInteraction }: Props) {
+export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -68,9 +69,15 @@ export default function OrgGraph({ onInteraction }: Props) {
       () => setProgress(1),
     );
 
+    const clickSubscription = visNetworkRef.current.addEventListener(
+      'click',
+      ({ nodes }: any) => onUserSelected?.(nodes[0]),
+    );
+
     return () => {
       progressSubscription.remove();
       doneSubscription.remove();
+      clickSubscription.remove();
     };
   }, [loading]);
 
@@ -86,7 +93,6 @@ export default function OrgGraph({ onInteraction }: Props) {
     interaction: {
       dragNodes: false,
       keyboard: false,
-      selectable: false,
     },
     layout: {
       randomSeed: currentUser.org.id,
@@ -128,4 +134,5 @@ export default function OrgGraph({ onInteraction }: Props) {
 
 OrgGraph.defaultProps = {
   onInteraction: () => {},
+  onUserSelected: () => {},
 };
