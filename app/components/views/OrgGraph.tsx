@@ -38,13 +38,13 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
 
-  const { updateGraphData, visGraphData } = useGraphData();
+  const { updateOrgData, visGraphData } = useGraphData();
 
   useEffect(() => {
     let subscribed = true;
     const unsubscribe = () => { subscribed = false; };
 
-    updateGraphData().catch((e) => {
+    updateOrgData().catch((e) => {
       console.error(e);
       if (subscribed) {
         setError(GRAPH_LOAD_ERROR_MESSAGE);

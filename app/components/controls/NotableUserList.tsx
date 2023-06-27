@@ -121,7 +121,7 @@ export default function NotableUserList({
     throw new Error('Expected current user to be set');
   }
 
-  const { graphData, updateGraphData } = useGraphData();
+  const { graphData, updateOrgData } = useGraphData();
   const users = graphData?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
@@ -201,7 +201,7 @@ export default function NotableUserList({
       onRefresh={async () => {
         setRefreshing(true);
         try {
-          await updateGraphData();
+          await updateOrgData();
         } catch (e) {
           console.error(e);
         }

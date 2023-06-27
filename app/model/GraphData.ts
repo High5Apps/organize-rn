@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
-import { ErrorResponse, fetchOrgGraph, isErrorResponse } from '../networking';
+import { ErrorResponse, fetchOrg, isErrorResponse } from '../networking';
 import { useUserContext } from './UserContext';
 import { OrgGraph as OrgGraphType, isCurrentUserData } from './types';
 import getCircleColors from './OrgScreenCircleColors';
@@ -39,22 +39,22 @@ export default function useGraphData() {
   const { currentUser, setCurrentUser } = useUserContext();
   const { colors } = useTheme();
 
-  async function updateGraphData() {
+  async function updateOrgData() {
     if (!isCurrentUserData(currentUser)) {
       throw new Error('Expected currentUser to be set');
     }
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { orgId } = currentUser;
-    const responseOrError = await fetchOrgGraph({ jwt, orgId });
+    const responseOrError = await fetchOrg({ jwt, orgId });
 
     if (isErrorResponse(responseOrError)) {
       const { errorMessage } = ErrorResponse(responseOrError);
       throw new Error(errorMessage);
     }
 
-    const orgGraph = responseOrError;
+    const org = responseOrError;
     const updatedCurrentUser = { ...currentUser };
-    updatedCurrentUser.org.graph = orgGraph;
+    updatedCurrentUser.org = org;
     setCurrentUser(updatedCurrentUser);
   }
 
@@ -65,5 +65,5 @@ export default function useGraphData() {
     [colors, currentUser?.id, graphData],
   );
 
-  return { graphData, updateGraphData, visGraphData } as const;
+  return { graphData, updateOrgData, visGraphData } as const;
 }
