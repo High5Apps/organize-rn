@@ -101,6 +101,7 @@ type SectionHeaderProps = {
 type Props = {
   ListHeaderComponent?: ReactElement;
   scrollEnabled?: boolean;
+  selectedUserId?: string;
 };
 
 const renderSectionHeader = ({ section }: SectionHeaderProps) => {
@@ -109,7 +110,7 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 };
 
 export default function NotableUserList({
-  ListHeaderComponent, scrollEnabled,
+  ListHeaderComponent, scrollEnabled, selectedUserId,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -124,6 +125,16 @@ export default function NotableUserList({
   const users = graphData?.users;
   const sections: NotableUserSection[] = [];
   if (users) {
+    if (selectedUserId) {
+      const selectedOrgGraphUser = users[selectedUserId];
+      const isMe = selectedUserId === currentUser.id;
+      const data = [{
+        user: selectedOrgGraphUser,
+        ...getCircleColors({ colors, isMe, user: selectedOrgGraphUser }),
+      }];
+      sections.push({ title: 'Selected user', data });
+    }
+
     const orgGraphUsers = Object.values(users);
     const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
     const officersData = ordererdOfficers.map((officer) => ({
@@ -207,4 +218,5 @@ export default function NotableUserList({
 NotableUserList.defaultProps = {
   ListHeaderComponent: null,
   scrollEnabled: true,
+  selectedUserId: undefined,
 };

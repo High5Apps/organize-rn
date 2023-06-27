@@ -19,6 +19,7 @@ function SettingsButton() {
 
 export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const headerRight = () => <SettingsButton />;
 
   useLayoutEffect(() => {
@@ -35,10 +36,12 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
               onInteraction={
                 (inProgress: boolean) => setScrollEnabled(!inProgress)
               }
+              onUserSelected={setSelectedUserId}
             />
           </>
         )}
         scrollEnabled={scrollEnabled}
+        selectedUserId={selectedUserId}
       />
     </ScreenBackground>
   );
