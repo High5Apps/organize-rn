@@ -1,11 +1,11 @@
-import { Org, OrgGraph } from '../model';
+import { Org } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { orgGraphURI, orgURI, orgsURI } from './Routes';
+import { orgURI, orgsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import {
-  Authorization, ErrorResponseType, isCreateOrgResponse, isOrgGraphResponse,
-  isOrgResponse, UnpublishedOrg,
+  Authorization, ErrorResponseType, isCreateOrgResponse, isOrgResponse,
+  UnpublishedOrg,
 } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
