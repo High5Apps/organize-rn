@@ -71,7 +71,23 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
 
     const clickSubscription = visNetworkRef.current.addEventListener(
       'click',
-      ({ nodes }: any) => onUserSelected?.(nodes[0]),
+      ({ nodes }: any) => {
+        const userId: string | undefined = nodes[0];
+        const animation = {
+          duration: 500,
+          easingFunction: 'easeInOutQuad' as const,
+        };
+        if (userId) {
+          visNetworkRef.current?.focus(userId, {
+            animation,
+            locked: true,
+            scale: 1.5,
+          });
+        } else {
+          visNetworkRef.current?.fit({ animation, maxZoomLevel: 100 });
+        }
+        onUserSelected?.(userId);
+      },
     );
 
     return () => {
