@@ -5,6 +5,7 @@ import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import ErrorMessage from './ErrorMessage';
 import ProgressBar from './ProgressBar';
+import useClickHandler from './OrgGraphClickHandler';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -54,6 +55,8 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
     return unsubscribe;
   }, []);
 
+  useClickHandler(loading, visNetworkRef.current, onUserSelected);
+
   useEffect(() => {
     if (!loading || !visNetworkRef.current) {
       return () => {};
@@ -69,31 +72,9 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
       () => setProgress(1),
     );
 
-    const clickSubscription = visNetworkRef.current.addEventListener(
-      'click',
-      ({ nodes }: any) => {
-        const userId: string | undefined = nodes[0];
-        const animation = {
-          duration: 500,
-          easingFunction: 'easeInOutQuad' as const,
-        };
-        if (userId) {
-          visNetworkRef.current?.focus(userId, {
-            animation,
-            locked: true,
-            scale: 1.5,
-          });
-        } else {
-          visNetworkRef.current?.fit({ animation, maxZoomLevel: 100 });
-        }
-        onUserSelected?.(userId);
-      },
-    );
-
     return () => {
       progressSubscription.remove();
       doneSubscription.remove();
-      clickSubscription.remove();
     };
   }, [loading]);
 
