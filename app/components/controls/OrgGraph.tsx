@@ -4,8 +4,8 @@ import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
 import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import ErrorMessage from '../views/ErrorMessage';
-import ProgressBar from '../views/ProgressBar';
 import useClickHandler from './OrgGraphClickHandler';
+import useProgress from './OrgGraphProgress';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -30,7 +30,6 @@ type Props = {
 export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const { currentUser } = useUserContext();
 
@@ -57,26 +56,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
 
   useClickHandler(loading, visNetworkRef, onUserSelected);
 
-  useEffect(() => {
-    if (!loading || !visNetworkRef.current) {
-      return () => {};
-    }
-
-    const progressSubscription = visNetworkRef.current.addEventListener(
-      'stabilizationProgress',
-      ({ iterations, total }: any) => setProgress(iterations / total),
-    );
-
-    const doneSubscription = visNetworkRef.current.addEventListener(
-      'stabilizationIterationsDone',
-      () => setProgress(1),
-    );
-
-    return () => {
-      progressSubscription.remove();
-      doneSubscription.remove();
-    };
-  }, [loading]);
+  const ProgressBar = useProgress(loading, visNetworkRef);
 
   if (!isCurrentUserData(currentUser)) {
     throw new Error('Expected currentUser');
@@ -123,7 +103,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} />
+      { ProgressBar }
       { component }
     </View>
   );
