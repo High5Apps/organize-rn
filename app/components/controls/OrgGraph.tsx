@@ -3,8 +3,8 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
 import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
-import ErrorMessage from './ErrorMessage';
-import ProgressBar from './ProgressBar';
+import ErrorMessage from '../views/ErrorMessage';
+import ProgressBar from '../views/ProgressBar';
 import useClickHandler from './OrgGraphClickHandler';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
