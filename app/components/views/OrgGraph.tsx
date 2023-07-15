@@ -55,7 +55,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
     return unsubscribe;
   }, []);
 
-  useClickHandler(loading, visNetworkRef.current, onUserSelected);
+  useClickHandler(loading, visNetworkRef, onUserSelected);
 
   useEffect(() => {
     if (!loading || !visNetworkRef.current) {

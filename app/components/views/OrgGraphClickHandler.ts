@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { RefObject, useEffect } from 'react';
 import { Position, VisNetworkRef } from 'react-native-vis-network';
 
 const ANIMATION_OPTIONS = {
@@ -37,17 +37,19 @@ function getNearestNodeInfo(
 
 export default function useClickHandler(
   isGraphAvailable: boolean,
-  visNetwork: VisNetworkRef | null,
+  visNetwork: RefObject<VisNetworkRef>,
   onUserSelected?: (id?: string) => void,
 ) {
   useEffect(() => {
-    if (!isGraphAvailable || !visNetwork) {
+    if (!isGraphAvailable || !visNetwork.current) {
       return () => {};
     }
 
-    const clickSubscription = visNetwork.addEventListener(
+    const clickSubscription = visNetwork.current.addEventListener(
       'click',
       async (event: any) => {
+        if (!visNetwork.current) { return; }
+
         const {
           nodes,
           pointer: { canvas: canvasPointer },
@@ -55,14 +57,14 @@ export default function useClickHandler(
 
         let userId: string | undefined = nodes[0];
         if (userId) {
-          visNetwork.focus(userId, FOCUS_OPTIONS);
+          visNetwork.current.focus(userId, FOCUS_OPTIONS);
         } else {
           let positions;
           let scale;
           try {
             [positions, scale] = await Promise.all([
-              visNetwork.getPositions(),
-              visNetwork.getScale(),
+              visNetwork.current.getPositions(),
+              visNetwork.current.getScale(),
             ]);
           } catch (e) {
             console.error(e);
@@ -77,9 +79,9 @@ export default function useClickHandler(
               const normalizedDistance = nearestDistance * scale;
               if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
                 userId = nearestId;
-                visNetwork.focus(userId, FOCUS_OPTIONS);
+                visNetwork.current.focus(userId, FOCUS_OPTIONS);
               } else {
-                visNetwork.fit({
+                visNetwork.current.fit({
                   animation: ANIMATION_OPTIONS,
                   maxZoomLevel: 100,
                 });
@@ -92,5 +94,5 @@ export default function useClickHandler(
     );
 
     return clickSubscription.remove;
-  }, [isGraphAvailable]);
+  }, [isGraphAvailable, visNetwork.current]);
 }
