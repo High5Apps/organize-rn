@@ -65,5 +65,10 @@ export default function useGraphData() {
     [colors, currentUser?.id, graphData],
   );
 
-  return { graphData, updateOrgData, visGraphData } as const;
+  const nodeCount = Object.keys(graphData?.users ?? {}).length;
+  const hasMultipleNodes = nodeCount > 1;
+
+  return {
+    graphData, hasMultipleNodes, updateOrgData, visGraphData,
+  } as const;
 }

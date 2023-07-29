@@ -38,7 +38,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
 
-  const { updateOrgData, visGraphData } = useGraphData();
+  const { hasMultipleNodes, updateOrgData, visGraphData } = useGraphData();
 
   useEffect(() => {
     let subscribed = true;
@@ -54,7 +54,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
     return unsubscribe;
   }, []);
 
-  useClickHandler(loading, visNetworkRef, onUserSelected);
+  useClickHandler(loading, visNetworkRef, hasMultipleNodes, onUserSelected);
 
   const ProgressBar = useProgress(loading, visNetworkRef);
 
@@ -93,6 +93,7 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
         onStartShouldSetResponder={() => true}
         options={options}
         ref={visNetworkRef}
+        zoomFitOnStabilized={hasMultipleNodes}
       />
     );
   } else if (error) {

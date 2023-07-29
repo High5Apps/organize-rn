@@ -38,6 +38,7 @@ function getNearestNodeInfo(
 export default function useClickHandler(
   isGraphAvailable: boolean,
   visNetwork: RefObject<VisNetworkRef>,
+  hasMultipleNodes: boolean,
   onUserSelected?: (id?: string) => void,
 ) {
   useEffect(() => {
@@ -81,9 +82,10 @@ export default function useClickHandler(
                 userId = nearestId;
                 visNetwork.current.focus(userId, FOCUS_OPTIONS);
               } else {
+                const maxZoomLevel = hasMultipleNodes ? 100 : 1;
                 visNetwork.current.fit({
                   animation: ANIMATION_OPTIONS,
-                  maxZoomLevel: 100,
+                  maxZoomLevel,
                 });
               }
             }
