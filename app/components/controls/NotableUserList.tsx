@@ -74,6 +74,7 @@ const useStyles = () => {
     },
     rowTitleText: {
       color: colors.label,
+      flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
       marginBottom: spacing.xs,
