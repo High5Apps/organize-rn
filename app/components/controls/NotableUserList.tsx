@@ -132,7 +132,7 @@ export default function NotableUserList({
         user: selectedOrgGraphUser,
         ...getCircleColors({ colors, isMe, user: selectedOrgGraphUser }),
       }];
-      sections.push({ title: 'Selected user', data });
+      sections.push({ title: 'Selected', data });
     }
 
     const orgGraphUsers = Object.values(users);
