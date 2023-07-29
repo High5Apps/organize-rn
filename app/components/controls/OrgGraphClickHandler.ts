@@ -5,7 +5,7 @@ const ANIMATION_OPTIONS = {
   duration: 500,
   easingFunction: 'easeInOutQuad' as const,
 };
-const FOCUS_OPTIONS = {
+const DEFAULT_FOCUS_OPTIONS = {
   animation: ANIMATION_OPTIONS,
   locked: true,
   scale: 1.5,
@@ -51,6 +51,20 @@ export default function useClickHandler(
       async (event: any) => {
         if (!visNetwork.current) { return; }
 
+        let scale = 0;
+        try {
+          scale = await visNetwork.current.getScale();
+        } catch (e) {
+          console.error(e);
+        }
+
+        const focusOptions = {
+          ...DEFAULT_FOCUS_OPTIONS,
+
+          // Never zoom out during focus
+          scale: Math.max(scale, DEFAULT_FOCUS_OPTIONS.scale),
+        };
+
         const {
           nodes,
           pointer: { canvas: canvasPointer },
@@ -58,15 +72,11 @@ export default function useClickHandler(
 
         let userId: string | undefined = nodes[0];
         if (userId) {
-          visNetwork.current.focus(userId, FOCUS_OPTIONS);
+          visNetwork.current.focus(userId, focusOptions);
         } else {
           let positions;
-          let scale;
           try {
-            [positions, scale] = await Promise.all([
-              visNetwork.current.getPositions(),
-              visNetwork.current.getScale(),
-            ]);
+            positions = await visNetwork.current.getPositions();
           } catch (e) {
             console.error(e);
           }
@@ -80,7 +90,7 @@ export default function useClickHandler(
               const normalizedDistance = nearestDistance * scale;
               if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
                 userId = nearestId;
-                visNetwork.current.focus(userId, FOCUS_OPTIONS);
+                visNetwork.current.focus(userId, focusOptions);
               } else {
                 const maxZoomLevel = hasMultipleNodes ? 100 : 1;
                 visNetwork.current.fit({
