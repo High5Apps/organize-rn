@@ -44,8 +44,7 @@ export default function useGraphData() {
       throw new Error('Expected currentUser to be set');
     }
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const { orgId } = currentUser;
-    const responseOrError = await fetchOrg({ jwt, orgId });
+    const responseOrError = await fetchOrg({ jwt });
 
     if (isErrorResponse(responseOrError)) {
       const { errorMessage } = ErrorResponse(responseOrError);

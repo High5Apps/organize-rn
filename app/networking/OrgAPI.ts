@@ -8,7 +8,6 @@ import {
   UnpublishedOrg,
 } from './types';
 
-// eslint-disable-next-line import/prefer-default-export
 export async function createOrg({
   jwt, name, potentialMemberEstimate, potentialMemberDefinition,
 }: UnpublishedOrg & Authorization): Promise<string | ErrorResponseType> {
@@ -34,14 +33,10 @@ export async function createOrg({
   return json.id;
 }
 
-type FetchOrgProps = {
-  orgId: string,
-};
-
 export async function fetchOrg({
-  jwt, orgId,
-}: FetchOrgProps & Authorization): Promise<Org | ErrorResponseType> {
-  const uri = orgURI(orgId);
+  jwt,
+}: Authorization): Promise<Org | ErrorResponseType> {
+  const uri = orgURI;
   const response = await get({ jwt, uri });
 
   const json = await response.json();
