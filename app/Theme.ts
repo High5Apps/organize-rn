@@ -81,6 +81,7 @@ const lightTheme = {
     },
   },
   sizes: {
+    border: 1,
     buttonHeight: 50,
     icon: 24,
     largeIcon: 48,
