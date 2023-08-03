@@ -81,6 +81,7 @@ export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 
 export type DiscussStackParamList = {
   Discuss: undefined;
+  NewPost: undefined;
 };
 
 export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
@@ -90,6 +91,7 @@ export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
   >;
 
 export type DiscussScreenProps = DiscussStackScreenProps<'Discuss'>;
+export type NewPostScreenProps = DiscussStackScreenProps<'NewPost'>;
 
 export type VoteStackParamList = {
   Vote: undefined;
