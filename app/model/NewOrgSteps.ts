@@ -14,8 +14,8 @@ type NewOrgStep = {
 
 const NewOrgSteps: NewOrgStep[] = [
   {
-    body: 'You can name your Org anything your want, but traditionally unions are called "locals." For example you might name your Org "Local 4286" or "Local 552."',
-    headline: "What's in a name?",
+    body: 'You can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
+    headline: 'What should I name my Org?',
     iconName: 'badge',
     maxLength: 35,
     message: "Don't worry- you can change the info in any of these steps later.",
@@ -25,11 +25,11 @@ const NewOrgSteps: NewOrgStep[] = [
     title: 'Name Your Org',
   },
   {
-    body: 'An Org must recruit at least 30% of the people that fit its potential member definition before it can legally vote to form a union.\n\nIf your definition is too broad, it\'ll be hard to hit 30%. If your definition is too strict, you\'ll easily hit 30%, but your Org will be too small to benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your store. And remember that management can\'t legally join a union, so you don\'t need to exclude them in your definition.',
-    headline: "It's your defining moment!",
+    body: 'An Org is strongest and healthiest once it\'s recruited 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your store who isn\'t in management.',
+    headline: 'How should I define my potential members?',
     iconName: 'menu-book',
     maxLength: 75,
-    message: 'Choose the broadest definition that still allows you to recruit at least 30% of all potential members.',
+    message: 'Choose the broadest definition that still allows you to recruit at least 70% of all potential members.',
     param: 'definition',
     paramType: 'string',
     placeholder: 'Definition',
