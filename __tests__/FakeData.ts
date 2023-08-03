@@ -3,14 +3,12 @@ import { Org, User } from '../app/model';
 const fakeOrg: Org = {
   id: 'fakeOrgId',
   name: 'fakeOrgName',
-  potentialMemberEstimate: 99,
   potentialMemberDefinition: 'fakeDefinition',
 };
 
 const fakeOtherOrg: Org = {
   id: 'fakeOtherOrgId',
   name: 'fakeOtherOrgName',
-  potentialMemberEstimate: 1000,
   potentialMemberDefinition: 'fakeOtherDefinition',
 };
 

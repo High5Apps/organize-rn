@@ -35,19 +35,6 @@ const NewOrgSteps: NewOrgStep[] = [
     placeholder: 'Definition',
     title: 'Define a Potential Member',
   },
-  {
-    body: 'Organize tracks your progress toward recruiting every potential member.\n\nOnce you hit 30%, your Org can legally vote to form a union.\n\nOnce you hit 50%, your Org is unstoppable! You can legally form a union without even needing to vote.',
-    headline: 'Count me in!',
-    iconName: 'groups',
-    maxLength: 5,
-    message: ({ definition }: NewOrgScreenParams) => (
-      `How many people fit the definition of "${definition}?"`
-    ),
-    param: 'estimate',
-    paramType: 'number',
-    placeholder: 'Estimate',
-    title: 'Estimate Potential Member Count',
-  },
 ];
 
 export default NewOrgSteps;

@@ -65,7 +65,7 @@ const useStyles = () => {
 export default function OrgReviewScreen({
   navigation, route,
 }: OrgReviewScreenProps) {
-  const { definition, estimate, name } = route.params;
+  const { definition, name } = route.params;
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
@@ -79,7 +79,6 @@ export default function OrgReviewScreen({
 
     const unpublishedOrg = {
       name,
-      potentialMemberEstimate: estimate,
       potentialMemberDefinition: definition,
     };
 
@@ -106,10 +105,6 @@ export default function OrgReviewScreen({
         <View style={styles.paramContainer}>
           <Text style={styles.label}>Definition of a potential member:</Text>
           <Text style={styles.value}>{definition}</Text>
-        </View>
-        <View style={styles.paramContainer}>
-          <Text style={styles.label}>Estimate of potential member count:</Text>
-          <Text style={styles.value}>{estimate}</Text>
         </View>
       </LockingScrollView>
       <>

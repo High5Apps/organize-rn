@@ -20,7 +20,6 @@ export type RootStackNavigationProp<T extends keyof RootStackParamList> =
 
 export type NewOrgScreenParams = {
   definition?: string;
-  estimate?: number;
   name?: string;
   step: number;
 };

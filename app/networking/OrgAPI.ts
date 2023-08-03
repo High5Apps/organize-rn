@@ -9,13 +9,12 @@ import {
 } from './types';
 
 export async function createOrg({
-  jwt, name, potentialMemberEstimate, potentialMemberDefinition,
+  jwt, name, potentialMemberDefinition,
 }: UnpublishedOrg & Authorization): Promise<string | ErrorResponseType> {
   const response = await post({
     bodyObject: {
       name,
       potential_member_definition: potentialMemberDefinition,
-      potential_member_estimate: potentialMemberEstimate,
     },
     jwt,
     uri: orgsURI,

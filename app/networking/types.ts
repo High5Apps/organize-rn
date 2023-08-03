@@ -49,7 +49,6 @@ type PreviewConnectionResponse = {
     id: string,
     name: string,
     potential_member_definition: string,
-    potential_member_estimate: number,
   },
   user: {
     pseudonym: string,
@@ -63,7 +62,6 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
   return (response?.org?.id.length > 0)
     && (response?.org?.name.length > 0)
     && (response?.org?.potential_member_definition.length > 0)
-    && (response?.org?.potential_member_estimate > 0)
     && (response?.user?.pseudonym.length > 0);
 }
 
@@ -96,7 +94,6 @@ type OrgResponse = {
   id: string,
   name: string,
   potential_member_definition: string,
-  potential_member_estimate: number,
 };
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
@@ -104,6 +101,5 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
   return isOrgGraphResponse(response?.graph)
     && response?.id?.length > 0
     && response?.name?.length > 0
-    && response?.potential_member_definition?.length > 0
-    && response?.potential_member_estimate > 0;
+    && response?.potential_member_definition?.length > 0;
 }
