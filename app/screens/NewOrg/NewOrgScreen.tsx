@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import {
-  ScrollView, StyleSheet, Text, TextInput,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
-import { ScreenBackground, SecondaryButton } from '../../components';
+import { ScreenBackground, SecondaryButton, TextInputRow } from '../../components';
 import { NewOrgSteps } from '../../model';
 import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 import NewOrgStepNavigator from './NewOrgStepNavigator';
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     message: {
@@ -25,17 +21,6 @@ const useStyles = () => {
       paddingBottom: spacing.s,
       textAlign: 'center',
     },
-    textInput: {
-      backgroundColor: colors.fill,
-      borderBottomColor: colors.separator,
-      borderBottomWidth: sizes.separator,
-      color: colors.label,
-      height: sizes.buttonHeight,
-      fontFamily: font.weights.regular,
-      fontSize: font.sizes.body,
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
-    },
     title: {
       color: colors.label,
       fontFamily: font.weights.regular,
@@ -44,7 +29,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles, colors };
+  return { styles };
 };
 
 export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
@@ -58,7 +43,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const [input, setInput] = useState(initialInput);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { styles, colors } = useStyles();
+  const { styles } = useStyles();
 
   const params: NewOrgScreenParams = {
     ...route.params,
@@ -82,8 +67,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         <Text style={styles.title}>
           {title}
         </Text>
-        <TextInput
-          autoFocus
+        <TextInputRow
           blurOnSubmit={false}
           keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
           maxLength={maxLength}
@@ -93,10 +77,6 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
             navigateNext();
           }}
           placeholder={placeholder}
-          placeholderTextColor={colors.labelSecondary}
-          returnKeyType="next"
-          selectionColor={colors.primary}
-          style={styles.textInput}
           value={input}
         />
         <Text style={styles.message}>
