@@ -27,7 +27,6 @@ const useStyles = () => {
       top: 0,
     },
     container: {
-      alignItems: 'center',
       backgroundColor: colors.background,
       borderColor: colors.primary,
       borderWidth: spacing.s,
@@ -39,10 +38,11 @@ const useStyles = () => {
       color: colors.label,
       fontFamily: font.weights.semiBold,
       fontSize: font.sizes.body,
-      marginVertical: spacing.m,
+      margin: spacing.m,
       textAlign: 'center',
     },
     icon: {
+      alignSelf: 'center',
       color: colors.primary,
       fontSize: sizes.largeIcon,
     },
