@@ -1,8 +1,19 @@
-import React from 'react';
-import type { NewPostScreenProps } from '../navigation';
-import PlaceholderScreen from './PlaceholderScreen';
+import React, { useState } from 'react';
+import { ScreenBackground, TextInputRow } from '../components';
 
-export default function NewPostScreen({ route }: NewPostScreenProps) {
-  const { name } = route;
-  return <PlaceholderScreen name={name} />;
+const MAX_TITLE_LENGTH = 120;
+
+export default function NewPostScreen() {
+  const [title, setTitle] = useState('');
+
+  return (
+    <ScreenBackground>
+      <TextInputRow
+        maxLength={MAX_TITLE_LENGTH}
+        onChangeText={setTitle}
+        placeholder="Title"
+        value={title}
+      />
+    </ScreenBackground>
+  );
 }
