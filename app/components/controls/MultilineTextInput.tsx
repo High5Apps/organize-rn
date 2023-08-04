@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 import useTheme from '../../Theme';
 
@@ -33,7 +33,7 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-export default function MultilineTextInput(props: TextInputProps) {
+function MultilineTextInput(props: TextInputProps, ref: ForwardedRef<TextInput>) {
   const { style } = props;
 
   const { colors, styles } = useStyles();
@@ -49,7 +49,10 @@ export default function MultilineTextInput(props: TextInputProps) {
       {...defaultProps}
       {...props}
       multiline
+      ref={ref}
       style={[styles.textInput, style]}
     />
   );
 }
+
+export default forwardRef(MultilineTextInput);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 import {
   MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
   ScreenBackground, TextInputRow,
@@ -34,12 +34,23 @@ export default function NewPostScreen() {
   const [body, setBody] = useState('');
   const [title, setTitle] = useState('');
 
+  const multilineTextInputRef = useRef<TextInput | null>(null);
+
   return (
     <ScreenBackground>
       <PostTypeSelector onSelectionChanged={setPostType} />
       <TextInputRow
+        // Prevents dismissing the keyboard when hitting next on Android before
+        // entering any input
+        blurOnSubmit={false}
+        enablesReturnKeyAutomatically // iOS only
         maxLength={MAX_TITLE_LENGTH}
         onChangeText={setTitle}
+        onSubmitEditing={({ nativeEvent: { text } }) => {
+          if (text.length) {
+            multilineTextInputRef.current?.focus();
+          }
+        }}
         placeholder="Title"
         value={title}
       />
@@ -47,6 +58,8 @@ export default function NewPostScreen() {
         maxLength={MAX_BODY_LENGTH}
         onChangeText={setBody}
         placeholder="Body (optional)"
+        returnKeyType="default"
+        ref={multilineTextInputRef}
         value={body}
       />
       <View style={styles.buttonRow}>
