@@ -25,6 +25,8 @@ const useStyles = () => {
       // https://github.com/facebook/react-native/issues/21720#issuecomment-532642093
       paddingBottom: spacing.s,
       paddingTop: spacing.s,
+
+      textAlignVertical: 'top',
     },
   });
 
