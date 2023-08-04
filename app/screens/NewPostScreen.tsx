@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  MultilineTextInput, PrimaryButton, ScreenBackground, TextInputRow,
+  MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
+  ScreenBackground, TextInputRow,
 } from '../components';
 import useTheme from '../Theme';
 
@@ -29,11 +30,13 @@ const useStyles = () => {
 export default function NewPostScreen() {
   const { styles } = useStyles();
 
+  const [postType, setPostType] = useState<PostType>('general');
   const [body, setBody] = useState('');
   const [title, setTitle] = useState('');
 
   return (
     <ScreenBackground>
+      <PostTypeSelector onSelectionChanged={setPostType} />
       <TextInputRow
         maxLength={MAX_TITLE_LENGTH}
         onChangeText={setTitle}
@@ -50,7 +53,7 @@ export default function NewPostScreen() {
         <PrimaryButton
           iconName="publish"
           label="Publish"
-          onPress={() => console.log({ body, title })}
+          onPress={() => console.log({ body, postType, title })}
           style={styles.button}
         />
       </View>
