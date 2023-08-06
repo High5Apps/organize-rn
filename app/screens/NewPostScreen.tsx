@@ -5,10 +5,11 @@ import {
 import { useHeaderHeight } from '@react-navigation/elements';
 import {
   MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
-  ScreenBackground, TextInputRow, useRequestProgress,
+  ScreenBackground, SecondaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, useUserContext,
+  ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue,
+  useUserContext,
 } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
@@ -26,10 +27,16 @@ const useStyles = () => {
       flex: 0,
       height: sizes.buttonHeight,
       marginBottom: spacing.m,
+    },
+    buttonPrimary: {
       paddingHorizontal: spacing.m,
     },
+    buttonSecondary: {
+      paddingEnd: spacing.m,
+    },
     buttonRow: {
-      flexDirection: 'row-reverse',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       marginHorizontal: spacing.m,
     },
     keyboardAvoidingView: {
@@ -70,6 +77,13 @@ export default function NewPostScreen() {
     throw new Error('Expected currentUser');
   }
 
+  const resetForm = () => {
+    setPostType('general');
+    setTitle('');
+    setBody('');
+    setResult('none');
+  };
+
   const onPublishPressed = async () => {
     setLoading(true);
     setResult('none');
@@ -102,7 +116,10 @@ export default function NewPostScreen() {
         keyboardVerticalOffset={headerHeight}
         style={styles.keyboardAvoidingView}
       >
-        <PostTypeSelector onSelectionChanged={setPostType} />
+        <PostTypeSelector
+          onSelectionChanged={setPostType}
+          selection={postType}
+        />
         <TextInputRow
           // Prevents dismissing the keyboard when hitting next on Android before
           // entering any input
@@ -131,11 +148,21 @@ export default function NewPostScreen() {
           value={body}
         />
         <View style={styles.buttonRow}>
+          <SecondaryButton
+            iconName="delete"
+            label="Reset"
+            onPress={ConfirmationAlert({
+              destructiveAction: 'Reset',
+              destructiveActionInTitle: 'reset this post',
+              onConfirm: resetForm,
+            }).show}
+            style={[styles.button, styles.buttonSecondary]}
+          />
           <PrimaryButton
             iconName="publish"
             label="Publish"
             onPress={onPublishPressed}
-            style={styles.button}
+            style={[styles.button, styles.buttonPrimary]}
           />
         </View>
         <RequestProgress style={styles.requestProgress} />

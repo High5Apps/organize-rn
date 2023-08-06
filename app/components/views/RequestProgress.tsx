@@ -54,7 +54,7 @@ export default function useRequestProgress() {
 
   function RequestProgress({ style }: Props) {
     return (
-      <View style={style}>
+      <View style={resultType !== 'none' && style}>
         {loading && <ActivityIndicator />}
         {resultMessage && (
           <Text

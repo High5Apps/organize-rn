@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import useTheme from '../../Theme';
@@ -24,22 +24,22 @@ const useStyles = () => {
 
 type Props = {
   onSelectionChanged?: ((selection: PostType) => void);
+  selection?: PostType;
 };
 
-export default function PostTypeSelector({ onSelectionChanged }: Props) {
+export default function PostTypeSelector({
+  onSelectionChanged, selection,
+}: Props) {
   const { styles } = useStyles();
-
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   return (
     <SegmentedControl
       onChange={(event) => {
         const { nativeEvent: { selectedSegmentIndex } } = event;
-        setSelectedIndex(selectedSegmentIndex);
         onSelectionChanged?.(POST_TYPES[selectedSegmentIndex]);
       }}
       onStartShouldSetResponder={() => true}
-      selectedIndex={selectedIndex}
+      selectedIndex={POST_TYPES.indexOf(selection ?? 'general')}
       style={styles.segmentedControl}
       values={capitalizedPostTypes}
     />
@@ -48,4 +48,5 @@ export default function PostTypeSelector({ onSelectionChanged }: Props) {
 
 PostTypeSelector.defaultProps = {
   onSelectionChanged: () => {},
+  selection: 'general',
 };
