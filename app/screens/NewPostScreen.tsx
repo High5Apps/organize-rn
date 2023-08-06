@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
-  KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,
+  Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import {
@@ -49,7 +49,7 @@ export default function NewPostScreen() {
   const multilineTextInputRef = useRef<TextInput | null>(null);
 
   return (
-    <ScreenBackground>
+    <ScreenBackground onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         // Setting behavior to anything besides undefined caused weird issues on
         // Android. Fortunately, it seems to work fine with undefined.

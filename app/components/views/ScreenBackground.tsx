@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -10,16 +10,32 @@ const useStyles = () => {
       backgroundColor: colors.background,
       flex: 1,
     },
+    pressable: {
+      flex: 1,
+    },
   });
 
   return { styles };
 };
 
-export default function NewOrgScreen({ children }: PropsWithChildren<{}>) {
+type Props = {
+  onPress?: () => void;
+};
+
+export default function ScreenBackground({
+  children, onPress,
+}: PropsWithChildren<Props>) {
   const { styles } = useStyles();
+
   return (
-    <SafeAreaView style={styles.background}>
-      {children}
-    </SafeAreaView>
+    <Pressable disabled={!onPress} onPress={onPress} style={styles.pressable}>
+      <SafeAreaView style={styles.background}>
+        {children}
+      </SafeAreaView>
+    </Pressable>
   );
 }
+
+ScreenBackground.defaultProps = {
+  onPress: undefined,
+};

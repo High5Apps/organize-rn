@@ -38,6 +38,7 @@ export default function PostTypeSelector({ onSelectionChanged }: Props) {
         setSelectedIndex(selectedSegmentIndex);
         onSelectionChanged?.(POST_TYPES[selectedSegmentIndex]);
       }}
+      onStartShouldSetResponder={() => true}
       selectedIndex={selectedIndex}
       style={styles.segmentedControl}
       values={capitalizedPostTypes}
