@@ -18,7 +18,6 @@ const useStyles = () => {
       height: 150,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
-      margin: spacing.m,
       paddingHorizontal: spacing.m,
 
       // Must use bottom and top instead of vertical due to a known issue

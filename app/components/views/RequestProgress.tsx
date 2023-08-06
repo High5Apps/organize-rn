@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import {
+  ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
+} from 'react-native';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -46,23 +48,29 @@ export default function useRequestProgress() {
 
   const { styles } = useStyles();
 
-  const RequestProgress = () => (
-    <>
-      {loading && <ActivityIndicator />}
-      {resultMessage && (
-        <Text
-          style={[
-            styles.message,
-            (resultType === 'error') && styles.error,
-            (resultType === 'success') && styles.success,
-            (resultType === 'warning') && styles.error,
-          ]}
-        >
-          {resultMessage}
-        </Text>
-      )}
-    </>
-  );
+  type Props = {
+    style?: StyleProp<ViewStyle>;
+  };
+
+  function RequestProgress({ style }: Props) {
+    return (
+      <View style={style}>
+        {loading && <ActivityIndicator />}
+        {resultMessage && (
+          <Text
+            style={[
+              styles.message,
+              (resultType === 'error') && styles.error,
+              (resultType === 'success') && styles.success,
+              (resultType === 'warning') && styles.error,
+            ]}
+          >
+            {resultMessage}
+          </Text>
+        )}
+      </View>
+    );
+  }
 
   return {
     RequestProgress,

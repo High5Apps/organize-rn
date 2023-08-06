@@ -5,10 +5,13 @@ import {
 import { useHeaderHeight } from '@react-navigation/elements';
 import {
   MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
-  ScreenBackground, TextInputRow,
+  ScreenBackground, TextInputRow, useRequestProgress,
 } from '../components';
-import { useCachedValue } from '../model';
+import {
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, useUserContext,
+} from '../model';
 import useTheme from '../Theme';
+import { createPost } from '../networking';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
@@ -34,6 +37,15 @@ const useStyles = () => {
     },
     multilineTextInput: {
       flex: 1,
+      marginHorizontal: spacing.m,
+      marginBottom: spacing.m,
+    },
+    requestProgress: {
+      marginHorizontal: spacing.m,
+      marginBottom: spacing.m,
+    },
+    titleInputRow: {
+      marginBottom: spacing.m,
     },
   });
 
@@ -49,7 +61,37 @@ export default function NewPostScreen() {
 
   const headerHeight = useHeaderHeight();
 
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+
   const multilineTextInputRef = useRef<TextInput | null>(null);
+
+  const { currentUser } = useUserContext();
+  if (!isCurrentUserData(currentUser)) {
+    throw new Error('Expected currentUser');
+  }
+
+  const onPublishPressed = async () => {
+    setLoading(true);
+    setResult('none');
+
+    try {
+      const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+      const { errorMessage, postId } = await createPost({
+        body, category: postType, jwt, title: title!,
+      });
+
+      if (errorMessage) {
+        setResult('error', errorMessage);
+        return;
+      }
+
+      setResult('success', `Created post: ${postId}`);
+    } catch (error) {
+      console.error(error);
+      setResult('error', GENERIC_ERROR_MESSAGE);
+    }
+  };
 
   return (
     <ScreenBackground onPress={Keyboard.dismiss}>
@@ -75,6 +117,7 @@ export default function NewPostScreen() {
             }
           }}
           placeholder="Title"
+          style={styles.titleInputRow}
           value={title}
         />
         <MultilineTextInput
@@ -91,10 +134,11 @@ export default function NewPostScreen() {
           <PrimaryButton
             iconName="publish"
             label="Publish"
-            onPress={() => console.log({ body, postType, title })}
+            onPress={onPublishPressed}
             style={styles.button}
           />
         </View>
+        <RequestProgress style={styles.requestProgress} />
       </KeyboardAvoidingView>
     </ScreenBackground>
   );
