@@ -18,5 +18,7 @@ export const connectionPreviewURI = (sharerJwt: string) => `${apiRoute}/connecti
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;
 
+export const postsURI = `${apiRoute}/posts`;
+
 export const usersURI = `${apiRoute}/users`;
 export const userUri = (userId: string) => `${usersURI}/${userId}`;

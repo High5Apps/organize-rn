@@ -103,3 +103,12 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
     && response?.name?.length > 0
     && response?.potential_member_definition?.length > 0;
 }
+
+type PostResponse = {
+  id: string;
+};
+
+export function isPostResponse(object: unknown): object is PostResponse {
+  const response = (object as PostResponse);
+  return response?.id?.length > 0;
+}
