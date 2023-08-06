@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,
 } from 'react-native';
@@ -16,6 +16,7 @@ import { createPost } from '../networking';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
+const CACHE_KEY_TYPE = 'newPostType';
 const CACHE_KEY_TITLE = 'newPostTitle';
 const CACHE_KEY_BODY = 'newPostBody';
 
@@ -62,7 +63,7 @@ const useStyles = () => {
 export default function NewPostScreen() {
   const { styles } = useStyles();
 
-  const [postType, setPostType] = useState<PostType>('general');
+  const [postType, setPostType] = useCachedValue<PostType>(CACHE_KEY_TYPE, 'general');
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY, '');
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE, '');
 
@@ -91,8 +92,9 @@ export default function NewPostScreen() {
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
+      const category = postType ?? 'general';
       const { errorMessage, postId } = await createPost({
-        body, category: postType, jwt, title: title!,
+        body, category, jwt, title: title!,
       });
 
       if (errorMessage) {
