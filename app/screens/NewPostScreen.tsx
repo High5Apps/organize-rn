@@ -7,10 +7,13 @@ import {
   MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
   ScreenBackground, TextInputRow,
 } from '../components';
+import { useCachedValue } from '../model';
 import useTheme from '../Theme';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
+const CACHE_KEY_TITLE = 'newPostTitle';
+const CACHE_KEY_BODY = 'newPostBody';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -41,8 +44,8 @@ export default function NewPostScreen() {
   const { styles } = useStyles();
 
   const [postType, setPostType] = useState<PostType>('general');
-  const [body, setBody] = useState('');
-  const [title, setTitle] = useState('');
+  const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY, '');
+  const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE, '');
 
   const headerHeight = useHeaderHeight();
 
@@ -65,6 +68,7 @@ export default function NewPostScreen() {
           enablesReturnKeyAutomatically // iOS only
           maxLength={MAX_TITLE_LENGTH}
           onChangeText={setTitle}
+          onEndEditing={({ nativeEvent: { text } }) => setTitle(text)}
           onSubmitEditing={({ nativeEvent: { text } }) => {
             if (text.length) {
               multilineTextInputRef.current?.focus();
@@ -76,6 +80,7 @@ export default function NewPostScreen() {
         <MultilineTextInput
           maxLength={MAX_BODY_LENGTH}
           onChangeText={setBody}
+          onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
           placeholder="Body (optional)"
           style={styles.multilineTextInput}
           returnKeyType="default"

@@ -1,4 +1,5 @@
 export { default as useAppState } from './AppState';
+export { default as useCachedValue } from './CachedValue';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as useCurrentUser } from './CurrentUser';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
