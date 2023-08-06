@@ -86,6 +86,8 @@ export default function NewPostScreen() {
   };
 
   const onPublishPressed = async () => {
+    Keyboard.dismiss();
+
     setLoading(true);
     setResult('none');
 
