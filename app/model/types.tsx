@@ -1,3 +1,5 @@
+import type { PostType } from '../components';
+
 export type OrgGraphUser = {
   connectionCount: number;
   joinedAt: number;
@@ -78,3 +80,12 @@ export type SettingsSection = {
 export type Signer = ({ message }: { message: string }) => Promise<string>;
 
 export type Scope = '*' | 'create:connections';
+
+export type Post = {
+  body?: string;
+  categroy: PostType,
+  createdAt: number;
+  id: string;
+  title: string;
+  userId: string;
+};

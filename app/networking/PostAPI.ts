@@ -1,8 +1,11 @@
 import type { PostType } from '../components';
-import { post } from './API';
+import type { Post } from '../model';
+import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
-import { Authorization, isPostResponse } from './types';
+import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
+import type { Authorization } from './types';
+import { isPostIndexResponse, isPostResponse } from './types';
 
 type Props = {
   body?: string;
@@ -15,7 +18,6 @@ type Return = {
   postId?: string;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export async function createPost({
   body, category, jwt, title,
 }: Props & Authorization): Promise<Return> {
@@ -38,4 +40,29 @@ export async function createPost({
   }
 
   return { postId: json.id };
+}
+
+type IndexReturn = {
+  errorMessage?: string;
+  posts?: Post[];
+};
+
+export async function fetchPosts({ jwt }: Authorization): Promise<IndexReturn> {
+  const response = await get({ jwt, uri: postsURI });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    const errorResponse = parseErrorResponse(json);
+    const errorMessage = errorResponse.error_messages[0];
+    return { errorMessage };
+  }
+
+  if (!isPostIndexResponse(json)) {
+    throw new Error('Failed to parse Posts from response');
+  }
+
+  const { posts: snakeCasePosts } = json;
+  const posts = recursiveSnakeToCamel(snakeCasePosts) as Post[];
+  return { posts };
 }

@@ -1,3 +1,4 @@
+import type { PostType } from '../components';
 import type { Org } from '../model/types';
 import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
@@ -111,4 +112,33 @@ type PostResponse = {
 export function isPostResponse(object: unknown): object is PostResponse {
   const response = (object as PostResponse);
   return response?.id?.length > 0;
+}
+
+type PostIndexPost = {
+  body?: string;
+  category: PostType,
+  created_at: number;
+  id: string;
+  title: string;
+  user_id: string;
+};
+
+function isPostIndexPost(object: unknown): object is PostIndexPost {
+  const post = (object as PostIndexPost);
+  return post?.id?.length > 0
+    && post.category?.length > 0
+    && post.title?.length > 0
+    && post.user_id?.length > 0
+    && post.created_at !== undefined;
+}
+
+type PostIndexResponse = {
+  posts: PostIndexPost[],
+};
+
+export function isPostIndexResponse(object: unknown): object is PostIndexResponse {
+  const response = (object as PostIndexResponse);
+  return response?.posts
+    && Array.isArray(response.posts)
+    && response.posts.every(isPostIndexPost);
 }
