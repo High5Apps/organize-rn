@@ -6,6 +6,7 @@ export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useGraphData } from './GraphData';
 export { default as JWT } from './JWT';
 export { default as Keys } from './Keys';
+export { default as getMessageAge } from './MessageAge';
 export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as usePostData } from './PostData';
