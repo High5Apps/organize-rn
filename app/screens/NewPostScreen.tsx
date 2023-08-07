@@ -95,7 +95,7 @@ export default function NewPostScreen() {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       const category = postType ?? 'general';
-      const { errorMessage, postId } = await createPost({
+      const { errorMessage } = await createPost({
         body, category, jwt, title: title!,
       });
 
@@ -104,7 +104,8 @@ export default function NewPostScreen() {
         return;
       }
 
-      setResult('success', `Created post: ${postId}`);
+      resetForm();
+      setResult('success', 'Successfully created post');
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
