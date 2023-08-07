@@ -86,6 +86,7 @@ export type Post = {
   categroy: PostType,
   createdAt: number;
   id: string;
+  pseudonym: string;
   title: string;
   userId: string;
 };

@@ -119,6 +119,7 @@ type PostIndexPost = {
   category: PostType,
   created_at: number;
   id: string;
+  pseudonym: string;
   title: string;
   user_id: string;
 };
@@ -127,6 +128,7 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
   const post = (object as PostIndexPost);
   return post?.id?.length > 0
     && post.category?.length > 0
+    && post.pseudonym?.length > 0
     && post.title?.length > 0
     && post.user_id?.length > 0
     && post.created_at !== undefined;
