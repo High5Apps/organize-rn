@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   SectionList, StyleSheet, Text, View,
 } from 'react-native';
@@ -8,6 +8,7 @@ import {
   OrgGraphUser, getCircleColors, getHighestRank, getTenure, useGraphData, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
+import { ItemSeparator } from '../views';
 
 export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   const officers = users.filter((user) => user.offices?.[0]);
@@ -41,11 +42,6 @@ const useStyles = () => {
       backgroundColor: colors.fill,
       gap: spacing.xs,
       padding: spacing.m,
-    },
-    itemSeparator: {
-      backgroundColor: colors.separator,
-      height: sizes.separator,
-      marginStart: spacing.m,
     },
     row: {
       alignItems: 'center',
@@ -151,10 +147,6 @@ export default function NotableUserList({
     }];
     sections.push({ title: 'Me', data: meData });
   }
-
-  const ItemSeparator = useCallback(() => (
-    <View style={styles.itemSeparator} />
-  ), [styles]);
 
   const renderItem = ({ item }: { item: NotableUserItem }) => {
     const {

@@ -6,6 +6,7 @@ export { default as DelayedActivityIndicator } from './DelayedActivityIndicator'
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as FadeInView } from './FadeInView';
 export { default as IconPrompt } from './IconPrompt';
+export { default as ItemSeparator } from './ItemSeparator';
 export { default as LockingScrollView } from './LockingScrollView';
 export { default as MembershipReview } from './MembershipReview';
 export { default as ProgressBar } from './ProgressBar';
