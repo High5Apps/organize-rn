@@ -53,8 +53,9 @@ export default function useRequestProgress() {
   };
 
   function RequestProgress({ style }: Props) {
+    const isVisible = (resultType !== 'none') || loading;
     return (
-      <View style={resultType !== 'none' && style}>
+      <View style={isVisible && style}>
         {loading && <ActivityIndicator />}
         {resultMessage && (
           <Text
