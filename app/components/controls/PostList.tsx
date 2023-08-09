@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleSheet, Text,
 } from 'react-native';
 import type { Post } from '../../model';
+import { usePostData } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
@@ -26,13 +27,13 @@ const useStyles = () => {
   return { styles };
 };
 
-type Props = {
-  loading: boolean;
-  posts: Post[];
-};
+export default function PostList() {
+  const [refreshing, setRefreshing] = useState(false);
 
-export default function PostList({ loading, posts }: Props) {
   const { styles } = useStyles();
+
+  const { posts, ready, updatePosts } = usePostData();
+  const loading = !ready;
 
   const renderItem = ({ item }: { item: Post }) => {
     const { createdAt, pseudonym, title } = item;
@@ -61,6 +62,16 @@ export default function PostList({ loading, posts }: Props) {
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
+      onRefresh={async () => {
+        setRefreshing(true);
+        try {
+          await updatePosts();
+        } catch (e) {
+          console.error(e);
+        }
+        setRefreshing(false);
+      }}
+      refreshing={refreshing}
       renderItem={renderItem}
     />
   );

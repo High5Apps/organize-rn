@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { PostList, PrimaryButton, ScreenBackground } from '../components';
 import useTheme from '../Theme';
 import type { DiscussScreenProps } from '../navigation';
-import { usePostData } from '../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -24,11 +23,9 @@ const useStyles = () => {
 export default function DiscussScreen({ navigation }: DiscussScreenProps) {
   const { styles } = useStyles();
 
-  const { posts, ready } = usePostData();
-
   return (
     <ScreenBackground>
-      <PostList loading={!ready} posts={posts} />
+      <PostList />
       <PrimaryButton
         iconName="add"
         label="Post"
