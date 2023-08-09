@@ -95,8 +95,9 @@ export default function NewPostScreen() {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       const category = postType ?? 'general';
+      const maybeBody = body?.length ? body : undefined;
       const { errorMessage } = await createPost({
-        body, category, jwt, title: title!,
+        body: maybeBody, category, jwt, title: title!,
       });
 
       if (errorMessage) {
