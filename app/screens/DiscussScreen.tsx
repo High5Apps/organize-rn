@@ -24,11 +24,11 @@ const useStyles = () => {
 export default function DiscussScreen({ navigation }: DiscussScreenProps) {
   const { styles } = useStyles();
 
-  const { posts } = usePostData();
+  const { posts, ready } = usePostData();
 
   return (
     <ScreenBackground>
-      <PostList posts={posts} />
+      <PostList loading={!ready} posts={posts} />
       <PrimaryButton
         iconName="add"
         label="Post"
