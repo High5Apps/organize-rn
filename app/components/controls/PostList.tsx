@@ -1,16 +1,25 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator, FlatList, StyleSheet, Text,
+} from 'react-native';
 import type { Post } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const { spacing } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     activityIndicator: {
-      margin: spacing.s,
+      margin: spacing.m,
+    },
+    emptyListText: {
+      color: colors.label,
+      fontSize: font.sizes.body,
+      fontFamily: font.weights.regular,
+      margin: spacing.m,
+      textAlign: 'center',
     },
   });
 
@@ -36,9 +45,19 @@ export default function PostList({ loading, posts }: Props) {
     );
   };
 
-  return loading ? (
-    <ActivityIndicator style={styles.activityIndicator} />
-  ) : (
+  if (loading) {
+    return <ActivityIndicator style={styles.activityIndicator} />;
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Text style={styles.emptyListText}>
+        Start a discussion by creating your Org&apos;s first post
+      </Text>
+    );
+  }
+
+  return (
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
