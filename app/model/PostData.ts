@@ -21,16 +21,12 @@ export default function usePostData() {
       throw new Error(errorMessage);
     }
 
-    return fetchedPosts ?? [];
+    setPosts(fetchedPosts ?? []);
+    setReady(true);
   }
 
   useEffect(() => {
-    updatePosts()
-      .then((updatedPosts) => {
-        setPosts(updatedPosts);
-        setReady(true);
-      })
-      .catch(console.error);
+    updatePosts().catch(console.error);
   }, []);
 
   return { posts, updatePosts, ready };
