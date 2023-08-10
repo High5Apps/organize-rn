@@ -2,6 +2,7 @@ import type { PostType } from '../components';
 
 export type OrgGraphUser = {
   connectionCount: number;
+  id: string;
   joinedAt: number;
   pseudonym: string;
   offices?: string[];

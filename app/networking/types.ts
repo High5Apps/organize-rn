@@ -70,6 +70,7 @@ type OrgGraphResponse = {
   users: {
     [id: string]: {
       connection_count: number;
+      id: string;
       joined_at: number;
       offices?: string[];
       pseudonym: string;
@@ -84,6 +85,7 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   const firstUser = Object.values(response?.users)[0];
   return Object.keys(response?.users).length > 0
     && firstUser?.connection_count >= 0
+    && firstUser?.id?.length >= 0
     && firstUser?.joined_at > 0
     && firstUser?.pseudonym?.length > 0
     && firstUser?.recruit_count >= 0
