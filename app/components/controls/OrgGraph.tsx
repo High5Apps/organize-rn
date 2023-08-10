@@ -1,7 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable react/require-default-props */
+import React, {
+  ForwardedRef, forwardRef, useEffect, useRef, useState,
+} from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
-import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
+import {
+  isCurrentUserData, type OrgGraphRef, useOrgGraphRef, useGraphData,
+  useUserContext,
+} from '../../model';
 import useTheme from '../../Theme';
 import ErrorMessage from '../views/ErrorMessage';
 import useClickHandler from './OrgGraphClickHandler';
@@ -27,7 +33,10 @@ type Props = {
   onUserSelected?: (id?: string) => void;
 };
 
-export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
+function OrgGraph(
+  { onInteraction, onUserSelected }: Props,
+  ref: ForwardedRef<OrgGraphRef>,
+) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -37,6 +46,8 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
   const { primary } = colors;
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
+
+  useOrgGraphRef(ref, visNetworkRef.current);
 
   const { hasMultipleNodes, updateOrgData, visGraphData } = useGraphData();
 
@@ -110,7 +121,4 @@ export default function OrgGraph({ onInteraction, onUserSelected }: Props) {
   );
 }
 
-OrgGraph.defaultProps = {
-  onInteraction: () => {},
-  onUserSelected: () => {},
-};
+export default forwardRef(OrgGraph);

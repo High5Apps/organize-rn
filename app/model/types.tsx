@@ -91,3 +91,5 @@ export type Post = {
   title: string;
   userId: string;
 };
+
+export type { OrgGraphRef } from './OrgGraphRef';
