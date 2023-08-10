@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, TouchableHighlight, View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { OrgGraphUser, getTenure } from '../../model';
 import useTheme from '../../Theme';
@@ -69,9 +71,10 @@ const useStyles = () => {
 
 type Props = {
   item: NotableUserItem;
+  onPress?: (item: NotableUserItem) => void;
 };
 
-export default function NotableUserRow({ item }: Props) {
+export default function NotableUserRow({ item, onPress }: Props) {
   const {
     circleBorderColor, circleBackgroundColor, user: {
       connectionCount, joinedAt, offices, pseudonym, recruitCount,
@@ -86,27 +89,33 @@ export default function NotableUserRow({ item }: Props) {
   const title = [pseudonym, joinedOffices].filter((e) => e).join(', ');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.rowTitle}>
-        <View
-          style={[
-            styles.circle,
-            {
-              backgroundColor: circleBackgroundColor,
-              borderColor: circleBorderColor,
-            },
-          ]}
-        />
-        <Text style={styles.rowTitleText}>{title}</Text>
+    <TouchableHighlight onPress={() => onPress?.(item)}>
+      <View style={styles.container}>
+        <View style={styles.rowTitle}>
+          <View
+            style={[
+              styles.circle,
+              {
+                backgroundColor: circleBackgroundColor,
+                borderColor: circleBorderColor,
+              },
+            ]}
+          />
+          <Text style={styles.rowTitleText}>{title}</Text>
+        </View>
+        <View style={styles.rowSubtitle}>
+          <Icon name="schedule" style={styles.rowIcon} />
+          <Text style={styles.rowSubtitleText}>{tenure}</Text>
+          <Icon name="link" style={styles.rowIcon} />
+          <Text style={styles.rowSubtitleText}>{connectionCount}</Text>
+          <Icon name="person-add-alt" style={styles.rowIcon} />
+          <Text style={styles.rowSubtitleText}>{recruitCount}</Text>
+        </View>
       </View>
-      <View style={styles.rowSubtitle}>
-        <Icon name="schedule" style={styles.rowIcon} />
-        <Text style={styles.rowSubtitleText}>{tenure}</Text>
-        <Icon name="link" style={styles.rowIcon} />
-        <Text style={styles.rowSubtitleText}>{connectionCount}</Text>
-        <Icon name="person-add-alt" style={styles.rowIcon} />
-        <Text style={styles.rowSubtitleText}>{recruitCount}</Text>
-      </View>
-    </View>
+    </TouchableHighlight>
   );
 }
+
+NotableUserRow.defaultProps = {
+  onPress: () => {},
+};

@@ -27,6 +27,7 @@ type SectionHeaderProps = {
 
 type Props = {
   ListHeaderComponent?: ReactElement;
+  onUserSelected?: (userId: string) => void;
   scrollEnabled?: boolean;
   selectedUserId?: string;
 };
@@ -37,7 +38,7 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 };
 
 export default function NotableUserList({
-  ListHeaderComponent, scrollEnabled, selectedUserId,
+  ListHeaderComponent, onUserSelected, scrollEnabled, selectedUserId,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -78,9 +79,12 @@ export default function NotableUserList({
     sections.push({ title: 'Me', data: meData });
   }
 
-  const renderItem = ({
-    item,
-  }: { item: NotableUserItem }) => <NotableUserRow item={item} />;
+  const renderItem = ({ item }: { item: NotableUserItem }) => (
+    <NotableUserRow
+      item={item}
+      onPress={({ user: { id } }: NotableUserItem) => onUserSelected?.(id)}
+    />
+  );
 
   return (
     <SectionList
@@ -107,6 +111,7 @@ export default function NotableUserList({
 
 NotableUserList.defaultProps = {
   ListHeaderComponent: null,
+  onUserSelected: () => {},
   scrollEnabled: true,
   selectedUserId: undefined,
 };
