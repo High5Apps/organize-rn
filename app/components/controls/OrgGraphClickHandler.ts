@@ -5,7 +5,7 @@ const ANIMATION_OPTIONS = {
   duration: 500,
   easingFunction: 'easeInOutQuad' as const,
 };
-const DEFAULT_FOCUS_OPTIONS = {
+export const DEFAULT_FOCUS_OPTIONS = {
   animation: ANIMATION_OPTIONS,
   locked: true,
   scale: 1.5,

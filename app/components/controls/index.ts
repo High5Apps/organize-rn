@@ -7,6 +7,7 @@ export { default as MultilineTextInput } from './MultilineTextInput';
 export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NotableUserList } from './NotableUserList';
 export { default as OrgGraph } from './OrgGraph';
+export { DEFAULT_FOCUS_OPTIONS } from './OrgGraphClickHandler';
 export { default as PostList } from './PostList';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as PostTypeSelector } from './PostTypeSelector';
