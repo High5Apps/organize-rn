@@ -1,8 +1,12 @@
-import React, { ReactElement, useState } from 'react';
+/* eslint-disable react/require-default-props */
+import React, {
+  ForwardedRef, ReactElement, forwardRef, useRef, useState,
+} from 'react';
 import { SectionList } from 'react-native';
 import SectionHeader from '../views/SectionHeader';
 import {
-  OrgGraphUser, getCircleColors, getHighestRank, useGraphData, useUserContext,
+  NotableUserListRef, OrgGraphUser, getCircleColors, getHighestRank,
+  useGraphData, useNotableUserListRef, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator } from '../views';
@@ -16,7 +20,7 @@ export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   return ordererdOfficers;
 }
 
-type NotableUserSection = {
+export type NotableUserSection = {
   title: string;
   data: NotableUserItem[];
 };
@@ -27,6 +31,7 @@ type SectionHeaderProps = {
 
 type Props = {
   ListHeaderComponent?: ReactElement;
+  listHeaderComponentHeight?: number;
   onUserSelected?: (userId: string) => void;
   scrollEnabled?: boolean;
   selectedUserId?: string;
@@ -37,10 +42,17 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
   return <SectionHeader>{title}</SectionHeader>;
 };
 
-export default function NotableUserList({
-  ListHeaderComponent, onUserSelected, scrollEnabled, selectedUserId,
-}: Props) {
+function NotableUserList(
+  {
+    ListHeaderComponent, listHeaderComponentHeight, onUserSelected,
+    scrollEnabled, selectedUserId,
+  }: Props,
+  ref: ForwardedRef<NotableUserListRef>,
+) {
   const [refreshing, setRefreshing] = useState(false);
+
+  const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
+  useNotableUserListRef(ref, sectionListRef, listHeaderComponentHeight);
 
   const { colors } = useTheme();
   const { currentUser } = useUserContext();
@@ -100,6 +112,7 @@ export default function NotableUserList({
         }
         setRefreshing(false);
       }}
+      ref={sectionListRef}
       refreshing={refreshing}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
@@ -109,9 +122,4 @@ export default function NotableUserList({
   );
 }
 
-NotableUserList.defaultProps = {
-  ListHeaderComponent: null,
-  onUserSelected: () => {},
-  scrollEnabled: true,
-  selectedUserId: undefined,
-};
+export default forwardRef(NotableUserList);

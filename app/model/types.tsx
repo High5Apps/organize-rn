@@ -93,3 +93,4 @@ export type Post = {
 };
 
 export type { OrgGraphRef } from './OrgGraphRef';
+export type { NotableUserListRef } from './NotableUserListRef';

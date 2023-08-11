@@ -8,6 +8,7 @@ export { default as JWT } from './JWT';
 export { default as Keys } from './Keys';
 export { default as getMessageAge } from './MessageAge';
 export { default as NewOrgSteps } from './NewOrgSteps';
+export { default as useNotableUserListRef } from './NotableUserListRef';
 export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as useOrgGraphRef } from './OrgGraphRef';
 export { default as usePostData } from './PostData';
