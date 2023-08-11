@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React, {
   ForwardedRef, ReactElement, forwardRef, useRef, useState,
 } from 'react';
@@ -43,13 +42,13 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
   return <SectionHeader>{title}</SectionHeader>;
 };
 
-function NotableUserList(
+const NotableUserList = forwardRef((
   {
     ListHeaderComponent, listHeaderComponentHeight, onRefresh, onUserSelected,
     scrollEnabled, selectedUserId,
   }: Props,
   ref: ForwardedRef<NotableUserListRef>,
-) {
+) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
@@ -122,6 +121,15 @@ function NotableUserList(
       sections={sections}
     />
   );
-}
+});
 
-export default forwardRef(NotableUserList);
+NotableUserList.defaultProps = {
+  ListHeaderComponent: undefined,
+  listHeaderComponentHeight: 0,
+  onRefresh: () => {},
+  onUserSelected: () => {},
+  scrollEnabled: true,
+  selectedUserId: undefined,
+};
+
+export default NotableUserList;

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React, {
   ForwardedRef, forwardRef, useEffect, useRef, useState,
 } from 'react';
@@ -33,10 +32,10 @@ type Props = {
   onUserSelected?: (id?: string) => void;
 };
 
-function OrgGraph(
+const OrgGraph = forwardRef((
   { onInteraction, onUserSelected }: Props,
   ref: ForwardedRef<OrgGraphRef>,
-) {
+) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -119,6 +118,11 @@ function OrgGraph(
       { component }
     </View>
   );
-}
+});
 
-export default forwardRef(OrgGraph);
+OrgGraph.defaultProps = {
+  onInteraction: () => {},
+  onUserSelected: () => {},
+};
+
+export default OrgGraph;
