@@ -32,6 +32,7 @@ type SectionHeaderProps = {
 type Props = {
   ListHeaderComponent?: ReactElement;
   listHeaderComponentHeight?: number;
+  onRefresh?: () => void;
   onUserSelected?: (userId: string) => void;
   scrollEnabled?: boolean;
   selectedUserId?: string;
@@ -44,7 +45,7 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 
 function NotableUserList(
   {
-    ListHeaderComponent, listHeaderComponentHeight, onUserSelected,
+    ListHeaderComponent, listHeaderComponentHeight, onRefresh, onUserSelected,
     scrollEnabled, selectedUserId,
   }: Props,
   ref: ForwardedRef<NotableUserListRef>,
@@ -104,6 +105,7 @@ function NotableUserList(
       ListHeaderComponent={ListHeaderComponent}
       nestedScrollEnabled
       onRefresh={async () => {
+        onRefresh?.();
         setRefreshing(true);
         try {
           await updateOrgData();

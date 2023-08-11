@@ -54,6 +54,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
           </View>
         )}
         listHeaderComponentHeight={listHeaderComponentHeight}
+        onRefresh={() => setSelectedUserId(undefined)}
         onUserSelected={(userId: string) => {
           notableUserList.current?.scrollToTop();
           setSelectedUserId(userId);
