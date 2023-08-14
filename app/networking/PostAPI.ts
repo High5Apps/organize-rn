@@ -1,5 +1,5 @@
 import type { PostType } from '../components';
-import type { Post } from '../model';
+import type { PaginationData, Post } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
@@ -49,6 +49,7 @@ type IndexProps = {
 
 type IndexReturn = {
   errorMessage?: string;
+  paginationData?: PaginationData;
   posts?: Post[];
 };
 
@@ -76,7 +77,8 @@ export async function fetchPosts({
     throw new Error('Failed to parse Posts from response');
   }
 
-  const { posts: snakeCasePosts } = json;
+  const { posts: snakeCasePosts, meta: snakeCasePaginationData } = json;
   const posts = recursiveSnakeToCamel(snakeCasePosts) as Post[];
-  return { posts };
+  const paginationData = recursiveSnakeToCamel(snakeCasePaginationData) as PaginationData;
+  return { paginationData, posts };
 }

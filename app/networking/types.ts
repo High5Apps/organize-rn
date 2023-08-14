@@ -136,13 +136,26 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.created_at !== undefined;
 }
 
+type PaginationData = {
+  current_page: number;
+  next_page: number | null;
+};
+
+function isPaginationData(object: unknown): object is PaginationData {
+  const response = (object as PaginationData);
+  return response?.current_page !== undefined
+    && response?.next_page !== undefined;
+}
+
 type PostIndexResponse = {
-  posts: PostIndexPost[],
+  posts: PostIndexPost[];
+  meta: PaginationData;
 };
 
 export function isPostIndexResponse(object: unknown): object is PostIndexResponse {
   const response = (object as PostIndexResponse);
   return response?.posts
     && Array.isArray(response.posts)
-    && response.posts.every(isPostIndexPost);
+    && response.posts.every(isPostIndexPost)
+    && isPaginationData(response?.meta);
 }

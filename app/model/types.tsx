@@ -94,3 +94,8 @@ export type Post = {
 
 export type { OrgGraphRef } from './OrgGraphRef';
 export type { NotableUserListRef } from './NotableUserListRef';
+
+export type PaginationData = {
+  currentPage: number;
+  nextPage: number | null;
+};
