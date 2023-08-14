@@ -9,13 +9,15 @@ export default function usePostData() {
 
   const { currentUser } = useUserContext();
 
-  async function updatePosts() {
+  async function fetchNewestPosts() {
     if (!isCurrentUserData(currentUser)) {
       throw new Error('Expected currentUser to be set');
     }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const { errorMessage, posts: fetchedPosts } = await fetchPosts({ jwt });
+    const { errorMessage, posts: fetchedPosts } = await fetchPosts({
+      jwt, sort: 'new',
+    });
 
     if (errorMessage) {
       throw new Error(errorMessage);
@@ -26,8 +28,8 @@ export default function usePostData() {
   }
 
   useEffect(() => {
-    updatePosts().catch(console.error);
+    fetchNewestPosts().catch(console.error);
   }, []);
 
-  return { posts, updatePosts, ready };
+  return { posts, fetchNewestPosts, ready };
 }

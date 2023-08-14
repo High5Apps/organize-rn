@@ -42,13 +42,20 @@ export async function createPost({
   return { postId: json.id };
 }
 
+type IndexProps = {
+  sort: 'new' | 'old';
+};
+
 type IndexReturn = {
   errorMessage?: string;
   posts?: Post[];
 };
 
-export async function fetchPosts({ jwt }: Authorization): Promise<IndexReturn> {
-  const response = await get({ jwt, uri: postsURI });
+export async function fetchPosts({
+  jwt, sort,
+}: IndexProps & Authorization): Promise<IndexReturn> {
+  const uri = `${postsURI}?sort=${encodeURIComponent(sort)}`;
+  const response = await get({ jwt, uri });
 
   const json = await response.json();
 
