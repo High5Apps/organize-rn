@@ -32,7 +32,7 @@ export default function PostList() {
 
   const { styles } = useStyles();
 
-  const { posts, ready, fetchNewestPosts } = usePostData();
+  const { posts, ready, fetchNextNewerPosts } = usePostData();
   const loading = !ready;
 
   const renderItem = ({ item }: { item: Post }) => {
@@ -62,7 +62,7 @@ export default function PostList() {
       onRefresh={async () => {
         setRefreshing(true);
         try {
-          await fetchNewestPosts();
+          await fetchNextNewerPosts();
         } catch (e) {
           console.error(e);
         }
