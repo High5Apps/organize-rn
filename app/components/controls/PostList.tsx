@@ -50,20 +50,15 @@ export default function PostList() {
     return <ActivityIndicator style={styles.activityIndicator} />;
   }
 
-  let ListHeaderComponent;
-  if (posts.length === 0) {
-    ListHeaderComponent = (
-      <Text style={styles.emptyListText}>
-        Start a discussion by creating your Org&apos;s first post
-      </Text>
-    );
-  }
-
   return (
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={ListHeaderComponent}
+      ListEmptyComponent={(
+        <Text style={styles.emptyListText}>
+          Start a discussion by creating your Org&apos;s first post
+        </Text>
+      )}
       onRefresh={async () => {
         setRefreshing(true);
         try {
