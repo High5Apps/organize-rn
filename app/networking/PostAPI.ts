@@ -44,6 +44,7 @@ export async function createPost({
 
 type IndexProps = {
   createdAfter?: number;
+  createdBefore?: number;
   sort: 'new' | 'old';
 };
 
@@ -54,10 +55,11 @@ type IndexReturn = {
 };
 
 export async function fetchPosts({
-  createdAfter, jwt, sort,
+  createdAfter, createdBefore, jwt, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const queries = [
     createdAfter && `created_after=${encodeURIComponent(createdAfter)}`,
+    createdBefore && `created_before=${encodeURIComponent(createdBefore)}`,
     `sort=${encodeURIComponent(sort)}`,
   ];
   const queryString = queries.length ? `?${queries.join('&')}` : '';
