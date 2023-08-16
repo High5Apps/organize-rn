@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { getMessageAge } from '../../model';
+import { Post, getMessageAge } from '../../model';
 
 const useStyles = () => {
   const {
@@ -48,12 +48,12 @@ const useStyles = () => {
 };
 
 type Props = {
-  createdAt: number;
-  pseudonym: string;
-  title: string;
+  item: Post;
 };
 
-export default function PostRow({ createdAt, pseudonym, title }: Props) {
+export default function PostRow({ item }: Props) {
+  const { createdAt, pseudonym, title } = item;
+
   const { styles } = useStyles();
 
   const timeAgo = getMessageAge(createdAt);

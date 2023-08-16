@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleSheet, Text,
 } from 'react-native';
-import type { Post } from '../../model';
 import { usePostData } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
@@ -40,17 +39,6 @@ export default function PostList() {
     posts, ready, reachedOldest, fetchNextNewerPosts, fetchNextOlderPosts,
   } = usePostData();
   const loading = !ready;
-
-  const renderItem = ({ item }: { item: Post }) => {
-    const { createdAt, pseudonym, title } = item;
-    return (
-      <PostRow
-        createdAt={createdAt}
-        pseudonym={pseudonym}
-        title={title}
-      />
-    );
-  };
 
   if (loading) {
     return <ActivityIndicator style={styles.activityIndicator} />;
@@ -102,7 +90,7 @@ export default function PostList() {
         setRefreshing(false);
       }}
       refreshing={refreshing}
-      renderItem={renderItem}
+      renderItem={({ item }) => <PostRow item={item} />}
     />
   );
 }
