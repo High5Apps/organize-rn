@@ -91,13 +91,6 @@ const NotableUserList = forwardRef((
     sections.push({ title: 'Me', data: meData });
   }
 
-  const renderItem = ({ item }: { item: NotableUserItem }) => (
-    <NotableUserRow
-      item={item}
-      onPress={({ user: { id } }: NotableUserItem) => onUserSelected?.(id)}
-    />
-  );
-
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
@@ -115,7 +108,12 @@ const NotableUserList = forwardRef((
       }}
       ref={sectionListRef}
       refreshing={refreshing}
-      renderItem={renderItem}
+      renderItem={({ item }) => (
+        <NotableUserRow
+          item={item}
+          onPress={({ user: { id } }: NotableUserItem) => onUserSelected?.(id)}
+        />
+      )}
       renderSectionHeader={renderSectionHeader}
       scrollEnabled={scrollEnabled}
       sections={sections}
