@@ -1,16 +1,35 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { getMessageAge } from '../../model';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
 
   const styles = StyleSheet.create({
+    icon: {
+      alignSelf: 'center',
+      color: colors.separator,
+      fontSize: sizes.mediumIcon,
+    },
     container: {
       backgroundColor: colors.fill,
-      paddingHorizontal: spacing.m,
+      flexDirection: 'row',
+
+      // paddingStart and paddingEnd are different because the chevron icon has
+      // its own internal padding, which makes the row's padding seem unbalanced
+      // when paddingStart and paddingEnd are the same.
+      paddingEnd: spacing.s,
+      paddingStart: spacing.m,
+
       paddingVertical: spacing.s,
+    },
+    innerContainer: {
+      flex: 1,
+      flexDirection: 'column',
     },
     subtitle: {
       color: colors.labelSecondary,
@@ -42,8 +61,11 @@ export default function PostRow({ createdAt, pseudonym, title }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <View style={styles.innerContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
+      </View>
+      <Icon name="chevron-right" style={styles.icon} />
     </View>
   );
 }
