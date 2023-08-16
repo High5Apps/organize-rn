@@ -6,6 +6,7 @@ import { fetchPosts } from '../networking';
 export default function usePostData() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [ready, setReady] = useState<boolean>(false);
+  const [reachedOldest, setReachedOldest] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
 
@@ -15,15 +16,16 @@ export default function usePostData() {
     }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const { errorMessage, posts: fetchedPosts } = await fetchPosts({
-      jwt, sort: 'new',
-    });
+    const {
+      errorMessage, paginationData, posts: fetchedPosts,
+    } = await fetchPosts({ jwt, sort: 'new' });
 
     if (errorMessage) {
       throw new Error(errorMessage);
     }
 
     setPosts(fetchedPosts ?? []);
+    setReachedOldest(paginationData?.nextPage === null);
     setReady(true);
   }
 
@@ -70,13 +72,15 @@ export default function usePostData() {
 
     const lastPost = posts.length > 0 ? posts.at(-1) : undefined;
     const createdBefore = lastPost?.createdAt;
-    const { errorMessage, posts: fetchedPosts } = await fetchPosts({
-      createdBefore, jwt, sort: 'new',
-    });
+    const {
+      errorMessage, paginationData, posts: fetchedPosts,
+    } = await fetchPosts({ createdBefore, jwt, sort: 'new' });
 
     if (errorMessage) {
       throw new Error(errorMessage);
     }
+
+    setReachedOldest(paginationData?.nextPage === null);
 
     if (!fetchedPosts?.length) { return; }
 
@@ -97,6 +101,6 @@ export default function usePostData() {
   }, []);
 
   return {
-    posts, fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, ready,
+    fetchNextNewerPosts, fetchNextOlderPosts, posts, reachedOldest, ready,
   };
 }
