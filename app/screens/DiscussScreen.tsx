@@ -25,7 +25,9 @@ export default function DiscussScreen({ navigation }: DiscussScreenProps) {
 
   return (
     <ScreenBackground>
-      <PostList />
+      <PostList
+        onItemPress={({ id }) => navigation.navigate('Post', { postId: id })}
+      />
       <PrimaryButton
         iconName="add"
         label="Post"

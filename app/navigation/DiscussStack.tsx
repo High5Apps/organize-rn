@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DiscussScreen, NewPostScreen } from '../screens';
+import { DiscussScreen, NewPostScreen, PostScreen } from '../screens';
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -17,6 +17,7 @@ export default function DiscussStack() {
         component={NewPostScreen}
         options={{ title: 'New Post' }}
       />
+      <Stack.Screen name="Post" component={PostScreen} />
     </Stack.Navigator>
   );
 }

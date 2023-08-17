@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleSheet, Text,
 } from 'react-native';
-import { usePostData } from '../../model';
+import { Post, usePostData } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
@@ -26,7 +26,11 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function PostList() {
+type Props = {
+  onItemPress?: (item: Post) => void;
+};
+
+export default function PostList({ onItemPress }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [
@@ -90,7 +94,11 @@ export default function PostList() {
         setRefreshing(false);
       }}
       refreshing={refreshing}
-      renderItem={({ item }) => <PostRow item={item} />}
+      renderItem={({ item }) => <PostRow item={item} onPress={onItemPress} />}
     />
   );
 }
+
+PostList.defaultProps = {
+  onItemPress: () => {},
+};

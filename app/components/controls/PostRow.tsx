@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, TouchableHighlight, View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { Post, getMessageAge } from '../../model';
@@ -49,9 +51,10 @@ const useStyles = () => {
 
 type Props = {
   item: Post;
+  onPress?: (item: Post) => void;
 };
 
-export default function PostRow({ item }: Props) {
+export default function PostRow({ item, onPress }: Props) {
   const { createdAt, pseudonym, title } = item;
 
   const { styles } = useStyles();
@@ -60,12 +63,18 @@ export default function PostRow({ item }: Props) {
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
+    <TouchableHighlight onPress={() => onPress?.(item)}>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        </View>
+        <Icon name="chevron-right" style={styles.icon} />
       </View>
-      <Icon name="chevron-right" style={styles.icon} />
-    </View>
+    </TouchableHighlight>
   );
 }
+
+PostRow.defaultProps = {
+  onPress: () => {},
+};
