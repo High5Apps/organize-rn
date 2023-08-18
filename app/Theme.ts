@@ -12,8 +12,10 @@ const office: { [key: string]: string } = {
 
 const palette = {
   purpleDark2: '#1F082B',
+  purpleDark1: '#3B2B46',
   purpleDark0: '#AF52DE',
   purpleLight0: '#BF5AF2',
+  purpleLight1: '#E3DFE6',
   purpleLight2: '#F8F4FB',
   green: '#66AB44',
   redLight: '#FF3B30',
@@ -46,6 +48,7 @@ const lightTheme = {
     error: palette.redLight,
     fill: palette.grayLight2,
     fillSecondary: palette.grayLight1,
+    fillTertiary: palette.purpleLight1,
     label: palette.purpleDark2,
     labelSecondary: palette.grayDark0,
     office,
@@ -109,6 +112,7 @@ const darkTheme = {
     error: palette.redDark,
     fill: palette.grayDark2,
     fillSecondary: palette.grayDark1,
+    fillTertiary: palette.purpleDark1,
     label: palette.purpleLight2,
     labelSecondary: palette.grayLight0,
     office,
