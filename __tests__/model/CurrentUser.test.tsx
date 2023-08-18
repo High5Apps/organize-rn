@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
-import { useCurrentUser } from '../../app/model';
+import useCurrentUser from '../../app/model/CurrentUser';
 import { UserType } from '../../app/model/User';
 import { getStoredUser, setStoredUser } from '../../app/model/UserStorage';
 import { fakeOtherUser, fakeUser } from '../FakeData';
