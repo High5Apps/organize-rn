@@ -7,7 +7,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     text: {
-      backgroundColor: colors.background,
+      backgroundColor: colors.fillTertiary,
       color: colors.label,
       fontFamily: font.weights.medium,
       fontSize: font.sizes.body,
