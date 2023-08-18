@@ -15,9 +15,7 @@ export default function usePostData() {
   const { currentUser } = useUserContext();
 
   async function fetchNewestPosts() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected currentUser to be set');
-    }
+    if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
@@ -34,9 +32,7 @@ export default function usePostData() {
   }
 
   async function fetchNextNewerPosts() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected currentUser to be set');
-    }
+    if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
@@ -68,9 +64,7 @@ export default function usePostData() {
   }
 
   async function fetchNextOlderPosts() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected currentUser to be set');
-    }
+    if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
@@ -106,7 +100,7 @@ export default function usePostData() {
 
   useEffect(() => {
     fetchNewestPosts().catch(console.error);
-  }, []);
+  }, [currentUser]);
 
   return {
     fetchNextNewerPosts,

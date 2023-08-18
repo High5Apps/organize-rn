@@ -11,7 +11,7 @@ export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as useNotableUserListRef } from './NotableUserListRef';
 export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as useOrgGraphRef } from './OrgGraphRef';
-export { default as usePostData } from './PostData';
+export { PostContextProvider, usePostContext } from './PostContext';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from './QRCodeData';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleSheet, Text,
 } from 'react-native';
-import { Post, usePostData } from '../../model';
+import { Post, usePostContext } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
@@ -41,7 +41,7 @@ export default function PostList({ onItemPress }: Props) {
 
   const {
     posts, ready, reachedOldest, fetchNextNewerPosts, fetchNextOlderPosts,
-  } = usePostData();
+  } = usePostContext();
   const loading = !ready;
 
   if (loading) {

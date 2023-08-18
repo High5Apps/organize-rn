@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { CommentList, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
-import { usePostData } from '../model';
+import { usePostContext } from '../model';
 import PostWithBody from '../components/controls/PostWithBody';
 
 function toTitleCase(s: string) {
@@ -11,7 +11,7 @@ function toTitleCase(s: string) {
 export default function PostScreen({ navigation, route }: PostScreenProps) {
   const { params: { postId } } = route;
 
-  const { getCachedPost } = usePostData();
+  const { getCachedPost } = usePostContext();
   const post = getCachedPost(postId);
 
   useLayoutEffect(() => {
