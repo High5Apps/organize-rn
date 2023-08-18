@@ -50,11 +50,14 @@ const useStyles = () => {
 };
 
 type Props = {
+  hideDisclosureIndicator?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
 };
 
-export default function PostRow({ item, onPress }: Props) {
+export default function PostRow({
+  hideDisclosureIndicator, item, onPress,
+}: Props) {
   const { createdAt, pseudonym, title } = item;
 
   const { styles } = useStyles();
@@ -69,12 +72,15 @@ export default function PostRow({ item, onPress }: Props) {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <Icon name="chevron-right" style={styles.icon} />
+        {!hideDisclosureIndicator && (
+          <Icon name="chevron-right" style={styles.icon} />
+        )}
       </View>
     </TouchableHighlight>
   );
 }
 
 PostRow.defaultProps = {
+  hideDisclosureIndicator: false,
   onPress: () => {},
 };

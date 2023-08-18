@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { CommentList, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
 import { usePostData } from '../model';
+import PostWithBody from '../components/controls/PostWithBody';
 
 function toTitleCase(s: string) {
   return s.replace(/(^|\s)\S/g, (c) => c.toUpperCase());
@@ -23,7 +24,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   return (
     <ScreenBackground>
-      <CommentList />
+      <CommentList ListHeaderComponent={<PostWithBody post={post} />} />
     </ScreenBackground>
   );
 }
