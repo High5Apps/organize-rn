@@ -84,7 +84,7 @@ export type Scope = '*' | 'create:connections';
 
 export type Post = {
   body?: string;
-  categroy: PostType,
+  category: PostType,
   createdAt: number;
   id: string;
   pseudonym: string;
