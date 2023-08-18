@@ -3,8 +3,12 @@ import { useUserContext } from './UserContext';
 import { Post, isCurrentUserData } from './types';
 import { fetchPosts } from '../networking';
 
+const postToEntry = (post: Post) => [post.id, post] as const;
+const postsToMap = (posts: Post[]) => new Map(posts.map(postToEntry));
+
 export default function usePostData() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [postCache, setPostCache] = useState<Map<string, Post>>(new Map());
+  const posts = [...postCache.values()];
   const [ready, setReady] = useState<boolean>(false);
   const [reachedOldest, setReachedOldest] = useState<boolean>(false);
 
@@ -24,7 +28,7 @@ export default function usePostData() {
       throw new Error(errorMessage);
     }
 
-    setPosts(fetchedPosts ?? []);
+    setPostCache(postsToMap(fetchedPosts ?? []));
     setReachedOldest(paginationData?.nextPage === null);
     setReady(true);
   }
@@ -60,7 +64,7 @@ export default function usePostData() {
     // Need to reverse posts since they were fetched oldest first
     const reversedPosts = newerPostsWithoutDuplicates.reverse();
 
-    setPosts([...reversedPosts, ...posts]);
+    setPostCache(postsToMap([...reversedPosts, ...posts]));
   }
 
   async function fetchNextOlderPosts() {
@@ -93,7 +97,11 @@ export default function usePostData() {
     const olderPostsWithoutDuplicates = (indexOfDuplicate === -1)
       ? fetchedPosts : fetchedPosts.slice(1 + indexOfDuplicate);
 
-    setPosts([...posts, ...olderPostsWithoutDuplicates]);
+    setPostCache(postsToMap([...posts, ...olderPostsWithoutDuplicates]));
+  }
+
+  function getCachedPost(postId: string) {
+    return postCache.get(postId);
   }
 
   useEffect(() => {
@@ -101,6 +109,11 @@ export default function usePostData() {
   }, []);
 
   return {
-    fetchNextNewerPosts, fetchNextOlderPosts, posts, reachedOldest, ready,
+    fetchNextNewerPosts,
+    fetchNextOlderPosts,
+    getCachedPost,
+    posts,
+    reachedOldest,
+    ready,
   };
 }
