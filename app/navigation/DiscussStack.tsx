@@ -17,7 +17,11 @@ export default function DiscussStack() {
         component={NewPostScreen}
         options={{ title: 'New Post' }}
       />
-      <Stack.Screen name="Post" component={PostScreen} />
+      <Stack.Screen
+        name="Post"
+        component={PostScreen}
+        options={{ title: '' }}
+      />
     </Stack.Navigator>
   );
 }
