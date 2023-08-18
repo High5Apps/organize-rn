@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
+import { CommentList, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
-import PlaceholderScreen from './PlaceholderScreen';
 import { usePostData } from '../model';
 
 function toTitleCase(s: string) {
@@ -8,7 +8,7 @@ function toTitleCase(s: string) {
 }
 
 export default function PostScreen({ navigation, route }: PostScreenProps) {
-  const { name, params: { postId } } = route;
+  const { params: { postId } } = route;
 
   const { getCachedPost } = usePostData();
   const post = getCachedPost(postId);
@@ -21,5 +21,9 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     navigation.setOptions({ title: capitalizedCategory });
   }, [navigation, post]);
 
-  return <PlaceholderScreen name={name} />;
+  return (
+    <ScreenBackground>
+      <CommentList />
+    </ScreenBackground>
+  );
 }

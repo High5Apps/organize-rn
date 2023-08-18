@@ -1,5 +1,6 @@
 export { default as ButtonRow } from './ButtonRow';
 export { default as CameraControl } from './CameraControl';
+export { default as CommentList } from './CommentList';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';
