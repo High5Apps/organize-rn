@@ -6,7 +6,7 @@ import { fetchPosts } from '../networking';
 const postToEntry = (post: Post) => [post.id, post] as const;
 const postsToMap = (posts: Post[]) => new Map(posts.map(postToEntry));
 
-export default function usePostData() {
+export default function usePosts() {
   const [postCache, setPostCache] = useState<Map<string, Post>>(new Map());
   const posts = [...postCache.values()];
   const [ready, setReady] = useState<boolean>(false);

@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
 import { Post } from './types';
-import usePostData from './PostData';
+import usePosts from './Posts';
 
 type PostContextType = {
   fetchNextNewerPosts: () => Promise<void>;
@@ -26,7 +26,7 @@ export function PostContextProvider({ children }: PropsWithChildren<{}>) {
   const {
     fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost, posts,
     reachedOldest, ready,
-  } = usePostData();
+  } = usePosts();
 
   const postContext = useMemo<PostContextType>(() => ({
     fetchNextNewerPosts,
