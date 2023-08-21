@@ -2,6 +2,7 @@ import React, {
   ForwardedRef, ReactElement, forwardRef, useRef, useState,
 } from 'react';
 import { SectionList } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
 import SectionHeader from '../views/SectionHeader';
 import {
   NotableUserListRef, OrgGraphUser, getCircleColors, getHighestRank,
@@ -53,6 +54,7 @@ const NotableUserList = forwardRef((
 
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
   useNotableUserListRef(ref, sectionListRef, listHeaderComponentHeight);
+  useScrollToTop(sectionListRef);
 
   const { colors } = useTheme();
   const { currentUser } = useUserContext();
