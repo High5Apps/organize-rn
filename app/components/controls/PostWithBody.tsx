@@ -35,7 +35,7 @@ export default function PostWithBody({ post }: Props) {
 
   return (
     <>
-      <PostRow hideDisclosureIndicator item={post} />
+      <PostRow disabled item={post} />
       {body && <Text style={styles.body}>{body}</Text>}
     </>
   );

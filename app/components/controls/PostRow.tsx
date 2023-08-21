@@ -50,13 +50,13 @@ const useStyles = () => {
 };
 
 type Props = {
-  hideDisclosureIndicator?: boolean;
+  disabled?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
 };
 
 export default function PostRow({
-  hideDisclosureIndicator, item, onPress,
+  disabled, item, onPress,
 }: Props) {
   const { createdAt, pseudonym, title } = item;
 
@@ -66,21 +66,19 @@ export default function PostRow({
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   return (
-    <TouchableHighlight onPress={() => onPress?.(item)}>
+    <TouchableHighlight disabled={disabled} onPress={() => onPress?.(item)}>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        {!hideDisclosureIndicator && (
-          <Icon name="chevron-right" style={styles.icon} />
-        )}
+        {!disabled && <Icon name="chevron-right" style={styles.icon} />}
       </View>
     </TouchableHighlight>
   );
 }
 
 PostRow.defaultProps = {
-  hideDisclosureIndicator: false,
+  disabled: false,
   onPress: () => {},
 };
