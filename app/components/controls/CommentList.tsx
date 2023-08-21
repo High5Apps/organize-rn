@@ -13,7 +13,7 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       marginHorizontal: spacing.m,
-      marginVertical: spacing.s,
+      marginVertical: spacing.m,
       textAlign: 'center',
     },
   });
