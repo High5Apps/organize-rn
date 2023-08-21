@@ -46,7 +46,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { colors, styles };
 };
 
 type Props = {
@@ -60,13 +60,17 @@ export default function PostRow({
 }: Props) {
   const { createdAt, pseudonym, title } = item;
 
-  const { styles } = useStyles();
+  const { colors, styles } = useStyles();
 
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   return (
-    <TouchableHighlight disabled={disabled} onPress={() => onPress?.(item)}>
+    <TouchableHighlight
+      disabled={disabled}
+      onPress={() => onPress?.(item)}
+      underlayColor={colors.label}
+    >
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
