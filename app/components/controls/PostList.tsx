@@ -7,12 +7,16 @@ import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
 
-const useStyles = () => {
+const useStyles = (paddingBottom?: number) => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
     activityIndicator: {
       margin: spacing.m,
+    },
+    listEndMessage: {
+      color: colors.labelSecondary,
+      marginBottom: paddingBottom,
     },
     text: {
       color: colors.label,
@@ -28,16 +32,17 @@ const useStyles = () => {
 
 type Props = {
   onItemPress?: (item: Post) => void;
+  paddingBottom?: number;
 };
 
-export default function PostList({ onItemPress }: Props) {
+export default function PostList({ onItemPress, paddingBottom }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [
     hasMoreThanOnePageOfOlder, setHasMoreThanOnePageOfOlder,
   ] = useState(false);
 
-  const { styles } = useStyles();
+  const { styles } = useStyles(paddingBottom);
 
   const {
     posts, ready, reachedOldest, fetchNextNewerPosts, fetchNextOlderPosts,
@@ -55,7 +60,7 @@ export default function PostList({ onItemPress }: Props) {
     );
   } else if (reachedOldest && hasMoreThanOnePageOfOlder) {
     ListFooterComponent = (
-      <Text style={styles.text}>You reached the end</Text>
+      <Text style={[styles.text, styles.listEndMessage]}>You reached the end</Text>
     );
   }
 
@@ -101,4 +106,5 @@ export default function PostList({ onItemPress }: Props) {
 
 PostList.defaultProps = {
   onItemPress: () => {},
+  paddingBottom: 0,
 };

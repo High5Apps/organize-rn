@@ -7,26 +7,30 @@ import type { DiscussScreenProps } from '../navigation';
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
 
+  const buttonMarin = spacing.m;
+  const buttonBoundingBoxHeight = 2 * buttonMarin + sizes.buttonHeight;
+
   const styles = StyleSheet.create({
     button: {
-      bottom: spacing.m,
-      end: spacing.m,
+      bottom: buttonMarin,
+      end: buttonMarin,
       height: sizes.buttonHeight,
-      paddingHorizontal: spacing.m,
+      paddingHorizontal: buttonMarin,
       position: 'absolute',
     },
   });
 
-  return { styles };
+  return { buttonBoundingBoxHeight, styles };
 };
 
 export default function DiscussScreen({ navigation }: DiscussScreenProps) {
-  const { styles } = useStyles();
+  const { buttonBoundingBoxHeight, styles } = useStyles();
 
   return (
     <ScreenBackground>
       <PostList
         onItemPress={({ id }) => navigation.navigate('Post', { postId: id })}
+        paddingBottom={buttonBoundingBoxHeight}
       />
       <PrimaryButton
         iconName="add"
