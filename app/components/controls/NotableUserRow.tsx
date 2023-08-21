@@ -66,7 +66,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { colors, styles };
 };
 
 type Props = {
@@ -81,7 +81,7 @@ export default function NotableUserRow({ item, onPress }: Props) {
     },
   } = item;
 
-  const { styles } = useStyles();
+  const { colors, styles } = useStyles();
 
   const tenure = getTenure(1000 * joinedAt);
 
@@ -89,7 +89,10 @@ export default function NotableUserRow({ item, onPress }: Props) {
   const title = [pseudonym, joinedOffices].filter((e) => e).join(', ');
 
   return (
-    <TouchableHighlight onPress={() => onPress?.(item)}>
+    <TouchableHighlight
+      onPress={() => onPress?.(item)}
+      underlayColor={colors.label}
+    >
       <View style={styles.container}>
         <View style={styles.rowTitle}>
           <View
