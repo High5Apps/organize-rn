@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
+export { default as ArrowTriangle } from './ArrowTriangle';
 export { default as CircleLogo } from './CircleLogo';
