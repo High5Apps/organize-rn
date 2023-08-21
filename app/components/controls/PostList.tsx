@@ -55,7 +55,7 @@ export default function PostList({ onItemPress }: Props) {
     );
   } else if (reachedOldest && hasMoreThanOnePageOfOlder) {
     ListFooterComponent = (
-      <Text style={styles.text}>You reached the oldest post</Text>
+      <Text style={styles.text}>You reached the end</Text>
     );
   }
 
