@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleSheet, Text,
 } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
 import { Post, usePostContext } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
@@ -43,6 +44,9 @@ export default function PostList({ onItemPress, paddingBottom }: Props) {
   ] = useState(false);
 
   const { styles } = useStyles(paddingBottom);
+
+  const listRef = useRef<FlatList<Post>>(null);
+  useScrollToTop(listRef);
 
   const {
     posts, ready, reachedOldest, fetchNextNewerPosts, fetchNextOlderPosts,
@@ -98,6 +102,7 @@ export default function PostList({ onItemPress, paddingBottom }: Props) {
         }
         setRefreshing(false);
       }}
+      ref={listRef}
       refreshing={refreshing}
       renderItem={({ item }) => <PostRow item={item} onPress={onItemPress} />}
     />
