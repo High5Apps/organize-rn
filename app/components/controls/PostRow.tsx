@@ -5,6 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { Post, getMessageAge } from '../../model';
+import UpVoteControl from './UpVoteControl';
 
 const useStyles = () => {
   const {
@@ -72,6 +73,7 @@ export default function PostRow({
       underlayColor={colors.label}
     >
       <View style={styles.container}>
+        <UpVoteControl />
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
