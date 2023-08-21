@@ -14,7 +14,8 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
+      paddingBottom: spacing.m,
+      paddingTop: spacing.s,
     },
   });
 
