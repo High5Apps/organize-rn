@@ -83,10 +83,15 @@ export type PostScreenParams = {
   postId: string;
 };
 
+export type NewCommentScreenParams = {
+  postId: string;
+};
+
 export type DiscussStackParamList = {
   Discuss: undefined;
   NewPost: undefined;
   Post: PostScreenParams;
+  NewComment: NewCommentScreenParams;
 };
 
 export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
@@ -98,6 +103,7 @@ export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
 export type DiscussScreenProps = DiscussStackScreenProps<'Discuss'>;
 export type NewPostScreenProps = DiscussStackScreenProps<'NewPost'>;
 export type PostScreenProps = DiscussStackScreenProps<'Post'>;
+export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
 
 export type VoteStackParamList = {
   Vote: undefined;

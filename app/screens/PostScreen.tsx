@@ -57,7 +57,13 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
       <PrimaryButton
         iconName="add"
         label="Comment"
-        onPress={() => console.log('New comment')}
+        onPress={() => {
+          if (!post) {
+            console.warn('Expected a post to be present when commenting');
+            return;
+          }
+          navigation.navigate('NewComment', { postId: post.id });
+        }}
         style={styles.button}
       />
     </ScreenBackground>

@@ -1,6 +1,7 @@
 export { default as ConnectScreen } from './ConnectScreen';
 export { default as DiscussScreen } from './DiscussScreen';
 export { default as JoinOrgScreen } from './JoinOrgScreen';
+export { default as NewCommentScreen } from './NewCommentScreen';
 export { default as NewConnectionScreen } from './NewConnectionScreen';
 export { default as NewPostScreen } from './NewPostScreen';
 export { default as NewOrgScreen } from './NewOrg/NewOrgScreen';
