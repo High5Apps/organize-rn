@@ -18,19 +18,22 @@ const useStyles = () => {
       paddingHorizontal: buttonMarin,
       position: 'absolute',
     },
+    listEndMessageStyle: {
+      marginBottom: buttonBoundingBoxHeight,
+    },
   });
 
-  return { buttonBoundingBoxHeight, styles };
+  return { styles };
 };
 
 export default function DiscussScreen({ navigation }: DiscussScreenProps) {
-  const { buttonBoundingBoxHeight, styles } = useStyles();
+  const { styles } = useStyles();
 
   return (
     <ScreenBackground>
       <PostList
+        listEndMessageStyle={styles.listEndMessageStyle}
         onItemPress={({ id }) => navigation.navigate('Post', { postId: id })}
-        paddingBottom={buttonBoundingBoxHeight}
       />
       <PrimaryButton
         iconName="add"

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
-  ActivityIndicator, FlatList, StyleSheet, Text,
+  ActivityIndicator, FlatList, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import { Post, usePostContext } from '../../model';
@@ -32,18 +32,18 @@ const useStyles = (paddingBottom?: number) => {
 };
 
 type Props = {
+  listEndMessageStyle?: StyleProp<ViewStyle>;
   onItemPress?: (item: Post) => void;
-  paddingBottom?: number;
 };
 
-export default function PostList({ onItemPress, paddingBottom }: Props) {
+export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [
     hasMoreThanOnePageOfOlder, setHasMoreThanOnePageOfOlder,
   ] = useState(false);
 
-  const { styles } = useStyles(paddingBottom);
+  const { styles } = useStyles();
 
   const listRef = useRef<FlatList<Post>>(null);
   useScrollToTop(listRef);
@@ -64,7 +64,9 @@ export default function PostList({ onItemPress, paddingBottom }: Props) {
     );
   } else if (reachedOldest && hasMoreThanOnePageOfOlder) {
     ListFooterComponent = (
-      <Text style={[styles.text, styles.listEndMessage]}>You reached the end</Text>
+      <Text style={[styles.text, styles.listEndMessage, listEndMessageStyle]}>
+        You reached the end
+      </Text>
     );
   }
 
@@ -110,6 +112,6 @@ export default function PostList({ onItemPress, paddingBottom }: Props) {
 }
 
 PostList.defaultProps = {
+  listEndMessageStyle: {},
   onItemPress: () => {},
-  paddingBottom: 0,
 };
