@@ -10,6 +10,7 @@ export { default as NotableUserList } from './NotableUserList';
 export { default as OrgGraph } from './OrgGraph';
 export { DEFAULT_FOCUS_OPTIONS } from './OrgGraphClickHandler';
 export { default as PostList } from './PostList';
+export { default as PostRow } from './PostRow';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as PostTypeSelector } from './PostTypeSelector';
 export { default as QRCamera } from './QRCamera';
