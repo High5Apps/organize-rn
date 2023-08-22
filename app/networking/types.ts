@@ -159,3 +159,12 @@ export function isPostIndexResponse(object: unknown): object is PostIndexRespons
     && response.posts.every(isPostIndexPost)
     && isPaginationData(response?.meta);
 }
+
+type CreateCommentResponse = {
+  id: string;
+};
+
+export function isCreateCommentResponse(object: unknown): object is CreateCommentResponse {
+  const response = (object as CreateCommentResponse);
+  return response?.id?.length > 0;
+}

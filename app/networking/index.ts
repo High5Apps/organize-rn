@@ -1,3 +1,4 @@
+export { default as createComment } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createOrg, fetchOrg } from './OrgAPI';
