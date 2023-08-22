@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import {
+  FlatList, StyleProp, StyleSheet, Text, ViewStyle,
+} from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { SectionHeader } from '../views';
@@ -22,17 +24,22 @@ const useStyles = () => {
 };
 
 type Props = {
+  listEndMessageStyle?: StyleProp<ViewStyle>;
   ListHeaderComponent?: ReactElement;
 };
 
-export default function CommentList({ ListHeaderComponent }: Props) {
+export default function CommentList({
+  listEndMessageStyle, ListHeaderComponent,
+}: Props) {
   const { styles } = useStyles();
 
   return (
     <FlatList
       data={[]}
       ListEmptyComponent={(
-        <Text style={styles.text}>Be the first to comment on this post</Text>
+        <Text style={[styles.text, listEndMessageStyle]}>
+          Be the first to comment on this post
+        </Text>
       )}
       ListHeaderComponent={(
         <>
@@ -46,5 +53,6 @@ export default function CommentList({ ListHeaderComponent }: Props) {
 }
 
 CommentList.defaultProps = {
+  listEndMessageStyle: {},
   ListHeaderComponent: null,
 };
