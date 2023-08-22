@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import type { NewCommentScreenProps } from '../navigation';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostRow, PrimaryButton,
+  useRequestProgress,
 } from '../components';
 import useTheme from '../Theme';
-import { usePostContext } from '../model';
+import {
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, usePostContext, useUserContext,
+} from '../model';
+import { createComment } from '../networking';
 
 const MAX_COMMENT_LENGTH = 10000;
 
@@ -26,6 +30,10 @@ const useStyles = () => {
       marginHorizontal: spacing.m,
       marginBottom: spacing.m,
     },
+    requestProgress: {
+      marginHorizontal: spacing.m,
+      marginBottom: spacing.m,
+    },
   });
 
   return { styles };
@@ -36,27 +44,60 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
   const { getCachedPost } = usePostContext();
   const post = getCachedPost(postId);
 
-  const [comment, setComment] = useState<string | undefined>();
+  const [body, setBody] = useState<string | undefined>();
 
   const { styles } = useStyles();
+
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+
+  const { currentUser } = useUserContext();
+  if (!isCurrentUserData(currentUser)) {
+    throw new Error('Expected currentUser');
+  }
+
+  const onPublishPressed = async () => {
+    Keyboard.dismiss();
+
+    setLoading(true);
+    setResult('none');
+
+    try {
+      const jwt = await currentUser.createAuthToken({ scope: '*' });
+      const { errorMessage } = await createComment({
+        body: body!, jwt, postId,
+      });
+
+      if (errorMessage) {
+        setResult('error', errorMessage);
+        return;
+      }
+
+      setBody(undefined);
+      setResult('success', 'Successfully created comment');
+    } catch (error) {
+      console.error(error);
+      setResult('error', GENERIC_ERROR_MESSAGE);
+    }
+  };
 
   return (
     <KeyboardAvoidingScreenBackground>
       {post && <PostRow disabled item={post} />}
       <MultilineTextInput
         maxLength={MAX_COMMENT_LENGTH}
-        onChangeText={setComment}
+        onChangeText={setBody}
         placeholder="What do you think?"
         style={styles.multilineTextInput}
         returnKeyType="default"
-        value={comment}
+        value={body}
       />
       <PrimaryButton
         iconName="publish"
         label="Publish"
-        onPress={() => console.log({ postId, comment })}
+        onPress={onPublishPressed}
         style={styles.button}
       />
+      <RequestProgress style={styles.requestProgress} />
     </KeyboardAvoidingScreenBackground>
   );
 }
