@@ -38,7 +38,7 @@ export default function CommentList({
       data={[]}
       ListEmptyComponent={(
         <Text style={[styles.text, listEndMessageStyle]}>
-          Be the first to comment on this post
+          Be the first to comment on this
         </Text>
       )}
       ListHeaderComponent={(
