@@ -27,8 +27,7 @@ const useStyles = () => {
     },
     multilineTextInput: {
       flex: 1,
-      marginHorizontal: spacing.m,
-      marginBottom: spacing.m,
+      margin: spacing.m,
     },
     requestProgress: {
       marginHorizontal: spacing.m,
