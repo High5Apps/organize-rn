@@ -9,27 +9,27 @@ export default function useComments(postId?: string) {
 
   const { currentUser } = useUserContext();
 
-  useEffect(() => {
-    if (!postId) { return; }
+  async function updateComments() {
+    if (!isCurrentUserData(currentUser) || !postId) { return; }
 
-    async function updateComments() {
-      if (!isCurrentUserData(currentUser) || !postId) { return; }
+    setReady(false);
 
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const {
-        errorMessage, comments: fetchedComments,
-      } = await fetchComments({ jwt, postId });
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const {
+      errorMessage, comments: fetchedComments,
+    } = await fetchComments({ jwt, postId });
 
-      if (errorMessage !== undefined) {
-        throw new Error(errorMessage);
-      }
-
-      setComments(fetchedComments);
-      setReady(true);
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
     }
 
+    setComments(fetchedComments);
+    setReady(true);
+  }
+
+  useEffect(() => {
     updateComments().catch(console.error);
   }, [postId]);
 
-  return { comments, ready };
+  return { comments, ready, updateComments };
 }
