@@ -17,9 +17,9 @@ export default async function createComment({
   body, jwt, postId,
 }: Props & Authorization): Promise<Return> {
   const response = await post({
-    bodyObject: { body, post_id: postId },
+    bodyObject: { body },
     jwt,
-    uri: commentsURI,
+    uri: commentsURI(postId),
   });
   const json = await response.json();
 

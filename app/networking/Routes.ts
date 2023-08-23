@@ -12,8 +12,6 @@ export const origin = (
 const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;
 
-export const commentsURI = `${apiRoute}/comments`;
-
 export const connectionsURI = `${apiRoute}/connections`;
 export const connectionPreviewURI = (sharerJwt: string) => `${apiRoute}/connection_preview?sharer_jwt=${sharerJwt}`;
 
@@ -21,6 +19,8 @@ export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;
 
 export const postsURI = `${apiRoute}/posts`;
+export const postURI = (postId: string) => `${apiRoute}/posts/${postId}`;
+export const commentsURI = (postId: string) => `${postURI(postId)}/comments`;
 
 export const usersURI = `${apiRoute}/users`;
 export const userUri = (userId: string) => `${usersURI}/${userId}`;
