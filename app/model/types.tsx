@@ -99,3 +99,11 @@ export type PaginationData = {
   currentPage: number;
   nextPage: number | null;
 };
+
+export type Comment = {
+  body: string;
+  createdAt: number;
+  id: string;
+  pseudonym: string;
+  userId: string;
+};

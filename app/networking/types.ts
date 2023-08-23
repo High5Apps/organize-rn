@@ -168,3 +168,31 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
   const response = (object as CreateCommentResponse);
   return response?.id?.length > 0;
 }
+
+type CommentIndexComment = {
+  body: string;
+  created_at: number;
+  id: string;
+  pseudonym: string;
+  user_id: string;
+};
+
+function isCommentIndexComment(object: unknown): object is CommentIndexComment {
+  const comment = (object as CommentIndexComment);
+  return comment?.body?.length > 0
+    && comment.created_at !== undefined
+    && comment.id?.length > 0
+    && comment.pseudonym?.length > 0
+    && comment.user_id?.length > 0;
+}
+
+type CommentIndexResponse = {
+  comments: CommentIndexComment[];
+};
+
+export function isCommentIndexResponse(object: unknown): object is CommentIndexResponse {
+  const response = (object as CommentIndexResponse);
+  return response?.comments
+    && Array.isArray(response.comments)
+    && response.comments.every(isCommentIndexComment);
+}
