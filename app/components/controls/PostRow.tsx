@@ -27,12 +27,11 @@ const useStyles = () => {
       // when paddingStart and paddingEnd are the same.
       paddingEnd: spacing.s,
       paddingStart: spacing.m,
-
-      paddingVertical: spacing.s,
     },
     innerContainer: {
       flex: 1,
       flexDirection: 'column',
+      paddingVertical: spacing.s,
     },
     subtitle: {
       color: colors.labelSecondary,
