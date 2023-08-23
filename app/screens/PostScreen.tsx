@@ -23,8 +23,8 @@ const useStyles = () => {
       paddingHorizontal: buttonMarin,
       position: 'absolute',
     },
-    listEndMessageStyle: {
-      marginBottom: buttonBoundingBoxHeight,
+    listContainerStyle: {
+      paddingBottom: buttonBoundingBoxHeight,
     },
   });
 
@@ -49,10 +49,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   return (
     <ScreenBackground>
-      <CommentList
-        listEndMessageStyle={styles.listEndMessageStyle}
-        post={post}
-      />
+      <CommentList containerStyle={styles.listContainerStyle} post={post} />
       <PrimaryButton
         iconName="add"
         label="Comment"

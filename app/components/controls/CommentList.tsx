@@ -20,7 +20,7 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       marginHorizontal: spacing.m,
-      marginVertical: spacing.m,
+      marginTop: spacing.m,
       textAlign: 'center',
     },
   });
@@ -29,13 +29,11 @@ const useStyles = () => {
 };
 
 type Props = {
-  listEndMessageStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   post?: Post;
 };
 
-export default function CommentList({
-  listEndMessageStyle, post,
-}: Props) {
+export default function CommentList({ containerStyle, post }: Props) {
   const { styles } = useStyles();
   const { comments, ready } = useComments(post?.id);
 
@@ -44,9 +42,7 @@ export default function CommentList({
       data={comments}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? (
-        <Text style={[styles.text, listEndMessageStyle]}>
-          Be the first to comment on this
-        </Text>
+        <Text style={styles.text}>Be the first to comment on this</Text>
       ) : null}
       ListHeaderComponent={(
         <>
@@ -55,12 +51,13 @@ export default function CommentList({
           { !ready && <ActivityIndicator style={styles.activityIndicator} />}
         </>
       )}
+      contentContainerStyle={containerStyle}
       renderItem={({ item }) => <CommentRow item={item} />}
     />
   );
 }
 
 CommentList.defaultProps = {
-  listEndMessageStyle: {},
+  containerStyle: {},
   post: undefined,
 };
