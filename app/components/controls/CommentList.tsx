@@ -1,10 +1,12 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import {
   FlatList, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { SectionHeader } from '../views';
+import PostWithBody from './PostWithBody';
+import { Post } from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -25,11 +27,11 @@ const useStyles = () => {
 
 type Props = {
   listEndMessageStyle?: StyleProp<ViewStyle>;
-  ListHeaderComponent?: ReactElement;
+  post?: Post;
 };
 
 export default function CommentList({
-  listEndMessageStyle, ListHeaderComponent,
+  listEndMessageStyle, post,
 }: Props) {
   const { styles } = useStyles();
 
@@ -43,7 +45,7 @@ export default function CommentList({
       )}
       ListHeaderComponent={(
         <>
-          {ListHeaderComponent}
+          <PostWithBody post={post} />
           <SectionHeader>Comments</SectionHeader>
         </>
       )}
@@ -54,5 +56,5 @@ export default function CommentList({
 
 CommentList.defaultProps = {
   listEndMessageStyle: {},
-  ListHeaderComponent: null,
+  post: undefined,
 };

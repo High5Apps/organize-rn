@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { CommentList, PrimaryButton, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
 import { usePostContext } from '../model';
-import PostWithBody from '../components/controls/PostWithBody';
 import useTheme from '../Theme';
 
 function toTitleCase(s: string) {
@@ -52,7 +51,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     <ScreenBackground>
       <CommentList
         listEndMessageStyle={styles.listEndMessageStyle}
-        ListHeaderComponent={<PostWithBody post={post} />}
+        post={post}
       />
       <PrimaryButton
         iconName="add"
