@@ -11,8 +11,9 @@ const useStyles = () => {
     container: {
       backgroundColor: colors.fill,
       flexDirection: 'row',
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
+      paddingStart: spacing.s,
+      paddingEnd: spacing.m,
+      paddingVertical: spacing.xs,
     },
     innerContainer: {
       flex: 1,
