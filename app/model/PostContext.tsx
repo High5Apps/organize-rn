@@ -5,6 +5,7 @@ import { Post } from './types';
 import usePosts from './Posts';
 
 type PostContextType = {
+  fetchNewestPosts: () => Promise<void>;
   fetchNextNewerPosts: () => Promise<void>;
   fetchNextOlderPosts: () => Promise<void>;
   getCachedPost: (postId: string) => Post | undefined;
@@ -14,6 +15,7 @@ type PostContextType = {
 };
 
 const PostContext = createContext<PostContextType>({
+  fetchNewestPosts: async () => {},
   fetchNextNewerPosts: async () => {},
   fetchNextOlderPosts: async () => {},
   getCachedPost: () => undefined,
@@ -24,11 +26,12 @@ const PostContext = createContext<PostContextType>({
 
 export function PostContextProvider({ children }: PropsWithChildren<{}>) {
   const {
-    fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost, posts,
-    reachedOldest, ready,
+    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost,
+    posts, reachedOldest, ready,
   } = usePosts();
 
   const postContext = useMemo<PostContextType>(() => ({
+    fetchNewestPosts,
     fetchNextNewerPosts,
     fetchNextOlderPosts,
     getCachedPost,
@@ -36,8 +39,8 @@ export function PostContextProvider({ children }: PropsWithChildren<{}>) {
     reachedOldest,
     ready,
   }), [
-    fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost, posts,
-    reachedOldest, ready,
+    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost,
+    posts, reachedOldest, ready,
   ]);
 
   return (

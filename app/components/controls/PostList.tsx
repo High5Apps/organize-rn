@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator, FlatList, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
@@ -49,9 +49,14 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   useScrollToTop(listRef);
 
   const {
-    posts, ready, reachedOldest, fetchNextNewerPosts, fetchNextOlderPosts,
+    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, posts, ready,
+    reachedOldest,
   } = usePostContext();
   const loading = !ready;
+
+  useEffect(() => {
+    fetchNewestPosts().catch(console.error);
+  }, []);
 
   if (loading) {
     return <ActivityIndicator style={styles.activityIndicator} />;

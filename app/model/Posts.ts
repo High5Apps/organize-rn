@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserContext } from './UserContext';
 import { Post, isCurrentUserData } from './types';
 import { fetchPosts } from '../networking';
@@ -98,11 +98,8 @@ export default function usePosts() {
     return postCache.get(postId);
   }
 
-  useEffect(() => {
-    fetchNewestPosts().catch(console.error);
-  }, [currentUser]);
-
   return {
+    fetchNewestPosts,
     fetchNextNewerPosts,
     fetchNextOlderPosts,
     getCachedPost,
