@@ -57,15 +57,18 @@ type IndexReturn = {
 export async function fetchPosts({
   createdAfter, createdBefore, jwt, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
-  const queries = [
-    createdAfter && `created_after=${encodeURIComponent(createdAfter)}`,
-    createdBefore && `created_before=${encodeURIComponent(createdBefore)}`,
-    `sort=${encodeURIComponent(sort)}`,
-  ];
-  const queryString = queries.length ? `?${queries.join('&')}` : '';
-  const uri = `${postsURI}${queryString}`;
+  const uri = new URL(postsURI);
+  if (createdAfter !== undefined) {
+    uri.searchParams.set('created_after', createdAfter.toString());
+  }
 
-  const response = await get({ jwt, uri });
+  if (createdBefore !== undefined) {
+    uri.searchParams.set('created_before', createdBefore.toString());
+  }
+
+  uri.searchParams.set('sort', sort);
+
+  const response = await get({ jwt, uri: uri.href });
 
   const json = await response.json();
 
