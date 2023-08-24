@@ -22,11 +22,8 @@ const useStyles = () => {
       backgroundColor: colors.fill,
       flexDirection: 'row',
 
-      // paddingStart and paddingEnd are different because the chevron icon has
-      // its own internal padding, which makes the row's padding seem unbalanced
-      // when paddingStart and paddingEnd are the same.
       paddingEnd: spacing.s,
-      paddingStart: spacing.m,
+      paddingStart: spacing.s,
     },
     innerContainer: {
       flex: 1,

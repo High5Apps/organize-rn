@@ -3,14 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import UpVoteButton from './UpVoteButton';
 
-const buttonSize = 44;
-
 const useStyles = () => {
-  const { colors, font } = useTheme();
+  const { colors, font, sizes } = useTheme();
 
   const styles = StyleSheet.create({
-    container: {
-      width: buttonSize,
+    button: {
+      height: sizes.minimumTappableLength,
+      width: sizes.minimumTappableLength,
+    },
+    buttonUp: {
+      justifyContent: 'flex-end',
     },
     text: {
       color: colors.labelSecondary,
@@ -40,9 +42,9 @@ export default function UpVoteControl({
   const score = (initialScore ?? 0) + voteState;
 
   return (
-    <View style={styles.container}>
+    <View>
       <UpVoteButton
-        buttonSize={buttonSize}
+        buttonStyle={[styles.button, styles.buttonUp]}
         fill={voteState === 1}
         onPress={() => {
           const vote = voteState === 1 ? 0 : 1;
@@ -52,7 +54,7 @@ export default function UpVoteControl({
       />
       <Text style={styles.text}>{score}</Text>
       <UpVoteButton
-        buttonSize={buttonSize}
+        buttonStyle={styles.button}
         fill={voteState === -1}
         flip
         onPress={() => {

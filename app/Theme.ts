@@ -89,6 +89,7 @@ const lightTheme = {
     buttonHeight: 50,
     icon: 24,
     mediumIcon: 32,
+    minimumTappableLength: 44,
     largeIcon: 48,
     tabIcon: 28,
     extraLargeIcon: 96,
