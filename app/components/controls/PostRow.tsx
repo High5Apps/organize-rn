@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
@@ -52,9 +52,7 @@ type Props = {
   onPress?: (item: Post) => void;
 };
 
-export default function PostRow({
-  disabled, item, onPress,
-}: Props) {
+function PostRow({ disabled, item, onPress }: Props) {
   const { createdAt, pseudonym, title } = item;
 
   const { colors, styles } = useStyles();
@@ -84,3 +82,5 @@ PostRow.defaultProps = {
   disabled: false,
   onPress: () => {},
 };
+
+export default memo(PostRow);

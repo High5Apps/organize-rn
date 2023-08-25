@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
-  ActivityIndicator, FlatList, StyleProp, StyleSheet, Text, ViewStyle,
+  ActivityIndicator, FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text,
+  ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import { Post, usePostContext } from '../../model';
@@ -53,6 +56,10 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
     reachedOldest,
   } = usePostContext();
   const loading = !ready;
+
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
+    <PostRow item={item} onPress={onItemPress} />
+  ), [onItemPress]);
 
   useEffect(() => {
     fetchNewestPosts().catch(console.error);
@@ -111,7 +118,7 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
       }}
       ref={listRef}
       refreshing={refreshing}
-      renderItem={({ item }) => <PostRow item={item} onPress={onItemPress} />}
+      renderItem={renderItem}
     />
   );
 }

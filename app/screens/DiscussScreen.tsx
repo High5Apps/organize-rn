@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { PostList, PrimaryButton, ScreenBackground } from '../components';
 import useTheme from '../Theme';
 import type { DiscussScreenProps } from '../navigation';
+import { Post } from '../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -29,11 +30,16 @@ const useStyles = () => {
 export default function DiscussScreen({ navigation }: DiscussScreenProps) {
   const { styles } = useStyles();
 
+  const onItemPress = useCallback(
+    ({ id }: Post) => navigation.navigate('Post', { postId: id }),
+    [navigation],
+  );
+
   return (
     <ScreenBackground>
       <PostList
         listEndMessageStyle={styles.listEndMessageStyle}
-        onItemPress={({ id }) => navigation.navigate('Post', { postId: id })}
+        onItemPress={onItemPress}
       />
       <PrimaryButton
         iconName="add"
