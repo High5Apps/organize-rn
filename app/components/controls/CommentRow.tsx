@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import { Comment, getMessageAge } from '../../model';
@@ -40,7 +40,7 @@ type Props = {
   item: Comment;
 };
 
-export default function CommentRow({ item }: Props) {
+function CommentRow({ item }: Props) {
   const { body, createdAt, pseudonym } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
@@ -57,3 +57,5 @@ export default function CommentRow({ item }: Props) {
     </View>
   );
 }
+
+export default memo(CommentRow);

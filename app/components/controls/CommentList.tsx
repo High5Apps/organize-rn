@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
-  ActivityIndicator, FlatList, StyleProp, StyleSheet, Text, ViewStyle,
+  ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
+  ViewStyle,
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
-import { Post, useComments } from '../../model';
+import { Comment, Post, useComments } from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -32,6 +33,10 @@ type Props = {
   containerStyle?: StyleProp<ViewStyle>;
   post?: Post;
 };
+
+const renderItem: ListRenderItem<Comment> = ({ item }) => (
+  <CommentRow item={item} />
+);
 
 export default function CommentList({ containerStyle, post }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -67,7 +72,7 @@ export default function CommentList({ containerStyle, post }: Props) {
         setRefreshing(false);
       }}
       refreshing={refreshing}
-      renderItem={({ item }) => <CommentRow item={item} />}
+      renderItem={renderItem}
     />
   );
 }
