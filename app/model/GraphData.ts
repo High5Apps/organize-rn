@@ -3,7 +3,7 @@ import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { ErrorResponse, fetchOrg, isErrorResponse } from '../networking';
 import { useUserContext } from './UserContext';
-import { OrgGraph as OrgGraphType, isCurrentUserData } from './types';
+import { Org, OrgGraph as OrgGraphType, isCurrentUserData } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 
 function toVisNetworkData(
@@ -35,6 +35,17 @@ function toVisNetworkData(
   };
 }
 
+// HACK: This is brittle in that it relies on the JSON ordering from the server
+// being stable. Fortunately it seems like it is, and this check is relatively
+// quick at 1-3ms for a 100-member Org. Plus it fails safe because if the order
+// stops being stable for some reason, it would always return true, similar to
+// the situation before this optimization was added. The "right" way to do this
+// would be to include some kind of ETAG and caching strategy on the server
+// which returns an HTTP 304 "not modified" response when unchanged.
+function orgChanged(oldOrg: Org, newOrg: Org) {
+  return JSON.stringify(oldOrg) !== JSON.stringify(newOrg);
+}
+
 export default function useGraphData() {
   const { currentUser, setCurrentUser } = useUserContext();
   const { colors } = useTheme();
@@ -52,9 +63,11 @@ export default function useGraphData() {
     }
 
     const org = responseOrError;
-    const updatedCurrentUser = { ...currentUser };
-    updatedCurrentUser.org = org;
-    setCurrentUser(updatedCurrentUser);
+    if (orgChanged(currentUser.org, org)) {
+      const updatedCurrentUser = { ...currentUser };
+      updatedCurrentUser.org = org;
+      setCurrentUser(updatedCurrentUser);
+    }
   }
 
   const graphData = currentUser?.org?.graph;

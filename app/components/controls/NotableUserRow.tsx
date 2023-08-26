@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
@@ -74,7 +74,7 @@ type Props = {
   onPress?: (item: NotableUserItem) => void;
 };
 
-export default function NotableUserRow({ item, onPress }: Props) {
+function NotableUserRow({ item, onPress }: Props) {
   const {
     circleBorderColor, circleBackgroundColor, user: {
       connectionCount, joinedAt, offices, pseudonym, recruitCount,
@@ -122,3 +122,5 @@ export default function NotableUserRow({ item, onPress }: Props) {
 NotableUserRow.defaultProps = {
   onPress: () => {},
 };
+
+export default memo(NotableUserRow);

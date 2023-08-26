@@ -1,7 +1,8 @@
 import React, {
-  ForwardedRef, ReactElement, forwardRef, useRef, useState,
+  ForwardedRef, ReactElement, forwardRef, useCallback, useMemo, useRef,
+  useState,
 } from 'react';
-import { SectionList } from 'react-native';
+import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import SectionHeader from '../views/SectionHeader';
 import {
@@ -59,14 +60,26 @@ const NotableUserList = forwardRef((
   const { colors } = useTheme();
   const { currentUser } = useUserContext();
 
+  const onPress = useCallback(
+    ({ user: { id } }: NotableUserItem) => onUserSelected?.(id),
+    [onUserSelected],
+  );
+
+  const renderItem: ListRenderItem<NotableUserItem> = useCallback(
+    ({ item }) => <NotableUserRow item={item} onPress={onPress} />,
+    [onPress],
+  );
+
   if (!currentUser) {
     throw new Error('Expected current user to be set');
   }
 
   const { graphData, updateOrgData } = useGraphData();
-  const users = graphData?.users;
-  const sections: NotableUserSection[] = [];
-  if (users) {
+  const sections: NotableUserSection[] = useMemo(() => {
+    const notableUserSections: NotableUserSection[] = [];
+    const users = graphData?.users;
+    if (!users) { return notableUserSections; }
+
     if (selectedUserId) {
       const selectedOrgGraphUser = users[selectedUserId];
       const isMe = selectedUserId === currentUser.id;
@@ -74,7 +87,7 @@ const NotableUserList = forwardRef((
         user: selectedOrgGraphUser,
         ...getCircleColors({ colors, isMe, user: selectedOrgGraphUser }),
       }];
-      sections.push({ title: 'Selected', data });
+      notableUserSections.push({ title: 'Selected', data });
     }
 
     const orgGraphUsers = Object.values(users);
@@ -83,15 +96,17 @@ const NotableUserList = forwardRef((
       user: officer,
       ...getCircleColors({ colors, user: officer }),
     }));
-    sections.push({ title: 'Officers', data: officersData });
+    notableUserSections.push({ title: 'Officers', data: officersData });
 
     const currentOrgGraphUser = users[currentUser.id];
     const meData = [{
       user: currentOrgGraphUser,
       ...getCircleColors({ colors, isMe: true, user: currentOrgGraphUser }),
     }];
-    sections.push({ title: 'Me', data: meData });
-  }
+    notableUserSections.push({ title: 'Me', data: meData });
+
+    return notableUserSections;
+  }, [currentUser, graphData, selectedUserId]);
 
   return (
     <SectionList
@@ -110,12 +125,7 @@ const NotableUserList = forwardRef((
       }}
       ref={sectionListRef}
       refreshing={refreshing}
-      renderItem={({ item }) => (
-        <NotableUserRow
-          item={item}
-          onPress={({ user: { id } }: NotableUserItem) => onUserSelected?.(id)}
-        />
-      )}
+      renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       scrollEnabled={scrollEnabled}
       sections={sections}
