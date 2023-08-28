@@ -107,3 +107,5 @@ export type Comment = {
   pseudonym: string;
   userId: string;
 };
+
+export type VoteState = -1 | 0 | 1;

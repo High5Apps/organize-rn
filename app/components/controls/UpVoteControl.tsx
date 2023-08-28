@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import UpVoteButton from './UpVoteButton';
+import { VoteState } from '../../model';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -24,8 +25,6 @@ const useStyles = () => {
 
   return { styles };
 };
-
-type VoteState = -1 | 0 | 1;
 
 type Props = {
   initialScore?: number;
