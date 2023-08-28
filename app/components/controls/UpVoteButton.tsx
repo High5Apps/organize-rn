@@ -8,7 +8,7 @@ import useTheme from '../../Theme';
 const activeButtonOpacity = 0.5;
 
 const useStyles = () => {
-  const { sizes } = useTheme();
+  const { colors: { primary }, sizes } = useTheme();
 
   const styles = StyleSheet.create({
     arrow: {
@@ -20,7 +20,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { primary, styles };
 };
 
 type Props = {
@@ -33,7 +33,7 @@ type Props = {
 export default function UpVoteButton({
   buttonStyle, fill, flip, onPress,
 }: Props) {
-  const { styles } = useStyles();
+  const { primary, styles } = useStyles();
 
   return (
     <TouchableOpacity
@@ -41,7 +41,12 @@ export default function UpVoteButton({
       onPress={onPress}
       style={[styles.button, buttonStyle]}
     >
-      <ArrowTriangle fill={fill} flip={flip} style={styles.arrow} />
+      <ArrowTriangle
+        color={primary}
+        fill={fill}
+        flip={flip}
+        style={styles.arrow}
+      />
     </TouchableOpacity>
   );
 }
