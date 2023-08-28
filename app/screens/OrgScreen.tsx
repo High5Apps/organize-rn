@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useLayoutEffect, useRef, useState,
+  useCallback, useLayoutEffect, useRef, useState,
 } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
