@@ -41,7 +41,9 @@ type Props = {
 };
 
 function CommentRow({ item }: Props) {
-  const { body, createdAt, pseudonym } = item;
+  const {
+    body, createdAt, id, pseudonym,
+  } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
@@ -49,7 +51,7 @@ function CommentRow({ item }: Props) {
 
   return (
     <View style={styles.container}>
-      <UpVoteControl />
+      <UpVoteControl commentId={id} />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{body}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>

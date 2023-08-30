@@ -53,7 +53,9 @@ type Props = {
 };
 
 function PostRow({ disabled, item, onPress }: Props) {
-  const { createdAt, pseudonym, title } = item;
+  const {
+    createdAt, id, pseudonym, title,
+  } = item;
 
   const { colors, styles } = useStyles();
 
@@ -67,7 +69,7 @@ function PostRow({ disabled, item, onPress }: Props) {
       underlayColor={colors.label}
     >
       <View style={styles.container}>
-        <UpVoteControl />
+        <UpVoteControl postId={id} />
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>

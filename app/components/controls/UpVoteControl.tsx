@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import UpVoteButton from './UpVoteButton';
-import { VoteState } from '../../model';
+import { VoteState, isCurrentUserData, useUserContext } from '../../model';
+import { createOrUpdateUpVote } from '../../networking';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -27,18 +28,37 @@ const useStyles = () => {
 };
 
 type Props = {
+  commentId?: string;
   initialScore?: number;
   initialVoteState?: VoteState;
-  onVote?: (voteState: VoteState) => void;
+  postId?: string;
 };
 
 export default function UpVoteControl({
-  initialScore, initialVoteState, onVote,
+  commentId, initialScore, initialVoteState, postId,
 }: Props) {
   const { styles } = useStyles();
 
   const [voteState, setVoteState] = useState<VoteState>(initialVoteState ?? 0);
   const score = (initialScore ?? 0) + voteState;
+
+  const { currentUser } = useUserContext();
+
+  const onVote = async ({
+    previousVote, vote,
+  }: { previousVote: VoteState, vote: VoteState }) => {
+    if (!isCurrentUserData(currentUser)) { return; }
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { errorMessage } = await createOrUpdateUpVote({
+      commentId, jwt, postId, value: vote,
+    });
+
+    if (errorMessage) {
+      console.error(errorMessage);
+      setVoteState(previousVote);
+    }
+  };
 
   return (
     <View>
@@ -47,8 +67,8 @@ export default function UpVoteControl({
         fill={voteState === 1}
         onPress={() => {
           const vote = voteState === 1 ? 0 : 1;
+          onVote({ previousVote: voteState, vote });
           setVoteState(vote);
-          onVote?.(vote);
         }}
       />
       <Text style={styles.text}>{score}</Text>
@@ -58,8 +78,8 @@ export default function UpVoteControl({
         flip
         onPress={() => {
           const vote = voteState === -1 ? 0 : -1;
+          onVote({ previousVote: voteState, vote });
           setVoteState(vote);
-          onVote?.(vote);
         }}
       />
     </View>
@@ -67,7 +87,8 @@ export default function UpVoteControl({
 }
 
 UpVoteControl.defaultProps = {
+  commentId: undefined,
   initialScore: 0,
   initialVoteState: 0,
-  onVote: () => {},
+  postId: undefined,
 };
