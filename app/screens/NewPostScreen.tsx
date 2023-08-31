@@ -3,14 +3,14 @@ import {
   Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
 import {
-  KeyboardAvoidingScreenBackground,
-  MultilineTextInput, PostType, PostTypeSelector, PrimaryButton,
-  SecondaryButton, TextInputRow, useRequestProgress,
+  KeyboardAvoidingScreenBackground, MultilineTextInput, PostTypeSelector,
+  PrimaryButton, SecondaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
   ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue,
   useUserContext,
 } from '../model';
+import type { PostType } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
 

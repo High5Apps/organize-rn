@@ -2,9 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import useTheme from '../../Theme';
-
-const POST_TYPES = ['general', 'grievances', 'demands'] as const;
-export type PostType = typeof POST_TYPES[number];
+import { POST_TYPES, type PostType } from '../../model';
 
 const capitalizedPostTypes = POST_TYPES.map(
   (pt) => pt.replace(/(^|\s)\S/g, (c) => c.toUpperCase()),

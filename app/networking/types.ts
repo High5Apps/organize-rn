@@ -1,5 +1,4 @@
-import type { PostType } from '../components';
-import type { Org } from '../model/types';
+import type { Org, PostType } from '../model';
 import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
 export type ErrorResponseType = {

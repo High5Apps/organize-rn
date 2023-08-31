@@ -1,5 +1,4 @@
-import type { PostType } from '../components';
-import type { PaginationData, Post } from '../model';
+import type { PaginationData, Post, PostType } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';

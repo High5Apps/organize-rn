@@ -1,5 +1,3 @@
-import type { PostType } from '../components';
-
 export type OrgGraphUser = {
   connectionCount: number;
   id: string;
@@ -81,6 +79,12 @@ export type SettingsSection = {
 export type Signer = ({ message }: { message: string }) => Promise<string>;
 
 export type Scope = '*' | 'create:connections';
+
+const POST_TYPES = ['general', 'grievances', 'demands'] as const;
+export { POST_TYPES };
+
+type PostType = typeof POST_TYPES[number];
+export type { PostType };
 
 export type Post = {
   body?: string;

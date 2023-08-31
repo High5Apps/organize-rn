@@ -3,9 +3,12 @@ import React, {
   useMemo,
 } from 'react';
 import { StyleSheet } from 'react-native';
-import { DelayedActivityIndicator } from '../components';
-import useCurrentUser, { CreateCurrentUserProps } from './CurrentUser';
-import { UserType } from './User';
+// The line below needs to import directly from DelayedActivityIndicator to
+// prevent a circular dependency issue. Normally components import from models,
+// not the other way around.
+import DelayedActivityIndicator from '../components/views/DelayedActivityIndicator';
+import useCurrentUser, { type CreateCurrentUserProps } from './CurrentUser';
+import type { UserType } from './User';
 
 const useStyles = () => {
   const styles = StyleSheet.create({
