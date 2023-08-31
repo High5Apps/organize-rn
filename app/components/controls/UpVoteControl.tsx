@@ -46,6 +46,7 @@ export default function UpVoteControl({
 
   const [waitingForUp, setWaitingForUp] = useState<boolean>(false);
   const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
+  const waitingForResponse = waitingForUp || waitingForDown;
 
   const { currentUser } = useUserContext();
 
@@ -100,6 +101,7 @@ export default function UpVoteControl({
         buttonStyle={[styles.button, styles.buttonUp]}
         fill={voteState === 1}
         onPress={() => onPress({ isUpVote: true })}
+        softDisabled={waitingForResponse}
         waitingForResponse={waitingForUp}
       />
       <Text style={styles.text}>{score}</Text>
@@ -108,6 +110,7 @@ export default function UpVoteControl({
         fill={voteState === -1}
         flip
         onPress={() => onPress({ isUpVote: false })}
+        softDisabled={waitingForResponse}
         waitingForResponse={waitingForDown}
       />
     </View>
