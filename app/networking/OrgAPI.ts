@@ -1,4 +1,4 @@
-import { Org } from '../model';
+import type { Org } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';

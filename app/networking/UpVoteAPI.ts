@@ -1,4 +1,4 @@
-import { VoteState } from '../model';
+import type { VoteState } from '../model';
 import { post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentUpVotesURI, postUpVotesURI } from './Routes';

@@ -1,4 +1,4 @@
-import { Comment } from '../model';
+import type { Comment } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI } from './Routes';
