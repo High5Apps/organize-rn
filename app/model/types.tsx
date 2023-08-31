@@ -96,8 +96,6 @@ export type Post = {
   userId: string;
 };
 
-export type { OrgGraphRef } from './OrgGraphRef';
-
 export type PaginationData = {
   currentPage: number;
   nextPage: number | null;

@@ -3,14 +3,12 @@ import React, {
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
-import {
-  isCurrentUserData, type OrgGraphRef, useOrgGraphRef, useGraphData,
-  useUserContext,
-} from '../../model';
+import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import ErrorMessage from '../views/ErrorMessage';
 import useClickHandler from './OrgGraphClickHandler';
 import useProgress from './OrgGraphProgress';
+import useOrgGraphRef, { OrgGraphRef } from './OrgGraphRef';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 

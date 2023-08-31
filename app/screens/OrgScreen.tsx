@@ -5,12 +5,11 @@ import { LayoutChangeEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   DEFAULT_FOCUS_OPTIONS, IconButton, NotableUserList, NotableUserListRef,
-  OrgGraph, ScreenBackground, SectionHeader,
+  OrgGraph, OrgGraphRef, ScreenBackground, SectionHeader,
 } from '../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../navigation';
-import { OrgGraphRef } from '../model';
 
 function SettingsButton() {
   const navigation: SettingsScreenNavigationProp = useNavigation();
