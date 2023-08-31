@@ -69,7 +69,7 @@ function PostRow({ disabled, item, onPress }: Props) {
       underlayColor={colors.label}
     >
       <View style={styles.container}>
-        <UpVoteControl postId={id} />
+        <UpVoteControl errorItemFriendlyDifferentiator={title} postId={id} />
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>

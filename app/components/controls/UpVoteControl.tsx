@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  Alert, StyleSheet, Text, View,
+} from 'react-native';
 import useTheme from '../../Theme';
 import UpVoteButton from './UpVoteButton';
 import {
-  GENERIC_ERROR_MESSAGE, VoteState, isCurrentUserData, useUserContext,
+  GENERIC_ERROR_MESSAGE, VoteState, isCurrentUserData, truncateText, useUserContext,
 } from '../../model';
 import { createOrUpdateUpVote } from '../../networking';
+
+const ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH = 30;
+const ERROR_ALERT_TITLE = 'Upvote or Downvote failed. Please try again.';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -31,13 +36,15 @@ const useStyles = () => {
 
 type Props = {
   commentId?: string;
+  errorItemFriendlyDifferentiator: string;
   initialScore?: number;
   initialVoteState?: VoteState;
   postId?: string;
 };
 
 export default function UpVoteControl({
-  commentId, initialScore, initialVoteState, postId,
+  commentId, errorItemFriendlyDifferentiator, initialScore, initialVoteState,
+  postId,
 }: Props) {
   const { styles } = useStyles();
 
@@ -49,6 +56,16 @@ export default function UpVoteControl({
   const waitingForResponse = waitingForUp || waitingForDown;
 
   const { currentUser } = useUserContext();
+
+  const showErrorAlert = () => {
+    const upvotableType = postId ? 'Post' : 'Comment';
+    const preview = truncateText({
+      maxLength: ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH,
+      text: errorItemFriendlyDifferentiator,
+    });
+    const message = `${upvotableType}: ${preview}`;
+    Alert.alert(ERROR_ALERT_TITLE, message);
+  };
 
   const onVote = async ({
     previousVote, vote,
@@ -73,6 +90,7 @@ export default function UpVoteControl({
     if (errorMessage) {
       console.error(errorMessage);
       setVoteState(previousVote);
+      showErrorAlert();
     }
   };
 

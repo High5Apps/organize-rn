@@ -51,7 +51,7 @@ function CommentRow({ item }: Props) {
 
   return (
     <View style={styles.container}>
-      <UpVoteControl commentId={id} />
+      <UpVoteControl commentId={id} errorItemFriendlyDifferentiator={body} />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{body}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
