@@ -1,7 +1,7 @@
 import { ForwardedRef, RefObject, useImperativeHandle } from 'react';
 import { SectionList } from 'react-native';
-import { type NotableUserItem } from '../components/controls/NotableUserRow';
-import { type NotableUserSection } from '../components/controls/NotableUserList';
+import { type NotableUserItem } from './NotableUserRow';
+import { type NotableUserSection } from './NotableUserList';
 
 export type NotableUserListRef = {
   scrollToTop: () => void;

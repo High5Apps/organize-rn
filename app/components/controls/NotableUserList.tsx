@@ -6,12 +6,12 @@ import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import SectionHeader from '../views/SectionHeader';
 import {
-  NotableUserListRef, OrgGraphUser, getCircleColors, getHighestRank,
-  useGraphData, useNotableUserListRef, useUserContext,
+  OrgGraphUser, getCircleColors, getHighestRank, useGraphData, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
+import useNotableUserListRef, { NotableUserListRef } from './NotableUserListRef';
 
 export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   const officers = users.filter((user) => user.offices?.[0]);
