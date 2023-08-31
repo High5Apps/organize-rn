@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import UpVoteButton from './UpVoteButton';
-import { VoteState, isCurrentUserData, useUserContext } from '../../model';
+import {
+  GENERIC_ERROR_MESSAGE, VoteState, isCurrentUserData, useUserContext,
+} from '../../model';
 import { createOrUpdateUpVote } from '../../networking';
 
 const useStyles = () => {
@@ -42,6 +44,9 @@ export default function UpVoteControl({
   const [voteState, setVoteState] = useState<VoteState>(initialVoteState ?? 0);
   const score = (initialScore ?? 0) + voteState;
 
+  const [waitingForUp, setWaitingForUp] = useState<boolean>(false);
+  const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
+
   const { currentUser } = useUserContext();
 
   const onVote = async ({
@@ -49,10 +54,20 @@ export default function UpVoteControl({
   }: { previousVote: VoteState, vote: VoteState }) => {
     if (!isCurrentUserData(currentUser)) { return; }
 
+    setVoteState(vote);
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const { errorMessage } = await createOrUpdateUpVote({
-      commentId, jwt, postId, value: vote,
-    });
+
+    let errorMessage;
+
+    try {
+      ({ errorMessage } = await createOrUpdateUpVote({
+        commentId, jwt, postId, value: vote,
+      }));
+    } catch (error) {
+      console.error(error);
+      errorMessage = GENERIC_ERROR_MESSAGE;
+    }
 
     if (errorMessage) {
       console.error(errorMessage);
@@ -60,27 +75,40 @@ export default function UpVoteControl({
     }
   };
 
+  const onPress = async ({ isUpVote }: { isUpVote: boolean }) => {
+    const activeVote = isUpVote ? 1 : -1;
+    const setWaitingForMe = isUpVote ? setWaitingForUp : setWaitingForDown;
+    const setWaitingForOther = isUpVote ? setWaitingForDown : setWaitingForUp;
+
+    const previousVote = voteState;
+    const vote = (previousVote === activeVote) ? 0 : activeVote;
+
+    setWaitingForMe(true);
+    if (previousVote === -1 * activeVote) {
+      setWaitingForOther(true);
+    }
+
+    await onVote({ previousVote, vote });
+
+    setWaitingForMe(false);
+    setWaitingForOther(false);
+  };
+
   return (
     <View>
       <UpVoteButton
         buttonStyle={[styles.button, styles.buttonUp]}
         fill={voteState === 1}
-        onPress={() => {
-          const vote = voteState === 1 ? 0 : 1;
-          onVote({ previousVote: voteState, vote });
-          setVoteState(vote);
-        }}
+        onPress={() => onPress({ isUpVote: true })}
+        waitingForResponse={waitingForUp}
       />
       <Text style={styles.text}>{score}</Text>
       <UpVoteButton
         buttonStyle={styles.button}
         fill={voteState === -1}
         flip
-        onPress={() => {
-          const vote = voteState === -1 ? 0 : -1;
-          onVote({ previousVote: voteState, vote });
-          setVoteState(vote);
-        }}
+        onPress={() => onPress({ isUpVote: false })}
+        waitingForResponse={waitingForDown}
       />
     </View>
   );

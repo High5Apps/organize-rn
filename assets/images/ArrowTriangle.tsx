@@ -27,7 +27,13 @@ function ArrowTriangle({
   const { styles } = useStyles();
 
   return (
-    <Svg style={[flip && styles.flip, style]} viewBox="0 0 42.15234375 38.349609375">
+    <Svg
+      style={[
+        flip && styles.flip,
+        StyleSheet.flatten(style),
+      ]}
+      viewBox="0 0 42.15234375 38.349609375"
+    >
       { fill ? (
         <Path
           fill={color}

@@ -18,6 +18,9 @@ const useStyles = () => {
     button: {
       alignItems: 'center',
     },
+    waitingForResponse: {
+      opacity: activeButtonOpacity,
+    },
   });
 
   return { primary, styles };
@@ -28,10 +31,11 @@ type Props = {
   fill?: boolean;
   flip?: boolean;
   onPress?: () => void;
+  waitingForResponse?: boolean;
 };
 
 export default function UpVoteButton({
-  buttonStyle, fill, flip, onPress,
+  buttonStyle, fill, flip, onPress, waitingForResponse,
 }: Props) {
   const { primary, styles } = useStyles();
 
@@ -45,7 +49,10 @@ export default function UpVoteButton({
         color={primary}
         fill={fill}
         flip={flip}
-        style={styles.arrow}
+        style={[
+          styles.arrow,
+          waitingForResponse && styles.waitingForResponse,
+        ]}
       />
     </TouchableOpacity>
   );
@@ -56,4 +63,5 @@ UpVoteButton.defaultProps = {
   fill: false,
   flip: false,
   onPress: () => {},
+  waitingForResponse: false,
 };
