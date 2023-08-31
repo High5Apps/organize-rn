@@ -80,15 +80,15 @@ export type Signer = ({ message }: { message: string }) => Promise<string>;
 
 export type Scope = '*' | 'create:connections';
 
-const POST_TYPES = ['general', 'grievances', 'demands'] as const;
-export { POST_TYPES };
+const POST_CATEGORIES = ['general', 'grievances', 'demands'] as const;
+export { POST_CATEGORIES };
 
-type PostType = typeof POST_TYPES[number];
-export type { PostType };
+type PostCategory = typeof POST_CATEGORIES[number];
+export type { PostCategory };
 
 export type Post = {
   body?: string;
-  category: PostType,
+  category: PostCategory,
   createdAt: number;
   id: string;
   pseudonym: string;

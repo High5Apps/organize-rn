@@ -3,20 +3,20 @@ import {
   Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
 import {
-  KeyboardAvoidingScreenBackground, MultilineTextInput, PostTypeSelector,
+  KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
   PrimaryButton, SecondaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
   ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue,
   useUserContext,
 } from '../model';
-import type { PostType } from '../model';
+import type { PostCategory } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
-const CACHE_KEY_TYPE = 'newPostType';
+const CACHE_KEY_TYPE = 'newPostCategory';
 const CACHE_KEY_TITLE = 'newPostTitle';
 const CACHE_KEY_BODY = 'newPostBody';
 
@@ -60,7 +60,9 @@ const useStyles = () => {
 export default function NewPostScreen() {
   const { styles } = useStyles();
 
-  const [postType, setPostType] = useCachedValue<PostType>(CACHE_KEY_TYPE, 'general');
+  const [
+    postCategory, setPostCategory,
+  ] = useCachedValue<PostCategory>(CACHE_KEY_TYPE, 'general');
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY, '');
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE, '');
 
@@ -74,7 +76,7 @@ export default function NewPostScreen() {
   }
 
   const resetForm = () => {
-    setPostType('general');
+    setPostCategory('general');
     setTitle('');
     setBody('');
     setResult('none');
@@ -89,7 +91,7 @@ export default function NewPostScreen() {
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
-      const category = postType ?? 'general';
+      const category = postCategory ?? 'general';
       const maybeBody = body?.length ? body : undefined;
       const { errorMessage } = await createPost({
         body: maybeBody, category, jwt, title: title!,
@@ -110,9 +112,9 @@ export default function NewPostScreen() {
 
   return (
     <KeyboardAvoidingScreenBackground>
-      <PostTypeSelector
-        onSelectionChanged={setPostType}
-        selection={postType}
+      <PostCategorySelector
+        onSelectionChanged={setPostCategory}
+        selection={postCategory}
       />
       <TextInputRow
         // Prevents dismissing the keyboard when hitting next on Android before

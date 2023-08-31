@@ -1,4 +1,4 @@
-import type { Org, PostType } from '../model';
+import type { Org, PostCategory } from '../model';
 import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
 export type ErrorResponseType = {
@@ -117,7 +117,7 @@ export function isPostResponse(object: unknown): object is PostResponse {
 
 type PostIndexPost = {
   body?: string;
-  category: PostType,
+  category: PostCategory,
   created_at: number;
   id: string;
   pseudonym: string;

@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import useTheme from '../../Theme';
-import { POST_TYPES, type PostType } from '../../model';
+import { POST_CATEGORIES, type PostCategory } from '../../model';
 
-const capitalizedPostTypes = POST_TYPES.map(
+const capitalizedPostCategories = POST_CATEGORIES.map(
   (pt) => pt.replace(/(^|\s)\S/g, (c) => c.toUpperCase()),
 );
 
@@ -21,11 +21,11 @@ const useStyles = () => {
 };
 
 type Props = {
-  onSelectionChanged?: ((selection: PostType) => void);
-  selection?: PostType;
+  onSelectionChanged?: ((selection: PostCategory) => void);
+  selection?: PostCategory;
 };
 
-export default function PostTypeSelector({
+export default function PostCategorySelector({
   onSelectionChanged, selection,
 }: Props) {
   const { styles } = useStyles();
@@ -34,17 +34,17 @@ export default function PostTypeSelector({
     <SegmentedControl
       onChange={(event) => {
         const { nativeEvent: { selectedSegmentIndex } } = event;
-        onSelectionChanged?.(POST_TYPES[selectedSegmentIndex]);
+        onSelectionChanged?.(POST_CATEGORIES[selectedSegmentIndex]);
       }}
       onStartShouldSetResponder={() => true}
-      selectedIndex={POST_TYPES.indexOf(selection ?? 'general')}
+      selectedIndex={POST_CATEGORIES.indexOf(selection ?? 'general')}
       style={styles.segmentedControl}
-      values={capitalizedPostTypes}
+      values={capitalizedPostCategories}
     />
   );
 }
 
-PostTypeSelector.defaultProps = {
+PostCategorySelector.defaultProps = {
   onSelectionChanged: () => {},
   selection: 'general',
 };
