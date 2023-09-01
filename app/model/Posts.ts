@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { useUserContext } from './UserContext';
-import { Post, isCurrentUserData, isDefined } from './types';
+import {
+  Post, PostCategory, isCurrentUserData, isDefined,
+} from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
 
 const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
-export default function usePosts() {
+type Props = {
+  category?: PostCategory;
+};
+
+export default function usePosts({ category }: Props = {}) {
   const { cachePosts, getCachedPost } = usePostContext();
   const [postIds, setPostIds] = useState<string[]>([]);
   const posts = postIds.map(getCachedPost).filter(isDefined);
@@ -21,7 +27,7 @@ export default function usePosts() {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
       errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({ jwt, sort: 'new' });
+    } = await fetchPosts({ category, jwt, sort: 'new' });
 
     if (errorMessage) {
       throw new Error(errorMessage);
@@ -42,7 +48,7 @@ export default function usePosts() {
       ? getCachedPost(postIds[0]) : undefined;
     const createdAfter = firstPost?.createdAt;
     const { errorMessage, posts: fetchedPosts } = await fetchPosts({
-      createdAfter, jwt, sort: 'old',
+      category, createdAfter, jwt, sort: 'old',
     });
 
     if (errorMessage) {
@@ -77,7 +83,9 @@ export default function usePosts() {
     const createdBefore = lastPost?.createdAt;
     const {
       errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({ createdBefore, jwt, sort: 'new' });
+    } = await fetchPosts({
+      category, createdBefore, jwt, sort: 'new',
+    });
 
     if (errorMessage) {
       throw new Error(errorMessage);
