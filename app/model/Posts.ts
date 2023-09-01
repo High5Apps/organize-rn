@@ -17,11 +17,11 @@ export default function usePosts({ category }: Props = {}) {
   const [postIds, setPostIds] = useState<string[]>([]);
   const posts = postIds.map(getCachedPost).filter(isDefined);
   const [ready, setReady] = useState<boolean>(false);
-  const [reachedOldest, setReachedOldest] = useState<boolean>(false);
+  const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
 
-  async function fetchNewestPosts() {
+  async function fetchFirstPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -35,11 +35,11 @@ export default function usePosts({ category }: Props = {}) {
 
     cachePosts(fetchedPosts);
     setPostIds(getPostIdsFrom(fetchedPosts));
-    setReachedOldest(paginationData?.nextPage === null);
+    setFetchedLastPage(paginationData?.nextPage === null);
     setReady(true);
   }
 
-  async function fetchNextNewerPosts() {
+  async function fetchPreviousPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -58,22 +58,22 @@ export default function usePosts({ category }: Props = {}) {
     if (!fetchedPosts?.length) { return; }
 
     // Due to millisecond rounding errors, it's possible that the previously
-    // newest post could be included again in the returned posts. If needed, the
+    // first post could be included again in the returned posts. If needed, the
     // following code filters it out.
     const indexOfDuplicate = fetchedPosts.findIndex((post) => (
       post.id === firstPost?.id
     ));
-    const newerPostsWithoutDuplicates = (indexOfDuplicate === -1)
+    const previousPostsWithoutDuplicates = (indexOfDuplicate === -1)
       ? fetchedPosts : fetchedPosts.slice(1 + indexOfDuplicate);
 
-    // Need to reverse posts since they were fetched oldest first
-    const reversedPosts = newerPostsWithoutDuplicates.reverse();
+    // Need to reverse posts since they were fetched in reverse order
+    const reversedPosts = previousPostsWithoutDuplicates.reverse();
 
     cachePosts(reversedPosts);
     setPostIds([...getPostIdsFrom(reversedPosts), ...postIds]);
   }
 
-  async function fetchNextOlderPosts() {
+  async function fetchNextPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -91,30 +91,30 @@ export default function usePosts({ category }: Props = {}) {
       throw new Error(errorMessage);
     }
 
-    setReachedOldest(paginationData?.nextPage === null);
+    setFetchedLastPage(paginationData?.nextPage === null);
 
     if (!fetchedPosts?.length) { return; }
 
     // Due to millisecond rounding errors, it's possible that the previously
-    // oldest post could be included again in the returned posts. If needed, the
+    // last post could be included again in the returned posts. If needed, the
     // following code filters it out.
     const indexOfDuplicate = fetchedPosts.findIndex((post) => (
       post.id === lastPost?.id
     ));
-    const olderPostsWithoutDuplicates = (indexOfDuplicate === -1)
+    const nextPostsWithoutDuplicates = (indexOfDuplicate === -1)
       ? fetchedPosts : fetchedPosts.slice(1 + indexOfDuplicate);
 
-    cachePosts(olderPostsWithoutDuplicates);
-    setPostIds([...postIds, ...getPostIdsFrom(olderPostsWithoutDuplicates)]);
+    cachePosts(nextPostsWithoutDuplicates);
+    setPostIds([...postIds, ...getPostIdsFrom(nextPostsWithoutDuplicates)]);
   }
 
   return {
-    fetchNewestPosts,
-    fetchNextNewerPosts,
-    fetchNextOlderPosts,
+    fetchedLastPage,
+    fetchFirstPageOfPosts,
+    fetchNextPageOfPosts,
+    fetchPreviousPageOfPosts,
     getCachedPost,
     posts,
-    reachedOldest,
     ready,
   };
 }

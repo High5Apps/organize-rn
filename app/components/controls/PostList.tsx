@@ -41,9 +41,9 @@ type Props = {
 
 export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   const [refreshing, setRefreshing] = useState(false);
-  const [loadingOlder, setLoadingOlder] = useState(false);
+  const [loadingNextPage, setLoadingNextPage] = useState(false);
   const [
-    hasMoreThanOnePageOfOlder, setHasMoreThanOnePageOfOlder,
+    fetchedAtLeastOneNextPage, setFetchedAtLeastOneNextPage,
   ] = useState(false);
 
   const { styles } = useStyles();
@@ -52,8 +52,8 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   useScrollToTop(listRef);
 
   const {
-    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, posts, ready,
-    reachedOldest,
+    fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
+    fetchPreviousPageOfPosts, posts, ready,
   } = usePosts();
   const loading = !ready;
 
@@ -62,7 +62,7 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   ), [onItemPress]);
 
   useEffect(() => {
-    fetchNewestPosts().catch(console.error);
+    fetchFirstPageOfPosts().catch(console.error);
   }, []);
 
   if (loading) {
@@ -70,11 +70,11 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   }
 
   let ListFooterComponent;
-  if (loadingOlder) {
+  if (loadingNextPage) {
     ListFooterComponent = (
       <ActivityIndicator style={styles.activityIndicator} />
     );
-  } else if (reachedOldest && hasMoreThanOnePageOfOlder) {
+  } else if (fetchedLastPage && fetchedAtLeastOneNextPage) {
     ListFooterComponent = (
       <Text style={[styles.text, styles.listEndMessage, listEndMessageStyle]}>
         You reached the end
@@ -93,24 +93,24 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
       )}
       ListFooterComponent={ListFooterComponent}
       onEndReached={async () => {
-        if (loading || loadingOlder || refreshing || reachedOldest) { return; }
+        if (loading || loadingNextPage || refreshing || fetchedLastPage) { return; }
 
-        setLoadingOlder(true);
+        setLoadingNextPage(true);
         try {
-          await fetchNextOlderPosts();
-          if (!reachedOldest) {
-            setHasMoreThanOnePageOfOlder(true);
+          await fetchNextPageOfPosts();
+          if (!fetchedLastPage) {
+            setFetchedAtLeastOneNextPage(true);
           }
         } catch (e) {
           console.error(e);
         }
-        setLoadingOlder(false);
+        setLoadingNextPage(false);
       }}
       onEndReachedThreshold={0.5}
       onRefresh={async () => {
         setRefreshing(true);
         try {
-          await fetchNextNewerPosts();
+          await fetchPreviousPageOfPosts();
         } catch (e) {
           console.error(e);
         }
