@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { CommentList, PrimaryButton, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
-import { usePostContext } from '../model';
+import { usePosts } from '../model';
 import useTheme from '../Theme';
 
 function toTitleCase(s: string) {
@@ -34,7 +34,7 @@ const useStyles = () => {
 export default function PostScreen({ navigation, route }: PostScreenProps) {
   const { params: { postId } } = route;
 
-  const { getCachedPost } = usePostContext();
+  const { getCachedPost } = usePosts();
   const post = getCachedPost(postId);
 
   const { styles } = useStyles();

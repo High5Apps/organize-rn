@@ -7,7 +7,7 @@ import {
 } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, usePostContext, useUserContext,
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, usePosts, useUserContext,
 } from '../model';
 import { createComment } from '../networking';
 
@@ -40,7 +40,7 @@ const useStyles = () => {
 
 export default function NewCommentScreen({ route }: NewCommentScreenProps) {
   const { params: { postId } } = route;
-  const { getCachedPost } = usePostContext();
+  const { getCachedPost } = usePosts();
   const post = getCachedPost(postId);
 
   const [body, setBody] = useState<string | undefined>();

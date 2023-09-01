@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useUserContext } from './UserContext';
-import { Post, isCurrentUserData } from './types';
+import { Post, isCurrentUserData, isDefined } from './types';
 import { fetchPosts } from '../networking';
+import { usePostContext } from './PostContext';
 
-const postToEntry = (post: Post) => [post.id, post] as const;
-const postsToMap = (posts: Post[]) => new Map(posts.map(postToEntry));
+const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
 export default function usePosts() {
-  const [postCache, setPostCache] = useState<Map<string, Post>>(new Map());
-  const posts = [...postCache.values()];
+  const { cachePosts, getCachedPost } = usePostContext();
+  const [postIds, setPostIds] = useState<string[]>([]);
+  const posts = postIds.map(getCachedPost).filter(isDefined);
   const [ready, setReady] = useState<boolean>(false);
   const [reachedOldest, setReachedOldest] = useState<boolean>(false);
 
@@ -26,7 +27,8 @@ export default function usePosts() {
       throw new Error(errorMessage);
     }
 
-    setPostCache(postsToMap(fetchedPosts ?? []));
+    cachePosts(fetchedPosts);
+    setPostIds(getPostIdsFrom(fetchedPosts));
     setReachedOldest(paginationData?.nextPage === null);
     setReady(true);
   }
@@ -36,7 +38,8 @@ export default function usePosts() {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
-    const firstPost = posts.length > 0 ? posts[0] : undefined;
+    const firstPost = postIds.length > 0
+      ? getCachedPost(postIds[0]) : undefined;
     const createdAfter = firstPost?.createdAt;
     const { errorMessage, posts: fetchedPosts } = await fetchPosts({
       createdAfter, jwt, sort: 'old',
@@ -60,7 +63,8 @@ export default function usePosts() {
     // Need to reverse posts since they were fetched oldest first
     const reversedPosts = newerPostsWithoutDuplicates.reverse();
 
-    setPostCache(postsToMap([...reversedPosts, ...posts]));
+    cachePosts(reversedPosts);
+    setPostIds([...getPostIdsFrom(reversedPosts), ...postIds]);
   }
 
   async function fetchNextOlderPosts() {
@@ -68,7 +72,8 @@ export default function usePosts() {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
-    const lastPost = posts.length > 0 ? posts.at(-1) : undefined;
+    const lastPost = postIds.length > 0
+      ? getCachedPost(postIds.at(-1)!) : undefined;
     const createdBefore = lastPost?.createdAt;
     const {
       errorMessage, paginationData, posts: fetchedPosts,
@@ -91,11 +96,8 @@ export default function usePosts() {
     const olderPostsWithoutDuplicates = (indexOfDuplicate === -1)
       ? fetchedPosts : fetchedPosts.slice(1 + indexOfDuplicate);
 
-    setPostCache(postsToMap([...posts, ...olderPostsWithoutDuplicates]));
-  }
-
-  function getCachedPost(postId: string) {
-    return postCache.get(postId);
+    cachePosts(olderPostsWithoutDuplicates);
+    setPostIds([...postIds, ...getPostIdsFrom(olderPostsWithoutDuplicates)]);
   }
 
   return {

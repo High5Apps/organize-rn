@@ -2,46 +2,24 @@ import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
 import { Post } from './types';
-import usePosts from './Posts';
+import usePostCache from './PostCache';
 
 type PostContextType = {
-  fetchNewestPosts: () => Promise<void>;
-  fetchNextNewerPosts: () => Promise<void>;
-  fetchNextOlderPosts: () => Promise<void>;
+  cachePosts: (posts?: Post[]) => void;
   getCachedPost: (postId: string) => Post | undefined;
-  posts: Post[];
-  reachedOldest: boolean;
-  ready: boolean;
 };
 
 const PostContext = createContext<PostContextType>({
-  fetchNewestPosts: async () => {},
-  fetchNextNewerPosts: async () => {},
-  fetchNextOlderPosts: async () => {},
+  cachePosts: () => {},
   getCachedPost: () => undefined,
-  posts: [],
-  reachedOldest: false,
-  ready: false,
 });
 
 export function PostContextProvider({ children }: PropsWithChildren<{}>) {
-  const {
-    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost,
-    posts, reachedOldest, ready,
-  } = usePosts();
+  const { cachePosts, getCachedPost } = usePostCache();
 
   const postContext = useMemo<PostContextType>(() => ({
-    fetchNewestPosts,
-    fetchNextNewerPosts,
-    fetchNextOlderPosts,
-    getCachedPost,
-    posts,
-    reachedOldest,
-    ready,
-  }), [
-    fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, getCachedPost,
-    posts, reachedOldest, ready,
-  ]);
+    cachePosts, getCachedPost,
+  }), [cachePosts, getCachedPost]);
 
   return (
     <PostContext.Provider value={postContext}>

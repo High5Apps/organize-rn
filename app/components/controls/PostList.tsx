@@ -6,7 +6,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { Post, usePostContext } from '../../model';
+import { Post, usePosts } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
@@ -54,7 +54,7 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
   const {
     fetchNewestPosts, fetchNextNewerPosts, fetchNextOlderPosts, posts, ready,
     reachedOldest,
-  } = usePostContext();
+  } = usePosts();
   const loading = !ready;
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
