@@ -114,3 +114,5 @@ export type VoteState = -1 | 0 | 1;
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
 }
+
+export type PostSort = 'new' | 'old';

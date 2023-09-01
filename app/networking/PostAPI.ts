@@ -1,4 +1,6 @@
-import type { PaginationData, Post, PostCategory } from '../model';
+import type {
+  PaginationData, Post, PostCategory, PostSort,
+} from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
@@ -45,7 +47,7 @@ type IndexProps = {
   category?: PostCategory;
   createdAfter?: number;
   createdBefore?: number;
-  sort: 'new' | 'old';
+  sort: PostSort;
 };
 
 type IndexReturn = {
