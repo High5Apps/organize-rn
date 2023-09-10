@@ -2,7 +2,9 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { PostList, PrimaryButton, ScreenBackground } from '../components';
 import useTheme from '../Theme';
-import type { DiscussScreenProps } from '../navigation';
+import type {
+  DiscussTabsParamList, DiscussTabsScreenProps,
+} from '../navigation';
 import { Post } from '../model';
 
 const useStyles = () => {
@@ -27,7 +29,13 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function DiscussScreen({ navigation }: DiscussScreenProps) {
+type Props<T extends keyof DiscussTabsParamList> = {
+  navigation: DiscussTabsScreenProps<T>['navigation'];
+};
+
+export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
+  navigation,
+}: Props<T>) {
   const { styles } = useStyles();
 
   const onItemPress = useCallback(

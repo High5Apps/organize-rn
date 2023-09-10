@@ -1,19 +1,26 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  DiscussScreen, NewCommentScreen, NewPostScreen, PostScreen,
-} from '../screens';
+import { NewCommentScreen, NewPostScreen, PostScreen } from '../screens';
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
+import DiscussTabs from './DiscussTabs';
 
 const Stack = createNativeStackNavigator<DiscussStackParamList>();
 
 export default function DiscussStack() {
-  const screenOptions = useDefaultStackNavigatorScreenOptions();
+  const defaultScreenOptions = useDefaultStackNavigatorScreenOptions();
+  const screenOptions = {
+    ...defaultScreenOptions,
+    headerShadowVisible: false,
+  };
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Discuss" component={DiscussScreen} />
+      <Stack.Screen
+        name="DiscussTabs"
+        component={DiscussTabs}
+        options={{ title: 'Discuss' }}
+      />
       <Stack.Screen
         name="NewPost"
         component={NewPostScreen}

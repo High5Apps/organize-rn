@@ -6,6 +6,7 @@ import {
   NativeStackNavigationProp, NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 
 export type RootStackParamList = {
   WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
@@ -88,7 +89,7 @@ export type NewCommentScreenParams = {
 };
 
 export type DiscussStackParamList = {
-  Discuss: undefined;
+  DiscussTabs: undefined;
   NewPost: undefined;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
@@ -100,10 +101,27 @@ export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
     OrgTabsScreenProps<keyof OrgTabsParamList>
   >;
 
-export type DiscussScreenProps = DiscussStackScreenProps<'Discuss'>;
 export type NewPostScreenProps = DiscussStackScreenProps<'NewPost'>;
 export type PostScreenProps = DiscussStackScreenProps<'Post'>;
 export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
+
+export type DiscussTabsParamList = {
+  General: undefined;
+  Grievances: undefined;
+  Demands: undefined;
+  New: undefined;
+};
+
+export type DiscussTabsScreenProps<T extends keyof DiscussTabsParamList> =
+  CompositeScreenProps<
+    MaterialTopTabScreenProps<DiscussTabsParamList, T>,
+    DiscussStackScreenProps<keyof DiscussStackParamList>
+  >;
+
+export type DiscussGeneralScreenProps = DiscussTabsScreenProps<'General'>;
+export type DiscussGrievancesScreenProps = DiscussTabsScreenProps<'Grievances'>;
+export type DiscussDemandsScreenProps = DiscussTabsScreenProps<'Demands'>;
+export type DiscussNewScreenProps = DiscussTabsScreenProps<'New'>;
 
 export type VoteStackParamList = {
   Vote: undefined;
