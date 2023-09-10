@@ -5,5 +5,10 @@ import type { DiscussGrievancesScreenProps } from '../navigation';
 export default function DiscussGrievancesScreen({
   navigation,
 }: DiscussGrievancesScreenProps) {
-  return <DiscussScreen <'Grievances'> navigation={navigation} />;
+  return (
+    <DiscussScreen <'Grievances'>
+      navigation={navigation}
+      primaryButtonLabel="Grievance"
+    />
+  );
 }

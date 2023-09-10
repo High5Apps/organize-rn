@@ -5,5 +5,10 @@ import type { DiscussRecentScreenProps } from '../navigation';
 export default function DiscussRecentScreen({
   navigation,
 }: DiscussRecentScreenProps) {
-  return <DiscussScreen <'Recent'> navigation={navigation} />;
+  return (
+    <DiscussScreen <'Recent'>
+      navigation={navigation}
+      primaryButtonLabel="Discussion"
+    />
+  );
 }

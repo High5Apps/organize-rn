@@ -5,5 +5,10 @@ import type { DiscussDemandsScreenProps } from '../navigation';
 export default function DiscussDemandsScreen({
   navigation,
 }: DiscussDemandsScreenProps) {
-  return <DiscussScreen <'Demands'> navigation={navigation} />;
+  return (
+    <DiscussScreen <'Demands'>
+      navigation={navigation}
+      primaryButtonLabel="Demand"
+    />
+  );
 }

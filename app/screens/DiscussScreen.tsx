@@ -31,10 +31,11 @@ const useStyles = () => {
 
 type Props<T extends keyof DiscussTabsParamList> = {
   navigation: DiscussTabsScreenProps<T>['navigation'];
+  primaryButtonLabel: string;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  navigation,
+  navigation, primaryButtonLabel,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -51,7 +52,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       />
       <PrimaryButton
         iconName="add"
-        label="Post"
+        label={primaryButtonLabel}
         onPress={() => navigation.navigate('NewPost')}
         style={styles.button}
       />
