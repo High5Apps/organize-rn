@@ -2,7 +2,7 @@ export { default as ConnectScreen } from './ConnectScreen';
 export { default as DiscussDemandsScreen } from './DiscussDemandsScreen';
 export { default as DiscussGeneralScreen } from './DiscussGeneralScreen';
 export { default as DiscussGrievancesScreen } from './DiscussGrievancesScreen';
-export { default as DiscussNewScreen } from './DiscussNewScreen';
+export { default as DiscussRecentScreen } from './DiscussRecentScreen';
 export { default as JoinOrgScreen } from './JoinOrgScreen';
 export { default as NewCommentScreen } from './NewCommentScreen';
 export { default as NewConnectionScreen } from './NewConnectionScreen';

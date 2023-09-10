@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/material-top-tabs';
 import {
   DiscussDemandsScreen, DiscussGeneralScreen, DiscussGrievancesScreen,
-  DiscussNewScreen,
+  DiscussRecentScreen,
 } from '../screens';
 import useTheme from '../Theme';
 import { DiscussTabsParamList } from './types';
@@ -55,7 +55,7 @@ export default function DiscussTabs() {
       <Tab.Screen name="General" component={DiscussGeneralScreen} />
       <Tab.Screen name="Grievances" component={DiscussGrievancesScreen} />
       <Tab.Screen name="Demands" component={DiscussDemandsScreen} />
-      <Tab.Screen name="New" component={DiscussNewScreen} />
+      <Tab.Screen name="Recent" component={DiscussRecentScreen} />
     </Tab.Navigator>
   );
 }

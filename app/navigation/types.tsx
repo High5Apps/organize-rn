@@ -109,7 +109,7 @@ export type DiscussTabsParamList = {
   General: undefined;
   Grievances: undefined;
   Demands: undefined;
-  New: undefined;
+  Recent: undefined;
 };
 
 export type DiscussTabsScreenProps<T extends keyof DiscussTabsParamList> =
@@ -121,7 +121,7 @@ export type DiscussTabsScreenProps<T extends keyof DiscussTabsParamList> =
 export type DiscussGeneralScreenProps = DiscussTabsScreenProps<'General'>;
 export type DiscussGrievancesScreenProps = DiscussTabsScreenProps<'Grievances'>;
 export type DiscussDemandsScreenProps = DiscussTabsScreenProps<'Demands'>;
-export type DiscussNewScreenProps = DiscussTabsScreenProps<'New'>;
+export type DiscussRecentScreenProps = DiscussTabsScreenProps<'Recent'>;
 
 export type VoteStackParamList = {
   Vote: undefined;
