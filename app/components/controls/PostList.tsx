@@ -35,11 +35,14 @@ const useStyles = (paddingBottom?: number) => {
 };
 
 type Props = {
+  emptyListMessage: string;
   listEndMessageStyle?: StyleProp<ViewStyle>;
   onItemPress?: (item: Post) => void;
 };
 
-export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
+export default function PostList({
+  emptyListMessage, listEndMessageStyle, onItemPress,
+}: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingNextPage, setLoadingNextPage] = useState(false);
   const [
@@ -87,9 +90,7 @@ export default function PostList({ listEndMessageStyle, onItemPress }: Props) {
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={(
-        <Text style={styles.text}>
-          Start a discussion by creating your Org&apos;s first post
-        </Text>
+        <Text style={styles.text}>{emptyListMessage}</Text>
       )}
       ListFooterComponent={ListFooterComponent}
       onEndReached={async () => {

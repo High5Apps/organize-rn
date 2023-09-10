@@ -30,12 +30,13 @@ const useStyles = () => {
 };
 
 type Props<T extends keyof DiscussTabsParamList> = {
+  emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
   primaryButtonLabel: string;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  navigation, primaryButtonLabel,
+  emptyListMessage, navigation, primaryButtonLabel,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -47,6 +48,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
   return (
     <ScreenBackground>
       <PostList
+        emptyListMessage={emptyListMessage}
         listEndMessageStyle={styles.listEndMessageStyle}
         onItemPress={onItemPress}
       />
