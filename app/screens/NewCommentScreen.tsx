@@ -83,6 +83,7 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
     <KeyboardAvoidingScreenBackground>
       {post && <PostRow disabled item={post} />}
       <MultilineTextInput
+        autoFocus
         maxLength={MAX_COMMENT_LENGTH}
         onChangeText={setBody}
         placeholder="What do you think?"
