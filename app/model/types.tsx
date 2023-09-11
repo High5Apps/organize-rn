@@ -92,6 +92,7 @@ export type Post = {
   createdAt: number;
   id: string;
   pseudonym: string;
+  score: number;
   title: string;
   userId: string;
 };

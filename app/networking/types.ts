@@ -123,6 +123,7 @@ type PostIndexPost = {
   pseudonym: string;
   title: string;
   user_id: string;
+  score: number;
 };
 
 function isPostIndexPost(object: unknown): object is PostIndexPost {
@@ -132,7 +133,8 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.pseudonym?.length > 0
     && post.title?.length > 0
     && post.user_id?.length > 0
-    && post.created_at !== undefined;
+    && post.created_at !== undefined
+    && post.score !== undefined;
 }
 
 type PaginationData = {
