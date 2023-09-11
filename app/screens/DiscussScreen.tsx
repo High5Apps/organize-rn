@@ -5,7 +5,7 @@ import useTheme from '../Theme';
 import type {
   DiscussTabsParamList, DiscussTabsScreenProps,
 } from '../navigation';
-import { Post } from '../model';
+import { Post, PostCategory } from '../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -30,13 +30,14 @@ const useStyles = () => {
 };
 
 type Props<T extends keyof DiscussTabsParamList> = {
+  category?: PostCategory;
   emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
   primaryButtonLabel: string;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  emptyListMessage, navigation, primaryButtonLabel,
+  category, emptyListMessage, navigation, primaryButtonLabel,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -48,6 +49,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
   return (
     <ScreenBackground>
       <PostList
+        category={category}
         emptyListMessage={emptyListMessage}
         listEndMessageStyle={styles.listEndMessageStyle}
         onItemPress={onItemPress}
@@ -61,3 +63,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
     </ScreenBackground>
   );
 }
+
+DiscussScreen.defaultProps = {
+  category: undefined,
+};
