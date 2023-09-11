@@ -57,7 +57,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       <PrimaryButton
         iconName="add"
         label={primaryButtonLabel}
-        onPress={() => navigation.navigate('NewPost')}
+        onPress={() => navigation.navigate('NewPost', { category })}
         style={styles.button}
       />
     </ScreenBackground>

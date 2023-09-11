@@ -13,6 +13,7 @@ import {
 import type { PostCategory } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
+import type { NewPostScreenProps } from '../navigation';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
@@ -56,10 +57,15 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function NewPostScreen() {
+export default function NewPostScreen({ route }: NewPostScreenProps) {
+  const { category: maybeCategory } = route.params ?? {};
+  const initialPostCategory = maybeCategory ?? 'general';
+
   const { styles } = useStyles();
 
-  const [postCategory, setPostCategory] = useState<PostCategory>('general');
+  const [
+    postCategory, setPostCategory,
+  ] = useState<PostCategory>(initialPostCategory);
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY, '');
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE, '');
 
@@ -73,7 +79,6 @@ export default function NewPostScreen() {
   }
 
   const resetForm = () => {
-    setPostCategory('general');
     setTitle('');
     setBody('');
     setResult('none');
@@ -88,10 +93,9 @@ export default function NewPostScreen() {
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
-      const category = postCategory ?? 'general';
       const maybeBody = body?.length ? body : undefined;
       const { errorMessage } = await createPost({
-        body: maybeBody, category, jwt, title: title!,
+        body: maybeBody, category: postCategory, jwt, title: title!,
       });
 
       if (errorMessage) {

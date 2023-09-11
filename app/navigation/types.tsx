@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import type { PostCategory } from '../model';
 
 export type RootStackParamList = {
   WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
@@ -88,9 +89,13 @@ export type NewCommentScreenParams = {
   postId: string;
 };
 
+export type NewPostScreenParams = {
+  category?: PostCategory;
+};
+
 export type DiscussStackParamList = {
   DiscussTabs: undefined;
-  NewPost: undefined;
+  NewPost: NewPostScreenParams | undefined;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
 };
