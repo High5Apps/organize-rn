@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
@@ -16,7 +16,6 @@ import { createPost } from '../networking';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
-const CACHE_KEY_TYPE = 'newPostCategory';
 const CACHE_KEY_TITLE = 'newPostTitle';
 const CACHE_KEY_BODY = 'newPostBody';
 
@@ -60,9 +59,7 @@ const useStyles = () => {
 export default function NewPostScreen() {
   const { styles } = useStyles();
 
-  const [
-    postCategory, setPostCategory,
-  ] = useCachedValue<PostCategory>(CACHE_KEY_TYPE, 'general');
+  const [postCategory, setPostCategory] = useState<PostCategory>('general');
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY, '');
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE, '');
 
