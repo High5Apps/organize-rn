@@ -150,7 +150,7 @@ export default function NewPostScreen({ route }: NewPostScreenProps) {
           label="Reset"
           onPress={ConfirmationAlert({
             destructiveAction: 'Reset',
-            destructiveActionInTitle: 'reset this post',
+            destructiveActionInTitle: 'reset this draft',
             onConfirm: resetForm,
           }).show}
           style={[styles.button, styles.buttonSecondary]}
