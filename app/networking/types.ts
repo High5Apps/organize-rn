@@ -1,4 +1,4 @@
-import type { Org, PostCategory } from '../model';
+import type { Org, PostCategory, VoteState } from '../model';
 import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
 export type ErrorResponseType = {
@@ -120,6 +120,7 @@ type PostIndexPost = {
   category: PostCategory,
   created_at: number;
   id: string;
+  my_vote: VoteState;
   pseudonym: string;
   title: string;
   user_id: string;
@@ -134,7 +135,8 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.title?.length > 0
     && post.user_id?.length > 0
     && post.created_at !== undefined
-    && post.score !== undefined;
+    && post.score !== undefined
+    && post.my_vote !== undefined;
 }
 
 type PaginationData = {

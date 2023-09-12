@@ -54,7 +54,7 @@ type Props = {
 
 function PostRow({ disabled, item, onPress }: Props) {
   const {
-    createdAt, id, pseudonym, score, title,
+    createdAt, id, myVote, pseudonym, score, title,
   } = item;
 
   const { colors, styles } = useStyles();
@@ -72,6 +72,7 @@ function PostRow({ disabled, item, onPress }: Props) {
         <UpVoteControl
           errorItemFriendlyDifferentiator={title}
           initialScore={score}
+          initialVoteState={myVote}
           postId={id}
         />
         <View style={styles.innerContainer}>

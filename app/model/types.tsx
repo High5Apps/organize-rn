@@ -86,11 +86,14 @@ export { POST_CATEGORIES };
 type PostCategory = typeof POST_CATEGORIES[number];
 export type { PostCategory };
 
+export type VoteState = -1 | 0 | 1;
+
 export type Post = {
   body?: string;
   category: PostCategory,
   createdAt: number;
   id: string;
+  myVote: VoteState;
   pseudonym: string;
   score: number;
   title: string;
@@ -109,8 +112,6 @@ export type Comment = {
   pseudonym: string;
   userId: string;
 };
-
-export type VoteState = -1 | 0 | 1;
 
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
