@@ -5,21 +5,23 @@ import { Post } from './types';
 import usePostCache from './PostCache';
 
 type PostContextType = {
+  cachePost: (post: Post) => void;
   cachePosts: (posts?: Post[]) => void;
   getCachedPost: (postId: string) => Post | undefined;
 };
 
 const PostContext = createContext<PostContextType>({
+  cachePost: () => {},
   cachePosts: () => {},
   getCachedPost: () => undefined,
 });
 
 export function PostContextProvider({ children }: PropsWithChildren<{}>) {
-  const { cachePosts, getCachedPost } = usePostCache();
+  const { cachePost, cachePosts, getCachedPost } = usePostCache();
 
   const postContext = useMemo<PostContextType>(() => ({
-    cachePosts, getCachedPost,
-  }), [cachePosts, getCachedPost]);
+    cachePost, cachePosts, getCachedPost,
+  }), [cachePost, cachePosts, getCachedPost]);
 
   return (
     <PostContext.Provider value={postContext}>

@@ -18,5 +18,9 @@ export default function usePostCache() {
     setPostCache(postsToMap([...cachedPosts, ...posts]));
   }
 
-  return { cachePosts, getCachedPost };
+  function cachePost(post: Post) {
+    cachePosts([post]);
+  }
+
+  return { cachePost, cachePosts, getCachedPost };
 }

@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function usePosts({ category }: Props = {}) {
-  const { cachePosts, getCachedPost } = usePostContext();
+  const { cachePost, cachePosts, getCachedPost } = usePostContext();
   const [postIds, setPostIds] = useState<string[]>([]);
   const posts = postIds.map(getCachedPost).filter(isDefined);
   const [ready, setReady] = useState<boolean>(false);
@@ -109,6 +109,7 @@ export default function usePosts({ category }: Props = {}) {
   }
 
   return {
+    cachePost,
     fetchedLastPage,
     fetchFirstPageOfPosts,
     fetchNextPageOfPosts,
