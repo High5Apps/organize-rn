@@ -56,14 +56,14 @@ export default function PostList({
   useScrollToTop(listRef);
 
   const {
-    fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
+    cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
     fetchPreviousPageOfPosts, posts, ready,
   } = usePosts({ category });
   const loading = !ready;
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
-    <PostRow item={item} onPress={onItemPress} />
-  ), [onItemPress]);
+    <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
+  ), [cachePost, onItemPress]);
 
   useEffect(() => {
     fetchFirstPageOfPosts().catch(console.error);

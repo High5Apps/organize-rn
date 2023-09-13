@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { Post, getMessageAge } from '../../model';
+import { Post, VoteState, getMessageAge } from '../../model';
 import UpVoteControl from './UpVoteControl';
 
 const useStyles = () => {
@@ -50,9 +50,12 @@ type Props = {
   disabled?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
+  onPostChanged?: (post: Post) => void;
 };
 
-function PostRow({ disabled, item, onPress }: Props) {
+function PostRow({
+  disabled, item, onPress, onPostChanged,
+}: Props) {
   const {
     createdAt, id, myVote, pseudonym, score, title,
   } = item;
@@ -71,9 +74,16 @@ function PostRow({ disabled, item, onPress }: Props) {
       <View style={styles.container}>
         <UpVoteControl
           errorItemFriendlyDifferentiator={title}
-          initialScore={score}
-          initialVoteState={myVote}
+          onVoteChanged={(updatedVote: VoteState, updatedScore: number) => {
+            onPostChanged?.({
+              ...item,
+              myVote: updatedVote,
+              score: updatedScore,
+            });
+          }}
           postId={id}
+          score={score}
+          voteState={myVote}
         />
         <View style={styles.innerContainer}>
           <Text style={styles.title}>{title}</Text>
@@ -88,6 +98,7 @@ function PostRow({ disabled, item, onPress }: Props) {
 PostRow.defaultProps = {
   disabled: false,
   onPress: () => {},
+  onPostChanged: () => {},
 };
 
 export default memo(PostRow);

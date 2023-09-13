@@ -37,20 +37,21 @@ const useStyles = () => {
 type Props = {
   commentId?: string;
   errorItemFriendlyDifferentiator: string;
-  initialScore?: number;
-  initialVoteState?: VoteState;
+  onVoteChanged?: (vote: VoteState, score: number) => void;
   postId?: string;
+  score: number;
+  voteState: VoteState;
 };
 
 export default function UpVoteControl({
-  commentId, errorItemFriendlyDifferentiator, initialScore, initialVoteState,
-  postId,
+  commentId, errorItemFriendlyDifferentiator, onVoteChanged, postId, score,
+  voteState,
 }: Props) {
   const { styles } = useStyles();
 
-  const [voteState, setVoteState] = useState<VoteState>(initialVoteState ?? 0);
-  const score = (initialScore ?? 0) + voteState;
-
+  const [
+    waitingForVoteSate, setWaitingForVoteSate,
+  ] = useState<VoteState | null>(null);
   const [waitingForUp, setWaitingForUp] = useState<boolean>(false);
   const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
   const waitingForResponse = waitingForUp || waitingForDown;
@@ -72,7 +73,7 @@ export default function UpVoteControl({
   }: { previousVote: VoteState, vote: VoteState }) => {
     if (!isCurrentUserData(currentUser)) { return; }
 
-    setVoteState(vote);
+    setWaitingForVoteSate(vote);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
@@ -87,11 +88,17 @@ export default function UpVoteControl({
       errorMessage = GENERIC_ERROR_MESSAGE;
     }
 
+    setWaitingForVoteSate(null);
+
     if (errorMessage) {
       console.error(errorMessage);
-      setVoteState(previousVote);
       showErrorAlert();
+      return;
     }
+
+    const voteDelta = (vote - previousVote);
+    const updatedScore = score + voteDelta;
+    onVoteChanged?.(vote, updatedScore);
   };
 
   const onPress = async ({ isUpVote }: { isUpVote: boolean }) => {
@@ -117,7 +124,7 @@ export default function UpVoteControl({
     <View>
       <UpVoteButton
         buttonStyle={[styles.button, styles.buttonUp]}
-        fill={voteState === 1}
+        fill={waitingForUp ? (waitingForVoteSate === 1) : (voteState === 1)}
         onPress={() => onPress({ isUpVote: true })}
         softDisabled={waitingForResponse}
         waitingForResponse={waitingForUp}
@@ -125,7 +132,7 @@ export default function UpVoteControl({
       <Text style={styles.text}>{score}</Text>
       <UpVoteButton
         buttonStyle={styles.button}
-        fill={voteState === -1}
+        fill={waitingForDown ? (waitingForVoteSate === -1) : (voteState === -1)}
         flip
         onPress={() => onPress({ isUpVote: false })}
         softDisabled={waitingForResponse}
@@ -137,7 +144,6 @@ export default function UpVoteControl({
 
 UpVoteControl.defaultProps = {
   commentId: undefined,
-  initialScore: 0,
-  initialVoteState: 0,
+  onVoteChanged: () => {},
   postId: undefined,
 };
