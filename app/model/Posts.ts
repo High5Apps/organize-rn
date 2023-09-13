@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useUserContext } from './UserContext';
 import {
-  Post, PostCategory, isCurrentUserData, isDefined,
+  Post, PostCategory, PostSort, isCurrentUserData, isDefined,
 } from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
@@ -10,9 +10,24 @@ const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
 type Props = {
   category?: PostCategory;
+  sort?: PostSort;
 };
 
-export default function usePosts({ category }: Props = {}) {
+function reverse(sort: PostSort): PostSort | null {
+  if (sort === 'new') {
+    return 'old';
+  }
+
+  if (sort === 'old') {
+    return 'new';
+  }
+
+  return null;
+}
+
+export default function usePosts({ category, sort: maybeSort }: Props = {}) {
+  const sort = maybeSort ?? 'new';
+
   const { cachePost, cachePosts, getCachedPost } = usePostContext();
   const [postIds, setPostIds] = useState<string[]>([]);
   const posts = postIds.map(getCachedPost).filter(isDefined);
@@ -27,7 +42,7 @@ export default function usePosts({ category }: Props = {}) {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
       errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({ category, jwt, sort: 'new' });
+    } = await fetchPosts({ category, jwt, sort });
 
     if (errorMessage) {
       throw new Error(errorMessage);
@@ -42,13 +57,21 @@ export default function usePosts({ category }: Props = {}) {
   async function fetchPreviousPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
+    // The idea of a "previous" page of posts only makes sense for new/old. All
+    // other sorts should update the first page instead.
+    const reverseSort = reverse(sort);
+    if (reverseSort === null) {
+      await fetchFirstPageOfPosts();
+      return;
+    }
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
     const firstPost = postIds.length > 0
       ? getCachedPost(postIds[0]) : undefined;
     const createdAfter = firstPost?.createdAt;
     const { errorMessage, posts: fetchedPosts } = await fetchPosts({
-      category, createdAfter, jwt, sort: 'old',
+      category, createdAfter, jwt, sort: reverseSort,
     });
 
     if (errorMessage) {
@@ -84,7 +107,7 @@ export default function usePosts({ category }: Props = {}) {
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore, jwt, sort: 'new',
+      category, createdBefore, jwt, sort,
     });
 
     if (errorMessage) {
