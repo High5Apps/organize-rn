@@ -14,8 +14,10 @@ export default function usePostCache() {
   function cachePosts(posts?: Post[]) {
     if (posts === undefined) { return; }
 
-    const cachedPosts = [...postCache.values()];
-    setPostCache(postsToMap([...cachedPosts, ...posts]));
+    setPostCache((pc) => {
+      const cachedPosts = [...pc.values()];
+      return postsToMap([...cachedPosts, ...posts]);
+    });
   }
 
   function cachePost(post: Post) {
