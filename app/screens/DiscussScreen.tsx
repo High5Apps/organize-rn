@@ -5,7 +5,7 @@ import useTheme from '../Theme';
 import type {
   DiscussTabsParamList, DiscussTabsScreenProps,
 } from '../navigation';
-import { Post, PostCategory } from '../model';
+import { Post, PostCategory, PostSort } from '../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -34,10 +34,11 @@ type Props<T extends keyof DiscussTabsParamList> = {
   emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
   primaryButtonLabel: string;
+  sort: PostSort;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  category, emptyListMessage, navigation, primaryButtonLabel,
+  category, emptyListMessage, navigation, primaryButtonLabel, sort,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -53,6 +54,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
         emptyListMessage={emptyListMessage}
         listEndMessageStyle={styles.listEndMessageStyle}
         onItemPress={onItemPress}
+        sort={sort}
       />
       <PrimaryButton
         iconName="add"
