@@ -33,11 +33,13 @@ const weights = Platform.select({
     regular: 'opensans_regular',
     medium: 'opensans_medium',
     semiBold: 'opensans_semibold',
+    bold: 'opensans_bold',
   },
   default: {
     regular: 'OpenSans-Regular',
     medium: 'OpenSans-Medium',
     semiBold: 'OpenSans-SemiBold',
+    bold: 'OpenSans-Bold',
   },
 });
 

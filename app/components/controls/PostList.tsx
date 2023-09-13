@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  ReactElement, useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
   ActivityIndicator, FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text,
@@ -38,14 +38,14 @@ const useStyles = (paddingBottom?: number) => {
 
 type Props = {
   category?: PostCategory;
-  emptyListMessage: string;
   listEndMessageStyle?: StyleProp<ViewStyle>;
+  ListEmptyComponent: ReactElement;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, emptyListMessage, listEndMessageStyle, onItemPress, sort,
+  category, ListEmptyComponent, listEndMessageStyle, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingNextPage, setLoadingNextPage] = useState(false);
@@ -93,9 +93,7 @@ export default function PostList({
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
-      ListEmptyComponent={(
-        <Text style={styles.text}>{emptyListMessage}</Text>
-      )}
+      ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       onEndReached={async () => {
         if (loading || loadingNextPage || refreshing || fetchedLastPage) { return; }
