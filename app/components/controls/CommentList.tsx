@@ -31,6 +31,7 @@ const useStyles = () => {
 
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
+  onPostChanged?: (post: Post) => void;
   post?: Post;
 };
 
@@ -38,7 +39,9 @@ const renderItem: ListRenderItem<Comment> = ({ item }) => (
   <CommentRow item={item} />
 );
 
-export default function CommentList({ containerStyle, post }: Props) {
+export default function CommentList({
+  containerStyle, onPostChanged, post,
+}: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const { styles } = useStyles();
@@ -54,7 +57,7 @@ export default function CommentList({ containerStyle, post }: Props) {
       ) : null}
       ListHeaderComponent={(
         <>
-          <PostWithBody post={post} />
+          <PostWithBody post={post} onPostChanged={onPostChanged} />
           <SectionHeader>Comments</SectionHeader>
           { isInitiallyLoading && (
             <ActivityIndicator style={styles.activityIndicator} />
@@ -79,5 +82,6 @@ export default function CommentList({ containerStyle, post }: Props) {
 
 CommentList.defaultProps = {
   containerStyle: {},
+  onPostChanged: () => {},
   post: undefined,
 };

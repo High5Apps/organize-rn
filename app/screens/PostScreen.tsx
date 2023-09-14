@@ -34,7 +34,7 @@ const useStyles = () => {
 export default function PostScreen({ navigation, route }: PostScreenProps) {
   const { params: { postId } } = route;
 
-  const { getCachedPost } = usePosts();
+  const { cachePost, getCachedPost } = usePosts();
   const post = getCachedPost(postId);
 
   const { styles } = useStyles();
@@ -49,7 +49,11 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   return (
     <ScreenBackground>
-      <CommentList containerStyle={styles.listContainerStyle} post={post} />
+      <CommentList
+        containerStyle={styles.listContainerStyle}
+        onPostChanged={cachePost}
+        post={post}
+      />
       <PrimaryButton
         iconName="add"
         label="Comment"

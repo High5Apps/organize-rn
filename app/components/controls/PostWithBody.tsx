@@ -22,10 +22,11 @@ const useStyles = () => {
 };
 
 type Props = {
+  onPostChanged?: (post: Post) => void;
   post?: Post;
 };
 
-export default function PostWithBody({ post }: Props) {
+export default function PostWithBody({ onPostChanged, post }: Props) {
   const { styles } = useStyles();
 
   if (!post) { return null; }
@@ -34,12 +35,13 @@ export default function PostWithBody({ post }: Props) {
 
   return (
     <>
-      <PostRow disabled item={post} />
+      <PostRow disabled item={post} onPostChanged={onPostChanged} />
       {body && <Text style={styles.body}>{body}</Text>}
     </>
   );
 }
 
 PostWithBody.defaultProps = {
+  onPostChanged: () => {},
   post: undefined,
 };
