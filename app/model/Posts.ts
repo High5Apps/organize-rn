@@ -6,6 +6,9 @@ import {
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
 
+// Page indexing is 1-based, not 0-based
+const firstPageIndex = 1;
+
 const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
 type Props = {
@@ -21,22 +24,30 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const posts = postIds.map(getCachedPost).filter(isDefined);
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
+  const [createdBefore, setCreatedBefore] = useState<number | undefined>();
+  const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
   const { currentUser } = useUserContext();
 
   async function fetchFirstPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
+    const now = new Date().getTime();
+    setCreatedBefore(now);
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
       errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({ category, jwt, sort });
+    } = await fetchPosts({
+      category, createdBefore: now, page: firstPageIndex, jwt, sort,
+    });
 
     if (errorMessage) {
       throw new Error(errorMessage);
     }
 
     cachePosts(fetchedPosts);
+    setNextPageNumber(firstPageIndex + 1);
     setPostIds(getPostIdsFrom(fetchedPosts));
     setFetchedLastPage(paginationData?.nextPage === null);
     setReady(true);
@@ -47,13 +58,10 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
-    const lastPost = postIds.length > 0
-      ? getCachedPost(postIds.at(-1)!) : undefined;
-    const createdBefore = lastPost?.createdAt;
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore, jwt, sort,
+      category, createdBefore, jwt, page: nextPageNumber, sort,
     });
 
     if (errorMessage) {
@@ -64,17 +72,9 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
 
     if (!fetchedPosts?.length) { return; }
 
-    // Due to millisecond rounding errors, it's possible that the previously
-    // last post could be included again in the returned posts. If needed, the
-    // following code filters it out.
-    const indexOfDuplicate = fetchedPosts.findIndex((post) => (
-      post.id === lastPost?.id
-    ));
-    const nextPostsWithoutDuplicates = (indexOfDuplicate === -1)
-      ? fetchedPosts : fetchedPosts.slice(1 + indexOfDuplicate);
-
-    cachePosts(nextPostsWithoutDuplicates);
-    setPostIds([...postIds, ...getPostIdsFrom(nextPostsWithoutDuplicates)]);
+    cachePosts(fetchedPosts);
+    setNextPageNumber((pageNumber) => pageNumber + 1);
+    setPostIds([...postIds, ...getPostIdsFrom(fetchedPosts)]);
   }
 
   return {
