@@ -60,7 +60,7 @@ export default function PostList({
 
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
-    fetchPreviousPageOfPosts, posts, ready,
+    posts, ready,
   } = usePosts({ category, sort });
   const loading = !ready;
 
@@ -113,7 +113,7 @@ export default function PostList({
       onRefresh={async () => {
         setRefreshing(true);
         try {
-          await fetchPreviousPageOfPosts();
+          await fetchFirstPageOfPosts();
         } catch (e) {
           console.error(e);
         }
