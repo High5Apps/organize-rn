@@ -71,7 +71,7 @@ export async function fetchPosts({
   }
 
   if (createdBefore !== undefined) {
-    uri.searchParams.set('created_before', createdBefore.toString());
+    uri.searchParams.set('created_before', (createdBefore / 1000).toString());
   }
 
   if (page !== undefined) {
