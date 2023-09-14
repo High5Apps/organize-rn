@@ -47,6 +47,7 @@ type IndexProps = {
   category?: PostCategory;
   createdAfter?: number;
   createdBefore?: number;
+  page?: number;
   sort: PostSort;
 };
 
@@ -57,7 +58,7 @@ type IndexReturn = {
 };
 
 export async function fetchPosts({
-  category, createdAfter, createdBefore, jwt, sort,
+  category, createdAfter, createdBefore, jwt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(postsURI);
 
@@ -71,6 +72,10 @@ export async function fetchPosts({
 
   if (createdBefore !== undefined) {
     uri.searchParams.set('created_before', createdBefore.toString());
+  }
+
+  if (page !== undefined) {
+    uri.searchParams.set('page', page.toString());
   }
 
   uri.searchParams.set('sort', sort);
