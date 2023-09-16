@@ -28,8 +28,8 @@ const useStyles = () => {
       paddingHorizontal: buttonMarin,
       position: 'absolute',
     },
-    listEndMessageStyle: {
-      marginBottom: buttonBoundingBoxHeight,
+    contentContainerStyle: {
+      paddingBottom: buttonBoundingBoxHeight,
     },
     text: {
       color: colors.label,
@@ -65,6 +65,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
     <ScreenBackground>
       <PostList
         category={category}
+        contentContainerStyle={styles.contentContainerStyle}
         ListEmptyComponent={(
           <TextBoldener
             boldStyle={styles.bold}
@@ -72,7 +73,6 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
             text={emptyListMessage}
           />
         )}
-        listEndMessageStyle={styles.listEndMessageStyle}
         onItemPress={onItemPress}
         sort={sort}
       />

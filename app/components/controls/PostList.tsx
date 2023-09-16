@@ -38,14 +38,14 @@ const useStyles = (paddingBottom?: number) => {
 
 type Props = {
   category?: PostCategory;
-  listEndMessageStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
   ListEmptyComponent: ReactElement;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, ListEmptyComponent, listEndMessageStyle, onItemPress, sort,
+  category, contentContainerStyle, ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [loadingNextPage, setLoadingNextPage] = useState(false);
@@ -83,7 +83,7 @@ export default function PostList({
     );
   } else if (fetchedLastPage && fetchedAtLeastOneNextPage) {
     ListFooterComponent = (
-      <Text style={[styles.text, styles.listEndMessage, listEndMessageStyle]}>
+      <Text style={[styles.text, styles.listEndMessage]}>
         You reached the end
       </Text>
     );
@@ -95,6 +95,7 @@ export default function PostList({
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
+      contentContainerStyle={contentContainerStyle}
       onEndReached={async () => {
         if (loading || loadingNextPage || refreshing || fetchedLastPage) { return; }
 
@@ -128,6 +129,6 @@ export default function PostList({
 
 PostList.defaultProps = {
   category: undefined,
-  listEndMessageStyle: {},
+  contentContainerStyle: {},
   onItemPress: () => {},
 };
