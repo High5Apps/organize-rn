@@ -1,7 +1,7 @@
 import type { VoteState } from '../model';
 import { post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { commentUpVotesURI, postUpVotesURI } from './Routes';
+import { commentUpvotesURI, postUpvotesURI } from './Routes';
 import { Authorization } from './types';
 
 type Props = {
@@ -14,16 +14,16 @@ type Return = {
   errorMessage?: string;
 };
 
-export default async function createOrUpdateUpVote({
+export default async function createOrUpdateUpvote({
   commentId, jwt, postId, value,
 }: Props & Authorization): Promise<Return> {
   let uri;
   if (commentId !== undefined && postId === undefined) {
-    uri = commentUpVotesURI(commentId);
+    uri = commentUpvotesURI(commentId);
   } else if (commentId === undefined && postId !== undefined) {
-    uri = postUpVotesURI(postId);
+    uri = postUpvotesURI(postId);
   } else {
-    throw new Error('createUpVote expected exactly one commentable');
+    throw new Error('createUpvote expected exactly one commentable');
   }
 
   const bodyObject = { value };

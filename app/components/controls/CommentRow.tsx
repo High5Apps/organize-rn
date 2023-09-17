@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import { Comment, getMessageAge } from '../../model';
-import UpVoteControl from './UpVoteControl';
+import UpvoteControl from './UpvoteControl';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -51,7 +51,7 @@ function CommentRow({ item }: Props) {
 
   return (
     <View style={styles.container}>
-      <UpVoteControl
+      <UpvoteControl
         commentId={id}
         errorItemFriendlyDifferentiator={body}
         score={0}

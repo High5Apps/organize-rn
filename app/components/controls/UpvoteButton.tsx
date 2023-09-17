@@ -35,7 +35,7 @@ type Props = {
   waitingForResponse?: boolean;
 };
 
-export default function UpVoteButton({
+export default function UpvoteButton({
   buttonStyle, fill, flip, onPress, softDisabled, waitingForResponse,
 }: Props) {
   const { primary, styles } = useStyles();
@@ -66,7 +66,7 @@ export default function UpVoteButton({
   );
 }
 
-UpVoteButton.defaultProps = {
+UpvoteButton.defaultProps = {
   buttonStyle: {},
   fill: false,
   flip: false,

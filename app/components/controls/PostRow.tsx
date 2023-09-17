@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { Post, VoteState, getMessageAge } from '../../model';
-import UpVoteControl from './UpVoteControl';
+import UpvoteControl from './UpvoteControl';
 
 const useStyles = () => {
   const {
@@ -72,7 +72,7 @@ function PostRow({
       underlayColor={colors.label}
     >
       <View style={styles.container}>
-        <UpVoteControl
+        <UpvoteControl
           errorItemFriendlyDifferentiator={title}
           onVoteChanged={(updatedVote: VoteState, updatedScore: number) => {
             onPostChanged?.({

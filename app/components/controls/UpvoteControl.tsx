@@ -3,11 +3,11 @@ import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
 import useTheme from '../../Theme';
-import UpVoteButton from './UpVoteButton';
+import UpvoteButton from './UpvoteButton';
 import {
   GENERIC_ERROR_MESSAGE, VoteState, isCurrentUserData, truncateText, useUserContext,
 } from '../../model';
-import { createOrUpdateUpVote } from '../../networking';
+import { createOrUpdateUpvote } from '../../networking';
 
 const ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH = 30;
 const ERROR_ALERT_TITLE = 'Upvote or Downvote failed. Please try again.';
@@ -43,7 +43,7 @@ type Props = {
   voteState: VoteState;
 };
 
-export default function UpVoteControl({
+export default function UpvoteControl({
   commentId, errorItemFriendlyDifferentiator, onVoteChanged, postId, score,
   voteState,
 }: Props) {
@@ -80,7 +80,7 @@ export default function UpVoteControl({
     let errorMessage;
 
     try {
-      ({ errorMessage } = await createOrUpdateUpVote({
+      ({ errorMessage } = await createOrUpdateUpvote({
         commentId, jwt, postId, value: vote,
       }));
     } catch (error) {
@@ -101,10 +101,10 @@ export default function UpVoteControl({
     onVoteChanged?.(vote, updatedScore);
   };
 
-  const onPress = async ({ isUpVote }: { isUpVote: boolean }) => {
-    const activeVote = isUpVote ? 1 : -1;
-    const setWaitingForMe = isUpVote ? setWaitingForUp : setWaitingForDown;
-    const setWaitingForOther = isUpVote ? setWaitingForDown : setWaitingForUp;
+  const onPress = async ({ isUpvote }: { isUpvote: boolean }) => {
+    const activeVote = isUpvote ? 1 : -1;
+    const setWaitingForMe = isUpvote ? setWaitingForUp : setWaitingForDown;
+    const setWaitingForOther = isUpvote ? setWaitingForDown : setWaitingForUp;
 
     const previousVote = voteState;
     const vote = (previousVote === activeVote) ? 0 : activeVote;
@@ -122,19 +122,19 @@ export default function UpVoteControl({
 
   return (
     <View>
-      <UpVoteButton
+      <UpvoteButton
         buttonStyle={[styles.button, styles.buttonUp]}
         fill={waitingForUp ? (waitingForVoteSate === 1) : (voteState === 1)}
-        onPress={() => onPress({ isUpVote: true })}
+        onPress={() => onPress({ isUpvote: true })}
         softDisabled={waitingForResponse}
         waitingForResponse={waitingForUp}
       />
       <Text style={styles.text}>{score}</Text>
-      <UpVoteButton
+      <UpvoteButton
         buttonStyle={styles.button}
         fill={waitingForDown ? (waitingForVoteSate === -1) : (voteState === -1)}
         flip
-        onPress={() => onPress({ isUpVote: false })}
+        onPress={() => onPress({ isUpvote: false })}
         softDisabled={waitingForResponse}
         waitingForResponse={waitingForDown}
       />
@@ -142,7 +142,7 @@ export default function UpVoteControl({
   );
 }
 
-UpVoteControl.defaultProps = {
+UpvoteControl.defaultProps = {
   commentId: undefined,
   onVoteChanged: () => {},
   postId: undefined,
