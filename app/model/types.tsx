@@ -110,6 +110,7 @@ export type Comment = {
   createdAt: number;
   id: string;
   pseudonym: string;
+  score: number;
   userId: string;
 };
 

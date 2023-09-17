@@ -42,7 +42,7 @@ type Props = {
 
 function CommentRow({ item }: Props) {
   const {
-    body, createdAt, id, pseudonym,
+    body, createdAt, id, pseudonym, score,
   } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
@@ -54,7 +54,7 @@ function CommentRow({ item }: Props) {
       <UpvoteControl
         commentId={id}
         errorItemFriendlyDifferentiator={body}
-        score={0}
+        score={score}
         voteState={0}
       />
       <View style={styles.innerContainer}>
