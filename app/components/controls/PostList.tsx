@@ -7,9 +7,10 @@ import {
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
+  GENERIC_ERROR_MESSAGE,
   Post, PostCategory, PostSort, usePosts,
 } from '../../model';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, useRequestProgress } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
 
@@ -64,17 +65,21 @@ export default function PostList({
   } = usePosts({ category, sort });
   const loading = !ready;
 
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
   ), [cachePost, onItemPress]);
 
   useEffect(() => {
-    fetchFirstPageOfPosts().catch(console.error);
+    setLoading(true);
+    fetchFirstPageOfPosts()
+      .catch((e) => {
+        console.error(e);
+        setResult('error', GENERIC_ERROR_MESSAGE);
+      })
+      .finally(() => setLoading(false));
   }, []);
-
-  if (loading) {
-    return <ActivityIndicator style={styles.activityIndicator} />;
-  }
 
   let ListFooterComponent;
   if (loadingNextPage) {
@@ -93,7 +98,9 @@ export default function PostList({
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
-      ListEmptyComponent={ListEmptyComponent}
+      ListEmptyComponent={loading
+        ? <RequestProgress style={styles.activityIndicator} />
+        : ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={contentContainerStyle}
       onEndReached={async () => {
@@ -113,10 +120,12 @@ export default function PostList({
       onEndReachedThreshold={0.5}
       onRefresh={async () => {
         setRefreshing(true);
+        setResult('none');
         try {
           await fetchFirstPageOfPosts();
         } catch (e) {
           console.error(e);
+          setResult('error', GENERIC_ERROR_MESSAGE);
         }
         setRefreshing(false);
       }}
