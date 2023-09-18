@@ -38,11 +38,12 @@ const useStyles = () => {
 
 type Props = {
   item: Comment;
+  onCommentChanged?: (comment: Comment) => void;
 };
 
-function CommentRow({ item }: Props) {
+function CommentRow({ item, onCommentChanged }: Props) {
   const {
-    body, createdAt, id, pseudonym, score,
+    body, createdAt, id, myVote, pseudonym, score,
   } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
@@ -54,8 +55,15 @@ function CommentRow({ item }: Props) {
       <UpvoteControl
         commentId={id}
         errorItemFriendlyDifferentiator={body}
+        onVoteChanged={(updatedVote, updatedScore) => {
+          onCommentChanged?.({
+            ...item,
+            myVote: updatedVote,
+            score: updatedScore,
+          });
+        }}
         score={score}
-        voteState={0}
+        voteState={myVote}
       />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{body}</Text>
@@ -64,5 +72,9 @@ function CommentRow({ item }: Props) {
     </View>
   );
 }
+
+CommentRow.defaultProps = {
+  onCommentChanged: () => {},
+};
 
 export default memo(CommentRow);

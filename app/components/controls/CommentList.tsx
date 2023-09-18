@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
   ViewStyle,
@@ -35,18 +35,20 @@ type Props = {
   post?: Post;
 };
 
-const renderItem: ListRenderItem<Comment> = ({ item }) => (
-  <CommentRow item={item} />
-);
-
 export default function CommentList({
   containerStyle, onPostChanged, post,
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const { styles } = useStyles();
-  const { comments, ready, updateComments } = useComments(post?.id);
+  const {
+    comments, onCommentChanged, ready, updateComments,
+  } = useComments(post?.id);
   const isInitiallyLoading = !refreshing && !ready;
+
+  const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
+    <CommentRow item={item} onCommentChanged={onCommentChanged} />
+  ), [onCommentChanged]);
 
   return (
     <FlatList

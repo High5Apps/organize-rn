@@ -109,6 +109,7 @@ export type Comment = {
   body: string;
   createdAt: number;
   id: string;
+  myVote: VoteState;
   pseudonym: string;
   score: number;
   userId: string;

@@ -31,5 +31,16 @@ export default function useComments(postId?: string) {
     updateComments().catch(console.error);
   }, [postId]);
 
-  return { comments, ready, updateComments };
+  function onCommentChanged(comment: Comment) {
+    const index = comments.findIndex((c) => c.id === comment.id);
+    if (index < 0) { return; }
+
+    const updatedComments = [...comments];
+    updatedComments[index] = comment;
+    setComments(updatedComments);
+  }
+
+  return {
+    comments, onCommentChanged, ready, updateComments,
+  };
 }

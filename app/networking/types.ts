@@ -176,6 +176,7 @@ type CommentIndexComment = {
   body: string;
   created_at: number;
   id: string;
+  my_vote: number;
   pseudonym: string;
   score: number;
   user_id: string;
@@ -186,6 +187,7 @@ function isCommentIndexComment(object: unknown): object is CommentIndexComment {
   return comment?.body?.length > 0
     && comment.created_at !== undefined
     && comment.id?.length > 0
+    && comment.my_vote !== undefined
     && comment.pseudonym?.length > 0
     && comment.score !== undefined
     && comment.user_id?.length > 0;
