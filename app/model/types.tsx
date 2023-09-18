@@ -119,4 +119,4 @@ export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
 }
 
-export type PostSort = 'new' | 'old' | 'top';
+export type PostSort = 'new' | 'old' | 'top' | 'hot';
