@@ -5,7 +5,11 @@ import { Comment, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
+
+  const nestedMarginStart = sizes.nestingMargin;
 
   const styles = StyleSheet.create({
     container: {
@@ -33,25 +37,27 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { nestedMarginStart, styles };
 };
 
 type Props = {
+  nestedDepth: number;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
-function CommentRow({ item, onCommentChanged }: Props) {
+function CommentRow({ item, nestedDepth, onCommentChanged }: Props) {
   const {
     body, createdAt, id, myVote, pseudonym, score,
   } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
-  const { styles } = useStyles();
+  const { nestedMarginStart, styles } = useStyles();
+  const marginStart = nestedDepth * nestedMarginStart;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginStart }]}>
       <UpvoteControl
         commentId={id}
         errorItemFriendlyDifferentiator={body}

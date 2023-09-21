@@ -113,6 +113,7 @@ export type Comment = {
   pseudonym: string;
   score: number;
   userId: string;
+  replies: Comment[];
 };
 
 export function isDefined<T>(argument: T | undefined): argument is T {

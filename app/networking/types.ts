@@ -180,6 +180,7 @@ type CommentIndexComment = {
   pseudonym: string;
   score: number;
   user_id: string;
+  replies: CommentIndexComment[];
 };
 
 function isCommentIndexComment(object: unknown): object is CommentIndexComment {
@@ -190,7 +191,9 @@ function isCommentIndexComment(object: unknown): object is CommentIndexComment {
     && comment.my_vote !== undefined
     && comment.pseudonym?.length > 0
     && comment.score !== undefined
-    && comment.user_id?.length > 0;
+    && comment.user_id?.length > 0
+    && Array.isArray(comment.replies)
+    && comment.replies.every(isCommentIndexComment);
 }
 
 type CommentIndexResponse = {
