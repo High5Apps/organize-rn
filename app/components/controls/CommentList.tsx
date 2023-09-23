@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
   ViewStyle,
@@ -8,21 +8,6 @@ import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
 import { Comment, Post, useComments } from '../../model';
-
-type DepthMap = [
-  depth: number, comment: Comment,
-];
-
-function getDepthMap(depth: number, comments: Comment[]): DepthMap[] {
-  const depthMap: DepthMap[] = [];
-  comments.forEach((comment) => {
-    depthMap.push([depth, comment]);
-
-    const replyDepths = getDepthMap(1 + depth, comment.replies);
-    depthMap.push(...replyDepths);
-  });
-  return depthMap;
-}
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -61,24 +46,13 @@ export default function CommentList({
   } = useComments(post?.id);
   const isInitiallyLoading = !refreshing && !ready;
 
-  const allCommentsWithDepths = useMemo(
-    () => getDepthMap(0, comments),
-    [comments],
-  );
-
-  const renderItem: ListRenderItem<DepthMap> = useCallback(({
-    item: [depth, comment],
-  }) => (
-    <CommentRow
-      item={comment}
-      nestedDepth={depth}
-      onCommentChanged={onCommentChanged}
-    />
+  const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
+    <CommentRow item={item} onCommentChanged={onCommentChanged} />
   ), [onCommentChanged]);
 
   return (
     <FlatList
-      data={ready ? allCommentsWithDepths : null}
+      data={ready ? comments : null}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? (
         <Text style={styles.text}>Be the first to comment on this</Text>

@@ -41,20 +41,19 @@ const useStyles = () => {
 };
 
 type Props = {
-  nestedDepth: number;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
-function CommentRow({ item, nestedDepth, onCommentChanged }: Props) {
+function CommentRow({ item, onCommentChanged }: Props) {
   const {
-    body, createdAt, id, myVote, pseudonym, score,
+    body, createdAt, depth, id, myVote, pseudonym, score,
   } = item;
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const { nestedMarginStart, styles } = useStyles();
-  const marginStart = nestedDepth * nestedMarginStart;
+  const marginStart = depth * nestedMarginStart;
 
   return (
     <View style={[styles.container, { marginStart }]}>

@@ -1,10 +1,31 @@
 import { useEffect, useState } from 'react';
-import { Comment, isCurrentUserData } from './types';
+import { Comment, CommentWithoutDepth, isCurrentUserData } from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
 
+const commentToEntry = (comment: Comment) => [comment.id, comment] as const;
+const commentsToMap = (comments: Comment[]) => new Map(comments.map(commentToEntry));
+
+function getCommentsWithDepths(
+  depth: number,
+  commentsWithoutDepths: CommentWithoutDepth[],
+): Comment[] {
+  const comments: Comment[] = [];
+  commentsWithoutDepths.forEach((commentWithoutDepth) => {
+    comments.push({ ...commentWithoutDepth, depth });
+
+    const repliesWithoutDepths = commentWithoutDepth.replies;
+    const replies = getCommentsWithDepths(depth + 1, repliesWithoutDepths);
+    comments.push(...replies);
+  });
+  return comments;
+}
+
 export default function useComments(postId?: string) {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [
+    commentCache, setCommentCache,
+  ] = useState<Map<string, Comment>>(new Map());
+  const comments = [...commentCache.values()];
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
@@ -16,14 +37,15 @@ export default function useComments(postId?: string) {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
-      errorMessage, comments: fetchedComments,
+      errorMessage, comments: commentsWithoutDepths,
     } = await fetchComments({ jwt, postId });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
 
-    setComments(fetchedComments);
+    const commentsWithDepths = getCommentsWithDepths(0, commentsWithoutDepths);
+    setCommentCache(commentsToMap(commentsWithDepths));
     setReady(true);
   }
 
@@ -35,9 +57,16 @@ export default function useComments(postId?: string) {
     const index = comments.findIndex((c) => c.id === comment.id);
     if (index < 0) { return; }
 
-    const updatedComments = [...comments];
-    updatedComments[index] = comment;
-    setComments(updatedComments);
+    const cachedComment = commentCache.get(comment.id);
+    if (cachedComment === undefined) {
+      console.warn("Attempted to update a comment that wasn't in the cache");
+      return;
+    }
+
+    setCommentCache((cc) => {
+      const cachedComments = [...cc.values()];
+      return commentsToMap([...cachedComments, comment]);
+    });
   }
 
   return {

@@ -108,6 +108,7 @@ export type PaginationData = {
 export type Comment = {
   body: string;
   createdAt: number;
+  depth: number;
   id: string;
   myVote: VoteState;
   pseudonym: string;
@@ -115,6 +116,8 @@ export type Comment = {
   userId: string;
   replies: Comment[];
 };
+
+export type CommentWithoutDepth = Omit<Comment, 'depth'>;
 
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;

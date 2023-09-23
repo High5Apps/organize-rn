@@ -1,4 +1,4 @@
-import type { Comment } from '../model';
+import type { CommentWithoutDepth } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI } from './Routes';
@@ -62,6 +62,8 @@ export async function fetchComments({
   }
 
   const { comments: snakeCaseComments } = json;
-  const comments = recursiveSnakeToCamel(snakeCaseComments) as Comment[];
+  const comments = recursiveSnakeToCamel(
+    snakeCaseComments,
+  ) as CommentWithoutDepth[];
   return { comments };
 }
