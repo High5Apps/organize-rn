@@ -35,6 +35,10 @@ const useStyles = () => {
       fontSize: font.sizes.subhead,
       fontFamily: font.weights.regular,
     },
+    textButtonRow: {
+      flexDirection: 'row',
+      columnGap: spacing.s,
+    },
     title: {
       color: colors.label,
       flexShrink: 1,
@@ -48,20 +52,20 @@ const useStyles = () => {
 
 type Props = {
   disableDepthIndent?: boolean;
-  disableReply?: boolean;
+  hideTextButtonRow?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
 function CommentRow({
-  disableDepthIndent, disableReply: maybeDisableReply, item, onCommentChanged,
+  disableDepthIndent, hideTextButtonRow, item, onCommentChanged,
 }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
   } = item;
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
-  const disableReply = maybeDisableReply || depth >= (MAX_COMMENT_DEPTH - 1);
+  const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
 
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
@@ -92,7 +96,13 @@ function CommentRow({
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{body}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
-        {!disableReply && <TextButton onPress={onReplyPress}>Reply</TextButton>}
+        {!hideTextButtonRow && (
+          <View style={styles.textButtonRow}>
+            {!disableReply && (
+              <TextButton onPress={onReplyPress}>Reply</TextButton>
+            )}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -100,7 +110,7 @@ function CommentRow({
 
 CommentRow.defaultProps = {
   disableDepthIndent: false,
-  disableReply: false,
+  hideTextButtonRow: false,
   onCommentChanged: () => {},
 };
 

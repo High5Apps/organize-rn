@@ -14,7 +14,7 @@ export default function NewReplyScreen({ route }: NewReplyScreenProps) {
   const HeaderComponent = (
     <CommentRow
       disableDepthIndent
-      disableReply
+      hideTextButtonRow
       item={comment}
       onCommentChanged={cacheComment}
     />
