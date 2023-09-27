@@ -40,7 +40,7 @@ const useStyles = () => {
 
 export default function NewCommentScreen({ route }: NewCommentScreenProps) {
   const { params: { postId } } = route;
-  const { getCachedPost } = usePosts();
+  const { cachePost, getCachedPost } = usePosts();
   const post = getCachedPost(postId);
 
   const [body, setBody] = useState<string | undefined>();
@@ -81,7 +81,7 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
 
   return (
     <KeyboardAvoidingScreenBackground>
-      {post && <PostRow disabled item={post} />}
+      {post && <PostRow disabled item={post} onPostChanged={cachePost} />}
       <MultilineTextInput
         autoFocus
         maxLength={MAX_COMMENT_LENGTH}
