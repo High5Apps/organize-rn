@@ -1,13 +1,23 @@
 import React from 'react';
-import PlaceholderScreen from './PlaceholderScreen';
 import type { NewReplyScreenProps } from '../navigation';
 import { useComments } from '../model';
+import { CommentRow, KeyboardAvoidingScreenBackground } from '../components';
 
 export default function NewReplyScreen({ route }: NewReplyScreenProps) {
-  const { name, params: { commentId } } = route;
-  const { getCachedComment } = useComments();
+  const { params: { commentId } } = route;
+  const { cacheComment, getCachedComment } = useComments();
   const comment = getCachedComment(commentId);
-  console.log({ comment });
 
-  return <PlaceholderScreen name={name} />;
+  return (
+    <KeyboardAvoidingScreenBackground>
+      {comment && (
+        <CommentRow
+          disableDepthIndent
+          disableReply
+          item={comment}
+          onCommentChanged={cacheComment}
+        />
+      )}
+    </KeyboardAvoidingScreenBackground>
+  );
 }

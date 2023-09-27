@@ -44,12 +44,15 @@ const useStyles = () => {
 };
 
 type Props = {
+  disableDepthIndent?: boolean;
   disableReply?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
-function CommentRow({ disableReply, item, onCommentChanged }: Props) {
+function CommentRow({
+  disableDepthIndent, disableReply, item, onCommentChanged,
+}: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
   } = item;
@@ -57,7 +60,7 @@ function CommentRow({ disableReply, item, onCommentChanged }: Props) {
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const { nestedMarginStart, styles } = useStyles();
-  const marginStart = depth * nestedMarginStart;
+  const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
@@ -89,6 +92,7 @@ function CommentRow({ disableReply, item, onCommentChanged }: Props) {
 }
 
 CommentRow.defaultProps = {
+  disableDepthIndent: false,
   disableReply: false,
   onCommentChanged: () => {},
 };
