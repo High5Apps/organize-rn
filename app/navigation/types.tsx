@@ -93,12 +93,16 @@ export type NewPostScreenParams = {
   category?: PostCategory;
 };
 
+export type NewReplyScreenParams = {
+  commentId: string;
+};
+
 export type DiscussStackParamList = {
   DiscussTabs: undefined;
   NewPost: NewPostScreenParams | undefined;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
-  NewReply: undefined;
+  NewReply: NewReplyScreenParams;
 };
 
 export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =

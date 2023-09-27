@@ -61,8 +61,8 @@ function CommentRow({ disableReply, item, onCommentChanged }: Props) {
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
-    navigation.navigate('NewReply');
-  }, [navigation]);
+    navigation.navigate('NewReply', { commentId: id });
+  }, [id, navigation]);
 
   return (
     <View style={[styles.container, { marginStart }]}>
