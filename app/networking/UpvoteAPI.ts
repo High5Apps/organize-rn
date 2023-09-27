@@ -23,7 +23,7 @@ export default async function createOrUpdateUpvote({
   } else if (commentId === undefined && postId !== undefined) {
     uri = postUpvotesURI(postId);
   } else {
-    throw new Error('createUpvote expected exactly one commentable');
+    throw new Error('createUpvote expected exactly one upvotable');
   }
 
   const bodyObject = { value };
