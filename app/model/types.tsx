@@ -117,8 +117,6 @@ export type Comment = {
   replies: Comment[];
 };
 
-export type CommentWithoutDepth = Omit<Comment, 'depth'>;
-
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
 }

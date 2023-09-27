@@ -175,6 +175,7 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
 type CommentIndexComment = {
   body: string;
   created_at: number;
+  depth: number;
   id: string;
   my_vote: number;
   pseudonym: string;
@@ -192,6 +193,7 @@ function isCommentIndexComment(object: unknown): object is CommentIndexComment {
     && comment.pseudonym?.length > 0
     && comment.score !== undefined
     && comment.user_id?.length > 0
+    && comment.depth >= 0
     && Array.isArray(comment.replies)
     && comment.replies.every(isCommentIndexComment);
 }
