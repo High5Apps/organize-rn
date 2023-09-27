@@ -1,13 +1,14 @@
 import type { CommentWithoutDepth } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { commentsURI } from './Routes';
+import { commentsURI, repliesURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import { Authorization, isCommentIndexResponse, isCreateCommentResponse } from './types';
 
 type Props = {
   body: string;
-  postId: string;
+  commentId?: string;
+  postId?: string;
 };
 
 type Return = {
@@ -16,13 +17,18 @@ type Return = {
 };
 
 export async function createComment({
-  body, jwt, postId,
+  body, commentId, jwt, postId,
 }: Props & Authorization): Promise<Return> {
-  const response = await post({
-    bodyObject: { body },
-    jwt,
-    uri: commentsURI(postId),
-  });
+  let uri;
+  if (commentId !== undefined && postId === undefined) {
+    uri = repliesURI(commentId);
+  } else if (commentId === undefined && postId !== undefined) {
+    uri = commentsURI(postId);
+  } else {
+    throw new Error('createUpvote expected exactly one upvotable');
+  }
+
+  const response = await post({ bodyObject: { body }, jwt, uri });
   const json = await response.json();
 
   if (!response.ok) {
