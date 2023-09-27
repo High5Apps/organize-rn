@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NewCommentScreen, NewPostScreen, PostScreen } from '../screens';
+import {
+  NewCommentScreen, NewPostScreen, NewReplyScreen, PostScreen,
+} from '../screens';
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 import DiscussTabs from './DiscussTabs';
@@ -35,6 +37,11 @@ export default function DiscussStack() {
         name="NewComment"
         component={NewCommentScreen}
         options={{ title: 'New Comment' }}
+      />
+      <Stack.Screen
+        name="NewReply"
+        component={NewReplyScreen}
+        options={{ title: 'New Reply' }}
       />
     </Stack.Navigator>
   );

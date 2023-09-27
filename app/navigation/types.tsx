@@ -98,6 +98,7 @@ export type DiscussStackParamList = {
   NewPost: NewPostScreenParams | undefined;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
+  NewReply: undefined;
 };
 
 export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
@@ -109,6 +110,7 @@ export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
 export type NewPostScreenProps = DiscussStackScreenProps<'NewPost'>;
 export type PostScreenProps = DiscussStackScreenProps<'Post'>;
 export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
+export type NewReplyScreenProps = DiscussStackScreenProps<'NewReply'>;
 
 export type DiscussTabsParamList = {
   General: undefined;

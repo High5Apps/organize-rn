@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
 import { Comment, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
+import TextButton from './TextButton';
+import type { PostScreenProps } from '../../navigation';
 
 const useStyles = () => {
   const {
@@ -41,11 +44,12 @@ const useStyles = () => {
 };
 
 type Props = {
+  disableReply?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
-function CommentRow({ item, onCommentChanged }: Props) {
+function CommentRow({ disableReply, item, onCommentChanged }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
   } = item;
@@ -54,6 +58,11 @@ function CommentRow({ item, onCommentChanged }: Props) {
 
   const { nestedMarginStart, styles } = useStyles();
   const marginStart = depth * nestedMarginStart;
+
+  const navigation = useNavigation<PostScreenProps['navigation']>();
+  const onReplyPress = useCallback(() => {
+    navigation.navigate('NewReply');
+  }, [navigation]);
 
   return (
     <View style={[styles.container, { marginStart }]}>
@@ -73,12 +82,14 @@ function CommentRow({ item, onCommentChanged }: Props) {
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{body}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
+        {!disableReply && <TextButton onPress={onReplyPress}>Reply</TextButton>}
       </View>
     </View>
   );
 }
 
 CommentRow.defaultProps = {
+  disableReply: false,
   onCommentChanged: () => {},
 };
 
