@@ -15,5 +15,7 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
     <PostRow disabled item={post} onPostChanged={cachePost} />
   );
 
-  return <NewCommentScreenBase HeaderComponent={HeaderComponent} post={post} />;
+  return (
+    <NewCommentScreenBase HeaderComponent={HeaderComponent} postId={postId} />
+  );
 }

@@ -6,7 +6,7 @@ import {
 } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, Post, isCurrentUserData, useUserContext,
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, useUserContext,
 } from '../model';
 import { createComment } from '../networking';
 
@@ -38,11 +38,14 @@ const useStyles = () => {
 };
 
 type Props = {
+  commentId?: string;
   HeaderComponent: ReactNode;
-  post: Post;
+  postId?: string;
 };
 
-export default function NewCommentScreenBase({ HeaderComponent, post }: Props) {
+export default function NewCommentScreenBase({
+  commentId, HeaderComponent, postId,
+}: Props) {
   const [body, setBody] = useState<string | undefined>();
 
   const { styles } = useStyles();
@@ -63,7 +66,7 @@ export default function NewCommentScreenBase({ HeaderComponent, post }: Props) {
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { errorMessage } = await createComment({
-        body: body!, jwt, postId: post.id,
+        body: body!, commentId, jwt, postId,
       });
 
       if (errorMessage) {
@@ -72,7 +75,8 @@ export default function NewCommentScreenBase({ HeaderComponent, post }: Props) {
       }
 
       setBody(undefined);
-      setResult('success', 'Successfully created comment');
+      const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
+      setResult('success', message);
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
@@ -101,3 +105,8 @@ export default function NewCommentScreenBase({ HeaderComponent, post }: Props) {
     </KeyboardAvoidingScreenBackground>
   );
 }
+
+NewCommentScreenBase.defaultProps = {
+  commentId: undefined,
+  postId: undefined,
+};

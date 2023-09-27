@@ -1,23 +1,29 @@
 import React from 'react';
 import type { NewReplyScreenProps } from '../navigation';
 import { useComments } from '../model';
-import { CommentRow, KeyboardAvoidingScreenBackground } from '../components';
+import { CommentRow } from '../components';
+import NewCommentScreenBase from './NewCommentScreenBase';
 
 export default function NewReplyScreen({ route }: NewReplyScreenProps) {
   const { params: { commentId } } = route;
   const { cacheComment, getCachedComment } = useComments();
   const comment = getCachedComment(commentId);
 
+  if (comment === undefined) { return null; }
+
+  const HeaderComponent = (
+    <CommentRow
+      disableDepthIndent
+      disableReply
+      item={comment}
+      onCommentChanged={cacheComment}
+    />
+  );
+
   return (
-    <KeyboardAvoidingScreenBackground>
-      {comment && (
-        <CommentRow
-          disableDepthIndent
-          disableReply
-          item={comment}
-          onCommentChanged={cacheComment}
-        />
-      )}
-    </KeyboardAvoidingScreenBackground>
+    <NewCommentScreenBase
+      commentId={commentId}
+      HeaderComponent={HeaderComponent}
+    />
   );
 }
