@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Comment, CommentWithoutDepth, isCurrentUserData } from './types';
+import {
+  Comment, CommentWithoutDepth, isCurrentUserData, isDefined,
+} from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
+import { useCommentContext } from './CommentContext';
 
-const commentToEntry = (comment: Comment) => [comment.id, comment] as const;
-const commentsToMap = (comments: Comment[]) => new Map(comments.map(commentToEntry));
+const getCommentIdsFrom = (comments?: Comment[]) => (comments ?? []).map((c) => c.id);
 
 function getCommentsWithDepths(
   depth: number,
@@ -22,10 +24,9 @@ function getCommentsWithDepths(
 }
 
 export default function useComments(postId?: string) {
-  const [
-    commentCache, setCommentCache,
-  ] = useState<Map<string, Comment>>(new Map());
-  const comments = [...commentCache.values()];
+  const { cacheComment, cacheComments, getCachedComment } = useCommentContext();
+  const [commentIds, setCommentIds] = useState<string[]>([]);
+  const comments = commentIds.map(getCachedComment).filter(isDefined);
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
@@ -45,7 +46,8 @@ export default function useComments(postId?: string) {
     }
 
     const commentsWithDepths = getCommentsWithDepths(0, commentsWithoutDepths);
-    setCommentCache(commentsToMap(commentsWithDepths));
+    cacheComments(commentsWithDepths);
+    setCommentIds(getCommentIdsFrom(commentsWithDepths));
     setReady(true);
   }
 
@@ -53,23 +55,7 @@ export default function useComments(postId?: string) {
     updateComments().catch(console.error);
   }, [postId]);
 
-  function onCommentChanged(comment: Comment) {
-    const index = comments.findIndex((c) => c.id === comment.id);
-    if (index < 0) { return; }
-
-    const cachedComment = commentCache.get(comment.id);
-    if (cachedComment === undefined) {
-      console.warn("Attempted to update a comment that wasn't in the cache");
-      return;
-    }
-
-    setCommentCache((cc) => {
-      const cachedComments = [...cc.values()];
-      return commentsToMap([...cachedComments, comment]);
-    });
-  }
-
   return {
-    comments, onCommentChanged, ready, updateComments,
+    cacheComment, comments, getCachedComment, ready, updateComments,
   };
 }

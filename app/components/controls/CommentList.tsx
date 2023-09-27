@@ -42,13 +42,13 @@ export default function CommentList({
 
   const { styles } = useStyles();
   const {
-    comments, onCommentChanged, ready, updateComments,
+    cacheComment, comments, ready, updateComments,
   } = useComments(post?.id);
   const isInitiallyLoading = !refreshing && !ready;
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
-    <CommentRow item={item} onCommentChanged={onCommentChanged} />
-  ), [onCommentChanged]);
+    <CommentRow item={item} onCommentChanged={cacheComment} />
+  ), [cacheComment]);
 
   return (
     <FlatList
