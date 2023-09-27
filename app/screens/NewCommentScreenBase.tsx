@@ -6,11 +6,9 @@ import {
 } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, useUserContext,
+  GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData, useUserContext,
 } from '../model';
 import { createComment } from '../networking';
-
-const MAX_COMMENT_LENGTH = 10000;
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
