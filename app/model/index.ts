@@ -1,6 +1,8 @@
 export { default as useAppState } from './AppState';
 export { default as useCachedValue } from './CachedValue';
-export { default as useComments, MAX_COMMENT_LENGTH } from './Comments';
+export {
+  default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
+} from './Comments';
 export { CommentContextProvider } from './CommentContext';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';

@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
-import { Comment, getMessageAge } from '../../model';
+import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
@@ -51,11 +51,15 @@ type Props = {
 };
 
 function CommentRow({
-  disableDepthIndent, disableReply, item, onCommentChanged,
+  disableDepthIndent, disableReply: maybeDisableReply, item, onCommentChanged,
 }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
   } = item;
+
+  // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
+  const disableReply = maybeDisableReply || depth >= (MAX_COMMENT_DEPTH - 1);
+
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 

@@ -4,6 +4,7 @@ import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
 import { useCommentContext } from './CommentContext';
 
+export const MAX_COMMENT_DEPTH = 8;
 export const MAX_COMMENT_LENGTH = 10000;
 
 const getCommentIdsFrom = (comments?: Comment[]) => (comments ?? []).map((c) => c.id);
