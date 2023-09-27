@@ -1,5 +1,7 @@
 import React, { memo, useCallback } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, useWindowDimensions,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
 import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
@@ -8,11 +10,12 @@ import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
-  const nestedMarginStart = sizes.nestingMargin;
+  const { width: screenWidth } = useWindowDimensions();
+
+  // The deepest comment width should be at least 2/3 of the screen width
+  const nestedMarginStart = (screenWidth / 3) / (MAX_COMMENT_DEPTH - 1);
 
   const styles = StyleSheet.create({
     container: {
