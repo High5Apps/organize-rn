@@ -1,4 +1,5 @@
-import { Org, Post, User } from '../app/model';
+import { User } from '../app/model';
+import type { Comment, Org, Post } from '../app/model';
 
 const fakeOrg: Org = {
   id: 'fakeOrgId',
@@ -46,5 +47,19 @@ export function getFakePost(postId: string, score: number): Post {
     score,
     title: `Post ${postId}`,
     userId: fakeUser.id,
+  };
+}
+
+export function getFakeComment(commentId: string, score: number): Comment {
+  return {
+    body: `Comment ${commentId}`,
+    createdAt: new Date().getTime(),
+    depth: 0,
+    id: `comment${commentId}`,
+    myVote: 0,
+    pseudonym: fakeUser.pseudonym,
+    score,
+    userId: fakeUser.id,
+    replies: [],
   };
 }
