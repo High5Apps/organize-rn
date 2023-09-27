@@ -17,6 +17,7 @@ export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';
 export { default as SecondaryButton } from './SecondaryButton';
 export { default as TabBarIcon } from './TabBarIcon';
+export { default as TextButton } from './TextButton';
 export { default as TextInputRow } from './TextInputRow';
 export { default as UpvoteControl } from './UpvoteControl';
 export * from './types';
