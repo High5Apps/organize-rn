@@ -11,12 +11,26 @@ const firstPageIndex = 1;
 
 const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
+function getCreatedBefore(minimumCreatedBefore?: number) {
+  const now = new Date().getTime();
+
+  if (minimumCreatedBefore === undefined) {
+    return now;
+  }
+
+  const oneMillisecondAfterMinimumCreatedBefore = 1 + minimumCreatedBefore;
+  return Math.max(now, oneMillisecondAfterMinimumCreatedBefore);
+}
+
 type Props = {
   category?: PostCategory;
+  minimumCreatedBefore?: number;
   sort?: PostSort;
 };
 
-export default function usePosts({ category, sort: maybeSort }: Props = {}) {
+export default function usePosts({
+  category, minimumCreatedBefore, sort: maybeSort,
+}: Props = {}) {
   const sort = maybeSort ?? 'new';
 
   const { cachePost, cachePosts, getCachedPost } = usePostContext();
@@ -32,20 +46,24 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   async function fetchFirstPageOfPosts() {
     if (!isCurrentUserData(currentUser)) { return; }
 
-    const now = new Date().getTime();
-    setCreatedBefore(now);
+    const newCreatedBefore = getCreatedBefore(minimumCreatedBefore);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore: now, page: firstPageIndex, jwt, sort,
+      category,
+      createdBefore: newCreatedBefore,
+      page: firstPageIndex,
+      jwt,
+      sort,
     });
 
     if (errorMessage) {
       throw new Error(errorMessage);
     }
 
+    setCreatedBefore(newCreatedBefore);
     cachePosts(fetchedPosts);
     setNextPageNumber(firstPageIndex + 1);
     setPostIds(getPostIdsFrom(fetchedPosts));
