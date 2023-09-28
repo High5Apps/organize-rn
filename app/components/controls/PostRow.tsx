@@ -12,6 +12,8 @@ const useStyles = () => {
     colors, font, sizes, spacing,
   } = useTheme();
 
+  const containerPaddingStart = spacing.s;
+
   const styles = StyleSheet.create({
     icon: {
       alignSelf: 'center',
@@ -21,14 +23,19 @@ const useStyles = () => {
     container: {
       backgroundColor: colors.fill,
       flexDirection: 'row',
-
       paddingEnd: spacing.s,
-      paddingStart: spacing.s,
     },
     innerContainer: {
       flex: 1,
       flexDirection: 'column',
       paddingVertical: spacing.s,
+    },
+    highlightOff: {
+      paddingStart: containerPaddingStart,
+    },
+    highlightOn: {
+      borderColor: colors.primary,
+      borderStartWidth: containerPaddingStart,
     },
     subtitle: {
       color: colors.labelSecondary,
@@ -49,13 +56,14 @@ const useStyles = () => {
 type Props = {
   disabled?: boolean;
   enableBodyTextSelection?: boolean;
+  highlighted?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
   onPostChanged?: (post: Post) => void;
 };
 
 function PostRow({
-  disabled, enableBodyTextSelection, item, onPress, onPostChanged,
+  disabled, enableBodyTextSelection, highlighted, item, onPress, onPostChanged,
 }: Props) {
   const {
     createdAt, id, myVote, pseudonym, score, title,
@@ -72,7 +80,12 @@ function PostRow({
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          highlighted ? styles.highlightOn : styles.highlightOff,
+        ]}
+      >
         <UpvoteControl
           errorItemFriendlyDifferentiator={title}
           onVoteChanged={(updatedVote: VoteState, updatedScore: number) => {
@@ -105,6 +118,7 @@ function PostRow({
 PostRow.defaultProps = {
   disabled: false,
   enableBodyTextSelection: false,
+  highlighted: false,
   onPress: () => {},
   onPostChanged: () => {},
 };
