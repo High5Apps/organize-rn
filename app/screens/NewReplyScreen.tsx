@@ -15,6 +15,7 @@ export default function NewReplyScreen({ route }: NewReplyScreenProps) {
     <CommentRow
       compactView
       disableDepthIndent
+      enableBodyTextSelection
       hideTextButtonRow
       item={comment}
       onCommentChanged={cacheComment}

@@ -50,19 +50,21 @@ const useStyles = () => {
     },
   });
 
-  return { nestedMarginStart, styles };
+  return { colors, nestedMarginStart, styles };
 };
 
 type Props = {
   compactView?: boolean;
   disableDepthIndent?: boolean;
+  enableBodyTextSelection?: boolean;
   hideTextButtonRow?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
 };
 
 function CommentRow({
-  compactView, disableDepthIndent, hideTextButtonRow, item, onCommentChanged,
+  compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
+  item, onCommentChanged,
 }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
@@ -74,7 +76,7 @@ function CommentRow({
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
-  const { nestedMarginStart, styles } = useStyles();
+  const { colors, nestedMarginStart, styles } = useStyles();
   const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
@@ -83,7 +85,15 @@ function CommentRow({
   }, [id, navigation]);
 
   // persistentScrollbar only works on Android
-  const BodyText = <Text style={styles.title}>{body}</Text>;
+  const BodyText = (
+    <Text
+      selectable={enableBodyTextSelection}
+      selectionColor={colors.primary}
+      style={styles.title}
+    >
+      {body}
+    </Text>
+  );
   const BodyView = compactView ? (
     <View style={styles.scrollViewContainer}>
       <ScrollView persistentScrollbar>{BodyText}</ScrollView>
@@ -123,6 +133,7 @@ function CommentRow({
 CommentRow.defaultProps = {
   compactView: false,
   disableDepthIndent: false,
+  enableBodyTextSelection: false,
   hideTextButtonRow: false,
   onCommentChanged: () => {},
 };
