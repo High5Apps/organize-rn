@@ -1,4 +1,6 @@
 export { default as useAppState } from './AppState';
+export { default as useCachedValue } from './CachedValue';
+export { CachedValueContextProvider } from './CachedValueContext';
 export {
   default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
 } from './Comments';

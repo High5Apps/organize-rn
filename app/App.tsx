@@ -1,5 +1,8 @@
 import React from 'react';
-import { CommentContextProvider, PostContextProvider, UserContextProvider } from './model';
+import {
+  CachedValueContextProvider, CommentContextProvider, PostContextProvider,
+  UserContextProvider,
+} from './model';
 import Navigation from './navigation';
 
 export default function App() {
@@ -7,7 +10,9 @@ export default function App() {
     <UserContextProvider>
       <PostContextProvider>
         <CommentContextProvider>
-          <Navigation />
+          <CachedValueContextProvider>
+            <Navigation />
+          </CachedValueContextProvider>
         </CommentContextProvider>
       </PostContextProvider>
     </UserContextProvider>
