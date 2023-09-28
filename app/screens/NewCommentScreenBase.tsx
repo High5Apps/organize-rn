@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PrimaryButton,
@@ -6,7 +6,8 @@ import {
 } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData, useUserContext,
+  GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData, useCachedValue,
+  useUserContext,
 } from '../model';
 import { createComment } from '../networking';
 
@@ -35,6 +36,20 @@ const useStyles = () => {
   return { styles };
 };
 
+function getCacheKey(
+  { commentId, postId }: { commentId?: string; postId?: string; },
+) {
+  let keyId;
+  if (commentId !== undefined && postId === undefined) {
+    keyId = commentId;
+  } else if (commentId === undefined && postId !== undefined) {
+    keyId = postId;
+  } else {
+    throw new Error('getCacheKey expected exactly one commentable');
+  }
+  return `comment-draft-${keyId}`;
+}
+
 type Props = {
   commentId?: string;
   HeaderComponent: ReactNode;
@@ -44,7 +59,8 @@ type Props = {
 export default function NewCommentScreenBase({
   commentId, HeaderComponent, postId,
 }: Props) {
-  const [body, setBody] = useState<string | undefined>();
+  const cacheKey = getCacheKey({ commentId, postId });
+  const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
 
   const { styles } = useStyles();
 
