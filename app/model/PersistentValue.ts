@@ -9,7 +9,7 @@ type JSONValue =
   | { [x: string]: JSONValue }
   | Array<JSONValue>;
 
-export default function useCachedValue<
+export default function usePersistentValue<
   T extends JSONValue,
 >(key: string, defaultValue?: T) {
   const [storedValue, setStoredValue] = useState<T | undefined>(defaultValue);

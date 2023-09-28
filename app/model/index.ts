@@ -1,5 +1,4 @@
 export { default as useAppState } from './AppState';
-export { default as useCachedValue } from './CachedValue';
 export {
   default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
 } from './Comments';
@@ -12,6 +11,7 @@ export { default as Keys } from './Keys';
 export { default as getMessageAge } from './MessageAge';
 export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as getCircleColors } from './OrgScreenCircleColors';
+export { default as usePersistentValue } from './PersistentValue';
 export { default as usePosts } from './Posts';
 export { PostContextProvider } from './PostContext';
 export {
