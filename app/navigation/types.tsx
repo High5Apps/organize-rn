@@ -98,7 +98,7 @@ export type NewReplyScreenParams = {
 };
 
 export type DiscussStackParamList = {
-  DiscussTabs: undefined;
+  DiscussTabs: NavigatorScreenParams<DiscussTabsParamList>;
   NewPost: NewPostScreenParams | undefined;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
