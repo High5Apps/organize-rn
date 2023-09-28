@@ -4,11 +4,10 @@ import {
 } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
-  PrimaryButton, SecondaryButton, TextInputRow, useRequestProgress,
+  PrimaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue,
-  useUserContext,
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, useUserContext,
 } from '../model';
 import type { PostCategory } from '../model';
 import useTheme from '../Theme';
@@ -28,16 +27,10 @@ const useStyles = () => {
       flex: 0,
       height: sizes.buttonHeight,
       marginBottom: spacing.m,
-    },
-    buttonPrimary: {
       paddingHorizontal: spacing.m,
     },
-    buttonSecondary: {
-      paddingEnd: spacing.m,
-    },
     buttonRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      flexDirection: 'row-reverse',
       marginHorizontal: spacing.m,
     },
     multilineTextInput: {
@@ -145,21 +138,11 @@ export default function NewPostScreen({ route }: NewPostScreenProps) {
         value={body}
       />
       <View style={styles.buttonRow}>
-        <SecondaryButton
-          iconName="delete"
-          label="Reset"
-          onPress={ConfirmationAlert({
-            destructiveAction: 'Reset',
-            destructiveActionInTitle: 'reset this draft',
-            onConfirm: resetForm,
-          }).show}
-          style={[styles.button, styles.buttonSecondary]}
-        />
         <PrimaryButton
           iconName="publish"
           label="Publish"
           onPress={onPublishPressed}
-          style={[styles.button, styles.buttonPrimary]}
+          style={styles.button}
         />
       </View>
       <RequestProgress style={styles.requestProgress} />
