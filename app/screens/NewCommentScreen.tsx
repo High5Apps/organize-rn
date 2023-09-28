@@ -12,7 +12,12 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
   if (post === undefined) { return null; }
 
   const HeaderComponent = (
-    <PostRow disabled item={post} onPostChanged={cachePost} />
+    <PostRow
+      disabled
+      enableBodyTextSelection
+      item={post}
+      onPostChanged={cachePost}
+    />
   );
 
   return (

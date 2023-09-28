@@ -48,13 +48,14 @@ const useStyles = () => {
 
 type Props = {
   disabled?: boolean;
+  enableBodyTextSelection?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
   onPostChanged?: (post: Post) => void;
 };
 
 function PostRow({
-  disabled, item, onPress, onPostChanged,
+  disabled, enableBodyTextSelection, item, onPress, onPostChanged,
 }: Props) {
   const {
     createdAt, id, myVote, pseudonym, score, title,
@@ -86,7 +87,13 @@ function PostRow({
           voteState={myVote}
         />
         <View style={styles.innerContainer}>
-          <Text style={styles.title}>{title}</Text>
+          <Text
+            selectable={enableBodyTextSelection}
+            selectionColor={colors.primary}
+            style={styles.title}
+          >
+            {title}
+          </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         {!disabled && <Icon name="chevron-right" style={styles.icon} />}
@@ -97,6 +104,7 @@ function PostRow({
 
 PostRow.defaultProps = {
   disabled: false,
+  enableBodyTextSelection: false,
   onPress: () => {},
   onPostChanged: () => {},
 };
