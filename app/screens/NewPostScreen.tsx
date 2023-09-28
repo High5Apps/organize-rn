@@ -7,8 +7,8 @@ import {
   PrimaryButton, SecondaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData,
-  usePersistentValue, useUserContext,
+  ConfirmationAlert, GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue,
+  useUserContext,
 } from '../model';
 import type { PostCategory } from '../model';
 import useTheme from '../Theme';
@@ -66,8 +66,8 @@ export default function NewPostScreen({ route }: NewPostScreenProps) {
   const [
     postCategory, setPostCategory,
   ] = useState<PostCategory>(initialPostCategory);
-  const [body, setBody] = usePersistentValue<string>(CACHE_KEY_BODY, '');
-  const [title, setTitle] = usePersistentValue<string>(CACHE_KEY_TITLE, '');
+  const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY);
+  const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
