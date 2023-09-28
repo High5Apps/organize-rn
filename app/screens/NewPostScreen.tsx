@@ -50,7 +50,9 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function NewPostScreen({ route }: NewPostScreenProps) {
+export default function NewPostScreen({
+  navigation, route,
+}: NewPostScreenProps) {
   const { category: maybeCategory } = route.params ?? {};
   const initialPostCategory = maybeCategory ?? 'general';
 
@@ -87,17 +89,22 @@ export default function NewPostScreen({ route }: NewPostScreenProps) {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       const maybeBody = body?.length ? body : undefined;
-      const { errorMessage } = await createPost({
+      const { errorMessage, postCreatedAt } = await createPost({
         body: maybeBody, category: postCategory, jwt, title: title!,
       });
 
-      if (errorMessage) {
+      if (errorMessage !== undefined) {
         setResult('error', errorMessage);
         return;
       }
 
       resetForm();
       setResult('success', 'Successfully created post');
+
+      navigation.navigate('DiscussTabs', {
+        screen: 'Recent',
+        params: { newPostCreatedAt: postCreatedAt },
+      });
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
