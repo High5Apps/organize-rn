@@ -15,8 +15,13 @@ type Props = {
 };
 
 type Return = {
-  errorMessage?: string;
-  postId?: string;
+  errorMessage: string;
+  postId?: undefined;
+  postCreatedAt?: undefined;
+} | {
+  errorMessage?: undefined;
+  postId: string;
+  postCreatedAt: number;
 };
 
 export async function createPost({
@@ -40,7 +45,7 @@ export async function createPost({
     throw new Error('Failed to parse post ID from response');
   }
 
-  return { postId: json.id };
+  return { postCreatedAt: 1000 * json.created_at, postId: json.id };
 }
 
 type IndexProps = {

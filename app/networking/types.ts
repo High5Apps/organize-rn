@@ -108,11 +108,13 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
 
 type PostResponse = {
   id: string;
+  created_at: number;
 };
 
 export function isPostResponse(object: unknown): object is PostResponse {
   const response = (object as PostResponse);
-  return response?.id?.length > 0;
+  return response?.id?.length > 0
+    && response?.created_at !== undefined;
 }
 
 type PostIndexPost = {
