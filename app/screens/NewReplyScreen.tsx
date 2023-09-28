@@ -13,6 +13,7 @@ export default function NewReplyScreen({ route }: NewReplyScreenProps) {
 
   const HeaderComponent = (
     <CommentRow
+      compactView
       disableDepthIndent
       hideTextButtonRow
       item={comment}

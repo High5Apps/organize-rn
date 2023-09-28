@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import {
-  StyleSheet, Text, View, useWindowDimensions,
+  ScrollView, StyleSheet, Text, View, useWindowDimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
@@ -30,6 +30,9 @@ const useStyles = () => {
       flexDirection: 'column',
       paddingVertical: spacing.s,
     },
+    scrollViewContainer: {
+      maxHeight: 120,
+    },
     subtitle: {
       color: colors.labelSecondary,
       fontSize: font.sizes.subhead,
@@ -51,6 +54,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  compactView?: boolean;
   disableDepthIndent?: boolean;
   hideTextButtonRow?: boolean;
   item: Comment;
@@ -58,7 +62,7 @@ type Props = {
 };
 
 function CommentRow({
-  disableDepthIndent, hideTextButtonRow, item, onCommentChanged,
+  compactView, disableDepthIndent, hideTextButtonRow, item, onCommentChanged,
 }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
@@ -78,6 +82,14 @@ function CommentRow({
     navigation.navigate('NewReply', { commentId: id });
   }, [id, navigation]);
 
+  // persistentScrollbar only works on Android
+  const BodyText = <Text style={styles.title}>{body}</Text>;
+  const BodyView = compactView ? (
+    <View style={styles.scrollViewContainer}>
+      <ScrollView persistentScrollbar>{BodyText}</ScrollView>
+    </View>
+  ) : BodyText;
+
   return (
     <View style={[styles.container, { marginStart }]}>
       <UpvoteControl
@@ -94,7 +106,7 @@ function CommentRow({
         voteState={myVote}
       />
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>{body}</Text>
+        {BodyView}
         <Text style={styles.subtitle}>{subtitle}</Text>
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
@@ -109,6 +121,7 @@ function CommentRow({
 }
 
 CommentRow.defaultProps = {
+  compactView: false,
   disableDepthIndent: false,
   hideTextButtonRow: false,
   onCommentChanged: () => {},
