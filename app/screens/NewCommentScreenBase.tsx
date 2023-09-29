@@ -53,11 +53,12 @@ function getCacheKey(
 type Props = {
   commentId?: string;
   HeaderComponent: ReactNode;
+  onCommentCreated?: (commentId: string) => void;
   postId?: string;
 };
 
 export default function NewCommentScreenBase({
-  commentId, HeaderComponent, postId,
+  commentId, HeaderComponent, onCommentCreated, postId,
 }: Props) {
   const cacheKey = getCacheKey({ commentId, postId });
   const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
@@ -79,11 +80,11 @@ export default function NewCommentScreenBase({
 
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { errorMessage } = await createComment({
+      const { commentId: newCommentId, errorMessage } = await createComment({
         body: body!, commentId, jwt, postId,
       });
 
-      if (errorMessage) {
+      if (errorMessage !== undefined) {
         setResult('error', errorMessage);
         return;
       }
@@ -91,6 +92,7 @@ export default function NewCommentScreenBase({
       setBody(undefined);
       const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
       setResult('success', message);
+      onCommentCreated?.(newCommentId);
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
@@ -122,5 +124,6 @@ export default function NewCommentScreenBase({
 
 NewCommentScreenBase.defaultProps = {
   commentId: undefined,
+  onCommentCreated: () => {},
   postId: undefined,
 };

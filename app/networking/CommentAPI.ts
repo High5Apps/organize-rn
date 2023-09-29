@@ -12,8 +12,11 @@ type Props = {
 };
 
 type Return = {
-  errorMessage?: string;
-  commentId?: string;
+  errorMessage: string;
+  commentId?: undefined;
+} | {
+  commentId: string;
+  errorMessage?: undefined;
 };
 
 export async function createComment({
