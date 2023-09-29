@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
@@ -55,7 +55,7 @@ export default function useRequestProgress() {
     style?: StyleProp<ViewStyle>;
   };
 
-  function RequestProgress({ style }: Props) {
+  const RequestProgress = useCallback(({ style }: Props) => {
     const isVisible = (resultType !== 'none') || loading;
     return (
       <View style={isVisible && style}>
@@ -75,7 +75,7 @@ export default function useRequestProgress() {
         )}
       </View>
     );
-  }
+  }, [loading, resultMessage, resultType]);
 
   return {
     loading,
