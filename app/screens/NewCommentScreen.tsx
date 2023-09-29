@@ -4,7 +4,9 @@ import { PostRow } from '../components';
 import { usePosts } from '../model';
 import NewCommentScreenBase from './NewCommentScreenBase';
 
-export default function NewCommentScreen({ route }: NewCommentScreenProps) {
+export default function NewCommentScreen({
+  navigation, route,
+}: NewCommentScreenProps) {
   const { params: { postId } } = route;
   const { cachePost, getCachedPost } = usePosts();
   const post = getCachedPost(postId);
@@ -21,6 +23,13 @@ export default function NewCommentScreen({ route }: NewCommentScreenProps) {
   );
 
   return (
-    <NewCommentScreenBase HeaderComponent={HeaderComponent} postId={postId} />
+    <NewCommentScreenBase
+      HeaderComponent={HeaderComponent}
+      onCommentCreated={(newCommentId) => navigation.navigate('Post', {
+        postId: post.id,
+        newCommentId,
+      })}
+      postId={postId}
+    />
   );
 }

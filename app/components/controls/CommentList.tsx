@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
   ViewStyle,
@@ -31,12 +31,13 @@ const useStyles = () => {
 
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
+  newCommentId?: string;
   onPostChanged?: (post: Post) => void;
   post?: Post;
 };
 
 export default function CommentList({
-  containerStyle, onPostChanged, post,
+  containerStyle, newCommentId, onPostChanged, post,
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -49,6 +50,20 @@ export default function CommentList({
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow item={item} onCommentChanged={cacheComment} />
   ), [cacheComment]);
+
+  const refresh = async () => {
+    setRefreshing(true);
+    try {
+      await updateComments();
+    } catch (e) {
+      console.error(e);
+    }
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    refresh().catch(console.error);
+  }, [newCommentId]);
 
   return (
     <FlatList
@@ -67,15 +82,7 @@ export default function CommentList({
         </>
       )}
       contentContainerStyle={containerStyle}
-      onRefresh={async () => {
-        setRefreshing(true);
-        try {
-          await updateComments();
-        } catch (e) {
-          console.error(e);
-        }
-        setRefreshing(false);
-      }}
+      onRefresh={refresh}
       refreshing={refreshing}
       renderItem={renderItem}
     />
@@ -84,6 +91,7 @@ export default function CommentList({
 
 CommentList.defaultProps = {
   containerStyle: {},
+  newCommentId: undefined,
   onPostChanged: () => {},
   post: undefined,
 };
