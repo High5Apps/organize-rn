@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { Post, VoteState, getMessageAge } from '../../model';
+import {
+  Post, VoteState, getMessageAge, useUserContext,
+} from '../../model';
 import UpvoteControl from './UpvoteControl';
 
 const useStyles = () => {
@@ -56,23 +58,25 @@ const useStyles = () => {
 type Props = {
   disabled?: boolean;
   enableBodyTextSelection?: boolean;
-  highlighted?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
   onPostChanged?: (post: Post) => void;
 };
 
 function PostRow({
-  disabled, enableBodyTextSelection, highlighted, item, onPress, onPostChanged,
+  disabled, enableBodyTextSelection, item, onPress, onPostChanged,
 }: Props) {
   const {
-    createdAt, id, myVote, pseudonym, score, title,
+    createdAt, id, myVote, pseudonym, score, title, userId,
   } = item;
 
   const { colors, styles } = useStyles();
 
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
+
+  const { currentUser } = useUserContext();
+  const highlighted = userId === currentUser?.id;
 
   return (
     <TouchableHighlight
@@ -118,7 +122,6 @@ function PostRow({
 PostRow.defaultProps = {
   disabled: false,
   enableBodyTextSelection: false,
-  highlighted: false,
   onPress: () => {},
   onPostChanged: () => {},
 };

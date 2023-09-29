@@ -118,7 +118,6 @@ export type NewReplyScreenProps = DiscussStackScreenProps<'NewReply'>;
 
 export type DiscussRecentScreenParams = {
   newPostCreatedAt: number;
-  newPostId: string;
 };
 
 export type DiscussTabsParamList = {

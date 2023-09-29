@@ -89,7 +89,7 @@ export default function NewPostScreen({
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       const maybeBody = body?.length ? body : undefined;
-      const { errorMessage, postCreatedAt, postId } = await createPost({
+      const { errorMessage, postCreatedAt } = await createPost({
         body: maybeBody, category: postCategory, jwt, title: title!,
       });
 
@@ -103,7 +103,7 @@ export default function NewPostScreen({
 
       navigation.navigate('DiscussTabs', {
         screen: 'Recent',
-        params: { newPostCreatedAt: postCreatedAt, newPostId: postId },
+        params: { newPostCreatedAt: postCreatedAt },
       });
     } catch (error) {
       console.error(error);

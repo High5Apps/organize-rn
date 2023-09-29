@@ -34,7 +34,6 @@ const useStyles = () => {
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  highlightedPostId?: string;
   ListEmptyComponent: ReactElement;
   newPostCreatedAt?: number;
   onItemPress?: (item: Post) => void;
@@ -42,8 +41,8 @@ type Props = {
 };
 
 export default function PostList({
-  category, contentContainerStyle, highlightedPostId, ListEmptyComponent,
-  newPostCreatedAt, onItemPress, sort,
+  category, contentContainerStyle, ListEmptyComponent, newPostCreatedAt,
+  onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -63,13 +62,8 @@ export default function PostList({
   } = useRequestProgress();
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
-    <PostRow
-      highlighted={item.id === highlightedPostId}
-      item={item}
-      onPress={onItemPress}
-      onPostChanged={cachePost}
-    />
-  ), [cachePost, highlightedPostId, onItemPress]);
+    <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
+  ), [cachePost, onItemPress]);
 
   const refresh = async () => {
     listRef.current?.scrollToOffset({ animated: false, offset: 0 });
@@ -132,7 +126,6 @@ export default function PostList({
 PostList.defaultProps = {
   category: undefined,
   contentContainerStyle: {},
-  highlightedPostId: undefined,
   newPostCreatedAt: undefined,
   onItemPress: () => {},
 };
