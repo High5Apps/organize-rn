@@ -33,7 +33,7 @@ type Props = {
   containerStyle?: StyleProp<ViewStyle>;
   newCommentId?: string;
   onPostChanged?: (post: Post) => void;
-  post?: Post;
+  post: Post;
 };
 
 export default function CommentList({
@@ -44,12 +44,16 @@ export default function CommentList({
   const { styles } = useStyles();
   const {
     cacheComment, comments, ready, updateComments,
-  } = useComments(post?.id);
+  } = useComments(post.id);
   const isInitiallyLoading = !refreshing && !ready;
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
-    <CommentRow item={item} onCommentChanged={cacheComment} />
-  ), [cacheComment]);
+    <CommentRow
+      item={item}
+      onCommentChanged={cacheComment}
+      postId={post.id}
+    />
+  ), [cacheComment, post.id]);
 
   const refresh = async () => {
     setRefreshing(true);
@@ -93,5 +97,4 @@ CommentList.defaultProps = {
   containerStyle: {},
   newCommentId: undefined,
   onPostChanged: () => {},
-  post: undefined,
 };

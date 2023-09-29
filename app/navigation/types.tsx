@@ -96,6 +96,7 @@ export type NewPostScreenParams = {
 
 export type NewReplyScreenParams = {
   commentId: string;
+  postId: string;
 };
 
 export type DiscussStackParamList = {

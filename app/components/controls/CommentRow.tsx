@@ -60,11 +60,12 @@ type Props = {
   hideTextButtonRow?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
+  postId: string;
 };
 
 function CommentRow({
   compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
-  item, onCommentChanged,
+  item, onCommentChanged, postId,
 }: Props) {
   const {
     body, createdAt, depth, id, myVote, pseudonym, score,
@@ -81,7 +82,7 @@ function CommentRow({
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
-    navigation.navigate('NewReply', { commentId: id });
+    navigation.navigate('NewReply', { commentId: id, postId });
   }, [id, navigation]);
 
   // persistentScrollbar only works on Android

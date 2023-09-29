@@ -49,12 +49,14 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   return (
     <ScreenBackground>
-      <CommentList
-        containerStyle={styles.listContainerStyle}
-        newCommentId={newCommentId}
-        onPostChanged={cachePost}
-        post={post}
-      />
+      {post && (
+        <CommentList
+          containerStyle={styles.listContainerStyle}
+          newCommentId={newCommentId}
+          onPostChanged={cachePost}
+          post={post}
+        />
+      )}
       <PrimaryButton
         iconName="add"
         label="Comment"
