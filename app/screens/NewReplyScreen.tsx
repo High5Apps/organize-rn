@@ -4,7 +4,9 @@ import { useComments } from '../model';
 import { CommentRow } from '../components';
 import NewCommentScreenBase from './NewCommentScreenBase';
 
-export default function NewReplyScreen({ route }: NewReplyScreenProps) {
+export default function NewReplyScreen({
+  navigation, route,
+}: NewReplyScreenProps) {
   const { params: { commentId, postId } } = route;
   const { cacheComment, getCachedComment } = useComments();
   const comment = getCachedComment(commentId);
@@ -27,6 +29,10 @@ export default function NewReplyScreen({ route }: NewReplyScreenProps) {
     <NewCommentScreenBase
       commentId={commentId}
       HeaderComponent={HeaderComponent}
+      onCommentCreated={(newCommentId) => navigation.navigate('Post', {
+        newCommentId,
+        postId,
+      })}
     />
   );
 }
