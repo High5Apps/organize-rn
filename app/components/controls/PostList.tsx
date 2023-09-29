@@ -72,6 +72,7 @@ export default function PostList({
   ), [cachePost, highlightedPostId, onItemPress]);
 
   const refresh = async () => {
+    listRef.current?.scrollToOffset({ animated: false, offset: 0 });
     setRefreshing(true);
     setResult('none');
     try {
