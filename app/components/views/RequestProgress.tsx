@@ -11,6 +11,9 @@ const useStyles = () => {
     error: {
       color: colors.error,
     },
+    info: {
+      color: colors.labelSecondary,
+    },
     message: {
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
@@ -25,7 +28,7 @@ const useStyles = () => {
   return { styles };
 };
 
-type ResultType = 'error' | 'none' | 'success' | 'warning';
+type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
 
 export default function useRequestProgress() {
   const [loading, setLoading] = useState(false);
@@ -64,6 +67,7 @@ export default function useRequestProgress() {
               (resultType === 'error') && styles.error,
               (resultType === 'success') && styles.success,
               (resultType === 'warning') && styles.error,
+              (resultType === 'info') && styles.info,
             ]}
           >
             {resultMessage}
@@ -74,6 +78,7 @@ export default function useRequestProgress() {
   }
 
   return {
+    loading,
     RequestProgress,
     result: resultType,
     setLoading,
