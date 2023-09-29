@@ -28,6 +28,10 @@ type Props = {
   sort?: PostSort;
 };
 
+type FetchPageReturn = {
+  hasNextPage: boolean;
+};
+
 export default function usePosts({
   category, minimumCreatedBefore, sort: maybeSort,
 }: Props = {}) {
@@ -43,8 +47,10 @@ export default function usePosts({
 
   const { currentUser } = useUserContext();
 
-  async function fetchFirstPageOfPosts() {
-    if (!isCurrentUserData(currentUser)) { return; }
+  async function fetchFirstPageOfPosts(): Promise<FetchPageReturn> {
+    if (!isCurrentUserData(currentUser)) {
+      throw new Error('Expected current user to be set');
+    }
 
     const newCreatedBefore = getCreatedBefore(minimumCreatedBefore);
 
@@ -67,12 +73,17 @@ export default function usePosts({
     cachePosts(fetchedPosts);
     setNextPageNumber(firstPageIndex + 1);
     setPostIds(getPostIdsFrom(fetchedPosts));
-    setFetchedLastPage(paginationData?.nextPage === null);
+    const hasNextPage = paginationData?.nextPage !== null;
+    setFetchedLastPage(!hasNextPage);
     setReady(true);
+
+    return { hasNextPage };
   }
 
-  async function fetchNextPageOfPosts() {
-    if (!isCurrentUserData(currentUser)) { return; }
+  async function fetchNextPageOfPosts(): Promise<FetchPageReturn> {
+    if (!isCurrentUserData(currentUser)) {
+      throw new Error('Expected current user to be set');
+    }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
@@ -86,13 +97,18 @@ export default function usePosts({
       throw new Error(errorMessage);
     }
 
-    setFetchedLastPage(paginationData?.nextPage === null);
+    const hasNextPage = paginationData?.nextPage !== null;
+    setFetchedLastPage(!hasNextPage);
 
-    if (!fetchedPosts?.length) { return; }
+    const result = { hasNextPage };
+
+    if (!fetchedPosts?.length) { return result; }
 
     cachePosts(fetchedPosts);
     setNextPageNumber((pageNumber) => pageNumber + 1);
     setPostIds([...postIds, ...getPostIdsFrom(fetchedPosts)]);
+
+    return result;
   }
 
   return {
