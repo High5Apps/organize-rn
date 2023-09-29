@@ -2,28 +2,22 @@ import React, {
   ReactElement, useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  ActivityIndicator, FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text,
-  ViewStyle,
+  FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
-  GENERIC_ERROR_MESSAGE,
-  Post, PostCategory, PostSort, usePosts,
+  GENERIC_ERROR_MESSAGE, Post, PostCategory, PostSort, usePosts,
 } from '../../model';
 import { ItemSeparator, useRequestProgress } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
 
-const useStyles = (paddingBottom?: number) => {
+const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
-    activityIndicator: {
+    requestProgress: {
       margin: spacing.m,
-    },
-    listEndMessage: {
-      color: colors.labelSecondary,
-      marginBottom: paddingBottom,
     },
     text: {
       color: colors.label,
@@ -52,10 +46,6 @@ export default function PostList({
   newPostCreatedAt, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
-  const [loadingNextPage, setLoadingNextPage] = useState(false);
-  const [
-    fetchedAtLeastOneNextPage, setFetchedAtLeastOneNextPage,
-  ] = useState(false);
 
   const { styles } = useStyles();
 
@@ -66,9 +56,11 @@ export default function PostList({
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
     posts, ready,
   } = usePosts({ category, minimumCreatedBefore: newPostCreatedAt, sort });
-  const loading = !ready;
 
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const {
+    loading: loadingNextPage, RequestProgress, result,
+    setLoading: setLoadingNextPage, setResult,
+  } = useRequestProgress();
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow
@@ -79,64 +71,56 @@ export default function PostList({
     />
   ), [cachePost, highlightedPostId, onItemPress]);
 
+  const refresh = async () => {
+    setRefreshing(true);
+    setResult('none');
+    try {
+      await fetchFirstPageOfPosts();
+    } catch (e) {
+      console.error(e);
+      setResult('error', GENERIC_ERROR_MESSAGE);
+    }
+    setRefreshing(false);
+  };
+
   useEffect(() => {
-    setLoading(true);
-    fetchFirstPageOfPosts()
-      .catch((e) => {
-        console.error(e);
-        setResult('error', GENERIC_ERROR_MESSAGE);
-      })
-      .finally(() => setLoading(false));
+    refresh().catch(console.error);
   }, [newPostCreatedAt]);
 
-  let ListFooterComponent;
-  if (loadingNextPage) {
-    ListFooterComponent = (
-      <ActivityIndicator style={styles.activityIndicator} />
-    );
-  } else if (fetchedLastPage && fetchedAtLeastOneNextPage) {
-    ListFooterComponent = (
-      <Text style={[styles.text, styles.listEndMessage]}>
-        You reached the end
-      </Text>
-    );
-  }
+  const ListFooterComponent = useCallback(
+    () => <RequestProgress style={styles.requestProgress} />,
+    [RequestProgress],
+  );
 
   return (
     <FlatList
       data={posts}
       ItemSeparatorComponent={ItemSeparator}
-      ListEmptyComponent={loading
-        ? <RequestProgress style={styles.activityIndicator} />
-        : ListEmptyComponent}
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={contentContainerStyle}
       onEndReached={async () => {
-        if (loading || loadingNextPage || refreshing || fetchedLastPage) { return; }
+        if (
+          !posts.length || result === 'error' || loadingNextPage || refreshing
+          || fetchedLastPage
+        ) {
+          return;
+        }
 
         setLoadingNextPage(true);
         try {
-          await fetchNextPageOfPosts();
-          if (!fetchedLastPage) {
-            setFetchedAtLeastOneNextPage(true);
+          const { hasNextPage } = await fetchNextPageOfPosts();
+          if (!hasNextPage) {
+            setResult('info', 'You reached the end');
           }
-        } catch (e) {
-          console.error(e);
-        }
-        setLoadingNextPage(false);
-      }}
-      onEndReachedThreshold={0.5}
-      onRefresh={async () => {
-        setRefreshing(true);
-        setResult('none');
-        try {
-          await fetchFirstPageOfPosts();
         } catch (e) {
           console.error(e);
           setResult('error', GENERIC_ERROR_MESSAGE);
         }
-        setRefreshing(false);
+        setLoadingNextPage(false);
       }}
+      onEndReachedThreshold={0.5}
+      onRefresh={refresh}
       ref={listRef}
       refreshing={refreshing}
       renderItem={renderItem}
