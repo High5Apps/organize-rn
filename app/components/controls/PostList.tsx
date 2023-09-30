@@ -65,6 +65,12 @@ export default function PostList({
   const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
   const data = [...new Set([...insertedPosts, ...posts])];
 
+  useEffect(() => {
+    if (insertedPostIds.length) {
+      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [insertedPostIds]);
+
   const {
     loading: loadingNextPage, RequestProgress, result,
     setLoading: setLoadingNextPage, setResult,
