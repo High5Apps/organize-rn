@@ -66,7 +66,9 @@ export default function CommentList({
   };
 
   useEffect(() => {
-    refresh().catch(console.error);
+    if (newCommentId) {
+      refresh().catch(console.error);
+    }
   }, [newCommentId]);
 
   return (

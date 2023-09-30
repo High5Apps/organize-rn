@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Comment, isCurrentUserData, isDefined } from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
@@ -23,7 +23,10 @@ function getUnnestedComments(nestedComments: Comment[]): Comment[] {
 export default function useComments(postId?: string) {
   const { cacheComment, cacheComments, getCachedComment } = useCommentContext();
   const [commentIds, setCommentIds] = useState<string[]>([]);
-  const comments = commentIds.map(getCachedComment).filter(isDefined);
+  const comments = useMemo(
+    () => commentIds.map(getCachedComment).filter(isDefined),
+    [commentIds, getCachedComment],
+  );
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
