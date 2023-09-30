@@ -11,8 +11,16 @@ import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
 
-const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+export function getSubtitle({ createdAt, pseudonym }: Comment): string {
+  const timeAgo = getMessageAge(createdAt);
+  const subtitle = `By ${pseudonym} ${timeAgo}`;
+  return subtitle;
+}
+
+export const useCommentRowStyles = () => {
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
 
   const { width: screenWidth } = useWindowDimensions();
 
@@ -20,10 +28,13 @@ const useStyles = () => {
   const nestedMarginStart = (screenWidth / 3) / (MAX_COMMENT_DEPTH - 1);
 
   const containerPaddingStart = spacing.s;
+  const upvoteControlWidth = sizes.minimumTappableLength;
+  const separatorHeight = sizes.separator;
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.fill,
+      // backgroundColor: 'green',
       flexDirection: 'row',
       paddingEnd: spacing.m,
       paddingVertical: spacing.xs,
@@ -36,6 +47,7 @@ const useStyles = () => {
       borderStartWidth: containerPaddingStart,
     },
     innerContainer: {
+      // backgroundColor: 'yellow',
       flex: 1,
       flexDirection: 'column',
       paddingVertical: spacing.s,
@@ -44,6 +56,7 @@ const useStyles = () => {
       maxHeight: 120,
     },
     subtitle: {
+      // backgroundColor: 'red',
       color: colors.labelSecondary,
       fontSize: font.sizes.subhead,
       fontFamily: font.weights.regular,
@@ -60,7 +73,15 @@ const useStyles = () => {
     },
   });
 
-  return { colors, nestedMarginStart, styles };
+  return {
+    colors,
+    containerPaddingStart,
+    nestedMarginStart,
+    screenWidth,
+    separatorHeight,
+    styles,
+    upvoteControlWidth,
+  };
 };
 
 type Props = {
@@ -78,7 +99,7 @@ function CommentRow({
   item, onCommentChanged, postId,
 }: Props) {
   const {
-    body, createdAt, depth, id, myVote, pseudonym, score, userId,
+    body, depth, id, myVote, score, userId,
   } = item;
 
   const { currentUser } = useUserContext();
@@ -87,11 +108,11 @@ function CommentRow({
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
 
-  const timeAgo = getMessageAge(createdAt);
-  const subtitle = `By ${pseudonym} ${timeAgo}`;
+  const subtitle = getSubtitle(item);
 
-  const { colors, nestedMarginStart, styles } = useStyles();
-  const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
+  const { colors, nestedMarginStart, styles } = useCommentRowStyles();
+  // const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
+  const marginStart = 0;
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
@@ -101,6 +122,7 @@ function CommentRow({
   // persistentScrollbar only works on Android
   const BodyText = (
     <Text
+      // onLayout={({ nativeEvent: { layout: { height } } }) => console.log({ titleHeight: height })}
       selectable={enableBodyTextSelection}
       selectionColor={colors.primary}
       style={styles.title}
@@ -116,6 +138,7 @@ function CommentRow({
 
   return (
     <View
+      onLayout={({ nativeEvent: { layout: { height } } }) => console.log({ height })}
       style={[
         styles.container,
         { marginStart },
@@ -135,9 +158,17 @@ function CommentRow({
         score={score}
         voteState={myVote}
       />
-      <View style={styles.innerContainer}>
+      <View
+        // onLayout={({ nativeEvent: { layout: { width } } }) => console.log({ width })}
+        style={styles.innerContainer}
+      >
         {BodyView}
-        <Text style={styles.subtitle}>{subtitle}</Text>
+        <Text
+          // onLayout={({ nativeEvent: { layout: { height } } }) => console.log({ subtitleHeight: height })}
+          style={styles.subtitle}
+        >
+          {subtitle}
+        </Text>
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
             {!disableReply && (

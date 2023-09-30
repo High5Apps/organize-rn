@@ -1,7 +1,9 @@
 export { default as ButtonRow } from './ButtonRow';
 export { default as CameraControl } from './CameraControl';
 export { default as CommentList } from './CommentList';
-export { default as CommentRow } from './CommentRow';
+export {
+  default as CommentRow, getSubtitle, useCommentRowStyles,
+} from './CommentRow';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';
@@ -18,7 +20,9 @@ export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';
 export { default as SecondaryButton } from './SecondaryButton';
 export { default as TabBarIcon } from './TabBarIcon';
-export { default as TextButton } from './TextButton';
+export { default as TextButton, useTextButtonStyles } from './TextButton';
 export { default as TextInputRow } from './TextInputRow';
-export { default as UpvoteControl } from './UpvoteControl';
+export {
+  default as UpvoteControl, useUpvoteControlStyles,
+} from './UpvoteControl';
 export * from './types';

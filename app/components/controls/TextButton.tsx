@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import useTheme from '../../Theme';
 
-const useStyles = () => {
+export const useTextButtonStyles = () => {
   const { colors, font, sizes } = useTheme();
 
   const styles = StyleSheet.create({
@@ -23,11 +23,16 @@ type Props = {
 };
 
 export default function TextButton({ children, onPress }: PropsWithChildren<Props>) {
-  const { styles } = useStyles();
+  const { styles } = useTextButtonStyles();
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={styles.text}>{children}</Text>
+      <Text
+        // onLayout={({ nativeEvent: { layout: { height } } }) => console.log({ textButtonHeight: height })}
+        style={styles.text}
+      >
+        {children}
+      </Text>
     </TouchableOpacity>
   );
 }

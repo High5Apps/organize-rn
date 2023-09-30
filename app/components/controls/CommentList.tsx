@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
   ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
   ViewStyle,
@@ -7,7 +9,9 @@ import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
-import { Comment, Post, useComments } from '../../model';
+import {
+  Comment, Post, useCommentLayouts, useComments,
+} from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -40,12 +44,19 @@ export default function CommentList({
   containerStyle, newCommentId, onPostChanged, post,
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [layoutHeight, setLayoutHeight] = useState(0);
+
+  const listRef = useRef<FlatList<Comment>>(null);
 
   const { styles } = useStyles();
   const {
     cacheComment, comments, ready, updateComments,
   } = useComments(post.id);
   const isInitiallyLoading = !refreshing && !ready;
+
+  const { heights, offsets, ready: heightsReady } = useCommentLayouts(comments);
+  console.log({ heightsReady });
+  if (heightsReady) { console.log({ heights, offsets }); }
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow
@@ -71,10 +82,34 @@ export default function CommentList({
     }
   }, [newCommentId]);
 
+  const newCommentIndex = comments.findIndex((c) => c.id === newCommentId);
+  useEffect(() => {
+    if (newCommentIndex < 0 || !heightsReady) { return; }
+    const itemOffset = offsets[newCommentIndex];
+    const itemHeight = heights[newCommentIndex];
+    const offset = itemOffset + (0.5 * (itemHeight - layoutHeight));
+    console.log({ offset });
+    // TODO: Don't scroll if the new comment is already visible
+    listRef.current?.scrollToOffset({
+      animated: true,
+      offset,
+    });
+  }, [heights, heightsReady, listRef.current, newCommentIndex, offsets]);
+
   return (
     <FlatList
       contentContainerStyle={containerStyle}
-      data={ready ? comments : null}
+      data={comments}
+      // getItemLayout={heightsReady ? (_, i) => {
+      //   const length = heights[i];
+      //   const offset = offsets[i];
+      //   const index = i;
+      //   // console.log({ length, offset, index });
+      //   return { length, offset, index };
+      // } : undefined}
+      // getItemLayout={heightsReady ? (_, i) => ({
+      //   length: heights[i], offset: offsets[i], index: i,
+      // }) : undefined}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? (
         <Text style={styles.text}>Be the first to comment on this</Text>
@@ -88,7 +123,13 @@ export default function CommentList({
           )}
         </>
       )}
+      onLayout={({ nativeEvent: { layout: { height } } }) => setLayoutHeight(height)}
       onRefresh={refresh}
+      onScrollToIndexFailed={(info) => {
+        console.log('onScrollToIndexFailed');
+        console.log({ info });
+      }}
+      ref={listRef}
       refreshing={refreshing}
       renderItem={renderItem}
     />

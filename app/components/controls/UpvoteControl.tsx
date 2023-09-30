@@ -12,11 +12,12 @@ import { createOrUpdateUpvote } from '../../networking';
 const ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH = 30;
 const ERROR_ALERT_TITLE = 'Upvote or Downvote failed. Please try again.';
 
-const useStyles = () => {
+export const useUpvoteControlStyles = () => {
   const { colors, font, sizes } = useTheme();
 
   const styles = StyleSheet.create({
     button: {
+      // backgroundColor: 'blue',
       height: sizes.minimumTappableLength,
       width: sizes.minimumTappableLength,
     },
@@ -47,7 +48,7 @@ export default function UpvoteControl({
   commentId, errorItemFriendlyDifferentiator, onVoteChanged, postId, score,
   voteState,
 }: Props) {
-  const { styles } = useStyles();
+  const { styles } = useUpvoteControlStyles();
 
   const [
     waitingForVoteSate, setWaitingForVoteSate,
@@ -129,7 +130,12 @@ export default function UpvoteControl({
         softDisabled={waitingForResponse}
         waitingForResponse={waitingForUp}
       />
-      <Text style={styles.text}>{score}</Text>
+      <Text
+        // onLayout={({ nativeEvent: { layout: { height } } }) => console.log({ scoreHeight: height })}
+        style={styles.text}
+      >
+        {score}
+      </Text>
       <UpvoteButton
         buttonStyle={styles.button}
         fill={waitingForDown ? (waitingForVoteSate === -1) : (voteState === -1)}
