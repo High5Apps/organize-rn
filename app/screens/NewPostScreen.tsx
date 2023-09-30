@@ -101,7 +101,7 @@ export default function NewPostScreen({
       resetForm();
       setResult('success', 'Successfully created post');
 
-      navigation.navigate('DiscussTabs', { screen: 'Recent' });
+      navigation.goBack();
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);
