@@ -118,15 +118,11 @@ export type PostScreenProps = DiscussStackScreenProps<'Post'>;
 export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
 export type NewReplyScreenProps = DiscussStackScreenProps<'NewReply'>;
 
-export type DiscussRecentScreenParams = {
-  newPostCreatedAt: number;
-};
-
 export type DiscussTabsParamList = {
   General: undefined;
   Grievances: undefined;
   Demands: undefined;
-  Recent: DiscussRecentScreenParams;
+  Recent: undefined;
 };
 
 export type DiscussTabsScreenProps<T extends keyof DiscussTabsParamList> =

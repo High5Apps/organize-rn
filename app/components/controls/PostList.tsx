@@ -35,14 +35,12 @@ type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListEmptyComponent: ReactElement;
-  newPostCreatedAt?: number;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, contentContainerStyle, ListEmptyComponent, newPostCreatedAt,
-  onItemPress, sort,
+  category, contentContainerStyle, ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -54,7 +52,7 @@ export default function PostList({
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
     posts, ready,
-  } = usePosts({ category, minimumCreatedBefore: newPostCreatedAt, sort });
+  } = usePosts({ category, sort });
 
   const {
     loading: loadingNextPage, RequestProgress, result,
@@ -66,7 +64,6 @@ export default function PostList({
   ), [cachePost, onItemPress]);
 
   const refresh = async () => {
-    listRef.current?.scrollToOffset({ animated: false, offset: 0 });
     setRefreshing(true);
     setResult('none');
     try {
@@ -80,7 +77,7 @@ export default function PostList({
 
   useEffect(() => {
     refresh().catch(console.error);
-  }, [newPostCreatedAt]);
+  }, []);
 
   const ListFooterComponent = useCallback(
     () => <RequestProgress style={styles.requestProgress} />,
@@ -126,6 +123,5 @@ export default function PostList({
 PostList.defaultProps = {
   category: undefined,
   contentContainerStyle: {},
-  newPostCreatedAt: undefined,
   onItemPress: () => {},
 };
