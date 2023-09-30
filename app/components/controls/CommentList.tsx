@@ -71,6 +71,7 @@ export default function CommentList({
 
   return (
     <FlatList
+      contentContainerStyle={containerStyle}
       data={ready ? comments : null}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? (
@@ -85,7 +86,6 @@ export default function CommentList({
           )}
         </>
       )}
-      contentContainerStyle={containerStyle}
       onRefresh={refresh}
       refreshing={refreshing}
       renderItem={renderItem}
