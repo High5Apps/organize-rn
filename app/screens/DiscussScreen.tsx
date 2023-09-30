@@ -47,12 +47,15 @@ type Props<T extends keyof DiscussTabsParamList> = {
   category?: PostCategory;
   emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
+  insertedPostIds?: string[];
   primaryButtonLabel: string;
+  route: DiscussTabsScreenProps<T>['route'];
   sort: PostSort;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  category, emptyListMessage, navigation, primaryButtonLabel, sort,
+  category, emptyListMessage, insertedPostIds, navigation, primaryButtonLabel,
+  sort, route,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -66,6 +69,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       <PostList
         category={category}
         contentContainerStyle={styles.contentContainerStyle}
+        insertedPostIds={insertedPostIds}
         ListEmptyComponent={(
           <TextBoldener
             boldStyle={styles.bold}
@@ -79,7 +83,10 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       <PrimaryButton
         iconName="add"
         label={primaryButtonLabel}
-        onPress={() => navigation.navigate('NewPost', { category })}
+        onPress={() => navigation.navigate('NewPost', {
+          category,
+          returnScreenName: route.name,
+        })}
         style={styles.button}
       />
     </ScreenBackground>
@@ -88,4 +95,5 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
 
 DiscussScreen.defaultProps = {
   category: undefined,
+  insertedPostIds: undefined,
 };

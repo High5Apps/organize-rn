@@ -7,9 +7,10 @@ import {
   PrimaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, useUserContext,
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, usePosts,
+  useUserContext,
 } from '../model';
-import type { PostCategory } from '../model';
+import type { Post, PostCategory } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
 import type { NewPostScreenProps } from '../navigation';
@@ -53,7 +54,7 @@ const useStyles = () => {
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
-  const { category: maybeCategory } = route.params ?? {};
+  const { category: maybeCategory, returnScreenName } = route.params ?? {};
   const initialPostCategory = maybeCategory ?? 'general';
 
   const { styles } = useStyles();
@@ -65,6 +66,8 @@ export default function NewPostScreen({
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
+
+  const { cachePost } = usePosts();
 
   const multilineTextInputRef = useRef<TextInput | null>(null);
 
@@ -89,7 +92,7 @@ export default function NewPostScreen({
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       const maybeBody = body?.length ? body : undefined;
-      const { errorMessage } = await createPost({
+      const { errorMessage, postCreatedAt, postId } = await createPost({
         body: maybeBody, category: postCategory, jwt, title: title!,
       });
 
@@ -101,7 +104,23 @@ export default function NewPostScreen({
       resetForm();
       setResult('success', 'Successfully created post');
 
-      navigation.goBack();
+      const post: Post = {
+        body,
+        createdAt: postCreatedAt,
+        category: postCategory,
+        id: postId,
+        myVote: 0,
+        pseudonym: currentUser.pseudonym,
+        score: 0,
+        title: title!,
+        userId: currentUser.id,
+      };
+      cachePost(post);
+
+      navigation.navigate('DiscussTabs', {
+        screen: returnScreenName,
+        params: { insertedPostIds: [postId] },
+      });
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);

@@ -92,6 +92,7 @@ export type NewCommentScreenParams = {
 
 export type NewPostScreenParams = {
   category?: PostCategory;
+  returnScreenName: keyof DiscussTabsParamList;
 };
 
 export type NewReplyScreenParams = {
@@ -101,7 +102,7 @@ export type NewReplyScreenParams = {
 
 export type DiscussStackParamList = {
   DiscussTabs: NavigatorScreenParams<DiscussTabsParamList>;
-  NewPost: NewPostScreenParams | undefined;
+  NewPost: NewPostScreenParams;
   Post: PostScreenParams;
   NewComment: NewCommentScreenParams;
   NewReply: NewReplyScreenParams;
@@ -118,11 +119,15 @@ export type PostScreenProps = DiscussStackScreenProps<'Post'>;
 export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
 export type NewReplyScreenProps = DiscussStackScreenProps<'NewReply'>;
 
+export type DiscussScreenParams = {
+  insertedPostIds: string[]; // TODO: Could this just be string, not string[]?
+};
+
 export type DiscussTabsParamList = {
-  General: undefined;
-  Grievances: undefined;
-  Demands: undefined;
-  Recent: undefined;
+  General: DiscussScreenParams | undefined;
+  Grievances: DiscussScreenParams | undefined;
+  Demands: DiscussScreenParams | undefined;
+  Recent: DiscussScreenParams | undefined;
 };
 
 export type DiscussTabsScreenProps<T extends keyof DiscussTabsParamList> =

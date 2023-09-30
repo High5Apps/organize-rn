@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
-  GENERIC_ERROR_MESSAGE, Post, PostCategory, PostSort, usePosts,
+  GENERIC_ERROR_MESSAGE, Post, PostCategory, PostSort, isDefined, usePosts,
 } from '../../model';
 import { ItemSeparator, useRequestProgress } from '../views';
 import PostRow from './PostRow';
@@ -34,15 +34,23 @@ const useStyles = () => {
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  insertedPostIds?: string[];
   ListEmptyComponent: ReactElement;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, contentContainerStyle, ListEmptyComponent, onItemPress, sort,
+  category, contentContainerStyle, insertedPostIds: maybeInsertedPostIds,
+  ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
+  const [insertedPostIds, setInsertedPostIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const newlyInsertedPostIds = maybeInsertedPostIds ?? [];
+    setInsertedPostIds((pids) => [...newlyInsertedPostIds, ...pids]);
+  }, [maybeInsertedPostIds]);
 
   const { styles } = useStyles();
 
@@ -51,8 +59,11 @@ export default function PostList({
 
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
-    posts, ready,
+    getCachedPost, posts, ready,
   } = usePosts({ category, sort });
+
+  const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
+  const data = [...new Set([...insertedPosts, ...posts])];
 
   const {
     loading: loadingNextPage, RequestProgress, result,
@@ -66,8 +77,10 @@ export default function PostList({
   const refresh = async () => {
     setRefreshing(true);
     setResult('none');
+
     try {
       await fetchFirstPageOfPosts();
+      setInsertedPostIds([]);
     } catch (e) {
       console.error(e);
       setResult('error', GENERIC_ERROR_MESSAGE);
@@ -86,14 +99,14 @@ export default function PostList({
 
   return (
     <FlatList
-      data={posts}
+      data={data}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={contentContainerStyle}
       onEndReached={async () => {
         if (
-          !posts.length || result === 'error' || loadingNextPage || refreshing
+          !data.length || result === 'error' || loadingNextPage || refreshing
           || fetchedLastPage
         ) {
           return;
@@ -123,5 +136,6 @@ export default function PostList({
 PostList.defaultProps = {
   category: undefined,
   contentContainerStyle: {},
+  insertedPostIds: undefined,
   onItemPress: () => {},
 };
