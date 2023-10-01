@@ -7,7 +7,7 @@ import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader, useRequestProgress } from '../views';
 import PostWithBody from './PostWithBody';
 import {
-  Comment, GENERIC_ERROR_MESSAGE, Post, isDefined, useComments,
+  Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
 } from '../../model';
 import type { InsertedComment } from '../../navigation';
 
@@ -45,22 +45,42 @@ function useInsertedComments(
   useEffect(() => {
     const newlyInsertedCommentIds = maybeInsertedCommentIds ?? [];
 
-    // Prepend new comments to already inserted new comments
+    // Append new comments to already inserted new comments
     // This is needed for the situation where the user creates multiple comments
-    // without pulling-to-refresh
-    setInsertedCommentIds((cids) => [...newlyInsertedCommentIds, ...cids]);
+    // without pulling-to-refresh.
+    // Modifying this order to be anything but insertion order will likely break
+    // the newAllComments array construction below in subtle ways.
+    setInsertedCommentIds((cids) => [...cids, ...newlyInsertedCommentIds]);
   }, [maybeInsertedCommentIds]);
 
   useEffect(() => {
-    if (insertedCommentIds === undefined) { return; }
+    const newAllComments = [...comments];
 
-    const insertedComments = insertedCommentIds.map(
-      ({ commentId }) => getCachedComment(commentId),
-    ).filter(isDefined);
+    insertedCommentIds.forEach(({ commentId, parentCommentId }) => {
+      const comment = getCachedComment(commentId);
+      if (!comment) { return; }
 
-    const commentsWithInserts = [...insertedComments, ...comments];
-    const deduplicatedCommentsWithInserts = [...new Set(commentsWithInserts)];
-    setAllComments(deduplicatedCommentsWithInserts);
+      if (parentCommentId) {
+        // Beware that this is searching through the array that's currently
+        // being constructed. This relies on insertedCommentIds being ordered by
+        // insertion order.
+        const parentIndex = newAllComments.findIndex(
+          (c) => c.id === parentCommentId,
+        );
+
+        if (parentIndex >= 0) {
+          // Insert new reply directly below its parent
+          const insertIndex = parentIndex + 1;
+          newAllComments.splice(insertIndex, 0, comment);
+        }
+      } else {
+        // Show new comments at the top of the screen
+        newAllComments.unshift(comment);
+      }
+    });
+
+    const deduplicatedNewAllComments = [...new Set(newAllComments)];
+    setAllComments(deduplicatedNewAllComments);
   }, [comments, getCachedComment, insertedCommentIds]);
 
   function resetInsertedComments() {

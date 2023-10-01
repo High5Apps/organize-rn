@@ -83,6 +83,7 @@ export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 
 export type InsertedComment = {
   commentId: string;
+  parentCommentId?: string;
 };
 
 export type PostScreenParams = {
