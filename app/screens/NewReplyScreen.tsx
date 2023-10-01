@@ -29,10 +29,10 @@ export default function NewReplyScreen({
     <NewCommentScreenBase
       commentId={commentId}
       HeaderComponent={HeaderComponent}
-      onCommentCreated={(newCommentId) => navigation.navigate('Post', {
-        newCommentId,
-        postId,
-      })}
+      onCommentCreated={(newCommentId) => {
+        console.log({ newCommentId });
+        navigation.navigate('Post', { postId });
+      }}
     />
   );
 }

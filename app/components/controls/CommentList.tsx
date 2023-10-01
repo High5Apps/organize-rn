@@ -31,13 +31,12 @@ const useStyles = () => {
 
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
-  newCommentId?: string;
   onPostChanged?: (post: Post) => void;
   post: Post;
 };
 
 export default function CommentList({
-  containerStyle, newCommentId, onPostChanged, post,
+  containerStyle, onPostChanged, post,
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -66,10 +65,8 @@ export default function CommentList({
   };
 
   useEffect(() => {
-    if (newCommentId) {
-      refresh().catch(console.error);
-    }
-  }, [newCommentId]);
+    refresh().catch(console.error);
+  }, []);
 
   return (
     <FlatList
@@ -97,6 +94,5 @@ export default function CommentList({
 
 CommentList.defaultProps = {
   containerStyle: {},
-  newCommentId: undefined,
   onPostChanged: () => {},
 };

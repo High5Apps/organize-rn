@@ -82,7 +82,6 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 
 export type PostScreenParams = {
-  newCommentId?: string;
   postId: string;
 };
 

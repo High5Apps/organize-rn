@@ -25,10 +25,10 @@ export default function NewCommentScreen({
   return (
     <NewCommentScreenBase
       HeaderComponent={HeaderComponent}
-      onCommentCreated={(newCommentId) => navigation.navigate('Post', {
-        postId: post.id,
-        newCommentId,
-      })}
+      onCommentCreated={(newCommentId) => {
+        console.log({ newCommentId });
+        navigation.navigate('Post', { postId: post.id });
+      }}
       postId={postId}
     />
   );
