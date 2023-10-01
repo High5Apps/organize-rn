@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  FlatList, ListRenderItem, StyleProp, StyleSheet, Text, ViewStyle,
+  FlatList, ListRenderItem, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
@@ -42,10 +42,7 @@ export default function CommentList({
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const { styles } = useStyles();
-  const {
-    cacheComment, comments, ready, updateComments,
-  } = useComments(post.id);
-
+  const { cacheComment, comments, updateComments } = useComments(post.id);
   const { RequestProgress, setResult } = useRequestProgress();
 
   const ListHeaderComponent = useCallback(() => (
@@ -69,7 +66,10 @@ export default function CommentList({
     setResult('none');
 
     try {
-      await updateComments();
+      const { isEmpty } = await updateComments();
+      if (isEmpty) {
+        setResult('info', 'Be the first to comment on this');
+      }
     } catch (e) {
       console.error(e);
       setResult('error', GENERIC_ERROR_MESSAGE);
@@ -86,9 +86,6 @@ export default function CommentList({
       contentContainerStyle={containerStyle}
       data={comments}
       ItemSeparatorComponent={ItemSeparator}
-      ListEmptyComponent={ready ? (
-        <Text style={styles.text}>Be the first to comment on this</Text>
-      ) : null}
       ListHeaderComponent={ListHeaderComponent}
       onRefresh={refresh}
       refreshing={refreshing}

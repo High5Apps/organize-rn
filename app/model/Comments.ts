@@ -32,7 +32,9 @@ export default function useComments(postId?: string) {
   const { currentUser } = useUserContext();
 
   async function updateComments() {
-    if (!isCurrentUserData(currentUser) || !postId) { return; }
+    if (!isCurrentUserData(currentUser) || !postId) {
+      return { isEmpty: true };
+    }
 
     setReady(false);
 
@@ -49,6 +51,9 @@ export default function useComments(postId?: string) {
     cacheComments(unnestedComments);
     setCommentIds(getCommentIdsFrom(unnestedComments));
     setReady(true);
+
+    const isEmpty = (nestedComments.length === 0);
+    return { isEmpty };
   }
 
   useEffect(() => {
