@@ -7,7 +7,7 @@ import useCommentCache from './CommentCache';
 type CommentContextType = {
   cacheComment: (comment: Comment) => void;
   cacheComments: (comments?: Comment[]) => void;
-  getCachedComment: (commentId: string) => Comment | undefined;
+  getCachedComment: (commentId?: string) => Comment | undefined;
 };
 
 const CommentContext = createContext<CommentContextType>({

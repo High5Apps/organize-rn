@@ -11,7 +11,8 @@ export default function useCommentCache() {
     commentCache, setCommentCache,
   ] = useState<Map<string, Comment>>(new Map());
 
-  function getCachedComment(commentId: string) {
+  function getCachedComment(commentId?: string) {
+    if (commentId === undefined) { return undefined; }
     return commentCache.get(commentId);
   }
 
