@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  ActivityIndicator, FlatList, ListRenderItem, StyleProp, StyleSheet, Text,
-  ViewStyle,
+  FlatList, ListRenderItem, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
-import { ItemSeparator, SectionHeader } from '../views';
+import { ItemSeparator, SectionHeader, useRequestProgress } from '../views';
 import PostWithBody from './PostWithBody';
-import { Comment, Post, useComments } from '../../model';
+import {
+  Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
+} from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
-    activityIndicator: {
+    requestProgress: {
       margin: spacing.m,
     },
     text: {
@@ -44,7 +45,16 @@ export default function CommentList({
   const {
     cacheComment, comments, ready, updateComments,
   } = useComments(post.id);
-  const isInitiallyLoading = !refreshing && !ready;
+
+  const { RequestProgress, setResult } = useRequestProgress();
+
+  const ListHeaderComponent = useCallback(() => (
+    <>
+      <PostWithBody post={post} onPostChanged={onPostChanged} />
+      <SectionHeader>Comments</SectionHeader>
+      <RequestProgress style={styles.requestProgress} />
+    </>
+  ), [onPostChanged, post, RequestProgress]);
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow
@@ -56,10 +66,13 @@ export default function CommentList({
 
   const refresh = async () => {
     setRefreshing(true);
+    setResult('none');
+
     try {
       await updateComments();
     } catch (e) {
       console.error(e);
+      setResult('error', GENERIC_ERROR_MESSAGE);
     }
     setRefreshing(false);
   };
@@ -76,15 +89,7 @@ export default function CommentList({
       ListEmptyComponent={ready ? (
         <Text style={styles.text}>Be the first to comment on this</Text>
       ) : null}
-      ListHeaderComponent={(
-        <>
-          <PostWithBody post={post} onPostChanged={onPostChanged} />
-          <SectionHeader>Comments</SectionHeader>
-          { isInitiallyLoading && (
-            <ActivityIndicator style={styles.activityIndicator} />
-          )}
-        </>
-      )}
+      ListHeaderComponent={ListHeaderComponent}
       onRefresh={refresh}
       refreshing={refreshing}
       renderItem={renderItem}
