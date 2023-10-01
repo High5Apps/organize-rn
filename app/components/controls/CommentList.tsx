@@ -71,7 +71,7 @@ export default function CommentList({
   return (
     <FlatList
       contentContainerStyle={containerStyle}
-      data={ready ? comments : null}
+      data={comments}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? (
         <Text style={styles.text}>Be the first to comment on this</Text>
