@@ -32,7 +32,7 @@ const useStyles = () => {
 };
 
 export default function PostScreen({ navigation, route }: PostScreenProps) {
-  const { params: { postId } } = route;
+  const { params: { insertedComments, postId } } = route;
 
   const { cachePost, getCachedPost } = usePosts();
   const post = getCachedPost(postId);
@@ -52,6 +52,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
       {post && (
         <CommentList
           containerStyle={styles.listContainerStyle}
+          insertedComments={insertedComments}
           onPostChanged={cachePost}
           post={post}
         />

@@ -7,8 +7,9 @@ import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader, useRequestProgress } from '../views';
 import PostWithBody from './PostWithBody';
 import {
-  Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
+  Comment, GENERIC_ERROR_MESSAGE, Post, isDefined, useComments,
 } from '../../model';
+import type { InsertedComment } from '../../navigation';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -30,19 +31,63 @@ const useStyles = () => {
   return { styles };
 };
 
+function useInsertedComments(
+  comments: Comment[],
+  maybeInsertedCommentIds?: InsertedComment[],
+) {
+  const [allComments, setAllComments] = useState<Comment[]>(comments);
+  const [
+    insertedCommentIds, setInsertedCommentIds,
+  ] = useState<InsertedComment[]>([]);
+
+  const { getCachedComment } = useComments();
+
+  useEffect(() => {
+    const newlyInsertedCommentIds = maybeInsertedCommentIds ?? [];
+
+    // Prepend new comments to already inserted new comments
+    // This is needed for the situation where the user creates multiple comments
+    // without pulling-to-refresh
+    setInsertedCommentIds((cids) => [...newlyInsertedCommentIds, ...cids]);
+  }, [maybeInsertedCommentIds]);
+
+  useEffect(() => {
+    if (insertedCommentIds === undefined) { return; }
+
+    const insertedComments = insertedCommentIds.map(
+      ({ commentId }) => getCachedComment(commentId),
+    ).filter(isDefined);
+
+    const commentsWithInserts = [...insertedComments, ...comments];
+    const deduplicatedCommentsWithInserts = [...new Set(commentsWithInserts)];
+    setAllComments(deduplicatedCommentsWithInserts);
+  }, [comments, getCachedComment, insertedCommentIds]);
+
+  function resetInsertedComments() {
+    setInsertedCommentIds([]);
+  }
+
+  return { allComments, resetInsertedComments };
+}
+
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
+  insertedComments?: InsertedComment[];
   onPostChanged?: (post: Post) => void;
   post: Post;
 };
 
 export default function CommentList({
-  containerStyle, onPostChanged, post,
+  containerStyle, insertedComments: maybeInsertedCommentIds, onPostChanged,
+  post,
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const { styles } = useStyles();
   const { cacheComment, comments, updateComments } = useComments(post.id);
+  const {
+    allComments: data, resetInsertedComments,
+  } = useInsertedComments(comments, maybeInsertedCommentIds);
   const { RequestProgress, setResult } = useRequestProgress();
 
   const ListHeaderComponent = useCallback(() => (
@@ -67,6 +112,7 @@ export default function CommentList({
 
     try {
       const { isEmpty } = await updateComments();
+      resetInsertedComments();
       if (isEmpty) {
         setResult('info', 'Be the first to comment on this');
       }
@@ -84,7 +130,7 @@ export default function CommentList({
   return (
     <FlatList
       contentContainerStyle={containerStyle}
-      data={comments}
+      data={data}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       onRefresh={refresh}
@@ -96,5 +142,6 @@ export default function CommentList({
 
 CommentList.defaultProps = {
   containerStyle: {},
+  insertedComments: [],
   onPostChanged: () => {},
 };

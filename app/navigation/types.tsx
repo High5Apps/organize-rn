@@ -81,7 +81,12 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 
+export type InsertedComment = {
+  commentId: string;
+};
+
 export type PostScreenParams = {
+  insertedComments?: InsertedComment[];
   postId: string;
 };
 

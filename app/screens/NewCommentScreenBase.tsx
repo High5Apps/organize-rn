@@ -6,8 +6,8 @@ import {
 } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData, useCachedValue,
-  useUserContext,
+  Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData,
+  useCachedValue, useComments, useUserContext,
 } from '../model';
 import { createComment } from '../networking';
 
@@ -64,8 +64,8 @@ export default function NewCommentScreenBase({
   const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
 
   const { styles } = useStyles();
-
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const { cacheComment, getCachedComment } = useComments();
 
   const { currentUser } = useUserContext();
   if (!isCurrentUserData(currentUser)) {
@@ -92,6 +92,22 @@ export default function NewCommentScreenBase({
       setBody(undefined);
       const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
       setResult('success', message);
+
+      const parentComment = getCachedComment(commentId);
+      const comment: Comment = {
+        body: body!,
+        createdAt: new Date().getTime(),
+        depth: parentComment ? (parentComment.depth + 1) : 0,
+        id: newCommentId,
+        myVote: 0,
+        pseudonym: currentUser.pseudonym,
+        score: 0,
+        userId: currentUser.id,
+        replies: [],
+      };
+
+      cacheComment(comment);
+
       onCommentCreated?.(newCommentId);
     } catch (error) {
       console.error(error);
