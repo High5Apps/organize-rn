@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  RefObject, useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
   FlatList, ListRenderItem, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
@@ -90,6 +92,24 @@ function useInsertedComments(
   return { allComments, resetInsertedComments };
 }
 
+function useScrollTopTopOnNewTopLevelComment(
+  listRef: RefObject<FlatList<Comment>>,
+  maybeInsertedCommentIds?: InsertedComment[],
+) {
+  useEffect(() => {
+    const newestComment = maybeInsertedCommentIds?.at(-1);
+    if (newestComment === undefined) { return; }
+
+    const isLatestInsertTopLevelComment = (
+      newestComment.parentCommentId === undefined
+    );
+
+    if (isLatestInsertTopLevelComment) {
+      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [listRef.current, maybeInsertedCommentIds]);
+}
+
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
   insertedComments?: InsertedComment[];
@@ -103,11 +123,14 @@ export default function CommentList({
 }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const listRef = useRef<FlatList<Comment>>(null);
+
   const { styles } = useStyles();
   const { cacheComment, comments, updateComments } = useComments(post.id);
   const {
     allComments: data, resetInsertedComments,
   } = useInsertedComments(comments, maybeInsertedCommentIds);
+  useScrollTopTopOnNewTopLevelComment(listRef, maybeInsertedCommentIds);
   const { RequestProgress, result, setResult } = useRequestProgress();
 
   const ListHeaderComponent = useCallback(() => (
@@ -159,6 +182,7 @@ export default function CommentList({
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       onRefresh={refresh}
+      ref={listRef}
       refreshing={refreshing}
       renderItem={renderItem}
     />
