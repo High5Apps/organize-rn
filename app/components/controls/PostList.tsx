@@ -31,6 +31,36 @@ const useStyles = () => {
   return { styles };
 };
 
+function useInsertedPosts(posts: Post[], maybeInsertedPostIds?: string[]) {
+  const [allPosts, setAllPosts] = useState<Post[]>(posts);
+  const [insertedPostIds, setInsertedPostIds] = useState<string[]>([]);
+
+  const { getCachedPost } = usePosts();
+
+  useEffect(() => {
+    if (!maybeInsertedPostIds?.length) { return; }
+    const newlyInsertedPostIds = maybeInsertedPostIds;
+
+    // Prepend new posts to already inserted new posts
+    // This is needed for the situation where the user creates multiple posts
+    // without pulling-to-refresh.
+    setInsertedPostIds((pids) => [...newlyInsertedPostIds, ...pids]);
+  }, [maybeInsertedPostIds]);
+
+  useEffect(() => {
+    const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
+    const newAllPosts = [...insertedPosts, ...posts];
+    const deduplicatednewAllPosts = [...new Set(newAllPosts)];
+    setAllPosts(deduplicatednewAllPosts);
+  }, [posts, getCachedPost, insertedPostIds]);
+
+  function resetInsertedPosts() {
+    setInsertedPostIds([]);
+  }
+
+  return { allPosts, resetInsertedPosts };
+}
+
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -45,12 +75,6 @@ export default function PostList({
   ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
-  const [insertedPostIds, setInsertedPostIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    const newlyInsertedPostIds = maybeInsertedPostIds ?? [];
-    setInsertedPostIds((pids) => [...newlyInsertedPostIds, ...pids]);
-  }, [maybeInsertedPostIds]);
 
   const { styles } = useStyles();
 
@@ -59,17 +83,17 @@ export default function PostList({
 
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
-    getCachedPost, posts, ready,
+    posts, ready,
   } = usePosts({ category, sort });
-
-  const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
-  const data = [...new Set([...insertedPosts, ...posts])];
+  const {
+    allPosts: data, resetInsertedPosts,
+  } = useInsertedPosts(posts, maybeInsertedPostIds);
 
   useEffect(() => {
-    if (insertedPostIds.length) {
+    if (maybeInsertedPostIds?.length) {
       listRef.current?.scrollToOffset({ animated: true, offset: 0 });
     }
-  }, [insertedPostIds]);
+  }, [maybeInsertedPostIds]);
 
   const {
     loading: loadingNextPage, RequestProgress, result,
@@ -86,7 +110,7 @@ export default function PostList({
 
     try {
       await fetchFirstPageOfPosts();
-      setInsertedPostIds([]);
+      resetInsertedPosts();
     } catch (e) {
       console.error(e);
       setResult('error', GENERIC_ERROR_MESSAGE);
