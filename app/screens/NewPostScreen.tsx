@@ -1,19 +1,22 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useLayoutEffect, useMemo, useRef, useState,
+} from 'react';
 import {
   Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
   PrimaryButton, TextInputRow, useRequestProgress,
 } from '../components';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, usePosts,
+  GENERIC_ERROR_MESSAGE, isCurrentUserData, isDefined, useCachedValue, usePosts,
   useUserContext,
 } from '../model';
 import type { Post, PostCategory } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
-import type { NewPostScreenProps } from '../navigation';
+import type { NewPostScreenParams, NewPostScreenProps } from '../navigation';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
@@ -70,10 +73,38 @@ function useTitleUpdater(
   }, [navigation, maybeCategory]);
 }
 
+function useDiscussTabScreenKeysToUpdate(
+  postCategory: PostCategory,
+  discussTabRoutes: NewPostScreenParams['discussTabRoutes'],
+) {
+  const screenKeysToUpdate = useMemo(() => {
+    const screenNamesToUpdate: NewPostScreenParams['returnScreenName'][] = [
+      'Recent',
+    ];
+
+    if (postCategory === 'demands') {
+      screenNamesToUpdate.push('Demands');
+    } else if (postCategory === 'general') {
+      screenNamesToUpdate.push('General');
+    } else if (postCategory === 'grievances') {
+      screenNamesToUpdate.push('Grievances');
+    }
+
+    const screenNameToRoute = ((screenName: string) => (
+      discussTabRoutes.find(({ name }) => (name === screenName))
+    ));
+    return screenNamesToUpdate.map(screenNameToRoute)
+      .filter(isDefined)
+      .map(({ key }) => key);
+  }, [postCategory, discussTabRoutes]);
+
+  return screenKeysToUpdate;
+}
+
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
-  const { category: maybeCategory, returnScreenName } = route.params ?? {};
+  const { category: maybeCategory, discussTabRoutes } = route.params ?? {};
   const initialPostCategory = maybeCategory ?? 'general';
 
   const { styles } = useStyles();
@@ -84,6 +115,11 @@ export default function NewPostScreen({
   ] = useState<PostCategory>(initialPostCategory);
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY);
   const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
+
+  const screenKeysToUpdate = useDiscussTabScreenKeysToUpdate(
+    postCategory,
+    discussTabRoutes,
+  );
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
@@ -137,10 +173,13 @@ export default function NewPostScreen({
       };
       cachePost(post);
 
-      navigation.navigate('DiscussTabs', {
-        screen: returnScreenName,
-        params: { insertedPostIds: [postId] },
-      });
+      const params = { insertedPostIds: [postId] };
+
+      screenKeysToUpdate.forEach((key) => navigation.dispatch({
+        ...CommonActions.setParams(params),
+        source: key,
+      }));
+      navigation.goBack();
     } catch (error) {
       console.error(error);
       setResult('error', GENERIC_ERROR_MESSAGE);

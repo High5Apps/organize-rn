@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useNavigationState } from '@react-navigation/native';
 import {
   PostList, PrimaryButton, ScreenBackground, TextBoldener,
 } from '../components';
 import useTheme from '../Theme';
 import type {
-  DiscussTabsParamList, DiscussTabsScreenProps,
+  DiscussTabsParamList, DiscussTabsScreenProps, InternalRoute,
 } from '../navigation';
 import { Post, PostCategory, PostSort } from '../model';
 
@@ -43,6 +44,19 @@ const useStyles = () => {
   return { styles };
 };
 
+function useDiscussTabRoutes() {
+  const [routes, setRoutes] = useState<InternalRoute[]>([]);
+
+  useNavigationState((state) => {
+    const { routes: currentRoutes } = state;
+    if (currentRoutes !== routes) {
+      setRoutes(currentRoutes);
+    }
+  });
+
+  return routes;
+}
+
 type Props<T extends keyof DiscussTabsParamList> = {
   category?: PostCategory;
   emptyListMessage: string;
@@ -58,6 +72,8 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
   sort, route,
 }: Props<T>) {
   const { styles } = useStyles();
+
+  const discussTabRoutes = useDiscussTabRoutes();
 
   const onItemPress = useCallback(
     ({ id }: Post) => navigation.navigate('Post', { postId: id }),
@@ -86,6 +102,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
         onPress={() => navigation.navigate('NewPost', {
           category,
           returnScreenName: route.name,
+          discussTabRoutes,
         })}
         style={styles.button}
       />

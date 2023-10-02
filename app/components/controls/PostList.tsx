@@ -31,21 +31,25 @@ const useStyles = () => {
   return { styles };
 };
 
-function useInsertedPosts(posts: Post[], maybeInsertedPostIds?: string[]) {
+function useInsertedPosts(
+  posts: Post[],
+  ready: boolean,
+  maybeInsertedPostIds?: string[],
+) {
   const [allPosts, setAllPosts] = useState<Post[]>(posts);
   const [insertedPostIds, setInsertedPostIds] = useState<string[]>([]);
 
   const { getCachedPost } = usePosts();
 
   useEffect(() => {
-    if (!maybeInsertedPostIds?.length) { return; }
+    if (!ready || !maybeInsertedPostIds?.length) { return; }
     const newlyInsertedPostIds = maybeInsertedPostIds;
 
     // Prepend new posts to already inserted new posts
     // This is needed for the situation where the user creates multiple posts
     // without pulling-to-refresh.
     setInsertedPostIds((pids) => [...newlyInsertedPostIds, ...pids]);
-  }, [maybeInsertedPostIds]);
+  }, [maybeInsertedPostIds, ready]);
 
   useEffect(() => {
     const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
@@ -98,7 +102,7 @@ export default function PostList({
   } = usePosts({ category, sort });
   const {
     allPosts: data, resetInsertedPosts,
-  } = useInsertedPosts(posts, maybeInsertedPostIds);
+  } = useInsertedPosts(posts, ready, maybeInsertedPostIds);
   useScrollToTopOnNewPost(listRef, maybeInsertedPostIds);
 
   const {
