@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useUserContext } from './UserContext';
 import {
   Post, PostCategory, PostSort, isCurrentUserData, isDefined,
@@ -39,7 +39,10 @@ export default function usePosts({
 
   const { cachePost, cachePosts, getCachedPost } = usePostContext();
   const [postIds, setPostIds] = useState<string[]>([]);
-  const posts = postIds.map(getCachedPost).filter(isDefined);
+  const posts = useMemo(
+    () => postIds.map(getCachedPost).filter(isDefined),
+    [postIds, getCachedPost],
+  );
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<number | undefined>();
