@@ -10,18 +10,14 @@ import DiscussTabs from './DiscussTabs';
 const Stack = createNativeStackNavigator<DiscussStackParamList>();
 
 export default function DiscussStack() {
-  const defaultScreenOptions = useDefaultStackNavigatorScreenOptions();
-  const screenOptions = {
-    ...defaultScreenOptions,
-    headerShadowVisible: false,
-  };
+  const screenOptions = useDefaultStackNavigatorScreenOptions();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="DiscussTabs"
         component={DiscussTabs}
-        options={{ title: 'Discuss' }}
+        options={{ headerShadowVisible: false, title: 'Discuss' }}
       />
       <Stack.Screen
         name="NewPost"
