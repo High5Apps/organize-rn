@@ -102,8 +102,16 @@ export default function PostList({
   useScrollToTopOnNewPost(listRef, maybeInsertedPostIds);
 
   const {
-    loading: loadingNextPage, RequestProgress, result,
-    setLoading: setLoadingNextPage, setResult,
+    RequestProgress: FirstPageRequestProgress,
+    setResult: setFirstPageResult,
+  } = useRequestProgress();
+
+  const {
+    loading: loadingNextPage,
+    RequestProgress: NextPageRequestProgress,
+    result: nextPageResult,
+    setLoading: setLoadingNextPage,
+    setResult: setNextPageResult,
   } = useRequestProgress();
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
@@ -112,14 +120,14 @@ export default function PostList({
 
   const refresh = async () => {
     setRefreshing(true);
-    setResult('none');
+    setFirstPageResult('none');
 
     try {
       await fetchFirstPageOfPosts();
       resetInsertedPosts();
     } catch (e) {
       console.error(e);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setFirstPageResult('error', GENERIC_ERROR_MESSAGE);
     }
     setRefreshing(false);
   };
@@ -128,9 +136,14 @@ export default function PostList({
     refresh().catch(console.error);
   }, []);
 
+  const ListHeaderComponent = useCallback(
+    () => <FirstPageRequestProgress style={styles.requestProgress} />,
+    [FirstPageRequestProgress],
+  );
+
   const ListFooterComponent = useCallback(
-    () => <RequestProgress style={styles.requestProgress} />,
-    [RequestProgress],
+    () => <NextPageRequestProgress style={styles.requestProgress} />,
+    [NextPageRequestProgress],
   );
 
   return (
@@ -139,11 +152,12 @@ export default function PostList({
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ListFooterComponent}
+      ListHeaderComponent={ListHeaderComponent}
       contentContainerStyle={contentContainerStyle}
       onEndReached={async () => {
         if (
-          !data.length || result === 'error' || loadingNextPage || refreshing
-          || fetchedLastPage
+          !data.length || nextPageResult === 'error' || loadingNextPage
+          || refreshing || fetchedLastPage
         ) {
           return;
         }
@@ -152,11 +166,11 @@ export default function PostList({
         try {
           const { hasNextPage } = await fetchNextPageOfPosts();
           if (!hasNextPage) {
-            setResult('info', 'You reached the end');
+            setNextPageResult('info', 'You reached the end');
           }
         } catch (e) {
           console.error(e);
-          setResult('error', GENERIC_ERROR_MESSAGE);
+          setNextPageResult('error', GENERIC_ERROR_MESSAGE);
         }
         setLoadingNextPage(false);
       }}
