@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
   Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
@@ -51,6 +51,25 @@ const useStyles = () => {
   return { styles };
 };
 
+function useTitleUpdater(
+  navigation: NewPostScreenProps['navigation'],
+  maybeCategory?: PostCategory,
+) {
+  useLayoutEffect(() => {
+    let title: string = 'New Discussion';
+
+    if (maybeCategory === 'demands') {
+      title = 'New Demand';
+    } else if (maybeCategory === 'general') {
+      title = 'New General Discussion';
+    } else if (maybeCategory === 'grievances') {
+      title = 'New Grievance';
+    }
+
+    navigation.setOptions({ title });
+  }, [navigation, maybeCategory]);
+}
+
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
@@ -58,6 +77,7 @@ export default function NewPostScreen({
   const initialPostCategory = maybeCategory ?? 'general';
 
   const { styles } = useStyles();
+  useTitleUpdater(navigation, maybeCategory);
 
   const [
     postCategory, setPostCategory,

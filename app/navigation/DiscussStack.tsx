@@ -22,7 +22,7 @@ export default function DiscussStack() {
       <Stack.Screen
         name="NewPost"
         component={NewPostScreen}
-        options={{ title: 'New Discussion' }}
+        options={{ title: '' }}
       />
       <Stack.Screen
         name="Post"
