@@ -108,7 +108,7 @@ export default function CommentList({
   const {
     allComments: data, resetInsertedComments,
   } = useInsertedComments(comments, maybeInsertedCommentIds);
-  const { RequestProgress, setResult } = useRequestProgress();
+  const { RequestProgress, result, setResult } = useRequestProgress();
 
   const ListHeaderComponent = useCallback(() => (
     <>
@@ -146,6 +146,11 @@ export default function CommentList({
   useEffect(() => {
     refresh().catch(console.error);
   }, []);
+
+  // Hide list empty message when it's not empty
+  if (result === 'info' && data.length) {
+    setResult('none');
+  }
 
   return (
     <FlatList
