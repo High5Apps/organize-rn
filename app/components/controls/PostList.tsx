@@ -1,5 +1,5 @@
 import React, {
-  ReactElement, useCallback, useEffect, useRef, useState,
+  ReactElement, RefObject, useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
@@ -61,6 +61,17 @@ function useInsertedPosts(posts: Post[], maybeInsertedPostIds?: string[]) {
   return { allPosts, resetInsertedPosts };
 }
 
+function useScrollToTopOnNewPost(
+  listRef: RefObject<FlatList<Post>>,
+  maybeInsertedPostIds?: string[],
+) {
+  useEffect(() => {
+    if (maybeInsertedPostIds?.length) {
+      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [listRef.current, maybeInsertedPostIds]);
+}
+
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -88,12 +99,7 @@ export default function PostList({
   const {
     allPosts: data, resetInsertedPosts,
   } = useInsertedPosts(posts, maybeInsertedPostIds);
-
-  useEffect(() => {
-    if (maybeInsertedPostIds?.length) {
-      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
-    }
-  }, [maybeInsertedPostIds]);
+  useScrollToTopOnNewPost(listRef, maybeInsertedPostIds);
 
   const {
     loading: loadingNextPage, RequestProgress, result,
