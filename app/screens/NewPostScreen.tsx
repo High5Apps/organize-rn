@@ -16,7 +16,9 @@ import {
 import type { Post, PostCategory } from '../model';
 import useTheme from '../Theme';
 import { createPost } from '../networking';
-import type { NewPostScreenParams, NewPostScreenProps } from '../navigation';
+import type {
+  DiscussTabsParamList, NewPostScreenParams, NewPostScreenProps,
+} from '../navigation';
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 10000;
@@ -78,7 +80,7 @@ function useDiscussTabScreenKeysToUpdate(
   discussTabRoutes: NewPostScreenParams['discussTabRoutes'],
 ) {
   const screenKeysToUpdate = useMemo(() => {
-    const screenNamesToUpdate: NewPostScreenParams['returnScreenName'][] = [
+    const screenNamesToUpdate: (keyof DiscussTabsParamList)[] = [
       'Recent',
     ];
 

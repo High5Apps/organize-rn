@@ -14,7 +14,6 @@ export default function DiscussGrievancesScreen({
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Grievance"
-      route={route}
       sort="top"
     />
   );

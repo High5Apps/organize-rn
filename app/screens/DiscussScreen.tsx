@@ -63,13 +63,12 @@ type Props<T extends keyof DiscussTabsParamList> = {
   navigation: DiscussTabsScreenProps<T>['navigation'];
   insertedPostIds?: string[];
   primaryButtonLabel: string;
-  route: DiscussTabsScreenProps<T>['route'];
   sort: PostSort;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
   category, emptyListMessage, insertedPostIds, navigation, primaryButtonLabel,
-  sort, route,
+  sort,
 }: Props<T>) {
   const { styles } = useStyles();
 
@@ -101,7 +100,6 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
         label={primaryButtonLabel}
         onPress={() => navigation.navigate('NewPost', {
           category,
-          returnScreenName: route.name,
           discussTabRoutes,
         })}
         style={styles.button}

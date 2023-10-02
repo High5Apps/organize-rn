@@ -13,7 +13,6 @@ export default function DiscussRecentScreen({
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Discussion"
-      route={route}
       sort="new"
     />
   );

@@ -102,7 +102,6 @@ export type InternalRoute = {
 
 export type NewPostScreenParams = {
   category?: PostCategory;
-  returnScreenName: keyof DiscussTabsParamList;
   discussTabRoutes: InternalRoute[];
 };
 

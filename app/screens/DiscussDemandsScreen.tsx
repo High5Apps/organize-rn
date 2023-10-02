@@ -14,7 +14,6 @@ export default function DiscussDemandsScreen({
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Demand"
-      route={route}
       sort="top"
     />
   );

@@ -14,7 +14,6 @@ export default function DiscussGeneralScreen({
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Discussion"
-      route={route}
       sort="hot"
     />
   );
