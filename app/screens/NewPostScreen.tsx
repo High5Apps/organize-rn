@@ -109,9 +109,9 @@ export default function NewPostScreen({
         createdAt: postCreatedAt,
         category: postCategory,
         id: postId,
-        myVote: 0,
+        myVote: 1,
         pseudonym: currentUser.pseudonym,
-        score: 0,
+        score: 1,
         title: title!,
         userId: currentUser.id,
       };

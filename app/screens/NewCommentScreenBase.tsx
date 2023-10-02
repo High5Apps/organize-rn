@@ -99,9 +99,9 @@ export default function NewCommentScreenBase({
         createdAt: new Date().getTime(),
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId,
-        myVote: 0,
+        myVote: 1,
         pseudonym: currentUser.pseudonym,
-        score: 0,
+        score: 1,
         userId: currentUser.id,
         replies: [],
       };
