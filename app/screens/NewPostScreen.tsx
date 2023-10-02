@@ -129,10 +129,12 @@ export default function NewPostScreen({
 
   return (
     <KeyboardAvoidingScreenBackground>
-      <PostCategorySelector
-        onSelectionChanged={setPostCategory}
-        selection={postCategory}
-      />
+      {!maybeCategory && (
+        <PostCategorySelector
+          onSelectionChanged={setPostCategory}
+          selection={postCategory}
+        />
+      )}
       <TextInputRow
         // Prevents dismissing the keyboard when hitting next on Android before
         // entering any input
