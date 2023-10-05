@@ -1,18 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React, { PropsWithChildren } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
+import TextButton from '../controls/TextButton';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
-    text: {
+    container: {
+      alignItems: 'baseline',
       backgroundColor: colors.fillTertiary,
-      color: colors.label,
-      fontFamily: font.weights.medium,
-      fontSize: font.sizes.body,
+      flexDirection: 'row',
       paddingHorizontal: spacing.m,
       paddingVertical: spacing.xs,
+    },
+    text: {
+      color: colors.label,
+      flex: 1,
+      fontFamily: font.weights.medium,
+      fontSize: font.sizes.body,
     },
   });
 
@@ -20,11 +26,24 @@ const useStyles = () => {
 };
 
 type Props = {
-  children: string;
+  buttonText?: string;
+  onPress?: () => void;
 };
 
-export default function SectionHeader({ children }: Props) {
+export default function SectionHeader({
+  buttonText, children, onPress,
+}: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
-  return <Text style={styles.text}>{children}</Text>;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{children}</Text>
+      {buttonText && <TextButton onPress={onPress}>{buttonText}</TextButton>}
+    </View>
+  );
 }
+
+SectionHeader.defaultProps = {
+  buttonText: undefined,
+  onPress: () => {},
+};

@@ -140,28 +140,6 @@ export default function CommentList({
   );
   const { RequestProgress, result, setResult } = useRequestProgress();
 
-  const ListHeaderComponent = useCallback(() => (
-    <>
-      <PostWithBody
-        post={post}
-        onLayout={
-          ({ nativeEvent: { layout: { height } } }) => setScrollOffset(height)
-        }
-        onPostChanged={onPostChanged}
-      />
-      <SectionHeader>Comments</SectionHeader>
-      <RequestProgress style={styles.requestProgress} />
-    </>
-  ), [onPostChanged, post, RequestProgress]);
-
-  const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
-    <CommentRow
-      item={item}
-      onCommentChanged={cacheComment}
-      postId={post.id}
-    />
-  ), [cacheComment, post.id]);
-
   const refresh = async () => {
     setRefreshing(true);
     setResult('none');
@@ -178,6 +156,30 @@ export default function CommentList({
     }
     setRefreshing(false);
   };
+
+  const ListHeaderComponent = useCallback(() => (
+    <>
+      <PostWithBody
+        post={post}
+        onLayout={
+          ({ nativeEvent: { layout: { height } } }) => setScrollOffset(height)
+        }
+        onPostChanged={onPostChanged}
+      />
+      <SectionHeader buttonText="Refresh" onPress={refresh}>
+        Comments
+      </SectionHeader>
+      <RequestProgress style={styles.requestProgress} />
+    </>
+  ), [onPostChanged, post, RequestProgress]);
+
+  const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
+    <CommentRow
+      item={item}
+      onCommentChanged={cacheComment}
+      postId={post.id}
+    />
+  ), [cacheComment, post.id]);
 
   useEffect(() => {
     refresh().catch(console.error);
