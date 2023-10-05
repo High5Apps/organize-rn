@@ -92,10 +92,12 @@ function useInsertedComments(
   return { allComments, resetInsertedComments };
 }
 
-function useScrollTopTopOnNewTopLevelComment(
+function useScrollToOffsetOnNewTopLevelComment(
   listRef: RefObject<FlatList<Comment>>,
   maybeInsertedCommentIds?: InsertedComment[],
 ) {
+  const [offset, setOffset] = useState(0);
+
   useEffect(() => {
     const newestComment = maybeInsertedCommentIds?.at(-1);
     if (newestComment === undefined) { return; }
@@ -105,9 +107,11 @@ function useScrollTopTopOnNewTopLevelComment(
     );
 
     if (isLatestInsertTopLevelComment) {
-      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
+      listRef.current?.scrollToOffset({ animated: true, offset });
     }
   }, [listRef.current, maybeInsertedCommentIds]);
+
+  return setOffset;
 }
 
 type Props = {
@@ -130,12 +134,21 @@ export default function CommentList({
   const {
     allComments: data, resetInsertedComments,
   } = useInsertedComments(comments, maybeInsertedCommentIds);
-  useScrollTopTopOnNewTopLevelComment(listRef, maybeInsertedCommentIds);
+  const setScrollOffset = useScrollToOffsetOnNewTopLevelComment(
+    listRef,
+    maybeInsertedCommentIds,
+  );
   const { RequestProgress, result, setResult } = useRequestProgress();
 
   const ListHeaderComponent = useCallback(() => (
     <>
-      <PostWithBody post={post} onPostChanged={onPostChanged} />
+      <PostWithBody
+        post={post}
+        onLayout={
+          ({ nativeEvent: { layout: { height } } }) => setScrollOffset(height)
+        }
+        onPostChanged={onPostChanged}
+      />
       <SectionHeader>Comments</SectionHeader>
       <RequestProgress style={styles.requestProgress} />
     </>
