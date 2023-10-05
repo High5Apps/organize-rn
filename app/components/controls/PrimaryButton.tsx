@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
+import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
@@ -42,21 +43,21 @@ const useStyles = () => {
 
 type Props = {
   iconName: string;
-  onPress?: () => void;
+  onPress?: (() => Promise<void>) | (() => void);
   style?: StyleProp<ViewStyle>;
   label: string;
 };
 
-const PrimaryButton = (props: Props) => {
-  const {
-    iconName, onPress, label, style,
-  } = props;
-
+export default function PrimaryButton({
+  iconName, onPress, label, style,
+}: Props) {
   const { styles } = useStyles();
+  const { disabled, onPressWrapper } = useDisabledDuringOnPress({ onPress });
 
   return (
     <Pressable
-      onPress={onPress}
+      disabled={disabled}
+      onPress={onPressWrapper}
       style={({ pressed }) => [
         styles.pressable,
         pressed && styles.pressed,
@@ -69,9 +70,7 @@ const PrimaryButton = (props: Props) => {
       </Text>
     </Pressable>
   );
-};
-
-export default PrimaryButton;
+}
 
 PrimaryButton.defaultProps = {
   onPress: () => {},
