@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import useTheme from '../../Theme';
+import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -19,14 +20,16 @@ const useStyles = () => {
 };
 
 type Props = {
-  onPress?: () => void;
+  onPress?: (() => Promise<void>) | (() => void);
 };
 
 export default function TextButton({ children, onPress }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
+  const { disabled, onPressWrapper } = useDisabledDuringOnPress({ onPress });
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity disabled={disabled} onPress={onPressWrapper}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );

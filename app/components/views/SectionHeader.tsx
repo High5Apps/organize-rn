@@ -27,7 +27,7 @@ const useStyles = () => {
 
 type Props = {
   buttonText?: string;
-  onPress?: () => void;
+  onPress?: (() => Promise<void>) | (() => void);
 };
 
 export default function SectionHeader({
