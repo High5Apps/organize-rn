@@ -106,7 +106,7 @@ const NotableUserList = forwardRef((
     notableUserSections.push({ title: 'Me', data: meData });
 
     return notableUserSections;
-  }, [currentUser, graphData, selectedUserId]);
+  }, [colors, currentUser, graphData, selectedUserId]);
 
   return (
     <SectionList
