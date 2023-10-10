@@ -15,4 +15,5 @@ export { default as useRequestProgress } from './RequestProgress';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';
 export { default as SectionHeader } from './SectionHeader';
+export { default as StatusBar } from './StatusBar';
 export { default as TextBoldener } from './TextBoldener';
