@@ -1,10 +1,9 @@
 import { NavigationAction, useNavigation } from '@react-navigation/native';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { StyleSheet, View } from 'react-native';
 import {
-  BarcodeFormat, UrlBookmark, useScanBarcodes,
-} from 'vision-camera-code-scanner';
+  Camera, Code, useCameraDevice, useCodeScanner,
+} from 'react-native-vision-camera';
 import { QRCodeDataParser } from '../../model';
 import { ErrorMessage, FadeInView } from '../views';
 import FrameButton from './FrameButton';
@@ -25,33 +24,31 @@ export default function QRCamera({
     preventedAction, setPreventedAction,
   ] = useState<NavigationAction | undefined>();
 
-  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
-    checkInverted: true,
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr'],
+    onCodeScanned: (codes: Code[]) => {
+      const contentDataUrls: string[] = [];
+      codes.forEach((code) => {
+        const url = code.value;
+        if (url) {
+          contentDataUrls.push(url);
+        }
+      });
+      const urlSet = new Set(contentDataUrls);
+      const uniqueUrls = [...urlSet];
+      try {
+        uniqueUrls.forEach((url) => {
+          const qrValue = QRCodeDataParser({ url }).parse();
+          if (!qrValue) { return; }
+          setQRValue(qrValue);
+        });
+      } catch (e) {
+        console.warn(e);
+      }
+    },
   });
 
-  useEffect(() => {
-    const contentDataUrls: string[] = [];
-    barcodes.forEach((b) => {
-      const url = (b.content.data as UrlBookmark)?.url;
-      if (url) {
-        contentDataUrls.push(url);
-      }
-    });
-    const urlSet = new Set(contentDataUrls);
-    const uniqueUrls = [...urlSet];
-    try {
-      uniqueUrls.forEach((url) => {
-        const qrValue = QRCodeDataParser({ url }).parse();
-        if (!qrValue) { return; }
-        setQRValue(qrValue);
-      });
-    } catch (e) {
-      console.warn(e);
-    }
-  }, [barcodes]);
-
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const device = useCameraDevice('back');
 
   const navigation = useNavigation();
 
@@ -81,13 +78,16 @@ export default function QRCamera({
   let content;
   if (device) {
     content = (
-      <Camera
-        device={device}
-        frameProcessor={frameProcessor}
-        frameProcessorFps={5}
-        isActive={enabled}
-        style={[StyleSheet.absoluteFill]}
-      />
+      // This View is required as a workaround on iOS until this issue is fixed:
+      // https://github.com/mrousavy/react-native-vision-camera/issues/1964
+      <View style={StyleSheet.absoluteFill}>
+        <Camera
+          codeScanner={codeScanner}
+          device={device}
+          isActive={enabled}
+          style={StyleSheet.absoluteFillObject}
+        />
+      </View>
     );
   } else {
     content = (

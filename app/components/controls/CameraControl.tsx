@@ -17,7 +17,7 @@ function getIconPrompt(cameraPermission: CameraPermissionStatus) {
   let iconName: string = 'qr-code-scanner';
   let prompt: string = 'Tap to allow\ncamera permissions';
 
-  if (cameraPermission === 'authorized') {
+  if (cameraPermission === 'granted') {
     prompt = 'Tap to show camera';
   } else if (cameraPermission === 'restricted') {
     iconName = 'error';
@@ -63,13 +63,13 @@ export default function CameraControl({
       const permission = await Camera.requestCameraPermission();
       setCameraPermission(permission);
     };
-  } else if (cameraPermission === 'authorized') {
+  } else if (cameraPermission === 'granted') {
     onPress = () => setCameraEnabled(!cameraEnabled);
   } else if (cameraPermission === 'denied') {
     onPress = Linking.openSettings;
   }
 
-  const isAuthorized = cameraPermission === 'authorized';
+  const isAuthorized = cameraPermission === 'granted';
   const IconPromptComponent = getIconPrompt(cameraPermission);
 
   if (!isAuthorized) {

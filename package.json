@@ -10,7 +10,7 @@
     "deeplink:android": "adb shell am start -W -a android.intent.action.VIEW -d organize://$npm_config_path com.organize",
     "deeplink:ios": "xcrun simctl openurl booted organize://$npm_config_path",
     "fix-dependencies": "rnx-align-deps --write",
-    "ios": "react-native run-ios --simulator \"iPhone 8\"",
+    "ios": "react-native run-ios --simulator \"iPhone SE (3rd generation)\"",
     "ios:device": "react-native run-ios --device",
     "ios:device:release": "npm run ios:device -- --mode=Release",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -46,10 +46,9 @@
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.1.0",
     "react-native-vis-network": "^0.9.0",
-    "react-native-vision-camera": "^2.15.4",
+    "react-native-vision-camera": "^3.3.1",
     "react-native-webview": "^12.0.2",
-    "uuid": "^8.3.2",
-    "vision-camera-code-scanner": "^0.2.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -7,9 +7,9 @@ buildscript {
         compileSdkVersion = 33
         targetSdkVersion = 33
 
-        // Needed to fix react-native-vision-camera@2.15.4
-        // https://github.com/mrousavy/react-native-vision-camera/issues/1477
-        kotlinVersion="1.6.20"
+        // Needed by react-native-vision-camera@3.3.1
+        // https://github.com/mrousavy/react-native-vision-camera/issues/1712#issuecomment-1713632187
+        kotlinVersion="1.7.20"
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
