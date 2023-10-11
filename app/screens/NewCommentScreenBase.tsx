@@ -61,7 +61,8 @@ export default function NewCommentScreenBase({
   commentId, HeaderComponent, onCommentCreated, postId,
 }: Props) {
   const cacheKey = getCacheKey({ commentId, postId });
-  const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
+  const [maybeBody, setBody] = useCachedValue<string | undefined>(cacheKey);
+  const body = maybeBody ?? '';
 
   const { styles } = useStyles();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
@@ -81,7 +82,7 @@ export default function NewCommentScreenBase({
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { commentId: newCommentId, errorMessage } = await createComment({
-        body: body!, commentId, jwt, postId,
+        body, commentId, jwt, postId,
       });
 
       if (errorMessage !== undefined) {
@@ -95,7 +96,7 @@ export default function NewCommentScreenBase({
 
       const parentComment = getCachedComment(commentId);
       const comment: Comment = {
-        body: body!,
+        body,
         createdAt: new Date().getTime(),
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId,
