@@ -1,5 +1,4 @@
-import { NavigationAction, useNavigation } from '@react-navigation/native';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   Camera, Code, useCameraDevice, useCodeScanner,
@@ -13,17 +12,12 @@ type Props = {
   buttonDisabled?: boolean;
   enabled: boolean;
   onPress?: () => void;
-  setEnabled: (enabled: boolean) => void;
   setQRValue: SetQRValue;
 };
 
 export default function QRCamera({
-  buttonDisabled, children, enabled, onPress, setEnabled, setQRValue,
+  buttonDisabled, children, enabled, onPress, setQRValue,
 }: PropsWithChildren<Props>) {
-  const [
-    preventedAction, setPreventedAction,
-  ] = useState<NavigationAction | undefined>();
-
   const codeScanner = useCodeScanner({
     codeTypes: ['qr'],
     onCodeScanned: (codes: Code[]) => {
@@ -50,31 +44,6 @@ export default function QRCamera({
 
   const device = useCameraDevice('back');
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const removeListener = navigation.addListener('beforeRemove', (e) => {
-      if (enabled) {
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
-
-        setEnabled(false);
-        setPreventedAction(e.data.action);
-      }
-    });
-    return () => removeListener();
-  }, [enabled, navigation, setEnabled]);
-
-  useEffect(() => {
-    if (!enabled && preventedAction) {
-      // This delay prevents a memory leak caused by a race between camera
-      // shutdown and unmount
-      setTimeout(() => {
-        navigation.dispatch(preventedAction);
-      }, 50);
-    }
-  }, [enabled, preventedAction, navigation]);
-
   let content;
   if (device) {
     content = (
@@ -100,7 +69,7 @@ export default function QRCamera({
   return (
     <FrameButton disabled={buttonDisabled} onPress={onPress}>
       {content}
-      {!preventedAction && children}
+      {children}
     </FrameButton>
   );
 }

@@ -88,7 +88,6 @@ export default function CameraControl({
       buttonDisabled={!!qrValue}
       enabled={shoudlShowCamera}
       onPress={onPress}
-      setEnabled={setCameraEnabled}
       setQRValue={setQRValue}
     >
       {!shoudlShowCamera && CameraCover}
