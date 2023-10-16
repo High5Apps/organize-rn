@@ -1,11 +1,11 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ConnectScreen, NewConnectionScreen } from '../screens';
 import { ConnectStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions
   from './useDefaultStackNavigatorScreenOptions';
 
-const Stack = createStackNavigator<ConnectStackParamList>();
+const Stack = createNativeStackNavigator<ConnectStackParamList>();
 
 export default function ConnectStack() {
   const screenOptions = useDefaultStackNavigatorScreenOptions();

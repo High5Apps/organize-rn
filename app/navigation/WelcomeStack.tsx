@@ -1,11 +1,11 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   WelcomeScreen, NewOrgScreen, OrgReview, JoinOrgScreen,
 } from '../screens';
 import type { WelcomeStackParamList } from './types';
 
-const Stack = createStackNavigator<WelcomeStackParamList>();
+const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStack() {
   return (
@@ -16,7 +16,7 @@ export default function WelcomeStack() {
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
-        options={{ animationEnabled: false }}
+        options={{ animation: 'none' }}
       />
       <Stack.Screen
         name="NewOrg"
