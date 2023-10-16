@@ -2,9 +2,6 @@
  * @format
  */
 
-// Reanimated must be the first import
-import 'react-native-reanimated';
-
 // Required by React Navigation Stack Navigator
 import 'react-native-gesture-handler';
 
