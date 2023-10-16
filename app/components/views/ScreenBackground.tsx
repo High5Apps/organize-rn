@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import { Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -26,12 +27,24 @@ export default function ScreenBackground({
   children, onPress,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
+  const insets = useSafeAreaInsets();
 
   return (
     <Pressable disabled={!onPress} onPress={onPress} style={styles.pressable}>
-      <SafeAreaView style={styles.background}>
+      <View
+        style={[
+          styles.background,
+          {
+            // Paddings to handle safe area
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          },
+        ]}
+      >
         {children}
-      </SafeAreaView>
+      </View>
     </Pressable>
   );
 }
