@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Pressable, StyleProp, StyleSheet, Text, useColorScheme, ViewStyle,
+  Pressable, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -8,10 +8,8 @@ import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
-    colors, font, shadows, sizes, spacing,
+    colors, font, isDarkMode, shadows, sizes, spacing,
   } = useTheme();
-
-  const isDarkMode = useColorScheme() === 'dark';
 
   const styles = StyleSheet.create({
     icon: {

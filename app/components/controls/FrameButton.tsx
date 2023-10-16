@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react';
 import {
-  Pressable, PressableStateCallbackType, StyleProp, StyleSheet, useColorScheme, ViewStyle,
+  Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const { colors, shadows, spacing } = useTheme();
-
-  const isDarkMode = useColorScheme() === 'dark';
+  const {
+    colors, isDarkMode, shadows, spacing,
+  } = useTheme();
 
   const styles = StyleSheet.create({
     pressable: {

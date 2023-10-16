@@ -126,7 +126,11 @@ const darkTheme = {
 
 const useTheme = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  return isDarkMode ? darkTheme : lightTheme;
+  const theme = isDarkMode ? darkTheme : lightTheme;
+  return {
+    ...theme,
+    isDarkMode,
+  };
 };
 
 export default useTheme;
