@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 import useTheme from '../../Theme';
 
@@ -25,7 +25,7 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-export default function TextInputRow(props: TextInputProps) {
+function TextInputRow(props: TextInputProps, ref: ForwardedRef<TextInput>) {
   const { style } = props;
 
   const { colors, styles } = useStyles();
@@ -41,7 +41,10 @@ export default function TextInputRow(props: TextInputProps) {
     <TextInput
       {...defaultProps}
       {...props}
+      ref={ref}
       style={[styles.textInput, style]}
     />
   );
 }
+
+export default forwardRef(TextInputRow);
