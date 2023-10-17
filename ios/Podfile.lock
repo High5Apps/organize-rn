@@ -333,7 +333,7 @@ PODS:
     - React-Core
   - react-native-pager-view (6.2.1):
     - React-Core
-  - react-native-safe-area-context (4.5.1):
+  - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -655,7 +655,7 @@ SPEC CHECKSUMS:
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
-  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-segmented-control: 2221962f5073e2e809aa3691e8e410fc10b60578
   react-native-webview: 203b6a1c7507737f777c91d7e10c30e7e67c1a17
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
