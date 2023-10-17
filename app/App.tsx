@@ -1,4 +1,5 @@
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   CachedValueContextProvider, CommentContextProvider, PostContextProvider,
   UserContextProvider,
@@ -13,7 +14,9 @@ export default function App() {
         <PostContextProvider>
           <CommentContextProvider>
             <CachedValueContextProvider>
-              <Navigation />
+              <SafeAreaProvider>
+                <Navigation />
+              </SafeAreaProvider>
             </CachedValueContextProvider>
           </CommentContextProvider>
         </PostContextProvider>

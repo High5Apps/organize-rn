@@ -128,6 +128,7 @@ module.exports = {
   setupFiles: [
     "<rootDir>/__tests__/jestSetupMockAsyncStorage.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeVisionCamera.ts",
+    "<rootDir>/__tests__/jestSetupMockReactNativeSafeAreaContext.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeWebview.ts",
     "<rootDir>/__tests__/jestSetupMockReactNavigation.ts",
   ],
