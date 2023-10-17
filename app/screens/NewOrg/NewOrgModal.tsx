@@ -77,6 +77,7 @@ export default function NewOrgModal({
       onRequestClose={() => {
         setVisible(false);
       }}
+      statusBarTranslucent
     >
       <Scrim onPress={() => setVisible(false)} style={styles.scrim}>
         <View style={styles.container}>

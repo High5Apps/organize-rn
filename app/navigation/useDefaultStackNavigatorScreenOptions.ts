@@ -8,5 +8,6 @@ export default function useDefaultStackNavigatorScreenOptions() {
     },
     headerTintColor: colors.primary,
     headerTitleStyle: { color: colors.label },
+    navigationBarColor: colors.fill,
   };
 }
