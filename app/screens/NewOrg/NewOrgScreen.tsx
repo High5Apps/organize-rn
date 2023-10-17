@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
-import { ScreenBackground, SecondaryButton, TextInputRow } from '../../components';
+import {
+  KeyboardAvoidingScreenBackground, SecondaryButton, TextInputRow,
+} from '../../components';
 import { NewOrgSteps } from '../../model';
 import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -55,7 +56,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const nextDisabled = (input.length === 0);
 
   return (
-    <ScreenBackground>
+    <KeyboardAvoidingScreenBackground topNavigationBarHidden>
       <NewOrgModal
         body={body}
         headline={headline}
@@ -68,6 +69,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           {title}
         </Text>
         <TextInputRow
+          autoFocus={false}
           blurOnSubmit={false}
           keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
           maxLength={maxLength}
@@ -88,16 +90,14 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           onPress={() => setModalVisible(true)}
         />
       </ScrollView>
-      <KeyboardAccessoryView alwaysVisible androidAdjustResize hideBorder>
-        <NewOrgNavigationBar
-          backPressed={() => {
-            stepNavigator.navigateToPrevious(currentStep, params);
-          }}
-          currentStep={currentStep}
-          nextDisabled={nextDisabled}
-          nextPressed={navigateNext}
-        />
-      </KeyboardAccessoryView>
-    </ScreenBackground>
+      <NewOrgNavigationBar
+        backPressed={() => {
+          stepNavigator.navigateToPrevious(currentStep, params);
+        }}
+        currentStep={currentStep}
+        nextDisabled={nextDisabled}
+        nextPressed={navigateNext}
+      />
+    </KeyboardAvoidingScreenBackground>
   );
 }

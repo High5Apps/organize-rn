@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import {
-  Keyboard, KeyboardAvoidingView, Platform, StyleSheet,
-} from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useHeaderHeight } from '@react-navigation/elements';
 import ScreenBackground from './ScreenBackground';
 
@@ -35,11 +34,20 @@ const useStyles = () => {
   return { styles };
 };
 
+type Props = {
+  topNavigationBarHidden?: boolean;
+};
+
 export default function KeyboardAvoidingScreenBackground({
-  children,
-}: PropsWithChildren<{}>) {
+  children, topNavigationBarHidden,
+}: PropsWithChildren<Props>) {
   const { styles } = useStyles();
+
   const headerHeight = useHeaderHeight();
+  const { top: topPadding } = useSafeAreaInsets();
+  const keyboardVerticalOffset = topNavigationBarHidden
+    ? topPadding + headerHeight : headerHeight;
+
   const keyboardVisible = useKeyboardVisibility();
 
   // Without this, the onPress prevents scroll gestures on deeper components
@@ -48,10 +56,8 @@ export default function KeyboardAvoidingScreenBackground({
   return (
     <ScreenBackground onPress={onPress}>
       <KeyboardAvoidingView
-        // Setting behavior to anything besides undefined caused weird issues on
-        // Android. Fortunately, it seems to work fine with undefined.
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={headerHeight}
+        behavior="padding"
+        keyboardVerticalOffset={keyboardVerticalOffset}
         style={styles.keyboardAvoidingView}
       >
         {children}
@@ -59,3 +65,7 @@ export default function KeyboardAvoidingScreenBackground({
     </ScreenBackground>
   );
 }
+
+KeyboardAvoidingScreenBackground.defaultProps = {
+  topNavigationBarHidden: false,
+};

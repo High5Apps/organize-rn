@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConnectStack from './ConnectStack';
 import { OrgTabsParamList } from './types';
@@ -38,10 +38,7 @@ export default function OrgTabs() {
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: styles.tabBarIconLabel,
         tabBarStyle: styles.tabBar,
-
-        // On iOS, the tabs are hidden by default automatically. Setting this to
-        // true causes weird issues on iOS.
-        tabBarHideOnKeyboard: Platform.OS !== 'ios',
+        tabBarHideOnKeyboard: false,
       }}
     >
       <Tab.Screen

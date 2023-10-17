@@ -1,9 +1,7 @@
 import React, {
   useLayoutEffect, useMemo, useRef, useState,
 } from 'react';
-import {
-  Keyboard, StyleSheet, TextInput, View,
-} from 'react-native';
+import { Keyboard, StyleSheet, TextInput } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
@@ -30,14 +28,12 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     button: {
+      alignSelf: 'flex-end',
       flex: 0,
       height: sizes.buttonHeight,
       marginBottom: spacing.m,
+      marginEnd: spacing.m,
       paddingHorizontal: spacing.m,
-    },
-    buttonRow: {
-      flexDirection: 'row-reverse',
-      marginHorizontal: spacing.m,
     },
     multilineTextInput: {
       flex: 1,
@@ -223,14 +219,12 @@ export default function NewPostScreen({
         ref={multilineTextInputRef}
         value={body}
       />
-      <View style={styles.buttonRow}>
-        <PrimaryButton
-          iconName="publish"
-          label="Publish"
-          onPress={onPublishPressed}
-          style={styles.button}
-        />
-      </View>
+      <PrimaryButton
+        iconName="publish"
+        label="Publish"
+        onPress={onPublishPressed}
+        style={styles.button}
+      />
       <RequestProgress style={styles.requestProgress} />
     </KeyboardAvoidingScreenBackground>
   );
