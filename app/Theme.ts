@@ -137,3 +137,18 @@ export default useTheme;
 
 export type Theme = ReturnType<typeof useTheme>;
 export type ThemeColors = Theme['colors'];
+
+export const useNavigationTheme = () => {
+  const { colors, isDarkMode } = useTheme();
+  return {
+    colors: {
+      background: colors.background,
+      border: colors.separator,
+      card: colors.fill,
+      notification: colors.error,
+      primary: colors.primary,
+      text: colors.label,
+    },
+    dark: isDarkMode,
+  };
+};

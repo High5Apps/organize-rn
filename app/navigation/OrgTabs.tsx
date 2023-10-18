@@ -10,34 +10,28 @@ import VoteStack from './VoteStack';
 import OrgStack from './OrgStack';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const { font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
-    tabBar: {
-      backgroundColor: colors.fill,
-      borderTopColor: colors.separator,
-    },
     tabBarIconLabel: {
       fontFamily: font.weights.semiBold,
       marginBottom: spacing.xxs,
     },
   });
 
-  return { colors, styles };
+  return { styles };
 };
 
 const Tab = createBottomTabNavigator<OrgTabsParamList>();
 
 export default function OrgTabs() {
-  const { colors, styles } = useStyles();
+  const { styles } = useStyles();
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: styles.tabBarIconLabel,
-        tabBarStyle: styles.tabBar,
         tabBarHideOnKeyboard: false,
       }}
     >

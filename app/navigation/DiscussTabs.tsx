@@ -23,9 +23,6 @@ const useScreenOptions = () => {
     tabBarIndicatorContainerStyle: {
       marginLeft: screenPaddingStart,
     },
-    tabBarIndicatorStyle: {
-      backgroundColor: colors.primary,
-    },
     tabBarItemStyle: {
       paddingHorizontal: 0,
       width: 'auto',
@@ -35,7 +32,6 @@ const useScreenOptions = () => {
     },
     tabBarScrollEnabled: true,
     tabBarStyle: {
-      backgroundColor: colors.fill,
       paddingLeft: screenPaddingStart,
       borderBottomWidth: sizes.separator,
       borderBottomColor: colors.separator,
