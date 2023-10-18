@@ -17,6 +17,7 @@ export default function WelcomeStack() {
     ...defaultOptions,
     headerShown: false,
     navigationBarColor: colors.background,
+    statusBarColor: colors.background,
   };
 
   return (
