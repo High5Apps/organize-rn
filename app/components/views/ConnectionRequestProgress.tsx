@@ -12,14 +12,12 @@ import {
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const { colors, spacing } = useTheme();
+  const { colors } = useTheme();
 
   const styles = StyleSheet.create({
-    frameButton: {
-      alignItems: 'center',
+    container: {
       backgroundColor: colors.fill,
       justifyContent: 'center',
-      padding: spacing.m,
     },
   });
   return { styles };
@@ -81,7 +79,7 @@ export default function ConnectionRequestProgress({
   }, [currentUser]);
 
   return (
-    <View style={[styles.frameButton, style]}>
+    <View style={[styles.container, style]}>
       { !response && <RequestProgress /> }
       { response && reviewFrameProvider(response) }
     </View>

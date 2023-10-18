@@ -41,7 +41,7 @@ export default function LockingScrollView({
         const { height } = event.nativeEvent.layout;
         setLayoutHeight(height);
       }}
-      style={[
+      contentContainerStyle={[
         styles.scrollView,
         style,
       ]}

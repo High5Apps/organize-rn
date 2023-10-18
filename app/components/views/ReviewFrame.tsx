@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
+import LockingScrollView from './LockingScrollView';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -10,6 +11,10 @@ const useStyles = () => {
       color: colors.labelSecondary,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
+    },
+    lockingScrollView: {
+      justifyContent: 'center',
+      padding: spacing.m,
     },
     text: {
       textAlign: 'center',
@@ -40,7 +45,7 @@ export default function ReviewFrame({ labeledValues }: Props) {
   const { styles } = useStyles();
 
   return (
-    <>
+    <LockingScrollView style={styles.lockingScrollView}>
       {labeledValues.map(({ label, value }) => (
         <View key={label} style={styles.valueContainer}>
           <Text style={[styles.text, styles.label]}>
@@ -51,6 +56,6 @@ export default function ReviewFrame({ labeledValues }: Props) {
           </Text>
         </View>
       ))}
-    </>
+    </LockingScrollView>
   );
 }
