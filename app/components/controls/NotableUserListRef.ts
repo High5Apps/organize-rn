@@ -23,6 +23,6 @@ export default function useNotableUserListRef(
 
       return { scrollToTop };
     },
-    [ref, sectionListRef.current],
+    [ref, sectionListRef],
   );
 }

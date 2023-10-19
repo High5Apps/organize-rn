@@ -106,5 +106,5 @@ export default function useClickHandler(
     );
 
     return clickSubscription.remove;
-  }, [isGraphAvailable, visNetwork.current]);
+  }, [isGraphAvailable, visNetwork]);
 }

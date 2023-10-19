@@ -109,7 +109,7 @@ function useScrollToOffsetOnNewTopLevelComment(
     if (isLatestInsertTopLevelComment) {
       listRef.current?.scrollToOffset({ animated: true, offset });
     }
-  }, [listRef.current, maybeInsertedCommentIds]);
+  }, [listRef, maybeInsertedCommentIds]);
 
   return setOffset;
 }

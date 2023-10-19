@@ -73,7 +73,7 @@ function useScrollToTopOnNewPost(
     if (maybeInsertedPostIds?.length) {
       listRef.current?.scrollToOffset({ animated: true, offset: 0 });
     }
-  }, [listRef.current, maybeInsertedPostIds]);
+  }, [listRef, maybeInsertedPostIds]);
 }
 
 type Props = {

@@ -38,7 +38,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     notableUserList.current?.scrollToTop();
     setSelectedUserId(userId);
     orgGraphRef.current?.focus(userId, DEFAULT_FOCUS_OPTIONS);
-  }, [notableUserList.current, orgGraphRef.current]);
+  }, [notableUserList, orgGraphRef]);
 
   return (
     <ScreenBackground>
