@@ -1,6 +1,6 @@
 import React, {
-  ForwardedRef, ReactElement, forwardRef, useCallback, useMemo, useRef,
-  useState,
+  Dispatch, ForwardedRef, ReactElement, SetStateAction, forwardRef, useCallback,
+  useMemo, useRef, useState,
 } from 'react';
 import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
@@ -34,9 +34,9 @@ type Props = {
   ListHeaderComponent?: ReactElement;
   listHeaderComponentHeight?: number;
   onRefresh?: () => void;
-  onUserSelected?: (userId: string) => void;
   scrollEnabled?: boolean;
   selectedUserId?: string;
+  setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 const renderSectionHeader = ({ section }: SectionHeaderProps) => {
@@ -46,8 +46,8 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 
 const NotableUserList = forwardRef((
   {
-    ListHeaderComponent, listHeaderComponentHeight, onRefresh, onUserSelected,
-    scrollEnabled, selectedUserId,
+    ListHeaderComponent, listHeaderComponentHeight, onRefresh, scrollEnabled,
+    selectedUserId, setSelectedUserId,
   }: Props,
   ref: ForwardedRef<NotableUserListRef>,
 ) => {
@@ -61,8 +61,15 @@ const NotableUserList = forwardRef((
   const { currentUser } = useUserContext();
 
   const onPress = useCallback(
-    ({ user: { id } }: NotableUserItem) => onUserSelected?.(id),
-    [onUserSelected],
+    ({ user: { id } }: NotableUserItem) => {
+      sectionListRef.current?.scrollToLocation({
+        itemIndex: 0,
+        sectionIndex: 0,
+        viewOffset: listHeaderComponentHeight,
+      });
+      setSelectedUserId(id);
+    },
+    [listHeaderComponentHeight, sectionListRef],
   );
 
   const renderItem: ListRenderItem<NotableUserItem> = useCallback(
@@ -137,7 +144,6 @@ NotableUserList.defaultProps = {
   ListHeaderComponent: undefined,
   listHeaderComponentHeight: 0,
   onRefresh: () => {},
-  onUserSelected: () => {},
   scrollEnabled: true,
   selectedUserId: undefined,
 };

@@ -1,4 +1,6 @@
-import { RefObject, useEffect, useRef } from 'react';
+import {
+  Dispatch, RefObject, SetStateAction, useEffect, useRef,
+} from 'react';
 import { Position, VisNetworkRef } from 'react-native-vis-network';
 
 const ANIMATION_OPTIONS = {
@@ -35,13 +37,101 @@ function getNearestNodeInfo(
   return { nearestDistance, nearestId };
 }
 
+type ClickHandlerProps = {
+  event: any;
+  userId?: never;
+} | {
+  event?: never;
+  userId: string;
+};
+
 export default function useClickHandler(
   isGraphAvailable: boolean,
   visNetwork: RefObject<VisNetworkRef>,
   hasMultipleNodes: boolean,
-  onUserSelected?: (id?: string) => void,
+  setSelectedUserId: Dispatch<SetStateAction<string | undefined>>,
 ) {
   const isEventInProgressRef = useRef(false);
+
+  async function clickHandler({
+    event, userId: maybeUserId,
+  }: ClickHandlerProps) {
+    if (!visNetwork.current || isEventInProgressRef.current) { return; }
+    isEventInProgressRef.current = true;
+
+    let scale = 0;
+    try {
+      scale = await visNetwork.current.getScale();
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (!scale) {
+      isEventInProgressRef.current = false;
+      return;
+    }
+
+    const focusOptions = {
+      ...DEFAULT_FOCUS_OPTIONS,
+
+      // Never zoom out during focus
+      scale: Math.max(scale, DEFAULT_FOCUS_OPTIONS.scale),
+    };
+
+    if (maybeUserId) {
+      visNetwork.current.focus(maybeUserId, focusOptions);
+      setSelectedUserId(maybeUserId);
+      return;
+    }
+
+    const {
+      nodes,
+      pointer: { canvas: canvasPointer },
+    } = event;
+
+    let userId: string | undefined = nodes[0];
+    if (userId) {
+      visNetwork.current.focus(userId, focusOptions);
+      setSelectedUserId(userId);
+      return;
+    }
+
+    let positions;
+    try {
+      positions = await visNetwork.current.getPositions();
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (!positions) {
+      isEventInProgressRef.current = false;
+      return;
+    }
+
+    const {
+      nearestDistance, nearestId,
+    } = getNearestNodeInfo(canvasPointer, positions);
+
+    if (!nearestDistance || !nearestId) {
+      isEventInProgressRef.current = false;
+      return;
+    }
+
+    const normalizedDistance = nearestDistance * scale;
+    if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
+      userId = nearestId;
+      visNetwork.current.focus(userId, focusOptions);
+      setSelectedUserId(userId);
+      return;
+    }
+
+    const maxZoomLevel = hasMultipleNodes ? 100 : 1;
+    visNetwork.current.fit({
+      animation: ANIMATION_OPTIONS,
+      maxZoomLevel,
+    });
+    setSelectedUserId(undefined);
+  }
 
   useEffect(() => {
     if (!isGraphAvailable || !visNetwork.current) {
@@ -50,62 +140,7 @@ export default function useClickHandler(
 
     const clickSubscription = visNetwork.current.addEventListener(
       'click',
-      async (event: any) => {
-        if (!visNetwork.current || isEventInProgressRef.current) { return; }
-        isEventInProgressRef.current = true;
-
-        let scale = 0;
-        try {
-          scale = await visNetwork.current.getScale();
-        } catch (e) {
-          console.error(e);
-        }
-
-        const focusOptions = {
-          ...DEFAULT_FOCUS_OPTIONS,
-
-          // Never zoom out during focus
-          scale: Math.max(scale, DEFAULT_FOCUS_OPTIONS.scale),
-        };
-
-        const {
-          nodes,
-          pointer: { canvas: canvasPointer },
-        } = event;
-
-        let userId: string | undefined = nodes[0];
-        if (userId) {
-          visNetwork.current.focus(userId, focusOptions);
-        } else {
-          let positions;
-          try {
-            positions = await visNetwork.current.getPositions();
-          } catch (e) {
-            console.error(e);
-          }
-
-          if (positions && scale) {
-            const {
-              nearestDistance, nearestId,
-            } = getNearestNodeInfo(canvasPointer, positions);
-
-            if ((nearestDistance !== undefined) && (nearestId !== undefined)) {
-              const normalizedDistance = nearestDistance * scale;
-              if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
-                userId = nearestId;
-                visNetwork.current.focus(userId, focusOptions);
-              } else {
-                const maxZoomLevel = hasMultipleNodes ? 100 : 1;
-                visNetwork.current.fit({
-                  animation: ANIMATION_OPTIONS,
-                  maxZoomLevel,
-                });
-              }
-            }
-          }
-        }
-        onUserSelected?.(userId);
-      },
+      (event: any) => clickHandler({ event }),
     );
 
     const animationFinishedSubscription = visNetwork.current.addEventListener(
@@ -117,5 +152,7 @@ export default function useClickHandler(
       clickSubscription.remove();
       animationFinishedSubscription.remove();
     };
-  }, [isGraphAvailable, onUserSelected, visNetwork]);
+  }, [isGraphAvailable, visNetwork]);
+
+  return { clickHandler };
 }

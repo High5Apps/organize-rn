@@ -1,11 +1,9 @@
-import React, {
-  useCallback, useLayoutEffect, useRef, useState,
-} from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
-  DEFAULT_FOCUS_OPTIONS, IconButton, NotableUserList, NotableUserListRef,
-  OrgGraph, OrgGraphRef, ScreenBackground, SectionHeader,
+  IconButton, NotableUserList, NotableUserListRef, OrgGraph, OrgGraphRef,
+  ScreenBackground, SectionHeader,
 } from '../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
@@ -34,12 +32,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   const orgGraphRef = useRef<OrgGraphRef>(null);
   const notableUserList = useRef<NotableUserListRef>(null);
 
-  const onUserSelected = useCallback((userId: string) => {
-    notableUserList.current?.scrollToTop();
-    setSelectedUserId(userId);
-    orgGraphRef.current?.focus(userId, DEFAULT_FOCUS_OPTIONS);
-  }, [notableUserList, orgGraphRef]);
-
   return (
     <ScreenBackground>
       <NotableUserList
@@ -55,17 +47,18 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
               onInteraction={
                 (inProgress: boolean) => setScrollEnabled(!inProgress)
               }
-              onUserSelected={setSelectedUserId}
+              selectedUserId={selectedUserId}
+              setSelectedUserId={setSelectedUserId}
               ref={orgGraphRef}
             />
           </View>
         )}
         listHeaderComponentHeight={listHeaderComponentHeight}
         onRefresh={() => setSelectedUserId(undefined)}
-        onUserSelected={onUserSelected}
         ref={notableUserList}
         scrollEnabled={scrollEnabled}
         selectedUserId={selectedUserId}
+        setSelectedUserId={setSelectedUserId}
       />
     </ScreenBackground>
   );

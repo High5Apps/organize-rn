@@ -1,5 +1,6 @@
 import React, {
-  ForwardedRef, forwardRef, useEffect, useRef, useState,
+  Dispatch, ForwardedRef, SetStateAction, forwardRef, useEffect, useRef,
+  useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
@@ -27,11 +28,12 @@ const useStyles = () => {
 
 type Props = {
   onInteraction?: (inProgress: boolean) => void;
-  onUserSelected?: (id?: string) => void;
+  selectedUserId?: string;
+  setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 const OrgGraph = forwardRef((
-  { onInteraction, onUserSelected }: Props,
+  { onInteraction, selectedUserId, setSelectedUserId }: Props,
   ref: ForwardedRef<OrgGraphRef>,
 ) => {
   const [error, setError] = useState('');
@@ -62,7 +64,18 @@ const OrgGraph = forwardRef((
     return unsubscribe;
   }, []);
 
-  useClickHandler(loading, visNetworkRef, hasMultipleNodes, onUserSelected);
+  const { clickHandler } = useClickHandler(
+    loading,
+    visNetworkRef,
+    hasMultipleNodes,
+    setSelectedUserId,
+  );
+
+  useEffect(() => {
+    if (selectedUserId) {
+      clickHandler({ userId: selectedUserId });
+    }
+  }, [selectedUserId]);
 
   const ProgressBar = useProgress(loading, visNetworkRef);
 
@@ -120,7 +133,7 @@ const OrgGraph = forwardRef((
 
 OrgGraph.defaultProps = {
   onInteraction: () => {},
-  onUserSelected: () => {},
+  selectedUserId: undefined,
 };
 
 export default OrgGraph;
