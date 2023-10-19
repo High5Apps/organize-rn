@@ -1,6 +1,5 @@
 import React, {
-  Dispatch, ForwardedRef, SetStateAction, forwardRef, useEffect, useRef,
-  useState,
+  Dispatch, SetStateAction, useEffect, useRef, useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
@@ -9,7 +8,6 @@ import useTheme from '../../Theme';
 import ErrorMessage from '../views/ErrorMessage';
 import useClickHandler from './OrgGraphClickHandler';
 import useProgress from './OrgGraphProgress';
-import useOrgGraphRef, { OrgGraphRef } from './OrgGraphRef';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -32,10 +30,9 @@ type Props = {
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
-const OrgGraph = forwardRef((
-  { onInteraction, selectedUserId, setSelectedUserId }: Props,
-  ref: ForwardedRef<OrgGraphRef>,
-) => {
+export default function OrgGraph({
+  onInteraction, selectedUserId, setSelectedUserId,
+}: Props) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -45,8 +42,6 @@ const OrgGraph = forwardRef((
   const { primary } = colors;
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
-
-  useOrgGraphRef(ref, visNetworkRef.current);
 
   const { hasMultipleNodes, updateOrgData, visGraphData } = useGraphData();
 
@@ -129,11 +124,9 @@ const OrgGraph = forwardRef((
       { component }
     </View>
   );
-});
+}
 
 OrgGraph.defaultProps = {
   onInteraction: () => {},
   selectedUserId: undefined,
 };
-
-export default OrgGraph;

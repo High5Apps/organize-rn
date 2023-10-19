@@ -2,8 +2,8 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
-  IconButton, NotableUserList, NotableUserListRef, OrgGraph, OrgGraphRef,
-  ScreenBackground, SectionHeader,
+  IconButton, NotableUserList, NotableUserListRef, OrgGraph, ScreenBackground,
+  SectionHeader,
 } from '../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
@@ -29,7 +29,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     navigation.setOptions({ headerRight });
   }, [navigation]);
 
-  const orgGraphRef = useRef<OrgGraphRef>(null);
   const notableUserList = useRef<NotableUserListRef>(null);
 
   return (
@@ -49,7 +48,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
               }
               selectedUserId={selectedUserId}
               setSelectedUserId={setSelectedUserId}
-              ref={orgGraphRef}
             />
           </View>
         )}
