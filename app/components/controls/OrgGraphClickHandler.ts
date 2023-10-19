@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 import { Position, VisNetworkRef } from 'react-native-vis-network';
 
 const ANIMATION_OPTIONS = {
@@ -41,6 +41,8 @@ export default function useClickHandler(
   hasMultipleNodes: boolean,
   onUserSelected?: (id?: string) => void,
 ) {
+  const isEventInProgressRef = useRef(false);
+
   useEffect(() => {
     if (!isGraphAvailable || !visNetwork.current) {
       return () => {};
@@ -49,7 +51,8 @@ export default function useClickHandler(
     const clickSubscription = visNetwork.current.addEventListener(
       'click',
       async (event: any) => {
-        if (!visNetwork.current) { return; }
+        if (!visNetwork.current || isEventInProgressRef.current) { return; }
+        isEventInProgressRef.current = true;
 
         let scale = 0;
         try {
@@ -105,6 +108,14 @@ export default function useClickHandler(
       },
     );
 
-    return clickSubscription.remove;
-  }, [isGraphAvailable, visNetwork]);
+    const animationFinishedSubscription = visNetwork.current.addEventListener(
+      'animationFinished',
+      () => { isEventInProgressRef.current = false; },
+    );
+
+    return () => {
+      clickSubscription.remove();
+      animationFinishedSubscription.remove();
+    };
+  }, [isGraphAvailable, onUserSelected, visNetwork]);
 }
