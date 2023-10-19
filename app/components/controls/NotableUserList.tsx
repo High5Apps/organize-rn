@@ -1,6 +1,6 @@
 import React, {
-  Dispatch, ForwardedRef, ReactElement, SetStateAction, forwardRef, useCallback,
-  useMemo, useRef, useState,
+  Dispatch, ReactElement, SetStateAction, useCallback, useMemo, useRef,
+  useState,
 } from 'react';
 import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
@@ -11,7 +11,6 @@ import {
 import useTheme from '../../Theme';
 import { ItemSeparator } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
-import useNotableUserListRef, { NotableUserListRef } from './NotableUserListRef';
 
 export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   const officers = users.filter((user) => user.offices?.[0]);
@@ -21,7 +20,7 @@ export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   return ordererdOfficers;
 }
 
-export type NotableUserSection = {
+type NotableUserSection = {
   title: string;
   data: NotableUserItem[];
 };
@@ -44,17 +43,13 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
   return <SectionHeader>{title}</SectionHeader>;
 };
 
-const NotableUserList = forwardRef((
-  {
-    ListHeaderComponent, listHeaderComponentHeight, onRefresh, scrollEnabled,
-    selectedUserId, setSelectedUserId,
-  }: Props,
-  ref: ForwardedRef<NotableUserListRef>,
-) => {
+export default function NotableUserList({
+  ListHeaderComponent, listHeaderComponentHeight, onRefresh, scrollEnabled,
+  selectedUserId, setSelectedUserId,
+}: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
-  useNotableUserListRef(ref, sectionListRef, listHeaderComponentHeight);
   useScrollToTop(sectionListRef);
 
   const { colors } = useTheme();
@@ -138,7 +133,7 @@ const NotableUserList = forwardRef((
       sections={sections}
     />
   );
-});
+}
 
 NotableUserList.defaultProps = {
   ListHeaderComponent: undefined,
@@ -147,5 +142,3 @@ NotableUserList.defaultProps = {
   scrollEnabled: true,
   selectedUserId: undefined,
 };
-
-export default NotableUserList;

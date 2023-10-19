@@ -1,9 +1,8 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
-  IconButton, NotableUserList, NotableUserListRef, OrgGraph, ScreenBackground,
-  SectionHeader,
+  IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
 } from '../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
@@ -29,8 +28,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     navigation.setOptions({ headerRight });
   }, [navigation]);
 
-  const notableUserList = useRef<NotableUserListRef>(null);
-
   return (
     <ScreenBackground>
       <NotableUserList
@@ -53,7 +50,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
         )}
         listHeaderComponentHeight={listHeaderComponentHeight}
         onRefresh={() => setSelectedUserId(undefined)}
-        ref={notableUserList}
         scrollEnabled={scrollEnabled}
         selectedUserId={selectedUserId}
         setSelectedUserId={setSelectedUserId}
