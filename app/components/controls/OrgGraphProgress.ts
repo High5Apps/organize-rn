@@ -1,8 +1,7 @@
-import React, { RefObject, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { VisNetworkRef } from 'react-native-vis-network';
-import { ProgressBar } from '../views';
 
-export default function useProgress(
+export default function useOrgGraphProgress(
   isGraphAvailable: boolean,
   visNetwork: RefObject<VisNetworkRef>,
 ) {
@@ -29,5 +28,5 @@ export default function useProgress(
     };
   }, [isGraphAvailable]);
 
-  return <ProgressBar progress={progress} />;
+  return progress;
 }

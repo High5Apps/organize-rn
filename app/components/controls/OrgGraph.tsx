@@ -7,7 +7,8 @@ import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import ErrorMessage from '../views/ErrorMessage';
 import useClickHandler from './OrgGraphClickHandler';
-import useProgress from './OrgGraphProgress';
+import useOrgGraphProgress from './OrgGraphProgress';
+import { ProgressBar } from '../views';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -72,7 +73,7 @@ export default function OrgGraph({
     }
   }, [selectedUserId]);
 
-  const ProgressBar = useProgress(loading, visNetworkRef);
+  const progress = useOrgGraphProgress(loading, visNetworkRef);
 
   if (!isCurrentUserData(currentUser)) {
     throw new Error('Expected currentUser');
@@ -120,7 +121,7 @@ export default function OrgGraph({
 
   return (
     <View style={styles.container}>
-      { ProgressBar }
+      <ProgressBar progress={progress} />
       { component }
     </View>
   );
