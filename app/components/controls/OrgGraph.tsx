@@ -27,12 +27,13 @@ const useStyles = () => {
 
 type Props = {
   onInteraction?: (inProgress: boolean) => void;
+  onRenderingProgressChanged?: (progress: number) => void;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export default function OrgGraph({
-  onInteraction, selectedUserId, setSelectedUserId,
+  onInteraction, onRenderingProgressChanged, selectedUserId, setSelectedUserId,
 }: Props) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -74,6 +75,9 @@ export default function OrgGraph({
   }, [selectedUserId]);
 
   const progress = useOrgGraphProgress(loading, visNetworkRef);
+  useEffect(() => {
+    onRenderingProgressChanged?.(progress);
+  }, [progress]);
 
   if (!isCurrentUserData(currentUser)) {
     throw new Error('Expected currentUser');
@@ -129,5 +133,6 @@ export default function OrgGraph({
 
 OrgGraph.defaultProps = {
   onInteraction: () => {},
+  onRenderingProgressChanged: () => {},
   selectedUserId: undefined,
 };

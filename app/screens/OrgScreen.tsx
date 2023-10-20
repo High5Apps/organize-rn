@@ -22,6 +22,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
+  const [graphRendered, setGraphRendered] = useState(false);
 
   useLayoutEffect(() => {
     const headerRight = () => <SettingsButton />;
@@ -31,6 +32,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   return (
     <ScreenBackground>
       <NotableUserList
+        disableRows={!graphRendered}
         ListHeaderComponent={(
           <View
             onLayout={(event: LayoutChangeEvent) => {
@@ -42,6 +44,9 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
             <OrgGraph
               onInteraction={
                 (inProgress: boolean) => setScrollEnabled(!inProgress)
+              }
+              onRenderingProgressChanged={
+                (progress) => setGraphRendered(progress >= 1)
               }
               selectedUserId={selectedUserId}
               setSelectedUserId={setSelectedUserId}

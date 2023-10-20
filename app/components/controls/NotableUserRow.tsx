@@ -70,11 +70,12 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   item: NotableUserItem;
   onPress?: (item: NotableUserItem) => void;
 };
 
-function NotableUserRow({ item, onPress }: Props) {
+function NotableUserRow({ disabled, item, onPress }: Props) {
   const {
     circleBorderColor, circleBackgroundColor, user: {
       connectionCount, joinedAt, offices, pseudonym, recruitCount,
@@ -90,6 +91,7 @@ function NotableUserRow({ item, onPress }: Props) {
 
   return (
     <TouchableHighlight
+      disabled={disabled}
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
@@ -120,6 +122,7 @@ function NotableUserRow({ item, onPress }: Props) {
 }
 
 NotableUserRow.defaultProps = {
+  disabled: false,
   onPress: () => {},
 };
 

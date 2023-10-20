@@ -30,6 +30,7 @@ type SectionHeaderProps = {
 };
 
 type Props = {
+  disableRows?: boolean;
   ListHeaderComponent?: ReactElement;
   listHeaderComponentHeight?: number;
   onRefresh?: () => void;
@@ -44,8 +45,8 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 };
 
 export default function NotableUserList({
-  ListHeaderComponent, listHeaderComponentHeight, onRefresh, scrollEnabled,
-  selectedUserId, setSelectedUserId,
+  disableRows, ListHeaderComponent, listHeaderComponentHeight, onRefresh,
+  scrollEnabled, selectedUserId, setSelectedUserId,
 }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -68,8 +69,14 @@ export default function NotableUserList({
   );
 
   const renderItem: ListRenderItem<NotableUserItem> = useCallback(
-    ({ item }) => <NotableUserRow item={item} onPress={onPress} />,
-    [onPress],
+    ({ item }) => (
+      <NotableUserRow
+        item={item}
+        onPress={onPress}
+        disabled={disableRows}
+      />
+    ),
+    [onPress, disableRows],
   );
 
   if (!currentUser) {
@@ -136,6 +143,7 @@ export default function NotableUserList({
 }
 
 NotableUserList.defaultProps = {
+  disableRows: true,
   ListHeaderComponent: undefined,
   listHeaderComponentHeight: 0,
   onRefresh: () => {},
