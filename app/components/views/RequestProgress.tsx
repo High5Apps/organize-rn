@@ -32,15 +32,23 @@ type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
 
 type SetResultOptions = {
   message?: string;
+  onPress?: () => void;
 };
 
 export default function useRequestProgress() {
   const [loading, setLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
+  const [resultOnPress, setResultOnPress] = useState<() => void>();
   const [resultType, setResultType] = useState<ResultType>('none');
 
-  function setResult(type: ResultType, options: SetResultOptions = {}) {
-    const { message } = options;
+  function setResult(type: ResultType, {
+    message, onPress,
+  }: SetResultOptions = {}) {
+    // In order to store a function in useState, you must pass a function that
+    // creates the function. Passing just the onPress would make the useState
+    // think that it was an updater function. For more info, see:
+    // https://stackoverflow.com/a/55621325/2421313
+    setResultOnPress(() => onPress);
 
     setResultType(type);
 
@@ -68,6 +76,7 @@ export default function useRequestProgress() {
         {loading && <ActivityIndicator color={colors.primary} />}
         {resultMessage && (
           <Text
+            onPress={resultOnPress}
             style={[
               styles.message,
               (resultType === 'error') && styles.error,
@@ -81,7 +90,7 @@ export default function useRequestProgress() {
         )}
       </View>
     );
-  }, [loading, resultMessage, resultType]);
+  }, [loading, resultMessage, resultOnPress, resultType]);
 
   return {
     loading,
