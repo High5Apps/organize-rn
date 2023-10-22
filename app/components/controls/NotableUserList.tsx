@@ -1,6 +1,5 @@
 import React, {
   Dispatch, ReactElement, SetStateAction, useCallback, useMemo, useRef,
-  useState,
 } from 'react';
 import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
@@ -11,6 +10,7 @@ import {
 import useTheme from '../../Theme';
 import { ItemSeparator } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
+import usePullToRefresh from './PullToRefresh';
 
 export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   const officers = users.filter((user) => user.offices?.[0]);
@@ -48,8 +48,6 @@ export default function NotableUserList({
   disableRows, ListHeaderComponent, listHeaderComponentHeight, onRefresh,
   scrollEnabled, selectedUserId, setSelectedUserId,
 }: Props) {
-  const [refreshing, setRefreshing] = useState(false);
-
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
   useScrollToTop(sectionListRef);
 
@@ -117,23 +115,24 @@ export default function NotableUserList({
     return notableUserSections;
   }, [colors, currentUser, graphData, selectedUserId]);
 
+  const { refreshControl } = usePullToRefresh({
+    onRefresh: async () => {
+      onRefresh?.();
+      try {
+        await updateOrgData();
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
+
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       nestedScrollEnabled
-      onRefresh={async () => {
-        onRefresh?.();
-        setRefreshing(true);
-        try {
-          await updateOrgData();
-        } catch (e) {
-          console.error(e);
-        }
-        setRefreshing(false);
-      }}
       ref={sectionListRef}
-      refreshing={refreshing}
+      refreshControl={refreshControl}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       scrollEnabled={scrollEnabled}
