@@ -33,7 +33,6 @@ type Props = {
   disableRows?: boolean;
   ListHeaderComponent?: ReactElement;
   listHeaderComponentHeight?: number;
-  onRefresh?: () => void;
   scrollEnabled?: boolean;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
@@ -45,8 +44,8 @@ const renderSectionHeader = ({ section }: SectionHeaderProps) => {
 };
 
 export default function NotableUserList({
-  disableRows, ListHeaderComponent, listHeaderComponentHeight, onRefresh,
-  scrollEnabled, selectedUserId, setSelectedUserId,
+  disableRows, ListHeaderComponent, listHeaderComponentHeight, scrollEnabled,
+  selectedUserId, setSelectedUserId,
 }: Props) {
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
   useScrollToTop(sectionListRef);
@@ -117,7 +116,7 @@ export default function NotableUserList({
 
   const { refreshControl } = usePullToRefresh({
     onRefresh: async () => {
-      onRefresh?.();
+      setSelectedUserId(undefined);
       try {
         await updateOrgData();
       } catch (e) {
@@ -145,7 +144,6 @@ NotableUserList.defaultProps = {
   disableRows: true,
   ListHeaderComponent: undefined,
   listHeaderComponentHeight: 0,
-  onRefresh: () => {},
   scrollEnabled: true,
   selectedUserId: undefined,
 };
