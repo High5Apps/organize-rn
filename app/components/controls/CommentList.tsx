@@ -125,8 +125,6 @@ export default function CommentList({
   containerStyle, insertedComments: maybeInsertedCommentIds, onPostChanged,
   post,
 }: Props) {
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-
   const listRef = useRef<FlatList<Comment>>(null);
 
   const { styles } = useStyles();
@@ -138,10 +136,12 @@ export default function CommentList({
     listRef,
     maybeInsertedCommentIds,
   );
-  const { RequestProgress, result, setResult } = useRequestProgress();
+  const {
+    RequestProgress, result, setLoading, setResult,
+  } = useRequestProgress();
 
   const refresh = async () => {
-    setRefreshing(true);
+    setLoading(true);
     setResult('none');
 
     try {
@@ -154,7 +154,7 @@ export default function CommentList({
       console.error(e);
       setResult('error', GENERIC_ERROR_MESSAGE);
     }
-    setRefreshing(false);
+    setLoading(false);
   };
 
   const ListHeaderComponent = useCallback(() => (
@@ -196,9 +196,7 @@ export default function CommentList({
       data={data}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
-      onRefresh={refresh}
       ref={listRef}
-      refreshing={refreshing}
       renderItem={renderItem}
     />
   );
