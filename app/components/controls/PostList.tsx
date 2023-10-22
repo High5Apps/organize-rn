@@ -11,6 +11,7 @@ import {
 import { ItemSeparator, useRequestProgress } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
+import usePullToRefresh from './PullToRefresh';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -89,8 +90,6 @@ export default function PostList({
   category, contentContainerStyle, insertedPostIds: maybeInsertedPostIds,
   ListEmptyComponent, onItemPress, sort,
 }: Props) {
-  const [refreshing, setRefreshing] = useState(false);
-
   const { styles } = useStyles();
 
   const listRef = useRef<FlatList<Post>>(null);
@@ -122,23 +121,20 @@ export default function PostList({
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
   ), [cachePost, onItemPress]);
 
-  const refresh = async () => {
-    setRefreshing(true);
-    setFirstPageResult('none');
+  const { refreshControl, refreshing } = usePullToRefresh({
+    onRefresh: async () => {
+      setFirstPageResult('none');
 
-    try {
-      await fetchFirstPageOfPosts();
-      resetInsertedPosts();
-    } catch (e) {
-      console.error(e);
-      setFirstPageResult('error', GENERIC_ERROR_MESSAGE);
-    }
-    setRefreshing(false);
-  };
-
-  useEffect(() => {
-    refresh().catch(console.error);
-  }, []);
+      try {
+        await fetchFirstPageOfPosts();
+        resetInsertedPosts();
+      } catch (e) {
+        console.error(e);
+        setFirstPageResult('error', GENERIC_ERROR_MESSAGE);
+      }
+    },
+    refreshOnMount: true,
+  });
 
   const ListHeaderComponent = useCallback(
     () => <FirstPageRequestProgress style={styles.requestProgress} />,
@@ -179,9 +175,8 @@ export default function PostList({
         setLoadingNextPage(false);
       }}
       onEndReachedThreshold={0.5}
-      onRefresh={refresh}
       ref={listRef}
-      refreshing={refreshing}
+      refreshControl={refreshControl}
       renderItem={renderItem}
     />
   );
