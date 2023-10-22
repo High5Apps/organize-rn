@@ -25,7 +25,7 @@ const useStyles = () => {
     },
   });
 
-  return { styles };
+  return { colors, styles };
 };
 
 type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
@@ -49,7 +49,7 @@ export default function useRequestProgress() {
     }
   }
 
-  const { styles } = useStyles();
+  const { colors, styles } = useStyles();
 
   type Props = {
     style?: StyleProp<ViewStyle>;
@@ -59,7 +59,7 @@ export default function useRequestProgress() {
     const isVisible = (resultType !== 'none') || loading;
     return (
       <View style={isVisible && style}>
-        {loading && <ActivityIndicator />}
+        {loading && <ActivityIndicator color={colors.primary} />}
         {resultMessage && (
           <Text
             style={[
