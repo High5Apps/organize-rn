@@ -72,15 +72,15 @@ export default function NewConnectionScreen() {
       } = await createConnection({ jwt, sharerJwt });
 
       if (errorMessage) {
-        setResult('error', errorMessage);
+        setResult('error', { message: errorMessage });
       } else if (status === Status.Success) {
-        setResult('success', 'Reconnected successfully');
+        setResult('success', { message: 'Reconnected successfully' });
       } else {
-        setResult('success', 'Connected successfully');
+        setResult('success', { message: 'Connected successfully' });
       }
     } catch (error) {
       console.error(error);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
 
     setLoading(false);

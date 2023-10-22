@@ -86,7 +86,8 @@ export default function OrgReviewScreen({
       .then(async (userOrErrorMessage) => {
         setLoading(false);
         if (typeof userOrErrorMessage === 'string') {
-          setResult('error', userOrErrorMessage);
+          const message = userOrErrorMessage;
+          setResult('error', { message });
           return;
         }
         const user = userOrErrorMessage;

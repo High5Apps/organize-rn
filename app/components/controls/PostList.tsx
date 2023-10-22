@@ -130,7 +130,7 @@ export default function PostList({
         resetInsertedPosts();
       } catch (e) {
         console.error(e);
-        setFirstPageResult('error', GENERIC_ERROR_MESSAGE);
+        setFirstPageResult('error', { message: GENERIC_ERROR_MESSAGE });
       }
     },
     refreshOnMount: true,
@@ -166,11 +166,11 @@ export default function PostList({
         try {
           const { hasNextPage } = await fetchNextPageOfPosts();
           if (!hasNextPage) {
-            setNextPageResult('info', 'You reached the end');
+            setNextPageResult('info', { message: 'You reached the end' });
           }
         } catch (e) {
           console.error(e);
-          setNextPageResult('error', GENERIC_ERROR_MESSAGE);
+          setNextPageResult('error', { message: GENERIC_ERROR_MESSAGE });
         }
         setLoadingNextPage(false);
       }}

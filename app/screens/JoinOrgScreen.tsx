@@ -79,7 +79,8 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       });
 
       if (typeof userOrErrorMessage === 'string') {
-        setResult('error', userOrErrorMessage);
+        const message = userOrErrorMessage;
+        setResult('error', { message });
         return;
       }
 
@@ -88,7 +89,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       succeeded = true;
     } catch (error) {
       console.error(error);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
 
     if (succeeded) {

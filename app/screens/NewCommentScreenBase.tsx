@@ -86,13 +86,13 @@ export default function NewCommentScreenBase({
       });
 
       if (errorMessage !== undefined) {
-        setResult('error', errorMessage);
+        setResult('error', { message: errorMessage });
         return;
       }
 
       setBody(undefined);
       const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
-      setResult('success', message);
+      setResult('success', { message });
 
       const parentComment = getCachedComment(commentId);
       const comment: Comment = {
@@ -112,7 +112,7 @@ export default function NewCommentScreenBase({
       onCommentCreated?.(newCommentId);
     } catch (error) {
       console.error(error);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
   };
 

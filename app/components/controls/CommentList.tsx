@@ -148,11 +148,11 @@ export default function CommentList({
       const { isEmpty } = await updateComments();
       resetInsertedComments();
       if (isEmpty) {
-        setResult('info', 'Be the first to comment on this');
+        setResult('info', { message: 'Be the first to comment on this' });
       }
     } catch (e) {
       console.error(e);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
     setLoading(false);
   };

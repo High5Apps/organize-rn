@@ -30,12 +30,18 @@ const useStyles = () => {
 
 type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
 
+type SetResultOptions = {
+  message?: string;
+};
+
 export default function useRequestProgress() {
   const [loading, setLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
   const [resultType, setResultType] = useState<ResultType>('none');
 
-  function setResult(type: ResultType, message?: string) {
+  function setResult(type: ResultType, options: SetResultOptions = {}) {
+    const { message } = options;
+
     setResultType(type);
 
     if (type !== 'none') {

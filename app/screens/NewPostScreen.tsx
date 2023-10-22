@@ -151,12 +151,12 @@ export default function NewPostScreen({
       });
 
       if (errorMessage !== undefined) {
-        setResult('error', errorMessage);
+        setResult('error', { message: errorMessage });
         return;
       }
 
       resetForm();
-      setResult('success', 'Successfully created post');
+      setResult('success', { message: 'Successfully created post' });
 
       const post: Post = {
         body,
@@ -180,7 +180,7 @@ export default function NewPostScreen({
       navigation.goBack();
     } catch (error) {
       console.error(error);
-      setResult('error', GENERIC_ERROR_MESSAGE);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
   };
 

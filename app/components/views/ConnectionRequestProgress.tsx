@@ -50,7 +50,7 @@ export default function ConnectionRequestProgress({
 
         if (isErrorResponse(responseOrError)) {
           const { errorMessage } = ErrorResponse(responseOrError);
-          setResult('error', errorMessage);
+          setResult('error', { message: errorMessage });
           return;
         }
 
@@ -58,7 +58,7 @@ export default function ConnectionRequestProgress({
 
         if (currentUser && currentUser.org) {
           if (currentUser.org.id !== connectionPreview.org.id) {
-            setResult('error', OTHER_ORG_ERROR_MESSAGE);
+            setResult('error', { message: OTHER_ORG_ERROR_MESSAGE });
             return;
           }
         }
@@ -68,7 +68,7 @@ export default function ConnectionRequestProgress({
         onConnectionPreview?.(connectionPreview);
       } catch (error) {
         console.error(error);
-        setResult('error', GENERIC_ERROR_MESSAGE);
+        setResult('error', { message: GENERIC_ERROR_MESSAGE });
       }
     };
 
