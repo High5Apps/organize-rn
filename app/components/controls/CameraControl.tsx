@@ -80,17 +80,17 @@ export default function CameraControl({
     );
   }
 
-  const shoudlShowCamera = isAuthorized && cameraEnabled && !qrValue;
+  const shouldShowCamera = isAuthorized && cameraEnabled && !qrValue;
   const CameraCover = qrValue ? ReviewComponent : IconPromptComponent;
 
   return (
     <QRCamera
       buttonDisabled={!!qrValue}
-      enabled={shoudlShowCamera}
+      enabled={shouldShowCamera}
       onPress={onPress}
       setQRValue={setQRValue}
     >
-      {!shoudlShowCamera && CameraCover}
+      {!shouldShowCamera && CameraCover}
     </QRCamera>
   );
 }
