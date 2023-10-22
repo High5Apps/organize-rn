@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { CommentList, PrimaryButton, ScreenBackground } from '../components';
 import type { PostScreenProps } from '../navigation';
@@ -47,11 +47,20 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     navigation.setOptions({ title: capitalizedCategory });
   }, [navigation, post]);
 
+  const navigateToNewCommentScreen = useCallback(() => {
+    if (!post) {
+      console.warn('Expected a post to be present when commenting');
+      return;
+    }
+    navigation.navigate('NewComment', { postId: post.id });
+  }, [navigation, post]);
+
   return (
     <ScreenBackground>
       {post && (
         <CommentList
           containerStyle={styles.listContainerStyle}
+          emptyListMessageOnPress={navigateToNewCommentScreen}
           insertedComments={insertedComments}
           onPostChanged={cachePost}
           post={post}
@@ -60,13 +69,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
       <PrimaryButton
         iconName="add"
         label="Comment"
-        onPress={() => {
-          if (!post) {
-            console.warn('Expected a post to be present when commenting');
-            return;
-          }
-          navigation.navigate('NewComment', { postId: post.id });
-        }}
+        onPress={navigateToNewCommentScreen}
         style={styles.button}
       />
     </ScreenBackground>

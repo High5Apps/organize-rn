@@ -116,14 +116,15 @@ function useScrollToOffsetOnNewTopLevelComment(
 
 type Props = {
   containerStyle?: StyleProp<ViewStyle>;
+  emptyListMessageOnPress?: () => void;
   insertedComments?: InsertedComment[];
   onPostChanged?: (post: Post) => void;
   post: Post;
 };
 
 export default function CommentList({
-  containerStyle, insertedComments: maybeInsertedCommentIds, onPostChanged,
-  post,
+  containerStyle, emptyListMessageOnPress,
+  insertedComments: maybeInsertedCommentIds, onPostChanged, post,
 }: Props) {
   const listRef = useRef<FlatList<Comment>>(null);
 
@@ -148,7 +149,10 @@ export default function CommentList({
       const { isEmpty } = await updateComments();
       resetInsertedComments();
       if (isEmpty) {
-        setResult('info', { message: 'Be the first to comment on this' });
+        setResult('info', {
+          message: 'Be the first to comment on this',
+          onPress: emptyListMessageOnPress,
+        });
       }
     } catch (e) {
       console.error(e);
@@ -204,6 +208,7 @@ export default function CommentList({
 
 CommentList.defaultProps = {
   containerStyle: {},
+  emptyListMessageOnPress: () => {},
   insertedComments: [],
   onPostChanged: () => {},
 };
