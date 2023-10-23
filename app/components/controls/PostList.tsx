@@ -124,6 +124,7 @@ export default function PostList({
   const { refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
       setFirstPageResult('none');
+      setNextPageResult('none');
 
       try {
         await fetchFirstPageOfPosts();
