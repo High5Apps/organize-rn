@@ -1,8 +1,12 @@
 package com.organize;
+import static android.os.Build.VERSION.SDK_INT;
+
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyInfo;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -14,6 +18,7 @@ import com.facebook.react.bridge.ReactMethod;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -28,6 +33,7 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.InvalidKeySpecException;
 
 public class ECCModule extends ReactContextBaseJavaModule {
     private static final String ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore";
@@ -71,6 +77,7 @@ public class ECCModule extends ReactContextBaseJavaModule {
         }
 
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        logIsKeyInsideSecureHardware(keyPair.getPrivate());
         String publicKeyPem = toPemString(keyPair.getPublic());
         promise.resolve(publicKeyPem);
     }
@@ -147,6 +154,23 @@ public class ECCModule extends ReactContextBaseJavaModule {
         String signedMessageWithoutWhitespace = signedMessage.replaceAll("\\s","");
 
         promise.resolve(signedMessageWithoutWhitespace);
+    }
+
+    private void logIsKeyInsideSecureHardware(PrivateKey privateKey) {
+        if (SDK_INT < android.os.Build.VERSION_CODES.M) {
+            Log.i(getName(), "isKeyInsideSecureHardware: unknown. SDK_INT is below M: " + SDK_INT);
+            return;
+        }
+
+        try {
+            KeyFactory factory = KeyFactory.getInstance(privateKey.getAlgorithm(), ANDROID_KEY_STORE_PROVIDER);
+            KeyInfo keyInfo = factory.getKeySpec(privateKey, KeyInfo.class);
+            boolean isInsideSecureHardware = keyInfo.isInsideSecureHardware();
+            Log.i(getName(), "isKeyInsideSecureHardware: " + isInsideSecureHardware);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
+            Log.e(getName(), e.toString());
+            Log.i(getName(), "isKeyInsideSecureHardware: unknown. An error prevented the determination");
+        }
     }
 
     private KeyStore getAndroidKeyStore() throws KeyStoreException, CertificateException,
