@@ -28,7 +28,13 @@ export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
 
   useEffect(() => {
     if (refreshOnMount) {
-      wrappedOnRefresh().catch(console.error);
+      // HACK: This timeout fixes an internal issue in RefreshControl.
+      // The issue is iOS-only, and only happens when refreshing is true very
+      // soon after mount.
+      // https://github.com/facebook/react-native/issues/35779
+      setTimeout(() => {
+        wrappedOnRefresh().catch(console.error);
+      }, 100);
     }
   }, []);
 
