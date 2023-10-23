@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View,
+  ScrollView, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -39,6 +39,9 @@ const useStyles = () => {
       borderColor: colors.primary,
       borderStartWidth: containerPaddingStart,
     },
+    scrollViewContainer: {
+      maxHeight: 120,
+    },
     subtitle: {
       color: colors.labelSecondary,
       fontSize: font.sizes.subhead,
@@ -56,6 +59,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  compactView?: boolean;
   disabled?: boolean;
   enableBodyTextSelection?: boolean;
   item: Post;
@@ -64,7 +68,7 @@ type Props = {
 };
 
 function PostRow({
-  disabled, enableBodyTextSelection, item, onPress, onPostChanged,
+  compactView, disabled, enableBodyTextSelection, item, onPress, onPostChanged,
 }: Props) {
   const {
     createdAt, id, myVote, pseudonym, score, title, userId,
@@ -77,6 +81,22 @@ function PostRow({
 
   const { currentUser } = useUserContext();
   const highlighted = userId === currentUser?.id;
+
+  const TitleText = (
+    <Text
+      selectable={enableBodyTextSelection}
+      selectionColor={colors.primary}
+      style={styles.title}
+    >
+      {title}
+    </Text>
+  );
+
+  const TitleView = compactView ? (
+    <View style={styles.scrollViewContainer}>
+      <ScrollView persistentScrollbar>{TitleText}</ScrollView>
+    </View>
+  ) : TitleText;
 
   return (
     <TouchableHighlight
@@ -104,13 +124,7 @@ function PostRow({
           voteState={myVote}
         />
         <View style={styles.innerContainer}>
-          <Text
-            selectable={enableBodyTextSelection}
-            selectionColor={colors.primary}
-            style={styles.title}
-          >
-            {title}
-          </Text>
+          {TitleView}
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         {!disabled && <Icon name="chevron-right" style={styles.icon} />}
@@ -120,6 +134,7 @@ function PostRow({
 }
 
 PostRow.defaultProps = {
+  compactView: false,
   disabled: false,
   enableBodyTextSelection: false,
   onPress: () => {},
