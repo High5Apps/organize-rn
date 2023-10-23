@@ -159,14 +159,14 @@ export default function NewPostScreen({
       setResult('success', { message: 'Successfully created post' });
 
       const post: Post = {
-        body,
+        body: body?.trim(),
         createdAt: postCreatedAt,
         category: postCategory,
         id: postId,
         myVote: 1,
         pseudonym: currentUser.pseudonym,
         score: 1,
-        title: title!,
+        title: title!.trim(),
         userId: currentUser.id,
       };
       cachePost(post);

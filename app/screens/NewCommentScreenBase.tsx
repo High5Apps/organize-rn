@@ -96,7 +96,7 @@ export default function NewCommentScreenBase({
 
       const parentComment = getCachedComment(commentId);
       const comment: Comment = {
-        body,
+        body: body.trim(),
         createdAt: new Date().getTime(),
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId,
