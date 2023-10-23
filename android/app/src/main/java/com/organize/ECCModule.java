@@ -30,14 +30,14 @@ import java.security.cert.CertificateException;
 import java.security.spec.ECGenParameterSpec;
 
 public class ECCModule extends ReactContextBaseJavaModule {
-    private String ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore";
-    private String P256_CURVE = "secp256r1";
-    private String PEM_PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----\n";
-    private String PEM_PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----\n";
-    private String MODULE_NAME = "ECCModule";
-    private String ERROR_CODE = "E_ECC";
-    private String SIGNATURE_ALGORITHM = "SHA256withECDSA";
-    private int P256_PARAMETER_SIZE = 32;
+    private static final String ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore";
+    private static final String P256_CURVE = "secp256r1";
+    private static final String PEM_PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----\n";
+    private static final String PEM_PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----\n";
+    private static final String MODULE_NAME = "ECCModule";
+    private static final String ERROR_CODE = "E_ECC";
+    private static final String SIGNATURE_ALGORITHM = "SHA256withECDSA";
+    private static final int P256_PARAMETER_SIZE = 32;
 
     ECCModule(ReactApplicationContext context) {
         super(context);
