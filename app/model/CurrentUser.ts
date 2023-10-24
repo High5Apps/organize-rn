@@ -50,6 +50,7 @@ async function createCurrentUser({
   const partialUser = User({ authenticationKeyId, id: userId } as any);
 
   let orgId: string;
+  let encryptedGroupKey;
   if (maybeOrgId) {
     orgId = maybeOrgId;
   } else {
@@ -68,6 +69,12 @@ async function createCurrentUser({
       }
       return GENERIC_ERROR_MESSAGE;
     }
+
+    const groupKey = keys.aes.create();
+    const { base64EncodedEncryptedMessage } = await keys.rsa.encrypt({
+      publicKeyId: localEncryptionKeyId, message: groupKey,
+    });
+    encryptedGroupKey = base64EncodedEncryptedMessage;
   }
 
   const org = {
@@ -111,6 +118,7 @@ async function createCurrentUser({
 
   const user = User({
     authenticationKeyId,
+    encryptedGroupKey,
     id: userId,
     localEncryptionKeyId,
     org,

@@ -7,6 +7,7 @@ export const defaultAuthTokenTTLSeconds = 60;
 
 type Props = {
   authenticationKeyId?: string;
+  encryptedGroupKey?: string;
   id?: string;
   localEncryptionKeyId?: string;
   org?: Org;
@@ -21,8 +22,8 @@ type CreateAuthTokenProps = {
 };
 
 export default function User({
-  authenticationKeyId, id: initialId, localEncryptionKeyId, org, orgId,
-  pseudonym,
+  authenticationKeyId, encryptedGroupKey, id: initialId, localEncryptionKeyId,
+  org, orgId, pseudonym,
 }: Props) {
   const userData: UserData = {
     id: initialId || uuidv4(),
@@ -88,6 +89,7 @@ export default function User({
     authenticationKeyId,
     createAuthToken,
     deleteKeys,
+    encryptedGroupKey,
     equals,
     localEncryptionKeyId,
     org,

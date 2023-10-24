@@ -1,9 +1,17 @@
 import { RSAKeychain } from 'react-native-rsa-native';
 import { v4 as uuidv4 } from 'uuid';
 import ECCKeychain from './ECCKeychain';
+import Secret from './Secret';
+
+const KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
 
 export default function Keys() {
   return {
+    aes: {
+      create() {
+        return Secret().base64(KEY_STRENGTH_256_BIT_IN_BYTES);
+      },
+    },
     ecc: {
       async create() {
         const publicKeyId = uuidv4();
