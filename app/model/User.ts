@@ -8,6 +8,7 @@ export const defaultAuthTokenTTLSeconds = 60;
 type Props = {
   authenticationKeyId?: string;
   id?: string;
+  localEncryptionKeyId?: string;
   org?: Org;
   orgId: string;
   pseudonym: string;
@@ -20,13 +21,15 @@ type CreateAuthTokenProps = {
 };
 
 export default function User({
-  authenticationKeyId, id: initialId, org, orgId, pseudonym,
+  authenticationKeyId, id: initialId, localEncryptionKeyId, org, orgId,
+  pseudonym,
 }: Props) {
   const userData: UserData = {
     id: initialId || uuidv4(),
     orgId,
     pseudonym,
   };
+  const keys = Keys();
 
   async function createAuthToken({
     currentTime: maybeCurrentTime, scope, timeToLiveSeconds: maybeTTL,
@@ -42,7 +45,7 @@ export default function User({
 
     const signer = (
       { message }: { message: string },
-    ) => Keys().ecc.sign({ message, publicKeyId: authenticationKeyId });
+    ) => keys.ecc.sign({ message, publicKeyId: authenticationKeyId });
 
     const expirationSecondsSinceEpoch = (
       (currentTime / 1000) + timeToLiveSeconds
@@ -58,11 +61,19 @@ export default function User({
     return jwtString;
   }
 
-  async function deleteKeyPair() {
+  async function deleteKeys() {
     let succeeded = false;
 
-    if (authenticationKeyId) {
-      succeeded = await Keys().ecc.delete(authenticationKeyId);
+    if (authenticationKeyId && localEncryptionKeyId) {
+      try {
+        const results = await Promise.all([
+          keys.ecc.delete(authenticationKeyId),
+          keys.rsa.delete(localEncryptionKeyId),
+        ]);
+        succeeded = results.every((result) => result);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     return succeeded;
@@ -76,8 +87,9 @@ export default function User({
   return {
     authenticationKeyId,
     createAuthToken,
-    deleteKeyPair,
+    deleteKeys,
     equals,
+    localEncryptionKeyId,
     org,
     ...userData,
   };

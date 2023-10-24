@@ -129,16 +129,16 @@ describe('useCurrentUser', () => {
   });
 
   describe('logOut', () => {
-    const mockDeleteKeyPair = jest.fn();
+    const mockDeleteKeys = jest.fn();
     let currentUserId: string;
     beforeEach(async () => {
-      const user = { ...fakeUser, deleteKeyPair: mockDeleteKeyPair };
+      const user = { ...fakeUser, deleteKeys: mockDeleteKeys };
       const result = await renderTestComponent({ shouldLogOut: true, user });
       currentUserId = result.currentUserId;
     });
 
-    it('should delete key pair', () => {
-      expect(mockDeleteKeyPair).toBeCalled();
+    it('should delete keys', () => {
+      expect(mockDeleteKeys).toBeCalled();
     });
 
     it('should clear storedUser', () => {

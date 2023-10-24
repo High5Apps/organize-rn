@@ -45,6 +45,7 @@ export function isUserData(object: unknown): object is UserData {
 
 export type CurrentUserData = UserData & {
   authenticationKeyId: string;
+  localEncryptionKey: string;
   org: Org;
 };
 

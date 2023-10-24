@@ -24,9 +24,11 @@ async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
+  const keys = Keys();
   const {
     publicKey: authenticationKey, publicKeyId: authenticationKeyId,
-  } = await Keys().ecc.create();
+  } = await keys.ecc.create();
+  const { publicKeyId: localEncryptionKeyId } = await keys.rsa.create();
 
   let userId: string;
   try {
@@ -108,7 +110,12 @@ async function createCurrentUser({
   }
 
   const user = User({
-    authenticationKeyId, id: userId, org, orgId, pseudonym,
+    authenticationKeyId,
+    id: userId,
+    localEncryptionKeyId,
+    org,
+    orgId,
+    pseudonym,
   });
   return user;
 }
@@ -120,7 +127,7 @@ export default function useCurrentUser(user: UserType | null = null) {
   const [initialized, setInitialized] = useState(false);
 
   const logOut = async () => {
-    await currentUser?.deleteKeyPair();
+    await currentUser?.deleteKeys();
     setStoredUser(null);
     setCurrentUser(null);
   };
