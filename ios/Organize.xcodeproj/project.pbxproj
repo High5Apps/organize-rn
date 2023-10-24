@@ -18,6 +18,10 @@
 		700E13D2FFAF4BC0925F54DA /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CFE0D41D1449FABAF2895E /* OpenSans-ExtraBoldItalic.ttf */; };
 		7632F1C3B4485B79217ED989 /* libPods-Organize-OrganizeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBAA0416F8B3C03236CD2C6 /* libPods-Organize-OrganizeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C21359CF2AE7DF780063529B /* AESModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C21359CE2AE7DF780063529B /* AESModule.m */; };
+		C21359D02AE7DF780063529B /* AESModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C21359CE2AE7DF780063529B /* AESModule.m */; };
+		C21359D22AE7E06D0063529B /* AESModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21359D12AE7E06D0063529B /* AESModule.swift */; };
+		C21359D32AE7E06D0063529B /* AESModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21359D12AE7E06D0063529B /* AESModule.swift */; };
 		C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0329CC51860062FF5C /* ECCModule.m */; };
 		C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
 		C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
@@ -75,6 +79,8 @@
 		885FAE2799144F0381AFAF9B /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		B4E6D6674628499FAD34DCDC /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		BC44650402388DDA9EA291E9 /* Pods-Organize-OrganizeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize-OrganizeTests.release.xcconfig"; path = "Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests.release.xcconfig"; sourceTree = "<group>"; };
+		C21359CE2AE7DF780063529B /* AESModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AESModule.m; sourceTree = "<group>"; };
+		C21359D12AE7E06D0063529B /* AESModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESModule.swift; sourceTree = "<group>"; };
 		C24A8C0329CC51860062FF5C /* ECCModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECCModule.m; sourceTree = "<group>"; };
 		C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Organize-Bridging-Header.h"; sourceTree = "<group>"; };
 		C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OrganizeTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -144,6 +150,8 @@
 				C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */,
 				C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */,
 				C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */,
+				C21359CE2AE7DF780063529B /* AESModule.m */,
+				C21359D12AE7E06D0063529B /* AESModule.swift */,
 				C24A8C0329CC51860062FF5C /* ECCModule.m */,
 				C24A8C0A29CC58E70062FF5C /* ECCModule.swift */,
 				C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */,
@@ -502,6 +510,8 @@
 				C2FB820829EFFB78006822B3 /* AppDelegate.mm in Sources */,
 				C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */,
 				C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
+				C21359D32AE7E06D0063529B /* AESModule.swift in Sources */,
+				C21359D02AE7DF780063529B /* AESModule.m in Sources */,
 				C264D8CA29CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
 				C264D8CD29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */,
 				C264D8C729CC931A0066583C /* KeyStoreError.swift in Sources */,
@@ -512,7 +522,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C21359D22AE7E06D0063529B /* AESModule.swift in Sources */,
 				C264D8C329CC92F80066583C /* SecKeyStore.swift in Sources */,
+				C21359CF2AE7DF780063529B /* AESModule.m in Sources */,
 				C264D8C929CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
 				C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
