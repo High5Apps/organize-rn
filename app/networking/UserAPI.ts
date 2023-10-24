@@ -7,16 +7,16 @@ import {
 } from './types';
 
 type CreateProps = {
-  publicKey: string;
+  authenticationKey: string;
 };
 
 export async function createUser({
-  publicKey,
+  authenticationKey,
 }: CreateProps): Promise<string | ErrorResponseType> {
   const response = await post({
     uri: usersURI,
     bodyObject: {
-      public_key_bytes: publicKey,
+      public_key_bytes: authenticationKey,
     },
   });
 

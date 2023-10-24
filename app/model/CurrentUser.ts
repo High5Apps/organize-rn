@@ -24,11 +24,13 @@ async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
-  const { publicKey, publicKeyId } = await Keys().ecc.create();
+  const {
+    publicKey: authenticationKey, publicKeyId: authenticationKeyId,
+  } = await Keys().ecc.create();
 
   let userId: string;
   try {
-    const response = await createUser({ publicKey });
+    const response = await createUser({ authenticationKey });
 
     if (isErrorResponse(response)) {
       return ErrorResponse(response).errorMessage;
@@ -43,7 +45,7 @@ async function createCurrentUser({
   }
 
   // `as any` is needed since users are required to have an Org and pseudonym
-  const partialUser = User({ id: userId, publicKeyId } as any);
+  const partialUser = User({ authenticationKeyId, id: userId } as any);
 
   let orgId: string;
   if (maybeOrgId) {
@@ -106,7 +108,7 @@ async function createCurrentUser({
   }
 
   const user = User({
-    id: userId, org, orgId, pseudonym, publicKeyId,
+    authenticationKeyId, id: userId, org, orgId, pseudonym,
   });
   return user;
 }

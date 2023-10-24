@@ -44,15 +44,15 @@ export function isUserData(object: unknown): object is UserData {
 }
 
 export type CurrentUserData = UserData & {
+  authenticationKeyId: string;
   org: Org;
-  publicKeyId: string;
 };
 
 export function isCurrentUserData(object: unknown): object is CurrentUserData {
   if (!isUserData(object)) { return false; }
   const currentUserData = (object as CurrentUserData);
   return isOrg(currentUserData.org)
-    && currentUserData?.publicKeyId?.length > 0;
+    && currentUserData?.authenticationKeyId?.length > 0;
 }
 
 export type QRCodeValue = {

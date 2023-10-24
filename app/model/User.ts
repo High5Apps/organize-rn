@@ -6,11 +6,11 @@ import type { Org, Scope, UserData } from './types';
 export const defaultAuthTokenTTLSeconds = 60;
 
 type Props = {
+  authenticationKeyId?: string;
   id?: string;
   org?: Org;
   orgId: string;
   pseudonym: string;
-  publicKeyId?: string;
 };
 
 type CreateAuthTokenProps = {
@@ -20,7 +20,7 @@ type CreateAuthTokenProps = {
 };
 
 export default function User({
-  id: initialId, org, orgId, pseudonym, publicKeyId,
+  authenticationKeyId, id: initialId, org, orgId, pseudonym,
 }: Props) {
   const userData: UserData = {
     id: initialId || uuidv4(),
@@ -31,8 +31,10 @@ export default function User({
   async function createAuthToken({
     currentTime: maybeCurrentTime, scope, timeToLiveSeconds: maybeTTL,
   }: CreateAuthTokenProps): Promise<string> {
-    if (!publicKeyId) {
-      throw new Error('Can only create auth token for users with a key pair');
+    if (!authenticationKeyId) {
+      throw new Error(
+        'Can only create auth token for users with an authenticationKeyId',
+      );
     }
 
     const currentTime = maybeCurrentTime ?? new Date().getTime();
@@ -40,7 +42,7 @@ export default function User({
 
     const signer = (
       { message }: { message: string },
-    ) => Keys().ecc.sign({ message, publicKeyId });
+    ) => Keys().ecc.sign({ message, publicKeyId: authenticationKeyId });
 
     const expirationSecondsSinceEpoch = (
       (currentTime / 1000) + timeToLiveSeconds
@@ -59,8 +61,8 @@ export default function User({
   async function deleteKeyPair() {
     let succeeded = false;
 
-    if (publicKeyId) {
-      succeeded = await Keys().ecc.delete(publicKeyId);
+    if (authenticationKeyId) {
+      succeeded = await Keys().ecc.delete(authenticationKeyId);
     }
 
     return succeeded;
@@ -72,11 +74,11 @@ export default function User({
   }
 
   return {
+    authenticationKeyId,
     createAuthToken,
     deleteKeyPair,
     equals,
     org,
-    publicKeyId,
     ...userData,
   };
 }

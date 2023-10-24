@@ -23,16 +23,16 @@ export const fakeOtherUser = User({
 });
 
 export const fakeCurrentUser = User({
+  authenticationKeyId: 'fakeAuthenticationKeyId',
   org: fakeOrg,
   orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
-  publicKeyId: 'fakeKeyId',
 });
 export const fakeOtherCurrentUser = User({
+  authenticationKeyId: 'otherFakeAuthenticationKeyId',
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,
   pseudonym: 'Glorious Stingray',
-  publicKeyId: 'otherFakeKeyId',
 });
 
 export const fakeJwtString = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2ODE2NTYzMzcsInNjcCI6ImNyZWF0ZTpjb25uZWN0aW9ucyIsInN1YiI6ImQwMjFjMWRkLWVhMDQtNDNmOS04MDg3LWEwZDcxNzJiZGVmMiJ9.t_Adk17S4KFhD7XNFn5Bf6Y2MJqOrghiFBKQRrnRdrOiFoFL-qhUu0HyEgviaono-aOzkdGewmx0w7labcdefg';
