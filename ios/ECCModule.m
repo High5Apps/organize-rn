@@ -11,13 +11,13 @@
 @interface RCT_EXTERN_MODULE(ECCModule, NSObject)
 
 RCT_EXTERN_METHOD(
-  generateKeys: (NSString *) publicKeyId
+  deletePrivateKey: (NSString *) publicKeyId
   resolver: (RCTPromiseResolveBlock) resolve
   rejecter: (RCTPromiseRejectBlock) reject
 );
 
 RCT_EXTERN_METHOD(
-  deletePrivateKey: (NSString *) publicKeyId
+  generateKeys: (NSString *) publicKeyId
   resolver: (RCTPromiseResolveBlock) resolve
   rejecter: (RCTPromiseRejectBlock) reject
 );

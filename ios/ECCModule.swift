@@ -16,6 +16,32 @@ class ECCModule: NSObject {
   static func requiresMainQueueSetup() -> Bool { false }
 
   @objc
+  func deletePrivateKey(_ publicKeyId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    if SecureEnclave.isAvailable {
+      print("Deleting SecureEnclave P256 private key with ID \(publicKeyId)")
+
+      do {
+        try GenericPasswordStore().deleteKey(label: publicKeyId)
+      } catch {
+        reject(ECC_ERROR_CODE, "Failed to delete SecureEnclave PrivateKey from Keychain", error)
+        return
+      }
+
+    } else {
+      print("Deleting P256 public key with ID \(publicKeyId)")
+
+      do {
+        try SecKeyStore().deleteKey(label: publicKeyId)
+      } catch {
+        reject(ECC_ERROR_CODE, "Failed to delete PrivateKey from Keychain", error)
+        return
+      }
+    }
+
+    resolve(true)
+  }
+
+  @objc
   func generateKeys(_ publicKeyId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     let publicKeyPem: String
     if SecureEnclave.isAvailable {
@@ -49,32 +75,6 @@ class ECCModule: NSObject {
     }
 
     resolve(publicKeyPem)
-  }
-
-  @objc
-  func deletePrivateKey(_ publicKeyId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-    if SecureEnclave.isAvailable {
-      print("Deleting SecureEnclave P256 private key with ID \(publicKeyId)")
-
-      do {
-        try GenericPasswordStore().deleteKey(label: publicKeyId)
-      } catch {
-        reject(ECC_ERROR_CODE, "Failed to delete SecureEnclave PrivateKey from Keychain", error)
-        return
-      }
-
-    } else {
-      print("Deleting P256 public key with ID \(publicKeyId)")
-
-      do {
-        try SecKeyStore().deleteKey(label: publicKeyId)
-      } catch {
-        reject(ECC_ERROR_CODE, "Failed to delete PrivateKey from Keychain", error)
-        return
-      }
-    }
-
-    resolve(true)
   }
 
   @objc

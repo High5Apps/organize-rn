@@ -54,6 +54,22 @@ public class ECCModule extends ReactContextBaseJavaModule {
         return MODULE_NAME;
     }
 
+    @ReactMethod
+    public void deletePrivateKey(String publicKeyId, Promise promise) {
+        try {
+            KeyStore keystore = getAndroidKeyStore();
+            keystore.deleteEntry(publicKeyId);
+        } catch (KeyStoreException
+                 | CertificateException
+                 | IOException
+                 | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+        promise.resolve(true);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @ReactMethod
     public void generateKeys(String publicKeyId, Promise promise) {
@@ -80,22 +96,6 @@ public class ECCModule extends ReactContextBaseJavaModule {
         logIsKeyInsideSecureHardware(keyPair.getPrivate());
         String publicKeyPem = toPemString(keyPair.getPublic());
         promise.resolve(publicKeyPem);
-    }
-
-    @ReactMethod
-    public void deletePrivateKey(String publicKeyId, Promise promise) {
-        try {
-            KeyStore keystore = getAndroidKeyStore();
-            keystore.deleteEntry(publicKeyId);
-        } catch (KeyStoreException
-                | CertificateException
-                | IOException
-                | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            promise.reject(e);
-            return;
-        }
-        promise.resolve(true);
     }
 
     @ReactMethod

@@ -5,6 +5,11 @@ interface PublicKey {
   public: string;
 }
 
+async function deletePrivateKey(publicKeyId: string): Promise<boolean> {
+  const succeeded = await ECCModule.deletePrivateKey(publicKeyId);
+  return succeeded;
+}
+
 async function generateKeys(publicKeyId: string): Promise<PublicKey> {
   const publicKeyValue = await ECCModule.generateKeys(publicKeyId);
   const publicKey: PublicKey = {
@@ -12,11 +17,6 @@ async function generateKeys(publicKeyId: string): Promise<PublicKey> {
     public: publicKeyValue,
   };
   return publicKey;
-}
-
-async function deletePrivateKey(publicKeyId: string): Promise<boolean> {
-  const succeeded = await ECCModule.deletePrivateKey(publicKeyId);
-  return succeeded;
 }
 
 async function getPublicKey(publicKeyId: string): Promise<string> {
@@ -30,8 +30,8 @@ async function sign(publicKeyId: string, message: string): Promise<string> {
 }
 
 export default {
-  generateKeys,
   deletePrivateKey,
+  generateKeys,
   getPublicKey,
   sign,
 };

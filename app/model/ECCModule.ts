@@ -3,8 +3,8 @@ import { NativeModules } from 'react-native';
 const { ECCModule } = NativeModules;
 
 export interface ECCInterface {
-  generateKeys(publicKeyId: string): Promise<string>;
   deletePrivateKey(publicKeyId: string): Promise<boolean>;
+  generateKeys(publicKeyId: string): Promise<string>;
   getPublicKey(publicKeyId: string): Promise<string>;
   sign(publicKeyId: string, message: string): Promise<string>;
 }
