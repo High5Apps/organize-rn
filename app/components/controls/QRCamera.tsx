@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import {
   Camera, Code, useCameraDevice, useCodeScanner,
 } from 'react-native-vision-camera';
-import { QRCodeDataParser } from '../../model';
+import { QRCodeDataParser, isDefined, isNonNull } from '../../model';
 import { ErrorMessage, FadeInView } from '../views';
 import FrameButton from './FrameButton';
 import { SetQRValue } from './types';
@@ -21,21 +21,15 @@ export default function QRCamera({
   const codeScanner = useCodeScanner({
     codeTypes: ['qr'],
     onCodeScanned: (codes: Code[]) => {
-      const contentDataUrls: string[] = [];
-      codes.forEach((code) => {
-        const url = code.value;
-        if (url) {
-          contentDataUrls.push(url);
-        }
-      });
-      const urlSet = new Set(contentDataUrls);
-      const uniqueUrls = [...urlSet];
+      const scannedValues = codes.map((code) => code.value).filter(isDefined);
+      const uniqueScannedValues = [...new Set(scannedValues)];
       try {
-        uniqueUrls.forEach((url) => {
-          const qrValue = QRCodeDataParser({ url }).parse();
-          if (!qrValue) { return; }
-          setQRValue(qrValue);
-        });
+        const maybeFirstQRValue = uniqueScannedValues.map(
+          (scannedValue) => QRCodeDataParser({ url: scannedValue }).parse(),
+        ).filter(isNonNull).at(0);
+        if (maybeFirstQRValue) {
+          setQRValue(maybeFirstQRValue);
+        }
       } catch (e) {
         console.warn(e);
       }

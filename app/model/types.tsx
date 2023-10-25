@@ -124,4 +124,8 @@ export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
 }
 
+export function isNonNull<T>(argument: T | null): argument is T {
+  return argument !== null;
+}
+
 export type PostSort = 'new' | 'old' | 'top' | 'hot';
