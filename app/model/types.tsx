@@ -59,12 +59,13 @@ export function isCurrentUserData(object: unknown): object is CurrentUserData {
 }
 
 export type QRCodeValue = {
+  groupKey: string;
   jwt: string;
 };
 
 export function isQRCodeValue(object: unknown): object is QRCodeValue {
   const qrCodeValue = (object as QRCodeValue);
-  return qrCodeValue?.jwt?.length > 0;
+  return (qrCodeValue?.jwt?.length > 0) && (qrCodeValue?.groupKey?.length > 0);
 }
 
 export type SettingsItem = {
