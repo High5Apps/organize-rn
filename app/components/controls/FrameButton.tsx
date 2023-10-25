@@ -17,7 +17,6 @@ const useStyles = () => {
       borderColor: colors.primary,
       borderWidth: spacing.s,
       justifyContent: 'center',
-      overflow: 'hidden',
       ...shadows.elevation4,
     },
     pressed: {

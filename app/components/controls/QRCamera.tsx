@@ -43,7 +43,9 @@ export default function QRCamera({
     content = (
       // This View is required as a workaround on iOS until this issue is fixed:
       // https://github.com/mrousavy/react-native-vision-camera/issues/1964
-      <View style={StyleSheet.absoluteFill}>
+      // The overflow: 'hidden' is a required fix rnvc until pulling past 3.4.0
+      // https://github.com/mrousavy/react-native-vision-camera/pull/2001
+      <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]}>
         <Camera
           codeScanner={codeScanner}
           device={device}
