@@ -24,12 +24,14 @@ export const fakeOtherUser = User({
 
 export const fakeCurrentUser = User({
   authenticationKeyId: 'fakeAuthenticationKeyId',
+  localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
   org: fakeOrg,
   orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
 });
 export const fakeOtherCurrentUser = User({
   authenticationKeyId: 'otherFakeAuthenticationKeyId',
+  localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,
   pseudonym: 'Glorious Stingray',
