@@ -5,9 +5,7 @@
 // origin below to use 'http://10.0.2.2:3000'. For more info, see
 // https://developer.android.com/studio/run/emulator-networking#networkaddresses
 
-export const origin = (
-  __DEV__ ? 'http://localhost:3000' : 'https://getorganize.app'
-);
+const origin = __DEV__ ? 'http://localhost:3000' : 'https://getorganize.app';
 
 const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;

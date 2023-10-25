@@ -26,7 +26,7 @@ export default function QRCodeControl() {
   const refreshedQRCodeData = async () => {
     const currentTime = new Date().getTime();
     const formatter = QRCodeDataFormatter({ currentTime, currentUser });
-    return formatter.toUrl();
+    return formatter.toString();
   };
 
   if (revealed) {

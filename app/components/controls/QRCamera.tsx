@@ -25,7 +25,7 @@ export default function QRCamera({
       const uniqueScannedValues = [...new Set(scannedValues)];
       try {
         const maybeFirstQRValue = uniqueScannedValues.map(
-          (scannedValue) => QRCodeDataParser({ url: scannedValue }).parse(),
+          (scannedValue) => QRCodeDataParser({ input: scannedValue }).parse(),
         ).filter(isNonNull).at(0);
         if (maybeFirstQRValue) {
           setQRValue(maybeFirstQRValue);
