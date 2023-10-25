@@ -85,9 +85,22 @@ export default function User({
       && user.orgId === userData.orgId;
   }
 
+  async function decryptGroupKey() {
+    if (!localEncryptionKeyId || !encryptedGroupKey) {
+      throw new Error('Can only decryptGroupKey for users with a localEncryptionKeyId and encryptedGroupKey');
+    }
+
+    const { message: groupKey } = await keys.rsa.decrypt({
+      publicKeyId: localEncryptionKeyId,
+      base64EncodedEncryptedMessage: encryptedGroupKey,
+    });
+    return groupKey;
+  }
+
   return {
     authenticationKeyId,
     createAuthToken,
+    decryptGroupKey,
     deleteKeys,
     encryptedGroupKey,
     equals,
