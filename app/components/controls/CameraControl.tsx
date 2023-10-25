@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
+import { useIsFocused } from '@react-navigation/native';
 import { QRCodeValue, useAppState } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
@@ -41,17 +42,18 @@ export default function CameraControl({
   ] = useState<CameraPermissionStatus>('not-determined');
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
-  const appState = useAppState();
+  const isAppActive = useAppState() === 'active';
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (appState !== 'active') { return; }
+    if (!isAppActive) { return; }
 
     const setPermissions = async () => {
       const permission = await Camera.getCameraPermissionStatus();
       setCameraPermission(permission);
     };
     setPermissions().catch(console.error);
-  }, [appState]);
+  }, [isAppActive]);
 
   useEffect(() => {
     setCameraEnabled(!qrValue);
@@ -80,7 +82,9 @@ export default function CameraControl({
     );
   }
 
-  const shouldShowCamera = isAuthorized && cameraEnabled && !qrValue;
+  const shouldShowCamera = (
+    isAuthorized && cameraEnabled && isAppActive && isFocused && !qrValue
+  );
   const CameraCover = qrValue ? ReviewComponent : IconPromptComponent;
 
   return (
