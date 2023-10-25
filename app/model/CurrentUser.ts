@@ -9,21 +9,23 @@ import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
 
 export type CreateCurrentUserProps = {
-  orgId?: string;
-  sharerJwt?: string;
+  groupKey?: never;
+  orgId?: never;
+  sharerJwt?: never;
+  unpublishedOrg: UnpublishedOrg;
+} | {
+  groupKey: string;
+  orgId: string;
+  sharerJwt: string;
   unpublishedOrg: UnpublishedOrg;
 };
 
 async function createCurrentUser({
+  groupKey: maybeGroupKey,
   orgId: maybeOrgId,
   sharerJwt: maybeSharerJwt,
   unpublishedOrg,
 }: CreateCurrentUserProps): Promise<UserType | string> {
-  if ((maybeOrgId && !maybeSharerJwt) || (!maybeOrgId && maybeSharerJwt)) {
-    console.error('Expected both sharerJwt and orgId if either is included');
-    return GENERIC_ERROR_MESSAGE;
-  }
-
   const keys = Keys();
   const {
     publicKey: authenticationKey, publicKeyId: authenticationKeyId,
@@ -53,6 +55,11 @@ async function createCurrentUser({
   let encryptedGroupKey;
   if (maybeOrgId) {
     orgId = maybeOrgId;
+
+    const { base64EncodedEncryptedMessage } = await keys.rsa.encrypt({
+      publicKeyId: localEncryptionKeyId, message: maybeGroupKey,
+    });
+    encryptedGroupKey = base64EncodedEncryptedMessage;
   } else {
     try {
       const jwt = await partialUser.createAuthToken({ scope: '*' });

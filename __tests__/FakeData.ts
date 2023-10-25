@@ -24,6 +24,7 @@ export const fakeOtherUser = User({
 
 export const fakeCurrentUser = User({
   authenticationKeyId: 'fakeAuthenticationKeyId',
+  encryptedGroupKey: 'fakeEncryptedGroupKey',
   localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
   org: fakeOrg,
   orgId: fakeOrg.id,
@@ -31,6 +32,7 @@ export const fakeCurrentUser = User({
 });
 export const fakeOtherCurrentUser = User({
   authenticationKeyId: 'otherFakeAuthenticationKeyId',
+  encryptedGroupKey: 'otherFakeEncryptedGroupKey',
   localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,

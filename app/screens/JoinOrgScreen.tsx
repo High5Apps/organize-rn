@@ -67,7 +67,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     setLoading(true);
     setResult('none');
 
-    const { jwt: sharerJwt } = qrValue;
+    const { groupKey, jwt: sharerJwt } = qrValue;
     const { org } = connectionPreview;
     const { id: orgId, ...unpublishedOrg } = org;
 
@@ -75,7 +75,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     let succeeded = false;
     try {
       const userOrErrorMessage = await createCurrentUser({
-        orgId, unpublishedOrg, sharerJwt,
+        groupKey, orgId, unpublishedOrg, sharerJwt,
       });
 
       if (typeof userOrErrorMessage === 'string') {

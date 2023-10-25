@@ -45,6 +45,7 @@ export function isUserData(object: unknown): object is UserData {
 
 export type CurrentUserData = UserData & {
   authenticationKeyId: string;
+  encryptedGroupKey: string;
   localEncryptionKeyId: string;
   org: Org;
 };
@@ -55,6 +56,7 @@ export function isCurrentUserData(object: unknown): object is CurrentUserData {
   return currentUserData
     && isOrg(currentUserData.org)
     && currentUserData.authenticationKeyId?.length > 0
+    && currentUserData.encryptedGroupKey?.length > 0
     && currentUserData.localEncryptionKeyId?.length > 0;
 }
 
