@@ -1,16 +1,11 @@
-import AESModule from './AESModule';
+import AESModule, { EncryptReturn } from './AESModule';
 
 async function encrypt(
   wrappedKey: string,
   wrapperKeyId: string,
   message: string,
-): Promise<string> {
-  const base64EncryptedMessage = await AESModule.encrypt(
-    wrappedKey,
-    wrapperKeyId,
-    message,
-  );
-  return base64EncryptedMessage;
+): Promise<EncryptReturn> {
+  return AESModule.encrypt(wrappedKey, wrapperKeyId, message);
 }
 
 export default {
