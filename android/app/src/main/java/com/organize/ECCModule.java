@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -132,7 +133,7 @@ public class ECCModule extends ReactContextBaseJavaModule {
             PrivateKey privateKey = ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
             Signature s = Signature.getInstance(SIGNATURE_ALGORITHM);
             s.initSign(privateKey);
-            s.update(message.getBytes());
+            s.update(message.getBytes(StandardCharsets.UTF_8));
             byte[] signatureASN1 = s.sign();
             signature = convertFromASN1toRS(signatureASN1, P256_PARAMETER_SIZE);
         } catch (KeyStoreException
