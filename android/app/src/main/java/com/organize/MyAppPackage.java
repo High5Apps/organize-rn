@@ -20,6 +20,7 @@ public class MyAppPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new ECCModule(reactContext));
         modules.add(new AESModule(reactContext));
+        modules.add(new RSAModule(reactContext));
         return modules;
     }
 }

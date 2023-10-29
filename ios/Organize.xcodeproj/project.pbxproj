@@ -22,6 +22,10 @@
 		C21359D02AE7DF780063529B /* AESModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C21359CE2AE7DF780063529B /* AESModule.m */; };
 		C21359D22AE7E06D0063529B /* AESModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21359D12AE7E06D0063529B /* AESModule.swift */; };
 		C21359D32AE7E06D0063529B /* AESModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21359D12AE7E06D0063529B /* AESModule.swift */; };
+		C2464F762AEE404300884EB6 /* RSAModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C2464F752AEE404300884EB6 /* RSAModule.m */; };
+		C2464F772AEE404300884EB6 /* RSAModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C2464F752AEE404300884EB6 /* RSAModule.m */; };
+		C2464F792AEE407A00884EB6 /* RSAModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2464F782AEE407A00884EB6 /* RSAModule.swift */; };
+		C2464F7A2AEE407A00884EB6 /* RSAModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2464F782AEE407A00884EB6 /* RSAModule.swift */; };
 		C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0329CC51860062FF5C /* ECCModule.m */; };
 		C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
 		C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
@@ -81,6 +85,8 @@
 		BC44650402388DDA9EA291E9 /* Pods-Organize-OrganizeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize-OrganizeTests.release.xcconfig"; path = "Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests.release.xcconfig"; sourceTree = "<group>"; };
 		C21359CE2AE7DF780063529B /* AESModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AESModule.m; sourceTree = "<group>"; };
 		C21359D12AE7E06D0063529B /* AESModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESModule.swift; sourceTree = "<group>"; };
+		C2464F752AEE404300884EB6 /* RSAModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModule.m; sourceTree = "<group>"; };
+		C2464F782AEE407A00884EB6 /* RSAModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSAModule.swift; sourceTree = "<group>"; };
 		C24A8C0329CC51860062FF5C /* ECCModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECCModule.m; sourceTree = "<group>"; };
 		C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Organize-Bridging-Header.h"; sourceTree = "<group>"; };
 		C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OrganizeTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -154,6 +160,8 @@
 				C21359D12AE7E06D0063529B /* AESModule.swift */,
 				C24A8C0329CC51860062FF5C /* ECCModule.m */,
 				C24A8C0A29CC58E70062FF5C /* ECCModule.swift */,
+				C2464F752AEE404300884EB6 /* RSAModule.m */,
+				C2464F782AEE407A00884EB6 /* RSAModule.swift */,
 				C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */,
 				C264D8C229CC92F80066583C /* SecKeyStore.swift */,
 				C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */,
@@ -507,7 +515,9 @@
 			files = (
 				00E356F31AD99517003FC87E /* OrganizeTests.m in Sources */,
 				C264D8C429CC92F80066583C /* SecKeyStore.swift in Sources */,
+				C2464F7A2AEE407A00884EB6 /* RSAModule.swift in Sources */,
 				C2FB820829EFFB78006822B3 /* AppDelegate.mm in Sources */,
+				C2464F772AEE404300884EB6 /* RSAModule.m in Sources */,
 				C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */,
 				C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
 				C21359D32AE7E06D0063529B /* AESModule.swift in Sources */,
@@ -524,6 +534,7 @@
 			files = (
 				C21359D22AE7E06D0063529B /* AESModule.swift in Sources */,
 				C264D8C329CC92F80066583C /* SecKeyStore.swift in Sources */,
+				C2464F762AEE404300884EB6 /* RSAModule.m in Sources */,
 				C21359CF2AE7DF780063529B /* AESModule.m in Sources */,
 				C264D8C929CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
 				C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */,
@@ -533,6 +544,7 @@
 				C264D8C629CC931A0066583C /* KeyStoreError.swift in Sources */,
 				C2FB820729EFFB78006822B3 /* AppDelegate.mm in Sources */,
 				C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */,
+				C2464F792AEE407A00884EB6 /* RSAModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
