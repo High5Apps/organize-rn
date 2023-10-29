@@ -1,12 +1,16 @@
 package com.organize;
-import static android.os.Build.VERSION.SDK_INT;
+
+import static com.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
+import static com.organize.CommonCrypto.fromUtf8;
+import static com.organize.CommonCrypto.getPrivateKey;
+import static com.organize.CommonCrypto.getPublicKeyPem;
+import static com.organize.CommonCrypto.logIsKeyInsideSecureHardware;
+import static com.organize.CommonCrypto.toBase64;
+import static com.organize.CommonCrypto.toPemString;
 
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyInfo;
 import android.security.keystore.KeyProperties;
-import android.util.Base64;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -16,33 +20,23 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.spec.ECGenParameterSpec;
-import java.security.spec.InvalidKeySpecException;
 
 public class ECCModule extends ReactContextBaseJavaModule {
-    private static final String ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore";
     private static final String P256_CURVE = "secp256r1";
-    private static final String PEM_PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----\n";
-    private static final String PEM_PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----\n";
     private static final String MODULE_NAME = "ECCModule";
-    private static final String ERROR_CODE = "E_ECC";
     private static final String SIGNATURE_ALGORITHM = "SHA256withECDSA";
     private static final int P256_PARAMETER_SIZE = 32;
 
@@ -58,8 +52,7 @@ public class ECCModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void deletePrivateKey(String publicKeyId, Promise promise) {
         try {
-            KeyStore keystore = getAndroidKeyStore();
-            keystore.deleteEntry(publicKeyId);
+            CommonCrypto.deletePrivateKey(publicKeyId);
         } catch (KeyStoreException
                  | CertificateException
                  | IOException
@@ -94,18 +87,16 @@ public class ECCModule extends ReactContextBaseJavaModule {
         }
 
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        logIsKeyInsideSecureHardware(keyPair.getPrivate());
+        logIsKeyInsideSecureHardware(keyPair.getPrivate(), getName());
         String publicKeyPem = toPemString(keyPair.getPublic());
         promise.resolve(publicKeyPem);
     }
 
     @ReactMethod
     public void getPublicKey(String publicKeyId, Promise promise) {
-        PublicKey publicKey = null;
+        String publicKeyPem;
         try {
-            KeyStore keystore = getAndroidKeyStore();
-            Certificate certificate = keystore.getCertificate(publicKeyId);
-            publicKey = certificate.getPublicKey();
+            publicKeyPem = getPublicKeyPem(publicKeyId);
         } catch (KeyStoreException
                 | CertificateException
                 | IOException
@@ -115,7 +106,6 @@ public class ECCModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        String publicKeyPem = toPemString(publicKey);
         promise.resolve(publicKeyPem);
     }
 
@@ -123,69 +113,26 @@ public class ECCModule extends ReactContextBaseJavaModule {
     public void sign(String publicKeyId, String message, Promise promise) {
         byte[] signature;
         try {
-            KeyStore keystore = getAndroidKeyStore();
-            KeyStore.Entry entry = keystore.getEntry(publicKeyId, null);
-            if (!(entry instanceof KeyStore.PrivateKeyEntry)) {
-                promise.reject(ERROR_CODE, "Not an instance of a PrivateKeyEntry");
-                return;
-            }
-
-            PrivateKey privateKey = ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
+            PrivateKey privateKey = getPrivateKey(publicKeyId);
             Signature s = Signature.getInstance(SIGNATURE_ALGORITHM);
             s.initSign(privateKey);
-            s.update(message.getBytes(StandardCharsets.UTF_8));
+            s.update(fromUtf8(message));
             byte[] signatureASN1 = s.sign();
             signature = convertFromASN1toRS(signatureASN1, P256_PARAMETER_SIZE);
         } catch (KeyStoreException
-                | CertificateException
-                | IOException
-                | NoSuchAlgorithmException
-                | UnrecoverableEntryException
-                | InvalidKeyException
-                | SignatureException e) {
+                 | CertificateException
+                 | CommonCrypto.CommonCryptoException
+                 | IOException
+                 | NoSuchAlgorithmException
+                 | UnrecoverableEntryException
+                 | InvalidKeyException
+                 | SignatureException e) {
             e.printStackTrace();
             promise.reject(e);
             return;
         }
 
-        String signedMessage = Base64.encodeToString(signature, Base64.DEFAULT);
-
-        // Some Android implementations include newlines in the signedMessage, which
-        // causes issues with the JWT decoding library
-        String signedMessageWithoutWhitespace = signedMessage.replaceAll("\\s","");
-
-        promise.resolve(signedMessageWithoutWhitespace);
-    }
-
-    private void logIsKeyInsideSecureHardware(PrivateKey privateKey) {
-        if (SDK_INT < android.os.Build.VERSION_CODES.M) {
-            Log.i(getName(), "isKeyInsideSecureHardware: unknown. SDK_INT is below M: " + SDK_INT);
-            return;
-        }
-
-        try {
-            KeyFactory factory = KeyFactory.getInstance(privateKey.getAlgorithm(), ANDROID_KEY_STORE_PROVIDER);
-            KeyInfo keyInfo = factory.getKeySpec(privateKey, KeyInfo.class);
-            boolean isInsideSecureHardware = keyInfo.isInsideSecureHardware();
-            Log.i(getName(), "isKeyInsideSecureHardware: " + isInsideSecureHardware);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
-            Log.e(getName(), e.toString());
-            Log.i(getName(), "isKeyInsideSecureHardware: unknown. An error prevented the determination");
-        }
-    }
-
-    private KeyStore getAndroidKeyStore() throws KeyStoreException, CertificateException,
-            IOException, NoSuchAlgorithmException {
-        KeyStore keystore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER);
-        keystore.load(null);
-        return keystore;
-    }
-
-    private String toPemString(PublicKey publicKey) {
-        byte[] keyBytes = publicKey.getEncoded();
-        String publicKeyBase64 = Base64.encodeToString(keyBytes, Base64.DEFAULT);
-        String publicKeyPem = PEM_PUBLIC_KEY_HEADER + publicKeyBase64 + PEM_PUBLIC_KEY_FOOTER;
-        return publicKeyPem;
+        promise.resolve(toBase64(signature));
     }
 
     private static byte[] convertFromASN1toRS(byte[] signatureASN1, int size) {

@@ -1,6 +1,9 @@
 package com.organize;
 
-import android.util.Base64;
+import static com.organize.CommonCrypto.fromBase64;
+import static com.organize.CommonCrypto.fromUtf8;
+import static com.organize.CommonCrypto.toBase64;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,7 +17,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -61,7 +63,7 @@ public class AESModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+        byte[] messageBytes = fromUtf8(message);
         byte[] ciphertextAndIntegrityCheck;
         try {
             ciphertextAndIntegrityCheck = cipher.doFinal(messageBytes);
@@ -79,9 +81,9 @@ public class AESModule extends ReactContextBaseJavaModule {
         byte[] initializationVector = cipher.getIV();
 
         WritableMap resultMap = new WritableNativeMap();
-        resultMap.putString(RETURN_KEY_ENCRYPTED_MESSAGE, serialize(ciphertext));
-        resultMap.putString(RETURN_KEY_INITIALIZATION_VECTOR, serialize(initializationVector));
-        resultMap.putString(RETURN_KEY_INTEGRITY_CHECK, serialize(integrityCheck));
+        resultMap.putString(RETURN_KEY_ENCRYPTED_MESSAGE, toBase64(ciphertext));
+        resultMap.putString(RETURN_KEY_INITIALIZATION_VECTOR, toBase64(initializationVector));
+        resultMap.putString(RETURN_KEY_INTEGRITY_CHECK, toBase64(integrityCheck));
         promise.resolve(resultMap);
     }
 
@@ -112,7 +114,7 @@ public class AESModule extends ReactContextBaseJavaModule {
             throw new AESException("Failed to decrypt wrappedKey " + wrappedKey);
         }
 
-        byte[] symmetricKey = Base64.decode(symmetricKeyBase64, Base64.DEFAULT);
+        byte[] symmetricKey = fromBase64(symmetricKeyBase64);
         SecretKey secretKey = new SecretKeySpec(symmetricKey, CIPHER_ALGORITHM_NAME);
 
         Cipher cipher;
@@ -125,12 +127,6 @@ public class AESModule extends ReactContextBaseJavaModule {
         }
 
         return cipher;
-    }
-
-    // Base 64 encode and trim whitespace
-    private static String serialize(byte[] bytes) {
-        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-        return base64.replaceAll("\\s", "");
     }
 
     private static class AESException extends Exception {
