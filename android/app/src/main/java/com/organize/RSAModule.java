@@ -19,12 +19,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
+import java.security.cert.CertificateException;
 
 public class RSAModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "RSAModule";
@@ -38,6 +41,21 @@ public class RSAModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return MODULE_NAME;
+    }
+
+    @ReactMethod
+    public void deletePrivateKey(String publicKeyId, Promise promise) {
+        try {
+            CommonCrypto.deletePrivateKey(publicKeyId);
+        } catch (KeyStoreException
+                 | CertificateException
+                 | IOException
+                 | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+        promise.resolve(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
