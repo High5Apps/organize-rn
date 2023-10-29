@@ -1,8 +1,14 @@
 import RSAModule from './RSAModule';
 
+async function decrypt(
+  publicKeyId: string,
+  base64EncryptedMessage: string,
+): Promise<string> {
+  return RSAModule.decrypt(publicKeyId, base64EncryptedMessage);
+}
+
 async function deletePrivateKey(publicKeyId: string): Promise<boolean> {
-  const succeeded = await RSAModule.deletePrivateKey(publicKeyId);
-  return succeeded;
+  return RSAModule.deletePrivateKey(publicKeyId);
 }
 
 async function encrypt(publicKeyId: string, message: string): Promise<string> {
@@ -14,6 +20,7 @@ async function generateKeys(publicKeyId: string): Promise<void> {
 }
 
 export default {
+  decrypt,
   deletePrivateKey,
   encrypt,
   generateKeys,

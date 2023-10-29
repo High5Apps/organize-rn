@@ -4,10 +4,13 @@ import static android.security.keystore.KeyProperties.DIGEST_SHA256;
 import static android.security.keystore.KeyProperties.PURPOSE_DECRYPT;
 import static android.security.keystore.KeyProperties.PURPOSE_ENCRYPT;
 import static com.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
+import static com.organize.CommonCrypto.fromBase64;
 import static com.organize.CommonCrypto.fromUtf8;
+import static com.organize.CommonCrypto.getPrivateKey;
 import static com.organize.CommonCrypto.getPublicKey;
 import static com.organize.CommonCrypto.logIsKeyInsideSecureHardware;
 import static com.organize.CommonCrypto.toBase64;
+import static com.organize.CommonCrypto.toUtf8;
 
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
@@ -24,12 +27,13 @@ import com.facebook.react.bridge.ReactMethod;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PublicKey;
+import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
 import javax.crypto.BadPaddingException;
@@ -50,6 +54,31 @@ public class RSAModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return MODULE_NAME;
+    }
+
+    @ReactMethod
+    public void decrypt(String publicKeyId, String base64Ciphertext, Promise promise) {
+        Cipher cipher;
+        try {
+            cipher = getCipher(Cipher.DECRYPT_MODE, publicKeyId);
+        } catch (RSAException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+
+        byte[] messageBytes;
+        try {
+            byte[] cipherBytes = fromBase64(base64Ciphertext);
+            messageBytes = cipher.doFinal(cipherBytes);
+        } catch (BadPaddingException | IllegalBlockSizeException e) {
+            e.printStackTrace();
+            promise.reject(e);
+            return;
+        }
+
+        String message = toUtf8(messageBytes);
+        promise.resolve(message);
     }
 
     @ReactMethod
@@ -120,20 +149,37 @@ public class RSAModule extends ReactContextBaseJavaModule {
     }
 
     private Cipher getCipher(int operationalMode, String publicKeyId) throws RSAException {
-        PublicKey publicKey;
-        try {
-            publicKey = getPublicKey(publicKeyId);
-        } catch (CertificateException
-                 | IOException
-                 | KeyStoreException
-                 | NoSuchAlgorithmException e) {
-            throw new RSAException("Failed to get public key for publicKeyId: " + publicKeyId);
+        if (operationalMode != Cipher.ENCRYPT_MODE && operationalMode != Cipher.DECRYPT_MODE) {
+            throw new RSAException("Unsupported operational mode: " + operationalMode);
+        }
+
+        Key key;
+        if (operationalMode == Cipher.ENCRYPT_MODE) {
+            try {
+                key = getPublicKey(publicKeyId);
+            } catch (CertificateException
+                     | IOException
+                     | KeyStoreException
+                     | NoSuchAlgorithmException e) {
+                throw new RSAException("Failed to get public key for publicKeyId: " + publicKeyId);
+            }
+        } else {
+            try {
+                key = getPrivateKey(publicKeyId);
+            } catch (CertificateException
+                     | IOException
+                     | KeyStoreException
+                     | NoSuchAlgorithmException
+                     | UnrecoverableEntryException
+                     | CommonCrypto.CommonCryptoException e) {
+                throw new RSAException("Failed to get private key for publicKeyId: " + publicKeyId);
+            }
         }
 
         Cipher cipher;
         try {
             cipher = Cipher.getInstance(CIPHER_TRANSFORMATION_NAME);
-            cipher.init(operationalMode, publicKey);
+            cipher.init(operationalMode, key);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             throw new RSAException("Failed to initialize RSA cipher with operational mode: " + operationalMode);
         }
