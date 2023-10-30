@@ -17,6 +17,13 @@ RCT_EXTERN_METHOD(
 );
 
 RCT_EXTERN_METHOD(
+  encrypt: (NSString *) publicKeyId
+  message: (NSString *) message
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
+RCT_EXTERN_METHOD(
   generateKeys: (NSString *) publicKeyId
   resolver: (RCTPromiseResolveBlock) resolve
   rejecter: (RCTPromiseRejectBlock) reject
