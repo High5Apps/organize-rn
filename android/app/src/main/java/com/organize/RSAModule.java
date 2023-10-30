@@ -58,27 +58,24 @@ public class RSAModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void decrypt(String publicKeyId, String base64Ciphertext, Promise promise) {
-        Cipher cipher;
+        String message = null;
         try {
-            cipher = getCipher(Cipher.DECRYPT_MODE, publicKeyId);
-        } catch (RSAException e) {
+            message = decrypt(publicKeyId, base64Ciphertext);
+        } catch (RSAException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
             promise.reject(e);
             return;
         }
-
-        byte[] messageBytes;
-        try {
-            byte[] cipherBytes = fromBase64(base64Ciphertext);
-            messageBytes = cipher.doFinal(cipherBytes);
-        } catch (BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
-            promise.reject(e);
-            return;
-        }
-
-        String message = toUtf8(messageBytes);
         promise.resolve(message);
+    }
+
+    static String decrypt(String publicKeyId, String base64Ciphertext)
+            throws RSAException, IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = getCipher(Cipher.DECRYPT_MODE, publicKeyId);
+        byte[] cipherBytes = fromBase64(base64Ciphertext);
+        byte[] messageBytes = cipher.doFinal(cipherBytes);
+        String message = toUtf8(messageBytes);
+        return message;
     }
 
     @ReactMethod
@@ -148,7 +145,7 @@ public class RSAModule extends ReactContextBaseJavaModule {
         promise.resolve(null);
     }
 
-    private Cipher getCipher(int operationalMode, String publicKeyId) throws RSAException {
+    private static Cipher getCipher(int operationalMode, String publicKeyId) throws RSAException {
         if (operationalMode != Cipher.ENCRYPT_MODE && operationalMode != Cipher.DECRYPT_MODE) {
             throw new RSAException("Unsupported operational mode: " + operationalMode);
         }
@@ -187,7 +184,7 @@ public class RSAModule extends ReactContextBaseJavaModule {
         return cipher;
     }
 
-    private static class RSAException extends Exception {
+    static class RSAException extends Exception {
         public RSAException(String message) { super(message); }
     }
 }

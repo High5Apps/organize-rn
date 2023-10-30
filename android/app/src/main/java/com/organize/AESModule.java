@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.RNRSA.RSA;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -16,13 +15,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
-import java.io.IOException;
 import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
@@ -89,28 +83,10 @@ public class AESModule extends ReactContextBaseJavaModule {
 
     private Cipher getCipher(int operationalMode, String wrappedKey, String wrapperKeyId)
             throws AESException {
-        RSA rsa;
-        try {
-            rsa = new RSA(wrapperKeyId);
-        } catch (KeyStoreException
-                 | UnrecoverableEntryException
-                 | NoSuchAlgorithmException
-                 | IOException
-                 | CertificateException e) {
-            Log.e(getName(), e.toString());
-            throw new AESException("Failed to create RSA key from wrapperKeyId: " + wrapperKeyId);
-        }
-
         String symmetricKeyBase64;
         try {
-            symmetricKeyBase64 = rsa.decrypt(wrappedKey);
-        } catch (NoSuchAlgorithmException
-                 | InvalidKeySpecException
-                 | IllegalBlockSizeException
-                 | BadPaddingException
-                 | NoSuchPaddingException
-                 | InvalidKeyException e) {
-            Log.e(getName(), e.toString());
+            symmetricKeyBase64 = RSAModule.decrypt(wrapperKeyId, wrappedKey);
+        } catch (RSAModule.RSAException | IllegalBlockSizeException | BadPaddingException e) {
             throw new AESException("Failed to decrypt wrappedKey " + wrappedKey);
         }
 

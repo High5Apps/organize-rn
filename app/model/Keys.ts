@@ -1,6 +1,6 @@
-import { RSAKeychain } from 'react-native-rsa-native';
 import { v4 as uuidv4 } from 'uuid';
 import ECCKeychain from './ECCKeychain';
+import RSAKeychain from './RSAKeychain';
 import Secret from './Secret';
 
 const KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
@@ -36,7 +36,7 @@ export default function Keys() {
     rsa: {
       async create() {
         const publicKeyId = uuidv4();
-        await RSAKeychain.generateKeys(publicKeyId, 2048);
+        await RSAKeychain.generateKeys(publicKeyId);
         return { publicKeyId };
       },
       async delete(publicKeyId: string) {
@@ -46,19 +46,18 @@ export default function Keys() {
       async encrypt({
         publicKeyId, message,
       }: { publicKeyId: string; message: string; }) {
-        const encryptedMessage = await RSAKeychain.encrypt(
-          message,
+        const base64EncodedEncryptedMessage = await RSAKeychain.encrypt(
           publicKeyId,
+          message,
         );
-        const withoutWhitespace = encryptedMessage.replace(/\s/g, '');
-        return { base64EncodedEncryptedMessage: withoutWhitespace };
+        return { base64EncodedEncryptedMessage };
       },
       async decrypt({
         base64EncodedEncryptedMessage, publicKeyId,
       }: { publicKeyId: string; base64EncodedEncryptedMessage: string; }) {
         const message = await RSAKeychain.decrypt(
-          base64EncodedEncryptedMessage,
           publicKeyId,
+          base64EncodedEncryptedMessage,
         );
         return { message };
       },
