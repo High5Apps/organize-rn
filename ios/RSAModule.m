@@ -11,6 +11,12 @@
 @interface RCT_EXTERN_MODULE(RSAModule, NSObject)
 
 RCT_EXTERN_METHOD(
+  deletePrivateKey: (NSString *) publicKeyId
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
+RCT_EXTERN_METHOD(
   generateKeys: (NSString *) publicKeyId
   resolver: (RCTPromiseResolveBlock) resolve
   rejecter: (RCTPromiseRejectBlock) reject
