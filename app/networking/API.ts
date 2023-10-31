@@ -1,3 +1,5 @@
+import { E2EEncryptor } from '../model';
+
 export enum Status {
   Success = 200,
   Unauthorized = 401,
@@ -43,4 +45,22 @@ export async function post({ bodyObject, jwt, uri }: PostProps) {
     body: JSON.stringify(bodyObject),
   });
   return response;
+}
+
+type E2EEncryptedMessage = {
+  c: string;
+  n: string;
+  t: string;
+};
+
+export async function encrypt(
+  message: string,
+  encryptor: E2EEncryptor,
+): Promise<E2EEncryptedMessage> {
+  const {
+    base64EncryptedMessage: c,
+    base64InitializationVector: n,
+    base64IntegrityCheck: t,
+  } = await encryptor(message);
+  return { c, n, t };
 }

@@ -1,7 +1,7 @@
 import type {
-  PaginationData, Post, PostCategory, PostSort,
+  E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
 } from '../model';
-import { get, post } from './API';
+import { encrypt, get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -10,7 +10,8 @@ import { isPostIndexResponse, isPostResponse } from './types';
 
 type Props = {
   body?: string;
-  category: PostCategory
+  category: PostCategory;
+  e2eEncrypt: E2EEncryptor;
   title: string;
 };
 
@@ -25,10 +26,13 @@ type Return = {
 };
 
 export async function createPost({
-  body, category, jwt, title,
+  body, category, e2eEncrypt, jwt, title,
 }: Props & Authorization): Promise<Return> {
+  const encryptedTitle = await encrypt(title, e2eEncrypt);
   const response = await post({
-    bodyObject: { body, category, title },
+    bodyObject: {
+      body, category, encrypted_title: encryptedTitle, title,
+    },
     jwt,
     uri: postsURI,
   });

@@ -144,10 +144,15 @@ export default function NewPostScreen({
 
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
+      const { e2eEncrypt } = currentUser;
 
       const maybeBody = body?.length ? body : undefined;
       const { errorMessage, postCreatedAt, postId } = await createPost({
-        body: maybeBody, category: postCategory, jwt, title: title!,
+        body: maybeBody,
+        category: postCategory,
+        e2eEncrypt,
+        jwt,
+        title: title!,
       });
 
       if (errorMessage !== undefined) {
