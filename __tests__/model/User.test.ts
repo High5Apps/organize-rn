@@ -19,8 +19,14 @@ function expectUsersEqual({ equal, user, otherUser }: Props) {
   const equals = expect.any(Function);
   const createAuthToken = expect.any(Function);
   const decryptGroupKey = expect.any(Function);
+  const e2eEncrypt = expect.any(Function);
   const expected = {
-    ...otherUser, createAuthToken, decryptGroupKey, deleteKeys, equals,
+    ...otherUser,
+    createAuthToken,
+    decryptGroupKey,
+    deleteKeys,
+    equals,
+    e2eEncrypt,
   };
   if (equal) {
     expect(user).toEqual(expected);

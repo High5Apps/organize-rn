@@ -1,4 +1,4 @@
-import AESModule, { EncryptReturn } from './AESModule';
+import AESModule, { AESEncryptedData } from './AESModule';
 
 async function decrypt(
   wrappedKey: string,
@@ -20,7 +20,7 @@ async function encrypt(
   wrappedKey: string,
   wrapperKeyId: string,
   message: string,
-): Promise<EncryptReturn> {
+): Promise<AESEncryptedData> {
   return AESModule.encrypt(wrappedKey, wrapperKeyId, message);
 }
 

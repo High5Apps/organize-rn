@@ -97,6 +97,17 @@ export default function User({
     return groupKey;
   }
 
+  async function e2eEncrypt(message: string) {
+    if (!localEncryptionKeyId || !encryptedGroupKey) {
+      throw new Error('Can only encrypt for users with a localEncryptionKeyId  and encryptedGroupKey');
+    }
+    return keys.aes.encrypt({
+      message,
+      wrappedKey: encryptedGroupKey,
+      wrapperKeyId: localEncryptionKeyId,
+    });
+  }
+
   return {
     authenticationKeyId,
     createAuthToken,
@@ -104,6 +115,7 @@ export default function User({
     deleteKeys,
     encryptedGroupKey,
     equals,
+    e2eEncrypt,
     localEncryptionKeyId,
     org,
     ...userData,

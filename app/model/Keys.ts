@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
+import AESKeychain from './AESKeychain';
 import ECCKeychain from './ECCKeychain';
 import RSAKeychain from './RSAKeychain';
 import Secret from './Secret';
+import { AESMessage, AESWrappedKey } from './AESModule';
 
 const KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
 
@@ -10,6 +12,11 @@ export default function Keys() {
     aes: {
       create() {
         return Secret().base64(KEY_STRENGTH_256_BIT_IN_BYTES);
+      },
+      async encrypt({
+        message, wrappedKey, wrapperKeyId,
+      }: AESMessage & AESWrappedKey) {
+        return AESKeychain.encrypt(wrappedKey, wrapperKeyId, message);
       },
     },
     ecc: {
