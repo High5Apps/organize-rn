@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { AESEncryptedData } from './AESModule';
 import JWT from './JWT';
 import Keys from './Keys';
 import type { Org, Scope, UserData } from './types';
@@ -97,9 +98,21 @@ export default function User({
     return groupKey;
   }
 
+  async function e2eDecrypt(aesEncyptedData: AESEncryptedData) {
+    if (!localEncryptionKeyId || !encryptedGroupKey) {
+      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
+    }
+    const message = await keys.aes.decrypt({
+      ...aesEncyptedData,
+      wrappedKey: encryptedGroupKey,
+      wrapperKeyId: localEncryptionKeyId,
+    });
+    return { message };
+  }
+
   async function e2eEncrypt(message: string) {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only encrypt for users with a localEncryptionKeyId  and encryptedGroupKey');
+      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
     }
     return keys.aes.encrypt({
       message,
@@ -115,6 +128,7 @@ export default function User({
     deleteKeys,
     encryptedGroupKey,
     equals,
+    e2eDecrypt,
     e2eEncrypt,
     localEncryptionKeyId,
     org,

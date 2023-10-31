@@ -3,7 +3,7 @@ import AESKeychain from './AESKeychain';
 import ECCKeychain from './ECCKeychain';
 import RSAKeychain from './RSAKeychain';
 import Secret from './Secret';
-import { AESMessage, AESWrappedKey } from './AESModule';
+import { AESEncryptedData, AESMessage, AESWrappedKey } from './AESModule';
 
 const KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
 
@@ -12,6 +12,18 @@ export default function Keys() {
     aes: {
       create() {
         return Secret().base64(KEY_STRENGTH_256_BIT_IN_BYTES);
+      },
+      async decrypt({
+        base64EncryptedMessage, base64InitializationVector,
+        base64IntegrityCheck, wrappedKey, wrapperKeyId,
+      }: AESEncryptedData & AESWrappedKey) {
+        return AESKeychain.decrypt(
+          wrappedKey,
+          wrapperKeyId,
+          base64EncryptedMessage,
+          base64InitializationVector,
+          base64IntegrityCheck,
+        );
       },
       async encrypt({
         message, wrappedKey, wrapperKeyId,
