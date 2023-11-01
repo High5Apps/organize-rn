@@ -5,6 +5,7 @@ export {
   default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
 } from './Comments';
 export { CommentContextProvider } from './CommentContext';
+export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useGraphData } from './GraphData';
