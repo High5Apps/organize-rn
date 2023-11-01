@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "types": ["react-native", "jest", "node"],
+    "types": ["react-native", "jest", "node"]
   }
 }
