@@ -21,7 +21,7 @@ export {
 } from './QRCodeData';
 export { getHighestRank, getHighestOffice } from './Rank';
 export { default as Secret } from './Secret';
-export { default as Settings } from './Settings';
+export { default as useSettings } from './Settings';
 export { default as getTenure } from './Tenure';
 export { default as truncateText } from './TruncateText';
 export { default as User } from './User';

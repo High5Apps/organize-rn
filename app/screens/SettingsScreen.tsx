@@ -4,9 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ScreenBackground, SectionHeader } from '../components';
-import {
-  Settings, SettingsItem, SettingsSection, useUserContext,
-} from '../model';
+import { SettingsItem, SettingsSection, useSettings } from '../model';
 import useTheme from '../Theme';
 
 const useStyles = () => {
@@ -46,9 +44,7 @@ const useStyles = () => {
 
 export default function SettingsScreen() {
   const { styles } = useStyles();
-  const { logOut } = useUserContext();
-
-  const sections = Settings({ logOut });
+  const settings = useSettings();
 
   const ItemSeparator = useCallback(() => (
     <View style={styles.itemSeparator} />
@@ -81,7 +77,7 @@ export default function SettingsScreen() {
         ItemSeparatorComponent={ItemSeparator}
         renderItem={renderRow}
         renderSectionHeader={renderSectionHeader}
-        sections={sections}
+        sections={settings}
       />
     </ScreenBackground>
   );

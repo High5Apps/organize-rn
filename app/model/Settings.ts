@@ -1,11 +1,15 @@
 import ConfirmationAlert from './ConfirmationAlert';
-import type { SettingsSection } from './types';
+import { useUserContext } from './UserContext';
+import { isCurrentUserData, type SettingsSection } from './types';
 
-type Props = {
-  logOut: () => Promise<void>;
-};
+export default function useSettings(): SettingsSection[] {
+  const { currentUser, logOut } = useUserContext();
 
-export default function Settings({ logOut }: Props): SettingsSection[] {
+  if (!isCurrentUserData(currentUser)) {
+    console.warn('Expected current user to be set');
+    return [];
+  }
+
   return [
     {
       title: 'Org',
