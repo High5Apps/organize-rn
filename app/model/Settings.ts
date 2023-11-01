@@ -1,3 +1,4 @@
+import { Share } from 'react-native';
 import ConfirmationAlert from './ConfirmationAlert';
 import { useUserContext } from './UserContext';
 import { isCurrentUserData, type SettingsSection } from './types';
@@ -22,6 +23,19 @@ export default function useSettings(): SettingsSection[] {
             onConfirm: logOut,
           }).show,
           title: 'Leave Org',
+        },
+      ],
+    },
+    {
+      title: 'Developer',
+      data: [
+        {
+          iconName: 'vpn-key',
+          onPress: async () => {
+            const groupKey = await currentUser.decryptGroupKey();
+            Share.share({ message: groupKey });
+          },
+          title: 'Share Group Key',
         },
       ],
     },
