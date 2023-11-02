@@ -188,7 +188,6 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
 }
 
 type CommentIndexComment = {
-  body: string;
   created_at: number;
   depth: number;
   encrypted_body: BackendEncryptedMessage;
@@ -202,8 +201,7 @@ type CommentIndexComment = {
 
 function isCommentIndexComment(object: unknown): object is CommentIndexComment {
   const comment = (object as CommentIndexComment);
-  return comment?.body?.length > 0
-    && isBackendEncryptedMessage(comment.encrypted_body)
+  return isBackendEncryptedMessage(comment.encrypted_body)
     && comment.created_at !== undefined
     && comment.id?.length > 0
     && comment.my_vote !== undefined
