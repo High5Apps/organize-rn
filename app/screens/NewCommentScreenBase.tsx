@@ -62,7 +62,6 @@ export default function NewCommentScreenBase({
 }: Props) {
   const cacheKey = getCacheKey({ commentId, postId });
   const [maybeBody, setBody] = useCachedValue<string | undefined>(cacheKey);
-  const body = maybeBody ?? '';
 
   const { styles } = useStyles();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
@@ -79,11 +78,14 @@ export default function NewCommentScreenBase({
     setLoading(true);
     setResult('none');
 
+    const strippedBody = maybeBody?.trim() ?? '';
+    setBody(strippedBody);
+
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = currentUser;
       const { commentId: newCommentId, errorMessage } = await createComment({
-        body, commentId, e2eEncrypt, jwt, postId,
+        body: strippedBody, commentId, e2eEncrypt, jwt, postId,
       });
 
       if (errorMessage !== undefined) {
@@ -97,7 +99,7 @@ export default function NewCommentScreenBase({
 
       const parentComment = getCachedComment(commentId);
       const comment: Comment = {
-        body: body.trim(),
+        body: strippedBody,
         createdAt: new Date().getTime(),
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId,
@@ -127,7 +129,7 @@ export default function NewCommentScreenBase({
         placeholder="What do you think?"
         style={styles.multilineTextInput}
         returnKeyType="default"
-        value={body}
+        value={maybeBody}
       />
       <PrimaryButton
         iconName="publish"
