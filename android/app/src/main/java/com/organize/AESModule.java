@@ -14,7 +14,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -37,6 +40,7 @@ public class AESModule extends ReactContextBaseJavaModule {
     private static final String KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage";
     private static final String KEY_INITIALIZATION_VECTOR = "base64InitializationVector";
     private static final String KEY_INTEGRITY_CHECK = "base64IntegrityCheck";
+    private static final String MESSAGE_DECRYPTION_FAILED = "[Unable to decrypt]";
     private static final String MODULE_NAME = "AESModule";
 
     private static final int INTEGRITY_CHECK_LENGTH_BYTES = 16;
@@ -77,6 +81,39 @@ public class AESModule extends ReactContextBaseJavaModule {
             return;
         }
         promise.resolve(message);
+    }
+
+    @ReactMethod
+    public void decryptMany(
+            String wrappedKey,
+            String wrapperKeyId,
+            ReadableArray encryptedMessages,
+            Promise promise) {
+        SecretKey secretKey;
+        try {
+            secretKey = unwrapSecretKey(wrappedKey, wrapperKeyId);
+        } catch (IllegalBlockSizeException | RSAModule.RSAException | BadPaddingException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
+        }
+
+        WritableArray messages = new WritableNativeArray();
+        for (int i = 0; i < encryptedMessages.size(); i++) {
+            ReadableMap encryptedMessage = encryptedMessages.getMap(i);
+            String base64EncryptedMessage = encryptedMessage.getString(KEY_ENCRYPTED_MESSAGE);
+            String base64InitializationVector = encryptedMessage.getString(KEY_INITIALIZATION_VECTOR);
+            String base64IntegrityCheck = encryptedMessage.getString(KEY_INTEGRITY_CHECK);
+            String message;
+            try {
+                message = decrypt(secretKey, base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck);
+            } catch (IllegalBlockSizeException | BadPaddingException | AESException e) {
+                message = MESSAGE_DECRYPTION_FAILED;
+            }
+            messages.pushString(message);
+        }
+
+        promise.resolve(messages);
     }
 
     @ReactMethod
