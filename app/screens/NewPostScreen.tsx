@@ -142,6 +142,9 @@ export default function NewPostScreen({
     setLoading(true);
     setResult('none');
 
+    const strippedTitle = title?.trim() ?? '';
+    setTitle(strippedTitle);
+
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = currentUser;
@@ -152,7 +155,7 @@ export default function NewPostScreen({
         category: postCategory,
         e2eEncrypt,
         jwt,
-        title: title!,
+        title: strippedTitle,
       });
 
       if (errorMessage !== undefined) {
@@ -171,7 +174,7 @@ export default function NewPostScreen({
         myVote: 1,
         pseudonym: currentUser.pseudonym,
         score: 1,
-        title: title!.trim(),
+        title: strippedTitle,
         userId: currentUser.id,
       };
       cachePost(post);
