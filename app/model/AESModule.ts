@@ -25,6 +25,11 @@ export interface AESInterface {
     base64InitializationVector: string,
     base64IntegrityCheck: string,
   ): Promise<string>;
+  decryptMany(
+    wrappedKey: string,
+    wrapperKeyId: string,
+    encryptedMessages: AESEncryptedData[],
+  ): Promise<string[]>;
   encrypt(
     wrappedKey: string, wrapperKeyId: string, message: string,
   ): Promise<AESEncryptedData>;

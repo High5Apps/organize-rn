@@ -10,10 +10,11 @@ import CryptoKit
 
 @objc(AESModule)
 class AESModule: NSObject {
-  let AES_ERROR_CODE = "E_AES"
-  let KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage"
-  let KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
-  let KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
+  static let AES_ERROR_CODE = "E_AES"
+  static let KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage"
+  static let KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
+  static let KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
+  static let MESSAGE_DECRYPTION_FAILED = "[Unable to decrypt]"
 
   @objc
   static func requiresMainQueueSetup() -> Bool { false }
@@ -21,7 +22,7 @@ class AESModule: NSObject {
   @objc
   func decrypt(_ wrappedKey: String, wrapperKeyId: String, base64EncryptedMessage: String, base64InitializationVector: String, base64IntegrityCheck: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
-      reject(AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
+      reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
     
@@ -31,27 +32,53 @@ class AESModule: NSObject {
     do {
       message = try decrypt(encryptedMessage, with: symmetricKey)
     } catch {
-      reject(AES_ERROR_CODE, error.localizedDescription, error)
+      reject(Self.AES_ERROR_CODE, error.localizedDescription, error)
       return
     }
     
     resolve(message)
   }
+  
+  @objc
+  func decryptMany(_ wrappedKey: String, wrapperKeyId: String, encryptedMessages: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
+      reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
+      return
+    }
+    
+    let messages: [String] = encryptedMessages.map { element in
+      guard let dictionary = element as? NSDictionary else {
+        return Self.MESSAGE_DECRYPTION_FAILED
+      }
+      
+      guard let encryptedMessage = EncryptedMessage(from: dictionary) else {
+        return Self.MESSAGE_DECRYPTION_FAILED
+      }
+      
+      guard let message = try? decrypt(encryptedMessage, with: symmetricKey) else {
+        return Self.MESSAGE_DECRYPTION_FAILED
+      }
+      
+      return message
+    }
+    
+    resolve(messages)
+  }
 
   @objc
   func encrypt(_ wrappedKey: String, wrapperKeyId: String, message: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     guard let messageData = message.data(using: .utf8) else {
-      reject(AES_ERROR_CODE, "Failed to convert message into UTF-8 data", nil)
+      reject(Self.AES_ERROR_CODE, "Failed to convert message into UTF-8 data", nil)
       return
     }
 
     guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
-      reject(AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
+      reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
 
     guard let encryptedMessageData = try? AES.GCM.seal(messageData, using: symmetricKey) else {
-      reject(AES_ERROR_CODE, "Failed to encrypt data", nil)
+      reject(Self.AES_ERROR_CODE, "Failed to encrypt data", nil)
       return
     }
     
@@ -60,9 +87,9 @@ class AESModule: NSObject {
     let integrityCheck = encryptedMessageData.tag.base64EncodedString()
     
     resolve([
-      KEY_ENCRYPTED_MESSAGE: ciphertext,
-      KEY_INITIALIZATION_VECTOR: initializationVector,
-      KEY_INTEGRITY_CHECK: integrityCheck,
+      Self.KEY_ENCRYPTED_MESSAGE: ciphertext,
+      Self.KEY_INITIALIZATION_VECTOR: initializationVector,
+      Self.KEY_INTEGRITY_CHECK: integrityCheck,
     ]);
   }
   
@@ -123,6 +150,15 @@ class AESModule: NSObject {
       self.base64EncryptedMessage = base64EncryptedMessage
       self.base64InitializationVector = base64InitializationVector
       self.base64IntegrityCheck = base64IntegrityCheck
+    }
+    
+    init?(from dictionary: NSDictionary) {
+      guard let base64EncryptedMessage = dictionary.value(forKey: KEY_ENCRYPTED_MESSAGE) as? String,
+            let base64InitializationVector = dictionary.value(forKey: KEY_INITIALIZATION_VECTOR) as? String,
+            let base64IntegrityCheck = dictionary.value(forKey: KEY_INTEGRITY_CHECK) as? String else {
+        return nil
+      }
+      self.init(base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck)
     }
   }
 }

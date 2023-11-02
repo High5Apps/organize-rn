@@ -16,6 +16,18 @@ async function decrypt(
   );
 }
 
+async function decryptMany(
+  wrappedKey: string,
+  wrapperKeyId: string,
+  encryptedMessages: AESEncryptedData[],
+): Promise<string[]> {
+  return AESModule.decryptMany(
+    wrappedKey,
+    wrapperKeyId,
+    encryptedMessages,
+  );
+}
+
 async function encrypt(
   wrappedKey: string,
   wrapperKeyId: string,
@@ -26,5 +38,6 @@ async function encrypt(
 
 export default {
   decrypt,
+  decryptMany,
   encrypt,
 };
