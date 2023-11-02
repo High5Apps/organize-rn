@@ -46,7 +46,11 @@ class AESModule: NSObject {
       return
     }
     
-    let messages: [String] = encryptedMessages.map { element in
+    let messages: [String?] = encryptedMessages.map { element in
+      guard nil == element as? NSNull else {
+        return nil
+      }
+
       guard let dictionary = element as? NSDictionary else {
         return Self.MESSAGE_DECRYPTION_FAILED
       }

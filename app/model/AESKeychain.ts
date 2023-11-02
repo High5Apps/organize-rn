@@ -19,8 +19,8 @@ async function decrypt(
 async function decryptMany(
   wrappedKey: string,
   wrapperKeyId: string,
-  encryptedMessages: AESEncryptedData[],
-): Promise<string[]> {
+  encryptedMessages: (AESEncryptedData | null)[],
+): Promise<(string | null)[]> {
   return AESModule.decryptMany(
     wrappedKey,
     wrapperKeyId,

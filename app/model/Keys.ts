@@ -27,7 +27,7 @@ export default function Keys() {
       },
       async decryptMany({
         encryptedMessages, wrappedKey, wrapperKeyId,
-      }: { encryptedMessages: AESEncryptedData[] } & AESWrappedKey) {
+      }: { encryptedMessages: (AESEncryptedData | null)[] } & AESWrappedKey) {
         return AESKeychain.decryptMany(
           wrappedKey,
           wrapperKeyId,

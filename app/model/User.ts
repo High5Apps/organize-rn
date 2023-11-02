@@ -110,7 +110,7 @@ export default function User({
     return { message };
   }
 
-  async function e2eDecryptMany(aesEncyptedData: AESEncryptedData[]) {
+  async function e2eDecryptMany(aesEncyptedData: (AESEncryptedData | null)[]) {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
     }

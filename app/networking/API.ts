@@ -61,13 +61,17 @@ export async function encrypt(
 }
 
 export async function decryptMany(
-  encryptedMessages: BackendEncryptedMessage[],
+  encryptedMessages: (BackendEncryptedMessage | null)[],
   decryptor: E2EDecryptor,
-): Promise<string[]> {
-  const withRenamedKeys = encryptedMessages.map(({ c, n, t }) => ({
-    base64EncryptedMessage: c,
-    base64InitializationVector: n,
-    base64IntegrityCheck: t,
-  }));
+): Promise<(string | null)[]> {
+  const withRenamedKeys = encryptedMessages.map((encryptedMessageOrNull) => {
+    if (encryptedMessageOrNull === null) { return null; }
+    const { c, n, t } = encryptedMessageOrNull;
+    return {
+      base64EncryptedMessage: c,
+      base64InitializationVector: n,
+      base64IntegrityCheck: t,
+    };
+  });
   return decryptor(withRenamedKeys);
 }

@@ -28,8 +28,8 @@ export interface AESInterface {
   decryptMany(
     wrappedKey: string,
     wrapperKeyId: string,
-    encryptedMessages: AESEncryptedData[],
-  ): Promise<string[]>;
+    encryptedMessages: (AESEncryptedData | null)[],
+  ): Promise<(string | null)[]>;
   encrypt(
     wrappedKey: string, wrapperKeyId: string, message: string,
   ): Promise<AESEncryptedData>;

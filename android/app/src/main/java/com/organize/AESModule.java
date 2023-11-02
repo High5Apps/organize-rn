@@ -100,6 +100,11 @@ public class AESModule extends ReactContextBaseJavaModule {
 
         WritableArray messages = new WritableNativeArray();
         for (int i = 0; i < encryptedMessages.size(); i++) {
+            if (encryptedMessages.isNull(i)) {
+                messages.pushNull();
+                continue;
+            }
+
             ReadableMap encryptedMessage = encryptedMessages.getMap(i);
             String base64EncryptedMessage = encryptedMessage.getString(KEY_ENCRYPTED_MESSAGE);
             String base64InitializationVector = encryptedMessage.getString(KEY_INITIALIZATION_VECTOR);
