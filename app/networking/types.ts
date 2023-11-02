@@ -123,7 +123,7 @@ export type BackendEncryptedMessage = {
   t: string;
 };
 
-function isBackendEncryptedMessage(object: unknown): object is BackendEncryptedMessage {
+export function isBackendEncryptedMessage(object: unknown): object is BackendEncryptedMessage {
   const message = (object as BackendEncryptedMessage);
   return message?.c?.length > 0
     && message.n?.length > 0
@@ -134,6 +134,7 @@ type PostIndexPost = {
   body?: string;
   category: PostCategory,
   created_at: number;
+  encrypted_body?: BackendEncryptedMessage;
   encrypted_title: BackendEncryptedMessage;
   id: string;
   my_vote: VoteState;
