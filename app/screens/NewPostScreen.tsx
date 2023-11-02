@@ -145,13 +145,18 @@ export default function NewPostScreen({
     const strippedTitle = title?.trim() ?? '';
     setTitle(strippedTitle);
 
+    let maybeStrippedBody = body;
+    if (maybeStrippedBody?.length) {
+      maybeStrippedBody = maybeStrippedBody.trim();
+      setBody(maybeStrippedBody);
+    }
+
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = currentUser;
 
-      const maybeBody = body?.length ? body : undefined;
       const { errorMessage, postCreatedAt, postId } = await createPost({
-        body: maybeBody,
+        body: maybeStrippedBody,
         category: postCategory,
         e2eEncrypt,
         jwt,
@@ -167,7 +172,7 @@ export default function NewPostScreen({
       setResult('success', { message: 'Successfully created post' });
 
       const post: Post = {
-        body: body?.trim(),
+        body: maybeStrippedBody,
         createdAt: postCreatedAt,
         category: postCategory,
         id: postId,
