@@ -1,5 +1,7 @@
-import { Comment, E2EEncryptor } from '../model';
-import { encrypt, get, post } from './API';
+import { Comment, E2EDecryptor, E2EEncryptor } from '../model';
+import {
+  decryptMany, encrypt, get, post,
+} from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -53,11 +55,12 @@ export async function createComment({
 }
 
 type IndexProps = {
+  e2eDecryptMany: E2EDecryptor;
   postId: string;
 };
 
 export async function fetchComments({
-  jwt, postId,
+  e2eDecryptMany, jwt, postId,
 }: IndexProps & Authorization) {
   const uri = commentsURI(postId);
   const response = await get({ jwt, uri });
@@ -75,6 +78,11 @@ export async function fetchComments({
   }
 
   const { comments: snakeCaseComments } = json;
-  const comments = recursiveSnakeToCamel(snakeCaseComments) as Comment[];
+  const encryptedBodies = snakeCaseComments.map((c) => c.encrypted_body);
+  const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
+  const decryptedSnakeCaseComments = snakeCaseComments.map(
+    ({ encrypted_body, ...p }, i) => ({ ...p, body: bodies[i] }),
+  );
+  const comments = recursiveSnakeToCamel(decryptedSnakeCaseComments) as Comment[];
   return { comments };
 }

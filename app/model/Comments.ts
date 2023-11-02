@@ -39,9 +39,10 @@ export default function useComments(postId?: string) {
     setReady(false);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { e2eDecryptMany } = currentUser;
     const {
       errorMessage, comments: nestedComments,
-    } = await fetchComments({ jwt, postId });
+    } = await fetchComments({ e2eDecryptMany, jwt, postId });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
