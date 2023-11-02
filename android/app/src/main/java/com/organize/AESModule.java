@@ -59,11 +59,10 @@ public class AESModule extends ReactContextBaseJavaModule {
             String base64InitializationVector,
             String base64IntegrityCheck,
             Promise promise) {
-        GCMParameterSpec gcmSpec = getSpec(base64InitializationVector);
-        Cipher cipher;
+        SecretKey secretKey;
         try {
-            cipher = getCipher(Cipher.DECRYPT_MODE, wrappedKey, wrapperKeyId, gcmSpec);
-        } catch (AESException e) {
+            secretKey = unwrapSecretKey(wrappedKey, wrapperKeyId);
+        } catch (IllegalBlockSizeException | RSAModule.RSAException | BadPaddingException e) {
             Log.e(getName(), e.toString());
             promise.reject(e);
             return;
@@ -71,18 +70,29 @@ public class AESModule extends ReactContextBaseJavaModule {
 
         String message;
         try {
-            message = decrypt(base64EncryptedMessage, base64IntegrityCheck, cipher);
-        } catch (IllegalBlockSizeException | BadPaddingException e) {
-            throw new RuntimeException(e);
+            message = decrypt(secretKey, base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck);
+        } catch (IllegalBlockSizeException | BadPaddingException | AESException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
         }
         promise.resolve(message);
     }
 
     @ReactMethod
     public void encrypt(String wrappedKey, String wrapperKeyId, String message, Promise promise) {
+        SecretKey secretKey;
+        try {
+            secretKey = unwrapSecretKey(wrappedKey, wrapperKeyId);
+        } catch (IllegalBlockSizeException | RSAModule.RSAException | BadPaddingException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
+        }
+
         Cipher cipher;
         try {
-            cipher = getCipher(Cipher.ENCRYPT_MODE, wrappedKey, wrapperKeyId);
+            cipher = getCipher(Cipher.ENCRYPT_MODE, secretKey);
         } catch (AESException e) {
             Log.e(getName(), e.toString());
             promise.reject(e);
@@ -120,20 +130,9 @@ public class AESModule extends ReactContextBaseJavaModule {
 
     private Cipher getCipher(
             int operationalMode,
-            String wrappedKey,
-            String wrapperKeyId,
+            SecretKey secretKey,
             AlgorithmParameterSpec maybeSpec)
             throws AESException {
-        String symmetricKeyBase64;
-        try {
-            symmetricKeyBase64 = RSAModule.decrypt(wrapperKeyId, wrappedKey);
-        } catch (RSAModule.RSAException | IllegalBlockSizeException | BadPaddingException e) {
-            throw new AESException("Failed to decrypt wrappedKey " + wrappedKey);
-        }
-
-        byte[] symmetricKey = fromBase64(symmetricKeyBase64);
-        SecretKey secretKey = new SecretKeySpec(symmetricKey, CIPHER_ALGORITHM_NAME);
-
         Cipher cipher;
         try {
             cipher = Cipher.getInstance(CIPHER_TRANSFORMATION_NAME);
@@ -149,16 +148,30 @@ public class AESModule extends ReactContextBaseJavaModule {
         return cipher;
     }
 
-    private Cipher getCipher(int operationalMode, String wrappedKey, String wrapperKeyId)
+    private Cipher getCipher(int operationalMode, SecretKey secretKey)
             throws AESException {
-        return getCipher(operationalMode, wrappedKey, wrapperKeyId, null);
+        return getCipher(operationalMode, secretKey, null);
     }
 
-    private String decrypt(String base64EncryptedMessage, String base64IntegrityCheck, Cipher cipher)
-            throws IllegalBlockSizeException, BadPaddingException {
+    private SecretKey unwrapSecretKey(String wrappedKey, String wrapperKeyId)
+            throws IllegalBlockSizeException, RSAModule.RSAException, BadPaddingException {
+        String symmetricKeyBase64 = RSAModule.decrypt(wrapperKeyId, wrappedKey);
+        byte[] symmetricKey = fromBase64(symmetricKeyBase64);
+        return new SecretKeySpec(symmetricKey, CIPHER_ALGORITHM_NAME);
+    }
+
+    private String decrypt(
+            SecretKey secretKey,
+            String base64EncryptedMessage,
+            String base64InitializationVector,
+            String base64IntegrityCheck)
+            throws IllegalBlockSizeException, BadPaddingException, AESException {
         byte[] ciphertext = fromBase64(base64EncryptedMessage);
         byte[] integrityCheck = fromBase64(base64IntegrityCheck);
         byte[] ciphertextAndIntegrityCheck = concatenate(ciphertext, integrityCheck);
+
+        GCMParameterSpec gcmSpec = getSpec(base64InitializationVector);
+        Cipher cipher = getCipher(Cipher.DECRYPT_MODE, secretKey, gcmSpec);
         byte[] messageBytes = cipher.doFinal(ciphertextAndIntegrityCheck);
         return toUtf8(messageBytes);
     }
