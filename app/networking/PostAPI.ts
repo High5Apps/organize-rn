@@ -38,7 +38,9 @@ export async function createPost({
   ]);
   const response = await post({
     bodyObject: {
-      body, category, encrypted_body: maybeEncryptedBody, encrypted_title: encryptedTitle,
+      category,
+      encrypted_body: maybeEncryptedBody,
+      encrypted_title: encryptedTitle,
     },
     jwt,
     uri: postsURI,

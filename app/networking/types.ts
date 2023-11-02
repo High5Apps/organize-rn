@@ -131,7 +131,6 @@ export function isBackendEncryptedMessage(object: unknown): object is BackendEnc
 }
 
 type PostIndexPost = {
-  body?: string;
   category: PostCategory,
   created_at: number;
   encrypted_body?: BackendEncryptedMessage;
