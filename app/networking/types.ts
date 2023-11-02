@@ -138,7 +138,6 @@ type PostIndexPost = {
   id: string;
   my_vote: VoteState;
   pseudonym: string;
-  title: string;
   user_id: string;
   score: number;
 };
@@ -149,7 +148,6 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.category?.length > 0
     && post.pseudonym?.length > 0
     && isBackendEncryptedMessage(post.encrypted_title)
-    && post.title?.length > 0
     && post.user_id?.length > 0
     && post.created_at !== undefined
     && post.score !== undefined

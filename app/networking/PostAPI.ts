@@ -32,9 +32,7 @@ export async function createPost({
 }: Props & Authorization): Promise<Return> {
   const encryptedTitle = await encrypt(title, e2eEncrypt);
   const response = await post({
-    bodyObject: {
-      body, category, encrypted_title: encryptedTitle, title,
-    },
+    bodyObject: { body, category, encrypted_title: encryptedTitle },
     jwt,
     uri: postsURI,
   });
