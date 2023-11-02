@@ -81,8 +81,9 @@ export default function NewCommentScreenBase({
 
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
+      const { e2eEncrypt } = currentUser;
       const { commentId: newCommentId, errorMessage } = await createComment({
-        body, commentId, jwt, postId,
+        body, commentId, e2eEncrypt, jwt, postId,
       });
 
       if (errorMessage !== undefined) {

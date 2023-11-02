@@ -1,5 +1,5 @@
-import { Comment } from '../model';
-import { get, post } from './API';
+import { Comment, E2EEncryptor } from '../model';
+import { encrypt, get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -8,6 +8,7 @@ import { Authorization, isCommentIndexResponse, isCreateCommentResponse } from '
 type Props = {
   body: string;
   commentId?: string;
+  e2eEncrypt: E2EEncryptor;
   postId?: string;
 };
 
@@ -20,7 +21,7 @@ type Return = {
 };
 
 export async function createComment({
-  body, commentId, jwt, postId,
+  body, commentId, e2eEncrypt, jwt, postId,
 }: Props & Authorization): Promise<Return> {
   let uri;
   if (commentId !== undefined && postId === undefined) {
@@ -31,7 +32,10 @@ export async function createComment({
     throw new Error('createUpvote expected exactly one upvotable');
   }
 
-  const response = await post({ bodyObject: { body }, jwt, uri });
+  const encryptedBody = await encrypt(body, e2eEncrypt);
+  const response = await post({
+    bodyObject: { body, encrypted_body: encryptedBody }, jwt, uri,
+  });
   const json = await response.json();
 
   if (!response.ok) {
