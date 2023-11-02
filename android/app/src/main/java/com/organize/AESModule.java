@@ -59,10 +59,7 @@ public class AESModule extends ReactContextBaseJavaModule {
             String base64InitializationVector,
             String base64IntegrityCheck,
             Promise promise) {
-        byte[] initializationVector = fromBase64(base64InitializationVector);
-        GCMParameterSpec gcmSpec =
-                new GCMParameterSpec(INTEGRITY_CHECK_LENGTH_BYTES * 8, initializationVector);
-
+        GCMParameterSpec gcmSpec = getSpec(base64InitializationVector);
         Cipher cipher;
         try {
             cipher = getCipher(Cipher.DECRYPT_MODE, wrappedKey, wrapperKeyId, gcmSpec);
@@ -114,6 +111,11 @@ public class AESModule extends ReactContextBaseJavaModule {
         resultMap.putString(KEY_INITIALIZATION_VECTOR, toBase64(initializationVector));
         resultMap.putString(KEY_INTEGRITY_CHECK, toBase64(integrityCheck));
         promise.resolve(resultMap);
+    }
+
+    private GCMParameterSpec getSpec(String base64InitializationVector) {
+        byte[] initializationVector = fromBase64(base64InitializationVector);
+        return new GCMParameterSpec(INTEGRITY_CHECK_LENGTH_BYTES * 8, initializationVector);
     }
 
     private Cipher getCipher(
