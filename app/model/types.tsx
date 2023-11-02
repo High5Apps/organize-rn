@@ -136,3 +136,4 @@ export function isNonNull<T>(argument: T | null): argument is T {
 export type PostSort = 'new' | 'old' | 'top' | 'hot';
 
 export type E2EEncryptor = (message: string) => Promise<AESEncryptedData>;
+export type E2EDecryptor = (encryptedMessages: AESEncryptedData[]) => Promise<string[]>;

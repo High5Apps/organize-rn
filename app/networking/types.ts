@@ -117,10 +117,24 @@ export function isPostResponse(object: unknown): object is PostResponse {
     && response?.created_at !== undefined;
 }
 
+export type BackendEncryptedMessage = {
+  c: string;
+  n: string;
+  t: string;
+};
+
+function isBackendEncryptedMessage(object: unknown): object is BackendEncryptedMessage {
+  const message = (object as BackendEncryptedMessage);
+  return message?.c?.length > 0
+    && message.n?.length > 0
+    && message.t?.length > 0;
+}
+
 type PostIndexPost = {
   body?: string;
   category: PostCategory,
   created_at: number;
+  encrypted_title: BackendEncryptedMessage;
   id: string;
   my_vote: VoteState;
   pseudonym: string;
@@ -134,6 +148,7 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
   return post?.id?.length > 0
     && post.category?.length > 0
     && post.pseudonym?.length > 0
+    && isBackendEncryptedMessage(post.encrypted_title)
     && post.title?.length > 0
     && post.user_id?.length > 0
     && post.created_at !== undefined

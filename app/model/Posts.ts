@@ -58,11 +58,13 @@ export default function usePosts({
     const newCreatedBefore = getCreatedBefore(minimumCreatedBefore);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { e2eDecryptMany } = currentUser;
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
       category,
       createdBefore: newCreatedBefore,
+      e2eDecryptMany,
       page: firstPageIndex,
       jwt,
       sort,
@@ -89,11 +91,12 @@ export default function usePosts({
     }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { e2eDecryptMany } = currentUser;
 
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore, jwt, page: nextPageNumber, sort,
+      category, createdBefore, e2eDecryptMany, jwt, page: nextPageNumber, sort,
     });
 
     if (errorMessage) {

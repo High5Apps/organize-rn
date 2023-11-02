@@ -1,7 +1,9 @@
 import type {
-  E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
+  E2EDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
 } from '../model';
-import { encrypt, get, post } from './API';
+import {
+  decryptMany, encrypt, get, post,
+} from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -55,6 +57,7 @@ export async function createPost({
 type IndexProps = {
   category?: PostCategory;
   createdBefore?: number;
+  e2eDecryptMany: E2EDecryptor;
   page?: number;
   sort: PostSort;
 };
@@ -66,7 +69,7 @@ type IndexReturn = {
 };
 
 export async function fetchPosts({
-  category, createdBefore, jwt, page, sort,
+  category, createdBefore, e2eDecryptMany, jwt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(postsURI);
 
@@ -99,7 +102,12 @@ export async function fetchPosts({
   }
 
   const { posts: snakeCasePosts, meta: snakeCasePaginationData } = json;
-  const posts = recursiveSnakeToCamel(snakeCasePosts) as Post[];
+  const encryptedTitles = snakeCasePosts.map((p) => p.encrypted_title);
+  const titles = await decryptMany(encryptedTitles, e2eDecryptMany);
+  const decryptedSnakeCasePosts = snakeCasePosts.map(
+    ({ encrypted_title, ...p }, i) => ({ ...p, title: titles[i] }),
+  );
+  const posts = recursiveSnakeToCamel(decryptedSnakeCasePosts) as Post[];
   const paginationData = recursiveSnakeToCamel(snakeCasePaginationData) as PaginationData;
   return { paginationData, posts };
 }

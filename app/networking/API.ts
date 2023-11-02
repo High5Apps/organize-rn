@@ -1,4 +1,5 @@
-import { E2EEncryptor } from '../model';
+import { E2EDecryptor, E2EEncryptor } from '../model';
+import type { BackendEncryptedMessage } from './types';
 
 export enum Status {
   Success = 200,
@@ -47,20 +48,26 @@ export async function post({ bodyObject, jwt, uri }: PostProps) {
   return response;
 }
 
-type E2EEncryptedMessage = {
-  c: string;
-  n: string;
-  t: string;
-};
-
 export async function encrypt(
   message: string,
   encryptor: E2EEncryptor,
-): Promise<E2EEncryptedMessage> {
+): Promise<BackendEncryptedMessage> {
   const {
     base64EncryptedMessage: c,
     base64InitializationVector: n,
     base64IntegrityCheck: t,
   } = await encryptor(message);
   return { c, n, t };
+}
+
+export async function decryptMany(
+  encryptedMessages: BackendEncryptedMessage[],
+  decryptor: E2EDecryptor,
+): Promise<string[]> {
+  const withRenamedKeys = encryptedMessages.map(({ c, n, t }) => ({
+    base64EncryptedMessage: c,
+    base64InitializationVector: n,
+    base64IntegrityCheck: t,
+  }));
+  return decryptor(withRenamedKeys);
 }
