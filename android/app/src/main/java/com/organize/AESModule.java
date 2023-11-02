@@ -13,6 +13,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
@@ -71,20 +72,13 @@ public class AESModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        byte[] ciphertext = fromBase64(base64EncryptedMessage);
-        byte[] integrityCheck = fromBase64(base64IntegrityCheck);
-        byte[] ciphertextAndIntegrityCheck = concatenate(ciphertext, integrityCheck);
-
-        byte[] message;
+        String message;
         try {
-            message = cipher.doFinal(ciphertextAndIntegrityCheck);
-        } catch (BadPaddingException | IllegalBlockSizeException e) {
-            Log.e(getName(), e.toString());
-            promise.reject(e);
-            return;
+            message = decrypt(base64EncryptedMessage, base64IntegrityCheck, cipher);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            throw new RuntimeException(e);
         }
-
-        promise.resolve(toUtf8(message));
+        promise.resolve(message);
     }
 
     @ReactMethod
@@ -156,6 +150,15 @@ public class AESModule extends ReactContextBaseJavaModule {
     private Cipher getCipher(int operationalMode, String wrappedKey, String wrapperKeyId)
             throws AESException {
         return getCipher(operationalMode, wrappedKey, wrapperKeyId, null);
+    }
+
+    private String decrypt(String base64EncryptedMessage, String base64IntegrityCheck, Cipher cipher)
+            throws IllegalBlockSizeException, BadPaddingException {
+        byte[] ciphertext = fromBase64(base64EncryptedMessage);
+        byte[] integrityCheck = fromBase64(base64IntegrityCheck);
+        byte[] ciphertextAndIntegrityCheck = concatenate(ciphertext, integrityCheck);
+        byte[] messageBytes = cipher.doFinal(ciphertextAndIntegrityCheck);
+        return toUtf8(messageBytes);
     }
 
     private byte[] concatenate(byte[] a, byte[] b) {
