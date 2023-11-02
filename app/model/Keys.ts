@@ -25,6 +25,15 @@ export default function Keys() {
           base64IntegrityCheck,
         );
       },
+      async decryptMany({
+        encryptedMessages, wrappedKey, wrapperKeyId,
+      }: { encryptedMessages: AESEncryptedData[] } & AESWrappedKey) {
+        return AESKeychain.decryptMany(
+          wrappedKey,
+          wrapperKeyId,
+          encryptedMessages,
+        );
+      },
       async encrypt({
         message, wrappedKey, wrapperKeyId,
       }: AESMessage & AESWrappedKey) {

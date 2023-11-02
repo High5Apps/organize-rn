@@ -110,6 +110,18 @@ export default function User({
     return { message };
   }
 
+  async function e2eDecryptMany(aesEncyptedData: AESEncryptedData[]) {
+    if (!localEncryptionKeyId || !encryptedGroupKey) {
+      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
+    }
+    const messages = await keys.aes.decryptMany({
+      encryptedMessages: aesEncyptedData,
+      wrappedKey: encryptedGroupKey,
+      wrapperKeyId: localEncryptionKeyId,
+    });
+    return messages;
+  }
+
   async function e2eEncrypt(message: string) {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
@@ -129,6 +141,7 @@ export default function User({
     encryptedGroupKey,
     equals,
     e2eDecrypt,
+    e2eDecryptMany,
     e2eEncrypt,
     localEncryptionKeyId,
     org,
