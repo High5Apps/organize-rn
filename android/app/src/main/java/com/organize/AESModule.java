@@ -33,10 +33,10 @@ import javax.crypto.spec.SecretKeySpec;
 public class AESModule extends ReactContextBaseJavaModule {
     private static final String CIPHER_ALGORITHM_NAME = "AES";
     private static final String CIPHER_TRANSFORMATION_NAME = "AES/GCM/NoPadding";
+    private static final String KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage";
+    private static final String KEY_INITIALIZATION_VECTOR = "base64InitializationVector";
+    private static final String KEY_INTEGRITY_CHECK = "base64IntegrityCheck";
     private static final String MODULE_NAME = "AESModule";
-    private static final String RETURN_KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage";
-    private static final String RETURN_KEY_INITIALIZATION_VECTOR = "base64InitializationVector";
-    private static final String RETURN_KEY_INTEGRITY_CHECK = "base64IntegrityCheck";
 
     private static final int INTEGRITY_CHECK_LENGTH_BYTES = 16;
 
@@ -116,9 +116,9 @@ public class AESModule extends ReactContextBaseJavaModule {
         byte[] initializationVector = cipher.getIV();
 
         WritableMap resultMap = new WritableNativeMap();
-        resultMap.putString(RETURN_KEY_ENCRYPTED_MESSAGE, toBase64(ciphertext));
-        resultMap.putString(RETURN_KEY_INITIALIZATION_VECTOR, toBase64(initializationVector));
-        resultMap.putString(RETURN_KEY_INTEGRITY_CHECK, toBase64(integrityCheck));
+        resultMap.putString(KEY_ENCRYPTED_MESSAGE, toBase64(ciphertext));
+        resultMap.putString(KEY_INITIALIZATION_VECTOR, toBase64(initializationVector));
+        resultMap.putString(KEY_INTEGRITY_CHECK, toBase64(integrityCheck));
         promise.resolve(resultMap);
     }
 

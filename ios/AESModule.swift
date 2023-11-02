@@ -11,9 +11,9 @@ import CryptoKit
 @objc(AESModule)
 class AESModule: NSObject {
   let AES_ERROR_CODE = "E_AES"
-  let RETURN_KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage"
-  let RETURN_KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
-  let RETURN_KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
+  let KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage"
+  let KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
+  let KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
 
   @objc
   static func requiresMainQueueSetup() -> Bool { false }
@@ -60,9 +60,9 @@ class AESModule: NSObject {
     let integrityCheck = encryptedMessageData.tag.base64EncodedString()
     
     resolve([
-      RETURN_KEY_ENCRYPTED_MESSAGE: ciphertext,
-      RETURN_KEY_INITIALIZATION_VECTOR: initializationVector,
-      RETURN_KEY_INTEGRITY_CHECK: integrityCheck,
+      KEY_ENCRYPTED_MESSAGE: ciphertext,
+      KEY_INITIALIZATION_VECTOR: initializationVector,
+      KEY_INTEGRITY_CHECK: integrityCheck,
     ]);
   }
   
