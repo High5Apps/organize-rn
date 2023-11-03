@@ -7,13 +7,22 @@ const BASE64_CHAR_63 = '/';
 const BASE64URL_CHAR_62 = '-';
 const BASE64URL_CHAR_63 = '_';
 
-function base64ToBase64Url(base64: string) {
+export function base64ToBase64Url(base64: string) {
   const base64Url = (
     base64
       .split(BASE64_CHAR_62).join(BASE64URL_CHAR_62)
       .split(BASE64_CHAR_63).join(BASE64URL_CHAR_63)
   );
   return base64Url;
+}
+
+export function base64UrlToBase64(base64Url: string) {
+  const base64 = (
+    base64Url
+      .split(BASE64URL_CHAR_62).join(BASE64_CHAR_62)
+      .split(BASE64URL_CHAR_63).join(BASE64_CHAR_63)
+  );
+  return base64;
 }
 
 export function utf8ToBase64Url(utf8: string) {

@@ -1,86 +1,18 @@
-import {
-  isCurrentUserData, isNonNull, isQRCodeValue, QRCodeValue,
-} from './types';
+import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
+import { isCurrentUserData, isQRCodeValue, QRCodeValue } from './types';
 import { UserType } from './User';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
-export const PROTOCOL_KEY = 'ORGANIZE';
-const JWT_KEY = 'JWT';
-const GROUP_KEY_KEY = 'GK';
-const SEPARATOR = ':';
-const CLOSE_TAG = ';';
 
-export const toFieldPrefix = (key: string) => `${key}${SEPARATOR}`;
+// PROTOCOL should never be changed to https. Using a non-HTTP protocol lowers
+// the risk of the group key accidentally being sent to the server.
+const PROTOCOL = 'organize:';
 
-type ToFieldProps = {
-  key: string; value: string; fields?: never;
-} | {
-  key: string; value?: never; fields: string[];
-};
-export function toField({ fields, key, value: maybeValue }: ToFieldProps) {
-  const value = maybeValue ?? fields.join('');
-  return `${toFieldPrefix(key)}${value}${CLOSE_TAG}`;
-}
-
-export function parseField({
-  expectedKey, input,
-}: { expectedKey: string, input: string }): string | null {
-  const expectedPrefix = toFieldPrefix(expectedKey);
-  if (!input.startsWith(expectedPrefix)) {
-    console.warn(`Failed to parse key: "${expectedKey}" from input: "${input}". Missing expected prefix: "${expectedPrefix}"`);
-    return null;
-  }
-
-  if (!input.endsWith(CLOSE_TAG)) {
-    console.warn(`Failed to parse key: "${expectedKey}" from input: "${input}". Missing closing tag: "${CLOSE_TAG}"`);
-    return null;
-  }
-
-  const value = input.slice(expectedPrefix.length, -1);
-
-  if (!value.length) {
-    console.warn(`Failed to parse key: "${expectedKey}" from input: "${input}". Value was empty`);
-    return null;
-  }
-
-  return value;
-}
-
-export function parseFields({
-  expectedKeys, input,
-}: { expectedKeys: string[], input: string }): string[] | null {
-  if (expectedKeys.length < 2) {
-    console.warn(`Expected expectedKeys to have at least 2 keys: ${expectedKeys}`);
-    return null;
-  }
-
-  // Note: n + 1 entries are expected when splitting an input with n delimiters
-  // e.g. 'FOO:BAR;ZIM:ZAM;'.split(';') => ['FOO:BAR', 'ZIM:ZAM', '']
-  const fields = input.split(CLOSE_TAG);
-  const extraEntry = fields.pop();
-  if (extraEntry !== '') {
-    console.warn(`Expected no value after closing tag for input: ${input}`);
-    return null;
-  }
-
-  if (fields.length !== expectedKeys.length) {
-    console.warn(`Expected number of fields in input (${fields.length}) to equal number of expectedKeys (${expectedKeys.length})`);
-    return null;
-  }
-
-  const values = fields.map((field, i) => parseField({
-    // Calling split(CLOSE_TAG) above removes them, so need to add them back
-    expectedKey: expectedKeys[i], input: `${field}${CLOSE_TAG}`,
-  })).filter(isNonNull);
-
-  if (values.length !== expectedKeys.length) {
-    console.warn('Expected all fields to parse successfully');
-    return null;
-  }
-
-  return values;
-}
+const CONNECT_PATH = 'connect';
+const URL_BASE = `${PROTOCOL}//${CONNECT_PATH}`;
+const JWT_PARAM = 'jwt';
+const GROUP_KEY_PARAM = 'gk';
 
 type FormatterProps = {
   currentTime: number;
@@ -100,12 +32,13 @@ export function QRCodeDataFormatter({
       timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
       scope: QR_CODE_JWT_SCOPE,
     });
-    const jwtField = toField({ key: JWT_KEY, value: jwtString });
+    const base64GroupKey = await currentUser.decryptGroupKey();
+    const base64UrlGroupKey = base64ToBase64Url(base64GroupKey);
 
-    const groupKey = await currentUser.decryptGroupKey();
-    const groupKeyField = toField({ key: GROUP_KEY_KEY, value: groupKey });
-
-    return toField({ key: PROTOCOL_KEY, fields: [jwtField, groupKeyField] });
+    const url = new URL(URL_BASE);
+    url.searchParams.set(JWT_PARAM, jwtString);
+    url.searchParams.set(GROUP_KEY_PARAM, base64UrlGroupKey);
+    return url.href;
   }
 
   return { toString };
@@ -117,23 +50,29 @@ type ParserProps = {
 
 export function QRCodeDataParser({ input }: ParserProps) {
   function parse(): QRCodeValue | null {
-    const maybeInnerFields = parseField({ expectedKey: PROTOCOL_KEY, input });
-    if (!maybeInnerFields) {
-      console.warn(`Unexpected protocol for input: ${input}`);
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(input);
+    } catch (_) {
+      console.warn(`Failed to parse url from: ${input}`);
       return null;
     }
 
-    const innerFields = maybeInnerFields;
-    const innerFieldValues = parseFields({
-      expectedKeys: [JWT_KEY, GROUP_KEY_KEY], input: innerFields,
-    });
+    const { protocol: parsedProtocol, searchParams } = parsedUrl;
 
-    if (!innerFieldValues) {
-      console.warn(`Failed to parse ${JWT_KEY} or ${GROUP_KEY_KEY}`);
+    if (parsedProtocol !== PROTOCOL) {
+      console.warn(`Unexpected protocol: ${parsedProtocol}`);
       return null;
     }
 
-    const [jwt, groupKey] = innerFieldValues;
+    const jwt = searchParams.get(JWT_PARAM);
+    const base64UrlGroupKey = searchParams.get(GROUP_KEY_PARAM);
+
+    if (jwt === null || base64UrlGroupKey === null) {
+      return null;
+    }
+
+    const groupKey = base64UrlToBase64(base64UrlGroupKey);
 
     const value = { groupKey, jwt };
 
