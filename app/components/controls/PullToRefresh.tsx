@@ -42,6 +42,7 @@ export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
     <RNRefreshControl
       colors={[colors.primary]}
       onRefresh={wrappedOnRefresh}
+      progressBackgroundColor={colors.fill}
       refreshing={refreshing}
       tintColor={colors.primary}
     />
