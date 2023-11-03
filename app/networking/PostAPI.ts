@@ -119,8 +119,10 @@ export async function fetchPosts({
     decryptMany(encryptedBodies, e2eDecryptMany),
   ]);
   const decryptedSnakeCasePosts = snakeCasePosts.map(
-    ({ encrypted_title, ...p }, i) => ({ ...p, title: titles[i] }),
-  ).map(({ encrypted_body, ...p }, i) => ({ ...p, body: bodies[i] }));
+    ({ encrypted_body, encrypted_title, ...p }, i) => (
+      { ...p, body: bodies[i], title: titles[i] }
+    ),
+  );
 
   const posts = recursiveSnakeToCamel(decryptedSnakeCasePosts) as Post[];
   const paginationData = recursiveSnakeToCamel(snakeCasePaginationData) as PaginationData;
