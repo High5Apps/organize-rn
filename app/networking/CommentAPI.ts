@@ -5,7 +5,10 @@ import {
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
-import { Authorization, isCommentIndexResponse, isCreateCommentResponse } from './types';
+import {
+  Authorization, CommentIndexComment, isCommentIndexResponse,
+  isCreateCommentResponse,
+} from './types';
 
 type Props = {
   body: string;
@@ -59,6 +62,17 @@ type IndexProps = {
   postId: string;
 };
 
+function getUnnestedComments(nestedComments: CommentIndexComment[]): CommentIndexComment[] {
+  const unnestedComments: CommentIndexComment[] = [];
+  nestedComments.forEach((nestedComment) => {
+    unnestedComments.push(nestedComment);
+
+    const replies = getUnnestedComments(nestedComment.replies);
+    unnestedComments.push(...replies);
+  });
+  return unnestedComments;
+}
+
 export async function fetchComments({
   e2eDecryptMany, jwt, postId,
 }: IndexProps & Authorization) {
@@ -78,9 +92,10 @@ export async function fetchComments({
   }
 
   const { comments: snakeCaseComments } = json;
-  const encryptedBodies = snakeCaseComments.map((c) => c.encrypted_body);
+  const unnestedSnakeCaseComments = getUnnestedComments(snakeCaseComments);
+  const encryptedBodies = unnestedSnakeCaseComments.map((c) => c.encrypted_body);
   const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
-  const decryptedSnakeCaseComments = snakeCaseComments.map(
+  const decryptedSnakeCaseComments = unnestedSnakeCaseComments.map(
     ({ encrypted_body, ...p }, i) => ({ ...p, body: bodies[i] }),
   );
   const comments = recursiveSnakeToCamel(decryptedSnakeCaseComments) as Comment[];

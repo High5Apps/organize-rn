@@ -9,17 +9,6 @@ export const MAX_COMMENT_LENGTH = 10000;
 
 const getCommentIdsFrom = (comments?: Comment[]) => (comments ?? []).map((c) => c.id);
 
-function getUnnestedComments(nestedComments: Comment[]): Comment[] {
-  const unnestedComments: Comment[] = [];
-  nestedComments.forEach((nestedComment) => {
-    unnestedComments.push(nestedComment);
-
-    const replies = getUnnestedComments(nestedComment.replies);
-    unnestedComments.push(...replies);
-  });
-  return unnestedComments;
-}
-
 export default function useComments(postId?: string) {
   const { cacheComment, cacheComments, getCachedComment } = useCommentContext();
   const [commentIds, setCommentIds] = useState<string[]>([]);
@@ -41,19 +30,18 @@ export default function useComments(postId?: string) {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const {
-      errorMessage, comments: nestedComments,
+      errorMessage, comments: fetchedComments,
     } = await fetchComments({ e2eDecryptMany, jwt, postId });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
 
-    const unnestedComments = getUnnestedComments(nestedComments);
-    cacheComments(unnestedComments);
-    setCommentIds(getCommentIdsFrom(unnestedComments));
+    cacheComments(fetchedComments);
+    setCommentIds(getCommentIdsFrom(fetchedComments));
     setReady(true);
 
-    const isEmpty = (nestedComments.length === 0);
+    const isEmpty = (fetchedComments.length === 0);
     return { isEmpty };
   }
 

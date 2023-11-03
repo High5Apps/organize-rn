@@ -187,7 +187,7 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
   return response?.id?.length > 0;
 }
 
-type CommentIndexComment = {
+export type CommentIndexComment = {
   created_at: number;
   depth: number;
   encrypted_body: BackendEncryptedMessage;
