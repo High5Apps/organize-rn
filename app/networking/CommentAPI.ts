@@ -95,9 +95,11 @@ export async function fetchComments({
   const unnestedSnakeCaseComments = getUnnestedComments(snakeCaseComments);
   const encryptedBodies = unnestedSnakeCaseComments.map((c) => c.encrypted_body);
   const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
-  const decryptedSnakeCaseComments = unnestedSnakeCaseComments.map(
-    ({ encrypted_body, ...p }, i) => ({ ...p, body: bodies[i] }),
+  const decryptedSnakeCaseCommentsWithoutReplies = unnestedSnakeCaseComments.map(
+    ({ encrypted_body, replies, ...p }, i) => ({ ...p, body: bodies[i] }),
   );
-  const comments = recursiveSnakeToCamel(decryptedSnakeCaseComments) as Comment[];
+  const comments = recursiveSnakeToCamel(
+    decryptedSnakeCaseCommentsWithoutReplies,
+  ) as Comment[];
   return { comments };
 }

@@ -65,6 +65,5 @@ export function getFakeComment(commentId: string, score: number): Comment {
     pseudonym: fakeUser.pseudonym,
     score,
     userId: fakeUser.id,
-    replies: [],
   };
 }

@@ -107,7 +107,6 @@ export default function NewCommentScreenBase({
         pseudonym: currentUser.pseudonym,
         score: 1,
         userId: currentUser.id,
-        replies: [],
       };
 
       cacheComment(comment);
