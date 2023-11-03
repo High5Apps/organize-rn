@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Comment, isCurrentUserData, isDefined } from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
@@ -56,10 +56,6 @@ export default function useComments(postId?: string) {
     const isEmpty = (nestedComments.length === 0);
     return { isEmpty };
   }
-
-  useEffect(() => {
-    updateComments().catch(console.error);
-  }, [postId]);
 
   return {
     cacheComment, comments, getCachedComment, ready, updateComments,
