@@ -6,14 +6,12 @@ const BASE64_CHAR_62 = '+';
 const BASE64_CHAR_63 = '/';
 const BASE64URL_CHAR_62 = '-';
 const BASE64URL_CHAR_63 = '_';
-const BASE64_PADDING = '=';
 
 function base64ToBase64Url(base64: string) {
   const base64Url = (
     base64
       .split(BASE64_CHAR_62).join(BASE64URL_CHAR_62)
       .split(BASE64_CHAR_63).join(BASE64URL_CHAR_63)
-      .split(BASE64_PADDING).join('')
   );
   return base64Url;
 }

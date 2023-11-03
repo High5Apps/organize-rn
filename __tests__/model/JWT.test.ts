@@ -26,11 +26,11 @@ describe('JWT', () => {
 
   it('has expected payload', () => {
     expect(encodedPayload).toBe(
-      'eyJleHAiOjE1MTYyMzkwMjIsInNjcCI6IioiLCJzdWIiOiIxMjM0NTY3ODkwIn0',
+      'eyJleHAiOjE1MTYyMzkwMjIsInNjcCI6IioiLCJzdWIiOiIxMjM0NTY3ODkwIn0=',
     );
   });
 
   it('has expected signature', () => {
-    expect(encodedSignature).toBe('ZXlKaGJHY2lPaUpGVXpJMU5pSjkuZXlKbGVIQWlPakUxTVRZeU16a3dNaklzSW5OamNDSTZJaW9pTENKemRXSWlPaUl4TWpNME5UWTNPRGt3SW4w');
+    expect(encodedSignature).toBe('ZXlKaGJHY2lPaUpGVXpJMU5pSjkuZXlKbGVIQWlPakUxTVRZeU16a3dNaklzSW5OamNDSTZJaW9pTENKemRXSWlPaUl4TWpNME5UWTNPRGt3SW4wPQ==');
   });
 });
