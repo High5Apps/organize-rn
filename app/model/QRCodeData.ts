@@ -27,12 +27,15 @@ export function QRCodeDataFormatter({
       throw new Error('Expected QRCode user to be the current user');
     }
 
-    const jwtString = await currentUser.createAuthToken({
-      currentTime,
-      timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
-      scope: QR_CODE_JWT_SCOPE,
-    });
-    const base64GroupKey = await currentUser.decryptGroupKey();
+    const [jwtString, base64GroupKey] = await Promise.all([
+      currentUser.createAuthToken({
+        currentTime,
+        timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
+        scope: QR_CODE_JWT_SCOPE,
+      }),
+      currentUser.decryptGroupKey(),
+    ]);
+
     const base64UrlGroupKey = base64ToBase64Url(base64GroupKey);
 
     const url = new URL(URL_BASE);
