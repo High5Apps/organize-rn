@@ -1,5 +1,5 @@
 import type {
-  E2EDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
+  E2EMultiDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
 } from '../model';
 import {
   decryptMany, encrypt, get, post,
@@ -64,7 +64,7 @@ export async function createPost({
 type IndexProps = {
   category?: PostCategory;
   createdBefore?: number;
-  e2eDecryptMany: E2EDecryptor;
+  e2eDecryptMany: E2EMultiDecryptor;
   page?: number;
   sort: PostSort;
 };

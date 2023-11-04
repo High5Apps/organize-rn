@@ -1,4 +1,4 @@
-import { E2EDecryptor, E2EEncryptor } from '../model';
+import { E2EMultiDecryptor, E2EEncryptor } from '../model';
 import type { BackendEncryptedMessage } from './types';
 
 export enum Status {
@@ -62,7 +62,7 @@ export async function encrypt(
 
 export async function decryptMany(
   encryptedMessages: (BackendEncryptedMessage | null)[],
-  decryptor: E2EDecryptor,
+  decryptor: E2EMultiDecryptor,
 ): Promise<(string | null)[]> {
   const withRenamedKeys = encryptedMessages.map((encryptedMessageOrNull) => {
     if (encryptedMessageOrNull === null) { return null; }

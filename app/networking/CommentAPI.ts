@@ -1,4 +1,4 @@
-import { Comment, E2EDecryptor, E2EEncryptor } from '../model';
+import { Comment, E2EMultiDecryptor, E2EEncryptor } from '../model';
 import {
   decryptMany, encrypt, get, post,
 } from './API';
@@ -58,7 +58,7 @@ export async function createComment({
 }
 
 type IndexProps = {
-  e2eDecryptMany: E2EDecryptor;
+  e2eDecryptMany: E2EMultiDecryptor;
   postId: string;
 };
 
