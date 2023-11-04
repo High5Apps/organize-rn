@@ -30,7 +30,6 @@ async function createCurrentUser({
   const {
     publicKey: authenticationKey, publicKeyId: authenticationKeyId,
   } = await keys.ecc.create();
-  const { publicKeyId: localEncryptionKeyId } = await keys.rsa.create();
 
   let userId: string;
   try {
@@ -48,22 +47,27 @@ async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
+  const groupKey = maybeGroupKey ?? keys.aes.create();
+  const { publicKeyId: localEncryptionKeyId } = await keys.rsa.create();
+  const {
+    base64EncodedEncryptedMessage: encryptedGroupKey,
+  } = await keys.rsa.encrypt({
+    publicKeyId: localEncryptionKeyId, message: groupKey,
+  });
+
   // `as any` is needed since users are required to have an Org and pseudonym
-  const partialUser = User({ authenticationKeyId, id: userId } as any);
+  const partialUser = User({
+    authenticationKeyId, encryptedGroupKey, id: userId, localEncryptionKeyId,
+  } as any);
 
   let orgId: string;
-  let encryptedGroupKey;
   if (maybeOrgId) {
     orgId = maybeOrgId;
-
-    const { base64EncodedEncryptedMessage } = await keys.rsa.encrypt({
-      publicKeyId: localEncryptionKeyId, message: maybeGroupKey,
-    });
-    encryptedGroupKey = base64EncodedEncryptedMessage;
   } else {
     try {
       const jwt = await partialUser.createAuthToken({ scope: '*' });
-      const response = await createOrg({ ...unpublishedOrg, jwt });
+      const { e2eEncrypt } = partialUser;
+      const response = await createOrg({ ...unpublishedOrg, e2eEncrypt, jwt });
 
       if (isErrorResponse(response)) {
         return ErrorResponse(response).errorMessage;
@@ -76,12 +80,6 @@ async function createCurrentUser({
       }
       return GENERIC_ERROR_MESSAGE;
     }
-
-    const groupKey = keys.aes.create();
-    const { base64EncodedEncryptedMessage } = await keys.rsa.encrypt({
-      publicKeyId: localEncryptionKeyId, message: groupKey,
-    });
-    encryptedGroupKey = base64EncodedEncryptedMessage;
   }
 
   const org = {

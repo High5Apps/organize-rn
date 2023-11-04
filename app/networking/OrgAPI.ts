@@ -1,5 +1,5 @@
-import type { Org } from '../model';
-import { get, post } from './API';
+import type { E2EEncryptor, Org } from '../model';
+import { encrypt, get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -8,11 +8,17 @@ import {
   UnpublishedOrg,
 } from './types';
 
+type Props = Authorization & UnpublishedOrg & {
+  e2eEncrypt: E2EEncryptor;
+};
+
 export async function createOrg({
-  jwt, name, potentialMemberDefinition,
-}: UnpublishedOrg & Authorization): Promise<string | ErrorResponseType> {
+  e2eEncrypt, jwt, name, potentialMemberDefinition,
+}: Props): Promise<string | ErrorResponseType> {
+  const encryptedName = await encrypt(name, e2eEncrypt);
   const response = await post({
     bodyObject: {
+      encrypted_name: encryptedName,
       name,
       potential_member_definition: potentialMemberDefinition,
     },
