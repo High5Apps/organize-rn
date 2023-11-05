@@ -1,4 +1,7 @@
-import { get, post, Status } from './API';
+import { Keys } from '../model';
+import {
+  fromBackendEncryptedMessage, get, post, Status,
+} from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { connectionPreviewURI, connectionsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -7,11 +10,11 @@ import {
   isPreviewConnectionResponse,
 } from './types';
 
-type PreviewProps = {
+type SharerJwt = {
   sharerJwt: string;
 };
 
-type CreateProps = PreviewProps & Authorization;
+type CreateProps = SharerJwt & Authorization;
 
 type Return = {
   errorMessage?: string;
@@ -47,8 +50,12 @@ export async function createConnection({
   return { status: response.status };
 }
 
+type PreviewProps = SharerJwt & {
+  groupKey: string;
+};
+
 export async function previewConnection({
-  sharerJwt,
+  groupKey, sharerJwt,
 }: PreviewProps): Promise<ConnectionPreview | ErrorResponseType> {
   const uri = connectionPreviewURI(sharerJwt);
   const response = await get({ uri });
@@ -63,6 +70,13 @@ export async function previewConnection({
     throw new Error('Failed to parse connection preview from response');
   }
 
-  const connectionPreview = recursiveSnakeToCamel(json) as ConnectionPreview;
-  return connectionPreview;
+  const { encrypted_name: backendEncryptedName } = json.org;
+  const encryptedName = fromBackendEncryptedMessage(backendEncryptedName);
+  const name = await Keys().aes.decryptWithExposedKey({
+    ...encryptedName, base64Key: groupKey,
+  });
+  const { encrypted_name: unused, ...decryptedOrg } = { ...json.org, name };
+  const decryptedJson = { ...json, org: decryptedOrg };
+  const connectionPreview = recursiveSnakeToCamel(decryptedJson);
+  return connectionPreview as ConnectionPreview;
 }

@@ -50,7 +50,7 @@ export async function post({ bodyObject, jwt, uri }: PostProps) {
   return response;
 }
 
-function fromBackendEncryptedMessage(
+export function fromBackendEncryptedMessage(
   backendEncryptedMessage: BackendEncryptedMessage,
 ): AESEncryptedData {
   const { c, n, t } = backendEncryptedMessage;

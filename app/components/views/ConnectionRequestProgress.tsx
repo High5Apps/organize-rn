@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import useRequestProgress from './RequestProgress';
 import {
-  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, useUserContext,
+  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useUserContext,
 } from '../../model';
 import {
   ConnectionPreview, ErrorResponse, isErrorResponse, previewConnection,
@@ -25,14 +25,15 @@ const useStyles = () => {
 
 type Props = {
   onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
+  qrCodeValue: QRCodeValue;
   reviewFrameProvider: (response: ConnectionPreview) => JSX.Element;
-  sharerJwt: string;
   style?: StyleProp<ViewStyle>;
 };
 
 export default function ConnectionRequestProgress({
-  onConnectionPreview, reviewFrameProvider, sharerJwt, style,
+  onConnectionPreview, qrCodeValue, reviewFrameProvider, style,
 }: Props) {
+  const { groupKey, jwt: sharerJwt } = qrCodeValue;
   const { styles } = useStyles();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
   const [response, setResponse] = useState<ConnectionPreview>();
@@ -45,7 +46,10 @@ export default function ConnectionRequestProgress({
 
     const fetchRequestPreview = async () => {
       try {
-        const responseOrError = await previewConnection({ sharerJwt });
+        const responseOrError = await previewConnection({
+          groupKey, sharerJwt,
+        });
+
         if (!subscribed) { return; }
 
         if (isErrorResponse(responseOrError)) {

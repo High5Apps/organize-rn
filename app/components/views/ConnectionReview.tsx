@@ -25,13 +25,11 @@ type Props = {
 export default function ConnectionReview({
   onConnectionPreview, qrValue, style,
 }: Props) {
-  const { jwt: sharerJwt } = qrValue;
-
   return (
     <ConnectionRequestProgress
       onConnectionPreview={onConnectionPreview}
+      qrCodeValue={qrValue}
       reviewFrameProvider={reviewFrameProvider}
-      sharerJwt={sharerJwt}
       style={style}
     />
   );

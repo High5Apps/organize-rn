@@ -34,6 +34,17 @@ export default function Keys() {
           encryptedMessages,
         );
       },
+      async decryptWithExposedKey({
+        base64EncryptedMessage, base64InitializationVector,
+        base64IntegrityCheck, base64Key,
+      }: AESEncryptedData & { base64Key: string }) {
+        return AESKeychain.decryptWithExposedKey(
+          base64Key,
+          base64EncryptedMessage,
+          base64InitializationVector,
+          base64IntegrityCheck,
+        );
+      },
       async encrypt({
         message, wrappedKey, wrapperKeyId,
       }: AESMessage & AESWrappedKey) {

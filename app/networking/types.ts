@@ -1,5 +1,4 @@
 import type { Org, PostCategory, VoteState } from '../model';
-import type { SnakeToCamelCaseNested } from './SnakeCaseToCamelCase';
 
 export type ErrorResponseType = {
   error_messages: string[];
@@ -59,23 +58,30 @@ export function isBackendEncryptedMessage(object: unknown): object is BackendEnc
 
 type PreviewConnectionResponse = {
   org: {
-    id: string,
-    name: string,
-    potential_member_definition: string,
-  },
+    id: string;
+    encrypted_name: BackendEncryptedMessage;
+    name: string;
+    potential_member_definition: string;
+  };
   user: {
-    pseudonym: string,
-  }
+    pseudonym: string;
+  };
 };
 
-export type ConnectionPreview = SnakeToCamelCaseNested<PreviewConnectionResponse>;
+export type ConnectionPreview = {
+  org: Omit<Org, 'graph'>;
+  user: {
+    pseudonym: string;
+  };
+};
 
 export function isPreviewConnectionResponse(object: unknown): object is PreviewConnectionResponse {
   const response = (object as PreviewConnectionResponse);
   return (response?.org?.id.length > 0)
-    && (response?.org?.name.length > 0)
-    && (response?.org?.potential_member_definition.length > 0)
-    && (response?.user?.pseudonym.length > 0);
+    && isBackendEncryptedMessage(response.org?.encrypted_name)
+    && (response.org.name.length > 0)
+    && (response.org.potential_member_definition.length > 0)
+    && (response.user?.pseudonym.length > 0);
 }
 
 type OrgGraphResponse = {
