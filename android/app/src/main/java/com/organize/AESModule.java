@@ -122,6 +122,26 @@ public class AESModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void decryptWithExposedKey(
+            String base64Key,
+            String base64EncryptedMessage,
+            String base64InitializationVector,
+            String base64IntegrityCheck,
+            Promise promise) {
+        SecretKey secretKey = getSecretKey(base64Key);
+
+        String message;
+        try {
+            message = decrypt(secretKey, base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck);
+        } catch (IllegalBlockSizeException | BadPaddingException | AESException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
+        }
+        promise.resolve(message);
+    }
+
+    @ReactMethod
     public void encrypt(String wrappedKey, String wrapperKeyId, String message, Promise promise) {
         SecretKey secretKey;
         try {
@@ -198,7 +218,11 @@ public class AESModule extends ReactContextBaseJavaModule {
     private SecretKey unwrapSecretKey(String wrappedKey, String wrapperKeyId)
             throws IllegalBlockSizeException, RSAModule.RSAException, BadPaddingException {
         String symmetricKeyBase64 = RSAModule.decrypt(wrapperKeyId, wrappedKey);
-        byte[] symmetricKey = fromBase64(symmetricKeyBase64);
+        return getSecretKey(symmetricKeyBase64);
+    }
+
+    private SecretKey getSecretKey(String base64Key) {
+        byte[] symmetricKey = fromBase64(base64Key);
         return new SecretKeySpec(symmetricKey, CIPHER_ALGORITHM_NAME);
     }
 

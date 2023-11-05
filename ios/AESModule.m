@@ -29,6 +29,15 @@ RCT_EXTERN_METHOD(
 );
 
 RCT_EXTERN_METHOD(
+  decryptWithExposedKey: (NSString *) base64Key
+  base64EncryptedMessage: (NSString *) base64EncryptedMessage
+  base64InitializationVector: (NSString *) base64InitializationVector
+  base64IntegrityCheck: (NSString *) base64IntegrityCheck
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
+RCT_EXTERN_METHOD(
   encrypt: (NSString *) wrappedKey
   wrapperKeyId: (NSString *) wrapperKeyId
   message: (NSString *) message

@@ -28,6 +28,20 @@ async function decryptMany(
   );
 }
 
+async function decryptWithExposedKey(
+  base64Key: string,
+  base64EncryptedMessage: string,
+  base64InitializationVector: string,
+  base64IntegrityCheck: string,
+): Promise<string> {
+  return AESModule.decryptWithExposedKey(
+    base64Key,
+    base64EncryptedMessage,
+    base64InitializationVector,
+    base64IntegrityCheck,
+  );
+}
+
 async function encrypt(
   wrappedKey: string,
   wrapperKeyId: string,
@@ -39,5 +53,6 @@ async function encrypt(
 export default {
   decrypt,
   decryptMany,
+  decryptWithExposedKey,
   encrypt,
 };

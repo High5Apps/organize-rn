@@ -21,7 +21,7 @@ class AESModule: NSObject {
 
   @objc
   func decrypt(_ wrappedKey: String, wrapperKeyId: String, base64EncryptedMessage: String, base64InitializationVector: String, base64IntegrityCheck: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-    guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
+    guard let symmetricKey = try? unwrapSymmetricKey(wrappedKey, wrapperKeyId) else {
       reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
@@ -41,7 +41,7 @@ class AESModule: NSObject {
   
   @objc
   func decryptMany(_ wrappedKey: String, wrapperKeyId: String, encryptedMessages: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-    guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
+    guard let symmetricKey = try? unwrapSymmetricKey(wrappedKey, wrapperKeyId) else {
       reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
@@ -68,6 +68,26 @@ class AESModule: NSObject {
     
     resolve(messages)
   }
+  
+  @objc
+  func decryptWithExposedKey(_ base64Key: String, base64EncryptedMessage: String, base64InitializationVector: String, base64IntegrityCheck: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    guard let symmetricKey = try? getSymmetricKey(base64Key) else {
+      reject(Self.AES_ERROR_CODE, "Failed to decode symmetric key", nil)
+      return
+    }
+    
+    let encryptedMessage = EncryptedMessage(base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck)
+    
+    let message: String
+    do {
+      message = try decrypt(encryptedMessage, with: symmetricKey)
+    } catch {
+      reject(Self.AES_ERROR_CODE, error.localizedDescription, error)
+      return
+    }
+    
+    resolve(message)
+  }
 
   @objc
   func encrypt(_ wrappedKey: String, wrapperKeyId: String, message: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
@@ -76,7 +96,7 @@ class AESModule: NSObject {
       return
     }
 
-    guard let symmetricKey = try? getSymmetricKey(wrappedKey, wrapperKeyId) else {
+    guard let symmetricKey = try? unwrapSymmetricKey(wrappedKey, wrapperKeyId) else {
       reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
@@ -97,12 +117,20 @@ class AESModule: NSObject {
     ]);
   }
   
-  private func getSymmetricKey(_ wrappedKey: String, _ wrapperKeyId: String) throws -> SymmetricKey {
+  private func unwrapSymmetricKey(_ wrappedKey: String, _ wrapperKeyId: String) throws -> SymmetricKey {
     guard let symmetricKeyBase64 = try? RSAModule.decrypt(wrapperKeyId, base64EncryptedMessage: wrappedKey) else {
       throw AESError.runtimeError("Failed to decrypt wrapped key")
     }
     
-    guard let symmetricKeyData = Data(base64Encoded: symmetricKeyBase64) else {
+    guard let symmetricKey = try? getSymmetricKey(symmetricKeyBase64) else {
+      throw AESError.runtimeError("Failed to create SymmetricKey from unwrapped key")
+    }
+    
+    return symmetricKey
+  }
+  
+  private func getSymmetricKey(_ base64Key: String) throws -> SymmetricKey {
+    guard let symmetricKeyData = Data(base64Encoded: base64Key) else {
       throw AESError.runtimeError("Failed to decode base64EncryptedMessage into data")
     }
     

@@ -30,6 +30,12 @@ export interface AESInterface {
     wrapperKeyId: string,
     encryptedMessages: (AESEncryptedData | null)[],
   ): Promise<(string | null)[]>;
+  decryptWithExposedKey(
+    base64Key: string,
+    base64EncryptedMessage: string,
+    base64InitializationVector: string,
+    base64IntegrityCheck: string,
+  ): Promise<string>;
   encrypt(
     wrappedKey: string, wrapperKeyId: string, message: string,
   ): Promise<AESEncryptedData>;
