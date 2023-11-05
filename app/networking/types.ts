@@ -61,7 +61,6 @@ type PreviewConnectionResponse = {
     id: string;
     encrypted_name: BackendEncryptedMessage;
     encrypted_potential_member_definition: BackendEncryptedMessage;
-    potential_member_definition: string;
   };
   user: {
     pseudonym: string;
@@ -80,7 +79,6 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
   return (response?.org?.id.length > 0)
     && isBackendEncryptedMessage(response.org?.encrypted_name)
     && isBackendEncryptedMessage(response.org.encrypted_potential_member_definition)
-    && (response.org.potential_member_definition.length > 0)
     && (response.user?.pseudonym.length > 0);
 }
 
@@ -115,7 +113,6 @@ type OrgResponse = {
   id: string,
   encrypted_name: BackendEncryptedMessage;
   encrypted_potential_member_definition: BackendEncryptedMessage;
-  potential_member_definition: string,
 };
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
@@ -123,8 +120,7 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
   return isOrgGraphResponse(response?.graph)
     && response.id?.length > 0
     && isBackendEncryptedMessage(response.encrypted_name)
-    && isBackendEncryptedMessage(response.encrypted_potential_member_definition)
-    && response.potential_member_definition?.length > 0;
+    && isBackendEncryptedMessage(response.encrypted_potential_member_definition);
 }
 
 type PostResponse = {

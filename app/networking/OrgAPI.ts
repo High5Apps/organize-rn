@@ -27,7 +27,6 @@ export async function createOrg({
     bodyObject: {
       encrypted_name: encryptedName,
       encrypted_potential_member_definition: encryptedPotentialMemberDefinition,
-      potential_member_definition: potentialMemberDefinition,
     },
     jwt,
     uri: orgsURI,
