@@ -17,10 +17,16 @@ type Props = Authorization & UnpublishedOrg & {
 export async function createOrg({
   e2eEncrypt, jwt, name, potentialMemberDefinition,
 }: Props): Promise<string | ErrorResponseType> {
-  const encryptedName = await encrypt(name, e2eEncrypt);
+  const [
+    encryptedName, encryptedPotentialMemberDefinition,
+  ] = await Promise.all([
+    encrypt(name, e2eEncrypt),
+    encrypt(potentialMemberDefinition, e2eEncrypt),
+  ]);
   const response = await post({
     bodyObject: {
       encrypted_name: encryptedName,
+      encrypted_potential_member_definition: encryptedPotentialMemberDefinition,
       potential_member_definition: potentialMemberDefinition,
     },
     jwt,
