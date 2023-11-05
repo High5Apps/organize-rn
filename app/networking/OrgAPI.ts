@@ -21,7 +21,6 @@ export async function createOrg({
   const response = await post({
     bodyObject: {
       encrypted_name: encryptedName,
-      name,
       potential_member_definition: potentialMemberDefinition,
     },
     jwt,

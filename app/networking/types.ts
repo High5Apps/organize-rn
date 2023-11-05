@@ -60,7 +60,6 @@ type PreviewConnectionResponse = {
   org: {
     id: string;
     encrypted_name: BackendEncryptedMessage;
-    name: string;
     potential_member_definition: string;
   };
   user: {
@@ -79,7 +78,6 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
   const response = (object as PreviewConnectionResponse);
   return (response?.org?.id.length > 0)
     && isBackendEncryptedMessage(response.org?.encrypted_name)
-    && (response.org.name.length > 0)
     && (response.org.potential_member_definition.length > 0)
     && (response.user?.pseudonym.length > 0);
 }
@@ -113,7 +111,6 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
 type OrgResponse = {
   graph: OrgGraphResponse,
   id: string,
-  name: string,
   encrypted_name: BackendEncryptedMessage;
   potential_member_definition: string,
 };
@@ -122,7 +119,6 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
   const response = (object as OrgResponse);
   return isOrgGraphResponse(response?.graph)
     && response.id?.length > 0
-    && response.name?.length > 0
     && isBackendEncryptedMessage(response.encrypted_name)
     && response.potential_member_definition?.length > 0;
 }
