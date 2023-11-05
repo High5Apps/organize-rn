@@ -112,6 +112,7 @@ type OrgResponse = {
   graph: OrgGraphResponse,
   id: string,
   encrypted_name: BackendEncryptedMessage;
+  encrypted_potential_member_definition: BackendEncryptedMessage;
   potential_member_definition: string,
 };
 
@@ -120,6 +121,7 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
   return isOrgGraphResponse(response?.graph)
     && response.id?.length > 0
     && isBackendEncryptedMessage(response.encrypted_name)
+    && isBackendEncryptedMessage(response.encrypted_potential_member_definition)
     && response.potential_member_definition?.length > 0;
 }
 

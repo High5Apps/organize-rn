@@ -65,9 +65,19 @@ export async function fetchOrg({
     throw new Error('Failed to parse Org from response');
   }
 
-  const { encrypted_name: encryptedName } = json;
-  const name = await decrypt(encryptedName, e2eDecrypt);
-  const { encrypted_name: unused, ...decryptedJson } = { ...json, name };
+  const {
+    encrypted_name: encryptedName,
+    encrypted_potential_member_definition: encryptedPotentialMemberDefinition,
+  } = json;
+  const [name, potentialMemberDefinition] = await Promise.all([
+    decrypt(encryptedName, e2eDecrypt),
+    decrypt(encryptedPotentialMemberDefinition, e2eDecrypt),
+  ]);
+  const {
+    encrypted_name: unusedEN,
+    encrypted_potential_member_definition: unusedEPMD,
+    ...decryptedJson
+  } = { ...json, name, potentialMemberDefinition };
   const org = recursiveSnakeToCamel(decryptedJson) as Org;
   return org;
 }
