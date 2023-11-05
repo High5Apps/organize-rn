@@ -107,7 +107,7 @@ export default function User({
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
     });
-    return { message };
+    return message;
   }
 
   async function e2eDecryptMany(aesEncyptedData: (AESEncryptedData | null)[]) {

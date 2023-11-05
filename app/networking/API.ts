@@ -1,4 +1,4 @@
-import { E2EMultiDecryptor, E2EEncryptor } from '../model';
+import { E2EMultiDecryptor, E2EEncryptor, E2EDecryptor } from '../model';
 import type { BackendEncryptedMessage } from './types';
 
 export enum Status {
@@ -58,6 +58,18 @@ export async function encrypt(
     base64IntegrityCheck: t,
   } = await encryptor(message);
   return { c, n, t };
+}
+
+export async function decrypt(
+  encryptedMessage: BackendEncryptedMessage,
+  decryptor: E2EDecryptor,
+): Promise<string> {
+  const { c, n, t } = encryptedMessage;
+  return decryptor({
+    base64EncryptedMessage: c,
+    base64InitializationVector: n,
+    base64IntegrityCheck: t,
+  });
 }
 
 export async function decryptMany(

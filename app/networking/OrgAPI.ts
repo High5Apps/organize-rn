@@ -1,5 +1,7 @@
-import type { E2EEncryptor, Org } from '../model';
-import { encrypt, get, post } from './API';
+import type { E2EDecryptor, E2EEncryptor, Org } from '../model';
+import {
+  decrypt, encrypt, get, post,
+} from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
 import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
@@ -38,9 +40,13 @@ export async function createOrg({
   return json.id;
 }
 
+type FetchOrgProps = Authorization & {
+  e2eDecrypt: E2EDecryptor;
+};
+
 export async function fetchOrg({
-  jwt,
-}: Authorization): Promise<Org | ErrorResponseType> {
+  e2eDecrypt, jwt,
+}: FetchOrgProps): Promise<Org | ErrorResponseType> {
   const uri = orgURI;
   const response = await get({ jwt, uri });
 
@@ -54,6 +60,9 @@ export async function fetchOrg({
     throw new Error('Failed to parse Org from response');
   }
 
-  const org = recursiveSnakeToCamel(json) as Org;
+  const { encrypted_name: encryptedName } = json;
+  const name = await decrypt(encryptedName, e2eDecrypt);
+  const { encrypted_name: unused, ...decryptedJson } = { ...json, name };
+  const org = recursiveSnakeToCamel(decryptedJson) as Org;
   return org;
 }
