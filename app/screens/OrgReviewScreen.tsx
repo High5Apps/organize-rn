@@ -65,7 +65,9 @@ const useStyles = () => {
 export default function OrgReviewScreen({
   navigation, route,
 }: OrgReviewScreenProps) {
-  const { definition, name } = route.params;
+  const { definition: untrimmedDefinition, name: untrimmedName } = route.params;
+  const definition = untrimmedDefinition.trim();
+  const name = untrimmedName.trim();
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
