@@ -1,4 +1,6 @@
-import { E2EMultiDecryptor, E2EEncryptor, E2EDecryptor } from '../model';
+import {
+  E2EMultiDecryptor, E2EEncryptor, E2EDecryptor, AESEncryptedData,
+} from '../model';
 import type { BackendEncryptedMessage } from './types';
 
 export enum Status {
@@ -48,28 +50,42 @@ export async function post({ bodyObject, jwt, uri }: PostProps) {
   return response;
 }
 
-export async function encrypt(
-  message: string,
-  encryptor: E2EEncryptor,
-): Promise<BackendEncryptedMessage> {
+function fromBackendEncryptedMessage(
+  backendEncryptedMessage: BackendEncryptedMessage,
+): AESEncryptedData {
+  const { c, n, t } = backendEncryptedMessage;
+  return {
+    base64EncryptedMessage: c,
+    base64InitializationVector: n,
+    base64IntegrityCheck: t,
+  };
+}
+
+function toBackendEncryptedMessage(
+  encryptedMessage: AESEncryptedData,
+): BackendEncryptedMessage {
   const {
     base64EncryptedMessage: c,
     base64InitializationVector: n,
     base64IntegrityCheck: t,
-  } = await encryptor(message);
+  } = encryptedMessage;
   return { c, n, t };
+}
+
+export async function encrypt(
+  message: string,
+  encryptor: E2EEncryptor,
+): Promise<BackendEncryptedMessage> {
+  const encryptedMessage = await encryptor(message);
+  return toBackendEncryptedMessage(encryptedMessage);
 }
 
 export async function decrypt(
   encryptedMessage: BackendEncryptedMessage,
   decryptor: E2EDecryptor,
 ): Promise<string> {
-  const { c, n, t } = encryptedMessage;
-  return decryptor({
-    base64EncryptedMessage: c,
-    base64InitializationVector: n,
-    base64IntegrityCheck: t,
-  });
+  const reformattedMessage = fromBackendEncryptedMessage(encryptedMessage);
+  return decryptor(reformattedMessage);
 }
 
 export async function decryptMany(
@@ -78,12 +94,7 @@ export async function decryptMany(
 ): Promise<(string | null)[]> {
   const withRenamedKeys = encryptedMessages.map((encryptedMessageOrNull) => {
     if (encryptedMessageOrNull === null) { return null; }
-    const { c, n, t } = encryptedMessageOrNull;
-    return {
-      base64EncryptedMessage: c,
-      base64InitializationVector: n,
-      base64IntegrityCheck: t,
-    };
+    return fromBackendEncryptedMessage(encryptedMessageOrNull);
   });
   return decryptor(withRenamedKeys);
 }
