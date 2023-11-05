@@ -60,6 +60,7 @@ type PreviewConnectionResponse = {
   org: {
     id: string;
     encrypted_name: BackendEncryptedMessage;
+    encrypted_potential_member_definition: BackendEncryptedMessage;
     potential_member_definition: string;
   };
   user: {
@@ -78,6 +79,7 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
   const response = (object as PreviewConnectionResponse);
   return (response?.org?.id.length > 0)
     && isBackendEncryptedMessage(response.org?.encrypted_name)
+    && isBackendEncryptedMessage(response.org.encrypted_potential_member_definition)
     && (response.org.potential_member_definition.length > 0)
     && (response.user?.pseudonym.length > 0);
 }
