@@ -1,6 +1,10 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { BallotTypeList, ScreenBackground } from '../components';
 
 export default function BallotTypeScreen() {
-  return <Text>BallotTypeScreen</Text>;
+  return (
+    <ScreenBackground>
+      <BallotTypeList />
+    </ScreenBackground>
+  );
 }
