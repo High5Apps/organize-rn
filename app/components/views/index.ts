@@ -6,6 +6,7 @@ export { default as DelayedActivityIndicator } from './DelayedActivityIndicator'
 export { default as DisclosureIcon } from './DisclosureIcon';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as FadeInView } from './FadeInView';
+export { default as HeaderText } from './HeaderText';
 export { default as IconPrompt } from './IconPrompt';
 export { default as ItemSeparator } from './ItemSeparator';
 export { default as KeyboardAvoidingScreenBackground } from './KeyboardAvoidingScreenBackground';
