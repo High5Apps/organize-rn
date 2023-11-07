@@ -6,15 +6,25 @@ import { ItemSeparator } from '../views';
 
 const data: BallotType[] = [
   {
+    category: 'yesOrNo',
     iconName: 'thumb-up',
     name: 'Yes or No',
   },
 ];
 
-export default function BallotTypeList() {
+type Props = {
+  onBallotTypeRowPress: (ballotType: BallotType) => void;
+};
+
+export default function BallotTypeList({
+  onBallotTypeRowPress,
+}: Props) {
   const renderItem: ListRenderItem<BallotType> = useCallback(({ item }) => (
-    <BallotTypeRow ballotType={item} />
-  ), []);
+    <BallotTypeRow
+      ballotType={item}
+      onPress={() => onBallotTypeRowPress(item)}
+    />
+  ), [onBallotTypeRowPress]);
 
   return (
     <FlatList

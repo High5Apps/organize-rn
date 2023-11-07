@@ -38,16 +38,17 @@ const useStyles = () => {
 
 type Props = {
   ballotType: BallotType
+  onPress: () => void;
 };
 
 export default function BallotTypeRow({
-  ballotType: { iconName, name },
+  ballotType: { iconName, name }, onPress,
 }: Props) {
   const { colors, styles } = useStyles();
 
   return (
     <TouchableHighlight
-      onPress={() => console.log('press')}
+      onPress={onPress}
       underlayColor={colors.label}
     >
       <View style={styles.container}>

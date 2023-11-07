@@ -10,6 +10,7 @@ export { default as NewConnectionScreen } from './NewConnectionScreen';
 export { default as NewPostScreen } from './NewPostScreen';
 export { default as NewOrgScreen } from './NewOrg/NewOrgScreen';
 export { default as NewReplyScreen } from './NewReplyScreen';
+export { default as NewYesNoBallotScreen } from './NewYesNoBallotScreen';
 export { default as OrgReview } from './OrgReviewScreen';
 export { default as OrgScreen } from './OrgScreen';
 export { default as PostScreen } from './PostScreen';
