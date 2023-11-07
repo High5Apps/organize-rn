@@ -12,15 +12,15 @@ function toTitleCase(s: string) {
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
 
-  const buttonMarin = spacing.m;
-  const buttonBoundingBoxHeight = 2 * buttonMarin + sizes.buttonHeight;
+  const buttonMargin = spacing.m;
+  const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
 
   const styles = StyleSheet.create({
     button: {
-      bottom: buttonMarin,
-      end: buttonMarin,
+      bottom: buttonMargin,
+      end: buttonMargin,
       height: sizes.buttonHeight,
-      paddingHorizontal: buttonMarin,
+      paddingHorizontal: buttonMargin,
       position: 'absolute',
     },
     listContainerStyle: {
