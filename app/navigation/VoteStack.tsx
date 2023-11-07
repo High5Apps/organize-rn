@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { VoteScreen } from '../screens';
+import { BallotsScreen } from '../screens';
 import { VoteStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -11,7 +11,11 @@ export default function VoteStack() {
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Vote" component={VoteScreen} />
+      <Stack.Screen
+        component={BallotsScreen}
+        name="Ballots"
+        options={{ title: 'Vote' }}
+      />
     </Stack.Navigator>
   );
 }

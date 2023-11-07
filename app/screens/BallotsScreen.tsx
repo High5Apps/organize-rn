@@ -1,8 +1,8 @@
 import React from 'react';
-import type { VoteScreenProps } from '../navigation';
+import type { BallotsScreenProps } from '../navigation';
 import PlaceholderScreen from './PlaceholderScreen';
 
-export default function VoteScreen({ route }: VoteScreenProps) {
+export default function BallotsScreen({ route }: BallotsScreenProps) {
   const { name } = route;
   return <PlaceholderScreen name={name} />;
 }
