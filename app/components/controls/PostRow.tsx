@@ -2,25 +2,21 @@ import React, { memo } from 'react';
 import {
   ScrollView, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import {
   Post, VoteState, getMessageAge, useUserContext,
 } from '../../model';
 import UpvoteControl from './UpvoteControl';
+import { DisclosureIcon } from '../views';
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
   const containerPaddingStart = spacing.s;
 
   const styles = StyleSheet.create({
     icon: {
       alignSelf: 'center',
-      color: colors.separator,
-      fontSize: sizes.mediumIcon,
     },
     container: {
       backgroundColor: colors.fill,
@@ -127,7 +123,7 @@ function PostRow({
           {TitleView}
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        {!disabled && <Icon name="chevron-right" style={styles.icon} />}
+        {!disabled && <DisclosureIcon style={styles.icon} />}
       </View>
     </TouchableHighlight>
   );
