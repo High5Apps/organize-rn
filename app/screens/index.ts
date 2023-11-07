@@ -1,3 +1,4 @@
+export { default as BallotTypeScreen } from './BallotTypeScreen';
 export { default as ConnectScreen } from './ConnectScreen';
 export { default as DiscussDemandsScreen } from './DiscussDemandsScreen';
 export { default as DiscussGeneralScreen } from './DiscussGeneralScreen';

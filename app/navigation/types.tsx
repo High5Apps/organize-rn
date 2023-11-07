@@ -153,6 +153,7 @@ export type DiscussRecentScreenProps = DiscussTabsScreenProps<'Recent'>;
 
 export type VoteStackParamList = {
   Ballots: undefined;
+  BallotType: undefined;
 };
 
 export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
@@ -162,6 +163,7 @@ export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
   >;
 
 export type BallotsScreenProps = VoteStackScreenProps<'Ballots'>;
+export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
 
 export type OrgStackParamList = {
   Org: undefined;

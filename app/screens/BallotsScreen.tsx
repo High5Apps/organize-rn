@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { PrimaryButton, ScreenBackground } from '../components';
 import useTheme from '../Theme';
+import type { BallotsScreenProps } from '../navigation';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -19,14 +20,14 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function VoteScreen() {
+export default function VoteScreen({ navigation }: BallotsScreenProps) {
   const { styles } = useStyles();
   return (
     <ScreenBackground>
       <PrimaryButton
         iconName="add"
         label="New Vote"
-        onPress={() => console.log('press')}
+        onPress={() => navigation.navigate('BallotType')}
         style={styles.button}
       />
     </ScreenBackground>
