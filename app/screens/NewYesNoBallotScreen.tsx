@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
+  DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
+  MultilineTextInput,
 } from '../components';
 import { useCachedValue } from '../model';
 import useTheme from '../Theme';
@@ -15,11 +16,13 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       padding: spacing.m,
+      rowGap: spacing.s,
     },
-    headerText: {
-      marginBottom: spacing.s,
+    dateTimeSelector: {
+      marginStart: spacing.m,
     },
     multilineTextInput: {
+      marginBottom: spacing.s,
       maxHeight: 100,
     },
   });
@@ -27,15 +30,24 @@ const useStyles = () => {
   return { styles };
 };
 
+function startOfNextHourIn7Days(): Date {
+  const now = new Date();
+  const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  nextWeek.setHours(nextWeek.getHours() + 1);
+  nextWeek.setMinutes(0, 0, 0);
+  return nextWeek;
+}
+
 export default function NewYesNoBallotScreen() {
   const [question, setQuestion] = useCachedValue<string>(CACHE_KEY_QUESTION);
+  const [votingEnd, setVotingEnd] = useState(startOfNextHourIn7Days());
 
   const { styles } = useStyles();
 
   return (
     <KeyboardAvoidingScreenBackground>
       <View style={styles.container}>
-        <HeaderText style={styles.headerText}>Question</HeaderText>
+        <HeaderText>Question</HeaderText>
         <MultilineTextInput
           blurOnSubmit
           enablesReturnKeyAutomatically
@@ -45,6 +57,12 @@ export default function NewYesNoBallotScreen() {
           style={styles.multilineTextInput}
           returnKeyType="done"
           value={question}
+        />
+        <HeaderText>Voting Ends On</HeaderText>
+        <DateTimeSelector
+          dateTime={votingEnd}
+          setDateTime={setVotingEnd}
+          style={styles.dateTimeSelector}
         />
       </View>
     </KeyboardAvoidingScreenBackground>
