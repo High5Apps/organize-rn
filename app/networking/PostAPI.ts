@@ -6,8 +6,13 @@ import {
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
-import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
-import type { Authorization } from './types';
+import {
+  SnakeToCamelCaseNested, recursiveSnakeToCamel,
+} from './SnakeCaseToCamelCase';
+import type {
+  Authorization, Decrypt, PaginationData as BackendPaginationData,
+  PostIndexPost,
+} from './types';
 import {
   isBackendEncryptedMessage, isPostIndexResponse, isPostResponse,
 } from './types';
@@ -115,19 +120,23 @@ export async function fetchPosts({
   const encryptedTitles = snakeCasePosts.map((p) => p.encrypted_title);
   const encryptedBodies = snakeCasePosts.map(
     ({ encrypted_body }) => (isBackendEncryptedMessage(encrypted_body)
-      ? encrypted_body : null),
+      ? encrypted_body : undefined),
   );
   const [titles, bodies] = await Promise.all([
     decryptMany(encryptedTitles, e2eDecryptMany),
     decryptMany(encryptedBodies, e2eDecryptMany),
   ]);
-  const decryptedSnakeCasePosts = snakeCasePosts.map(
+  const decryptedSnakeCasePosts: Decrypt<PostIndexPost>[] = snakeCasePosts.map(
     ({ encrypted_body, encrypted_title, ...p }, i) => (
-      { ...p, body: bodies[i], title: titles[i] }
+      { ...p, body: bodies[i], title: titles[i]! }
     ),
   );
 
-  const posts = recursiveSnakeToCamel(decryptedSnakeCasePosts) as Post[];
-  const paginationData = recursiveSnakeToCamel(snakeCasePaginationData) as PaginationData;
+  const posts = recursiveSnakeToCamel(
+    decryptedSnakeCasePosts,
+  ) as SnakeToCamelCaseNested<Decrypt<PostIndexPost>>[];
+  const paginationData = recursiveSnakeToCamel(
+    snakeCasePaginationData,
+  ) as SnakeToCamelCaseNested<BackendPaginationData>;
   return { paginationData, posts };
 }

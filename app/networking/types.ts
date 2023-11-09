@@ -134,7 +134,7 @@ export function isPostResponse(object: unknown): object is PostResponse {
     && response?.created_at?.length > 0;
 }
 
-type PostIndexPost = {
+export type PostIndexPost = {
   category: PostCategory,
   created_at: string;
   encrypted_body?: BackendEncryptedMessage;
@@ -158,7 +158,7 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.my_vote !== undefined;
 }
 
-type PaginationData = {
+export type PaginationData = {
   current_page: number;
   next_page: number | null;
 };

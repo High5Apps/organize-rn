@@ -88,13 +88,16 @@ export async function decrypt(
   return decryptor(reformattedMessage);
 }
 
+// The conversion from undefined to null and back is needed because the
+// values will be serialized to JSON when crossing the bridge to native modules
 export async function decryptMany(
-  encryptedMessages: (BackendEncryptedMessage | null)[],
+  encryptedMessages: (BackendEncryptedMessage | undefined)[],
   decryptor: E2EMultiDecryptor,
-): Promise<(string | null)[]> {
+): Promise<(string | undefined)[]> {
   const withRenamedKeys = encryptedMessages.map((encryptedMessageOrNull) => {
-    if (encryptedMessageOrNull === null) { return null; }
+    if (encryptedMessageOrNull === undefined) { return null; }
     return fromBackendEncryptedMessage(encryptedMessageOrNull);
   });
-  return decryptor(withRenamedKeys);
+  const decrypted = await decryptor(withRenamedKeys);
+  return decrypted.map((d) => ((d === null) ? undefined : d));
 }
