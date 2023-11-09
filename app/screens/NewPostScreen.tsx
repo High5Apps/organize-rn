@@ -173,7 +173,7 @@ export default function NewPostScreen({
 
       const post: Post = {
         body: maybeStrippedBody,
-        createdAt: new Date(postCreatedAt),
+        createdAt: postCreatedAt,
         category: postCategory,
         id: postId,
         myVote: 1,

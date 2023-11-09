@@ -31,7 +31,7 @@ type Return = {
 } | {
   errorMessage?: undefined;
   postId: string;
-  postCreatedAt: string;
+  postCreatedAt: Date;
 };
 
 export async function createPost({
@@ -63,7 +63,7 @@ export async function createPost({
     throw new Error('Failed to parse post ID from response');
   }
 
-  return { postCreatedAt: json.created_at, postId: json.id };
+  return { postCreatedAt: new Date(json.created_at), postId: json.id };
 }
 
 type IndexProps = {
