@@ -87,7 +87,7 @@ type OrgGraphResponse = {
     [id: string]: {
       connection_count: number;
       id: string;
-      joined_at: number;
+      joined_at: string;
       offices?: string[];
       pseudonym: string;
       recruit_count: number;
@@ -102,7 +102,7 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   return Object.keys(response?.users).length > 0
     && firstUser?.connection_count >= 0
     && firstUser?.id?.length >= 0
-    && firstUser?.joined_at > 0
+    && firstUser?.joined_at.length > 0
     && firstUser?.pseudonym?.length > 0
     && firstUser?.recruit_count >= 0
     && response?.connections?.length >= 0;
@@ -125,18 +125,18 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
 
 type PostResponse = {
   id: string;
-  created_at: number;
+  created_at: string;
 };
 
 export function isPostResponse(object: unknown): object is PostResponse {
   const response = (object as PostResponse);
   return response?.id?.length > 0
-    && response?.created_at !== undefined;
+    && response?.created_at?.length > 0;
 }
 
 type PostIndexPost = {
   category: PostCategory,
-  created_at: number;
+  created_at: string;
   encrypted_body?: BackendEncryptedMessage;
   encrypted_title: BackendEncryptedMessage;
   id: string;
@@ -153,7 +153,7 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.pseudonym?.length > 0
     && isBackendEncryptedMessage(post.encrypted_title)
     && post.user_id?.length > 0
-    && post.created_at !== undefined
+    && post.created_at?.length > 0
     && post.score !== undefined
     && post.my_vote !== undefined;
 }
@@ -192,7 +192,7 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
 }
 
 export type CommentIndexComment = {
-  created_at: number;
+  created_at: string;
   depth: number;
   encrypted_body: BackendEncryptedMessage;
   id: string;
@@ -206,7 +206,7 @@ export type CommentIndexComment = {
 function isCommentIndexComment(object: unknown): object is CommentIndexComment {
   const comment = (object as CommentIndexComment);
   return isBackendEncryptedMessage(comment.encrypted_body)
-    && comment.created_at !== undefined
+    && comment.created_at?.length > 0
     && comment.id?.length > 0
     && comment.my_vote !== undefined
     && comment.pseudonym?.length > 0

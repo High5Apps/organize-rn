@@ -26,7 +26,7 @@ type Return = {
 } | {
   errorMessage?: undefined;
   postId: string;
-  postCreatedAt: number;
+  postCreatedAt: string;
 };
 
 export async function createPost({
@@ -58,7 +58,7 @@ export async function createPost({
     throw new Error('Failed to parse post ID from response');
   }
 
-  return { postCreatedAt: 1000 * json.created_at, postId: json.id };
+  return { postCreatedAt: json.created_at, postId: json.id };
 }
 
 type IndexProps = {
@@ -85,7 +85,10 @@ export async function fetchPosts({
   }
 
   if (createdBefore !== undefined) {
-    uri.searchParams.set('created_before', (createdBefore / 1000).toString());
+    uri.searchParams.set(
+      'created_before',
+      new Date(createdBefore).toISOString(),
+    );
   }
 
   if (page !== undefined) {

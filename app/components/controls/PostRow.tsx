@@ -72,7 +72,7 @@ function PostRow({
 
   const { colors, styles } = useStyles();
 
-  const timeAgo = getMessageAge(createdAt);
+  const timeAgo = getMessageAge(new Date(createdAt).getTime() / 1000);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const { currentUser } = useUserContext();

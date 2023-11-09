@@ -45,7 +45,7 @@ export const fakeGroupKey = 'abcdefgxp3bzF+yoN7zTzEzmipJW6xKnPKFASWKJr5Q=';
 export function getFakePost(postId: string, score: number): Post {
   return {
     category: 'general',
-    createdAt: new Date().getTime(),
+    createdAt: new Date().toISOString(),
     id: `post${postId}`,
     myVote: 0,
     pseudonym: fakeUser.pseudonym,
@@ -58,7 +58,7 @@ export function getFakePost(postId: string, score: number): Post {
 export function getFakeComment(commentId: string, score: number): Comment {
   return {
     body: `Comment ${commentId}`,
-    createdAt: new Date().getTime(),
+    createdAt: new Date().toISOString(),
     depth: 0,
     id: `comment${commentId}`,
     myVote: 0,

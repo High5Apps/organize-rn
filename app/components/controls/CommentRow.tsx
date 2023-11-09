@@ -87,7 +87,7 @@ function CommentRow({
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
 
-  const timeAgo = getMessageAge(createdAt);
+  const timeAgo = getMessageAge(new Date(createdAt).getTime() / 1000);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const { colors, nestedMarginStart, styles } = useStyles();

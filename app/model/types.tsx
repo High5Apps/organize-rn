@@ -3,7 +3,7 @@ import type { AESEncryptedData } from './AESModule';
 export type OrgGraphUser = {
   connectionCount: number;
   id: string;
-  joinedAt: number;
+  joinedAt: string;
   pseudonym: string;
   offices?: string[];
   recruitCount: number;
@@ -99,7 +99,7 @@ export type VoteState = -1 | 0 | 1;
 export type Post = {
   body?: string;
   category: PostCategory,
-  createdAt: number;
+  createdAt: string;
   id: string;
   myVote: VoteState;
   pseudonym: string;
@@ -115,7 +115,7 @@ export type PaginationData = {
 
 export type Comment = {
   body: string;
-  createdAt: number;
+  createdAt: string;
   depth: number;
   id: string;
   myVote: VoteState;
