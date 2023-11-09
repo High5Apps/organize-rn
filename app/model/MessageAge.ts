@@ -1,3 +1,4 @@
+export const MILLISECONDS_PER_SECOND = 1000;
 export const SECONDS_PER_MINUTE = 60;
 export const SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
 export const SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
@@ -6,11 +7,13 @@ export const SECONDS_PER_YEAR = 52 * SECONDS_PER_WEEK; // Note this is 364 days
 export const JUST_NOW = 'just now';
 
 export default function getMessageAge(
-  messageTimestampInSeconds: number,
-  maybeNowInSeconds?: number,
+  messageCreatedAt: Date,
+  maybeNow?: Date,
 ): string {
-  const now = maybeNowInSeconds ?? new Date().getTime() / 1000;
-  const secondsAgo = now - messageTimestampInSeconds;
+  const now = maybeNow ?? new Date();
+  const secondsAgo = (
+    now.getTime() - messageCreatedAt.getTime()
+  ) / MILLISECONDS_PER_SECOND;
 
   if (secondsAgo < SECONDS_PER_MINUTE) {
     return JUST_NOW;
