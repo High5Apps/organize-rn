@@ -4,9 +4,17 @@ type SnakeToCamelCase<S extends string> = (
   `${T}${Capitalize<SnakeToCamelCase<U>>}` : S
 );
 
-export type SnakeToCamelCaseNested<T> = T extends object ? {
-  [K in keyof T as SnakeToCamelCase<K & string>]: SnakeToCamelCaseNested<T[K]>
-} : T;
+export type SnakeToCamelCaseNested<T> = T extends ReadonlyArray<any> ? (
+  T
+) : (
+  T extends Array<infer Item> ? (
+    SnakeToCamelCaseNested<Item>[]
+  ) : (
+    T extends object ? {
+      [K in keyof T as SnakeToCamelCase<K & string>]: SnakeToCamelCaseNested<T[K]>
+    } : T
+  )
+);
 
 export function snakeToCamel(s: string): string {
   return s.replace(/([_][a-z])/gi, (c) => c.toUpperCase().replace(/[_]/g, ''));

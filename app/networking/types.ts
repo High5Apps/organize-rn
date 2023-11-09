@@ -108,7 +108,7 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
     && response?.connections?.length >= 0;
 }
 
-type OrgResponse = {
+export type OrgResponse = {
   graph: OrgGraphResponse,
   id: string,
   encrypted_name: BackendEncryptedMessage;
@@ -232,8 +232,16 @@ type DecryptKey<S extends string> = (
   S extends `encrypted_${infer T}` ? T : S
 );
 
-export type Decrypt<T> = T extends object ? {
-  [K in keyof T as DecryptKey<K & string>] : (
-    T[K] extends (BackendEncryptedMessage | undefined) ? string : Decrypt<T[K]>
+export type Decrypt<T> = T extends ReadonlyArray<any> ? (
+  T
+) : (
+  T extends Array<infer Item> ? (
+    Decrypt<Item>[]
+  ) : (
+    T extends object ? {
+      [K in keyof T as DecryptKey<K & string>] : (
+        T[K] extends (BackendEncryptedMessage | undefined) ? string : Decrypt<T[K]>
+      )
+    } : T
   )
-} : T;
+);

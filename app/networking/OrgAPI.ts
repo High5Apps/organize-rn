@@ -4,10 +4,10 @@ import {
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
-import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
+import { SnakeToCamelCaseNested, recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import {
-  Authorization, ErrorResponseType, isCreateOrgResponse, isOrgResponse,
-  UnpublishedOrg,
+  Authorization, Decrypt, ErrorResponseType, isCreateOrgResponse, isOrgResponse,
+  OrgResponse, UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {
@@ -72,11 +72,17 @@ export async function fetchOrg({
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedPotentialMemberDefinition, e2eDecrypt),
   ]);
+
   const {
     encrypted_name: unusedEN,
     encrypted_potential_member_definition: unusedEPMD,
     ...decryptedJson
-  } = { ...json, name, potentialMemberDefinition };
-  const org = recursiveSnakeToCamel(decryptedJson) as Org;
+  } = { ...json, name, potential_member_definition: potentialMemberDefinition };
+  type DecryptedBackendOrg = Decrypt<OrgResponse>;
+  const decryptedBackendOrg: DecryptedBackendOrg = decryptedJson;
+
+  const org = recursiveSnakeToCamel(
+    decryptedBackendOrg,
+  ) as SnakeToCamelCaseNested<DecryptedBackendOrg>;
   return org;
 }
