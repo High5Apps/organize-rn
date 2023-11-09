@@ -3,7 +3,7 @@ import type { AESEncryptedData } from './AESModule';
 export type OrgGraphUser = {
   connectionCount: number;
   id: string;
-  joinedAt: string;
+  joinedAt: Date;
   pseudonym: string;
   offices?: string[];
   recruitCount: number;

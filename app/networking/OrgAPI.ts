@@ -1,10 +1,14 @@
-import type { E2EDecryptor, E2EEncryptor, Org } from '../model';
+import type {
+  E2EDecryptor, E2EEncryptor, Org, OrgGraph,
+} from '../model';
 import {
   decrypt, encrypt, get, post,
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
-import { SnakeToCamelCaseNested, recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
+import {
+  SnakeToCamelCaseNested, recursiveSnakeToCamel,
+} from './SnakeCaseToCamelCase';
 import {
   Authorization, Decrypt, ErrorResponseType, isCreateOrgResponse, isOrgResponse,
   OrgResponse, UnpublishedOrg,
@@ -81,8 +85,22 @@ export async function fetchOrg({
   type DecryptedBackendOrg = Decrypt<OrgResponse>;
   const decryptedBackendOrg: DecryptedBackendOrg = decryptedJson;
 
-  const org = recursiveSnakeToCamel(
+  const orgWithStringDates = recursiveSnakeToCamel(
     decryptedBackendOrg,
   ) as SnakeToCamelCaseNested<DecryptedBackendOrg>;
+  const orgUserEntries = Object.keys(orgWithStringDates.graph.users)
+    .map((k) => {
+      const { joinedAt, ...u } = orgWithStringDates.graph.users[k];
+      return [u.id, { ...u, joinedAt: new Date(joinedAt) }];
+    });
+  const users: OrgGraph['users'] = Object.fromEntries(orgUserEntries);
+  const org = {
+    ...orgWithStringDates,
+    graph: {
+      ...orgWithStringDates.graph,
+      users,
+    },
+  };
+
   return org;
 }
