@@ -56,7 +56,7 @@ export function isBackendEncryptedMessage(object: unknown): object is BackendEnc
     && message.t?.length > 0;
 }
 
-type PreviewConnectionResponse = {
+export type PreviewConnectionResponse = {
   org: {
     id: string;
     encrypted_name: BackendEncryptedMessage;

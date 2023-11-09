@@ -4,10 +4,12 @@ import {
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { connectionPreviewURI, connectionsURI } from './Routes';
-import { recursiveSnakeToCamel } from './SnakeCaseToCamelCase';
 import {
-  Authorization, ConnectionPreview, ErrorResponseType,
-  isPreviewConnectionResponse,
+  recursiveSnakeToCamel, SnakeToCamelCaseNested,
+} from './SnakeCaseToCamelCase';
+import {
+  Authorization, ConnectionPreview, Decrypt, ErrorResponseType,
+  isPreviewConnectionResponse, PreviewConnectionResponse,
 } from './types';
 
 type SharerJwt = {
@@ -85,12 +87,23 @@ export async function previewConnection({
       ...encryptedPotentialMemberDefinition, base64Key: groupKey,
     }),
   ]);
+
   const {
     encrypted_name: unusedEN,
     encrypted_potential_member_definition: unusedEPMD,
     ...decryptedOrg
-  } = { ...json.org, name, potentialMemberDefinition };
-  const decryptedJson = { ...json, org: decryptedOrg };
-  const connectionPreview = recursiveSnakeToCamel(decryptedJson);
-  return connectionPreview as ConnectionPreview;
+  } = {
+    ...json.org,
+    name,
+    potential_member_definition: potentialMemberDefinition,
+  };
+  type DecryptedBackendConnection = Decrypt<PreviewConnectionResponse>;
+  const decryptedJson: DecryptedBackendConnection = {
+    ...json, org: decryptedOrg,
+  };
+
+  const connectionPreview = recursiveSnakeToCamel(
+    decryptedJson,
+  ) as SnakeToCamelCaseNested<DecryptedBackendConnection>;
+  return connectionPreview;
 }
