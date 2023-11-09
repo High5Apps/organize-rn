@@ -11,20 +11,8 @@ const firstPageIndex = 1;
 
 const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
-function getCreatedBefore(minimumCreatedBefore?: number) {
-  const now = new Date().getTime();
-
-  if (minimumCreatedBefore === undefined) {
-    return now;
-  }
-
-  const oneMillisecondAfterMinimumCreatedBefore = 1 + minimumCreatedBefore;
-  return Math.max(now, oneMillisecondAfterMinimumCreatedBefore);
-}
-
 type Props = {
   category?: PostCategory;
-  minimumCreatedBefore?: number;
   sort?: PostSort;
 };
 
@@ -32,9 +20,7 @@ type FetchPageReturn = {
   hasNextPage: boolean;
 };
 
-export default function usePosts({
-  category, minimumCreatedBefore, sort: maybeSort,
-}: Props = {}) {
+export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const sort = maybeSort ?? 'new';
 
   const { cachePost, cachePosts, getCachedPost } = usePostContext();
@@ -45,7 +31,7 @@ export default function usePosts({
   );
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
-  const [createdBefore, setCreatedBefore] = useState<number | undefined>();
+  const [createdBefore, setCreatedBefore] = useState<Date | undefined>();
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
   const { currentUser } = useUserContext();
@@ -55,26 +41,21 @@ export default function usePosts({
       throw new Error('Expected current user to be set');
     }
 
-    const newCreatedBefore = getCreatedBefore(minimumCreatedBefore);
+    const now = new Date();
+    setCreatedBefore(now);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category,
-      createdBefore: newCreatedBefore,
-      e2eDecryptMany,
-      page: firstPageIndex,
-      jwt,
-      sort,
+      category, createdBefore, e2eDecryptMany, page: firstPageIndex, jwt, sort,
     });
 
     if (errorMessage) {
       throw new Error(errorMessage);
     }
 
-    setCreatedBefore(newCreatedBefore);
     cachePosts(fetchedPosts);
     setNextPageNumber(firstPageIndex + 1);
     setPostIds(getPostIdsFrom(fetchedPosts));

@@ -68,7 +68,7 @@ export async function createPost({
 
 type IndexProps = {
   category?: PostCategory;
-  createdBefore?: number;
+  createdBefore?: Date;
   e2eDecryptMany: E2EMultiDecryptor;
   page?: number;
   sort: PostSort;
@@ -92,7 +92,7 @@ export async function fetchPosts({
   if (createdBefore !== undefined) {
     uri.searchParams.set(
       'created_before',
-      new Date(createdBefore).toISOString(),
+      createdBefore.toISOString(),
     );
   }
 
