@@ -84,7 +84,7 @@ function NotableUserRow({ disabled, item, onPress }: Props) {
 
   const { colors, styles } = useStyles();
 
-  const tenure = getTenure(new Date(joinedAt).getTime());
+  const tenure = getTenure(joinedAt);
 
   const joinedOffices = offices?.join('/');
   const title = [pseudonym, joinedOffices].filter((e) => e).join(', ');
