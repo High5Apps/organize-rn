@@ -31,7 +31,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   );
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
-  const [createdBefore, setCreatedBefore] = useState<Date | undefined>();
+  const [createdBefore, setCreatedBefore] = useState<Date>(new Date());
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
   const { currentUser } = useUserContext();
@@ -49,7 +49,12 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore, e2eDecryptMany, page: firstPageIndex, jwt, sort,
+      category,
+      createdBefore: now,
+      e2eDecryptMany,
+      page: firstPageIndex,
+      jwt,
+      sort,
     });
 
     if (errorMessage) {

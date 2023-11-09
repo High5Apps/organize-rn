@@ -68,7 +68,7 @@ export async function createPost({
 
 type IndexProps = {
   category?: PostCategory;
-  createdBefore?: Date;
+  createdBefore: Date;
   e2eDecryptMany: E2EMultiDecryptor;
   page?: number;
   sort: PostSort;
