@@ -115,7 +115,7 @@ export type PaginationData = {
 
 export type Comment = {
   body: string;
-  createdAt: string;
+  createdAt: Date;
   depth: number;
   id: string;
   myVote: VoteState;

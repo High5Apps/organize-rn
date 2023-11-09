@@ -58,7 +58,7 @@ export function getFakePost(postId: string, score: number): Post {
 export function getFakeComment(commentId: string, score: number): Comment {
   return {
     body: `Comment ${commentId}`,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
     depth: 0,
     id: `comment${commentId}`,
     myVote: 0,

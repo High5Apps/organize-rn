@@ -113,8 +113,11 @@ export async function fetchComments({
     ({ encrypted_body, replies, ...p }, i) => ({ ...p, body: bodies[i]! }),
   );
 
-  const comments = recursiveSnakeToCamel(
+  const commentsWithStringDates = recursiveSnakeToCamel(
     decryptedSnakeCaseWithoutReplies,
   ) as SnakeToCamelCaseNested<DecryptedCommentWithoutReplies>[];
+  const comments = commentsWithStringDates.map(
+    ({ createdAt, ...c }) => ({ ...c, createdAt: new Date(createdAt) }),
+  );
   return { comments };
 }
