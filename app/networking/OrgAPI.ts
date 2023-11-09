@@ -1,5 +1,5 @@
 import type {
-  E2EDecryptor, E2EEncryptor, Org, OrgGraph,
+  E2EDecryptor, E2EEncryptor, Org, OrgGraphUser,
 } from '../model';
 import {
   decrypt, encrypt, get, post,
@@ -91,10 +91,10 @@ export async function fetchOrg({
   const orgUserEntries = Object.keys(orgWithStringDates.graph.users)
     .map((k) => {
       const { joinedAt, ...u } = orgWithStringDates.graph.users[k];
-      return [u.id, { ...u, joinedAt: new Date(joinedAt) }];
+      return [u.id, { ...u, joinedAt: new Date(joinedAt) }] as const;
     });
-  const users: OrgGraph['users'] = Object.fromEntries(orgUserEntries);
-  const org = {
+  const users = Object.fromEntries<OrgGraphUser>(orgUserEntries);
+  const org: Org = {
     ...orgWithStringDates,
     graph: {
       ...orgWithStringDates.graph,
