@@ -132,9 +132,13 @@ export async function fetchPosts({
     ),
   );
 
-  const posts = recursiveSnakeToCamel(
+  const postsWithStringDates = recursiveSnakeToCamel(
     decryptedSnakeCasePosts,
   ) as SnakeToCamelCaseNested<Decrypt<PostIndexPost>>[];
+  const posts = postsWithStringDates.map(
+    ({ createdAt, ...p }) => ({ ...p, createdAt: new Date(createdAt) }),
+  );
+
   const paginationData = recursiveSnakeToCamel(
     snakeCasePaginationData,
   ) as SnakeToCamelCaseNested<BackendPaginationData>;

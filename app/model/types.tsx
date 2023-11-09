@@ -99,7 +99,7 @@ export type VoteState = -1 | 0 | 1;
 export type Post = {
   body?: string;
   category: PostCategory,
-  createdAt: string;
+  createdAt: Date;
   id: string;
   myVote: VoteState;
   pseudonym: string;
