@@ -9,7 +9,7 @@ export default function DiscussRecentScreen({
 
   return (
     <DiscussScreen <'Recent'>
-      emptyListMessage={"All of your Org's **newly created discussions** will show up here.\n\nBe the first in your Org to create a discussion by tapping the button below!"}
+      emptyListMessage={"All of your Org's **newly created discussions** will show up here.\n\nTap the button below to get started!"}
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Discussion"

@@ -10,7 +10,7 @@ export default function DiscussDemandsScreen({
   return (
     <DiscussScreen <'Demands'>
       category="demands"
-      emptyListMessage={"What are you really fighting for?\n\nDemands let you voice how **specific things should change for the better**.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a **consensus**."}
+      emptyListMessage={"Demands let you voice how specific things should **change for the better**.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a **consensus**."}
       insertedPostIds={insertedPostIds}
       navigation={navigation}
       primaryButtonLabel="Demand"
