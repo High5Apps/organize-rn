@@ -196,7 +196,7 @@ export type CommentIndexComment = {
   depth: number;
   encrypted_body: BackendEncryptedMessage;
   id: string;
-  my_vote: number;
+  my_vote: VoteState;
   pseudonym: string;
   score: number;
   user_id: string;
