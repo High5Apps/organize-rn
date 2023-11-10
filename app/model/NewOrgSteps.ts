@@ -12,6 +12,7 @@ type NewOrgStep = {
   iconName: string;
   maxLength: number;
   message?: string | ((params: NewOrgScreenParams) => string);
+  messageMultiline: boolean;
   param: NewOrgParam;
   paramType: 'number' | 'string';
   placeholder: () => string;
@@ -28,6 +29,7 @@ const NewOrgSteps: NewOrgStep[] = [
     iconName: 'badge',
     maxLength: 35,
     message,
+    messageMultiline: false,
     param: 'name',
     paramType: 'string',
     placeholder: () => `Local ${randomIntFromInterval(100, 10000)}`,
@@ -40,6 +42,7 @@ const NewOrgSteps: NewOrgStep[] = [
     iconName: 'menu-book',
     maxLength: 75,
     message,
+    messageMultiline: true,
     param: 'definition',
     paramType: 'string',
     placeholder: () => 'An employee of *employer* at *location*',

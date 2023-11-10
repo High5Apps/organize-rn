@@ -3,7 +3,8 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, SecondaryButton, TextInputRow,
+  HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
+  SecondaryButton, TextInputRow,
 } from '../../components';
 import { NewOrgSteps } from '../../model';
 import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
@@ -22,9 +23,13 @@ const useStyles = () => {
       color: colors.label,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
-      padding: spacing.m,
-      paddingBottom: spacing.s,
+      marginHorizontal: spacing.m,
+      marginVertical: spacing.s,
       textAlign: 'center',
+    },
+    multilineTextInput: {
+      marginHorizontal: spacing.m,
+      maxHeight: 80,
     },
     title: {
       color: colors.label,
@@ -40,8 +45,8 @@ const useStyles = () => {
 export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const currentStep = route.params.step;
   const {
-    body, header, headline, iconName, maxLength, message, param, paramType,
-    placeholder, title,
+    body, header, headline, iconName, maxLength, message, messageMultiline,
+    param, paramType, placeholder, title,
   } = NewOrgSteps[currentStep];
   const initialInput: string = route.params[param]?.toString() || '';
 
@@ -59,6 +64,8 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const navigateNext = () => stepNavigator.navigateToNext(currentStep, params);
   const nextDisabled = (input.length === 0);
 
+  const TextInput = messageMultiline ? MultilineTextInput : TextInputRow;
+
   return (
     <KeyboardAvoidingScreenBackground topNavigationBarHidden>
       <NewOrgModal
@@ -73,7 +80,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           {title}
         </Text>
         <HeaderText style={styles.headerText}>{header}</HeaderText>
-        <TextInputRow
+        <TextInput
           autoFocus={false}
           blurOnSubmit={false}
           keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
@@ -84,6 +91,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
             navigateNext();
           }}
           placeholder={useMemo(placeholder, [])}
+          style={messageMultiline && styles.multilineTextInput}
           value={input}
         />
         <Text style={styles.message}>
