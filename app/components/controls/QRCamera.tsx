@@ -61,7 +61,12 @@ export default function QRCamera({
   }
 
   return (
-    <FrameButton disabled={buttonDisabled} onPress={onPress}>
+    <FrameButton
+      deemphasizeWhenDisabled
+      disabled={buttonDisabled}
+      onPress={onPress}
+      showPressedInLightMode={buttonDisabled}
+    >
       {content}
       {children}
     </FrameButton>

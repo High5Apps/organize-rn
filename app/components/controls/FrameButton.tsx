@@ -10,6 +10,9 @@ const useStyles = () => {
   } = useTheme();
 
   const styles = StyleSheet.create({
+    deemphasized: {
+      borderColor: colors.labelSecondary,
+    },
     pressable: {
       alignItems: 'center',
       aspectRatio: 1,
@@ -33,6 +36,7 @@ type Size = {
 };
 
 type Props = {
+  deemphasizeWhenDisabled?: boolean;
   disabled?: boolean;
   onPress?: () => void;
   onContainerSizeChange?: ({ height, width }: Size) => void;
@@ -42,8 +46,8 @@ type Props = {
 
 export default function FrameButton(props: PropsWithChildren<Props>) {
   const {
-    children, disabled, onContainerSizeChange, onPress, showPressedInLightMode,
-    style,
+    children, deemphasizeWhenDisabled, disabled, onContainerSizeChange, onPress,
+    showPressedInLightMode, style,
   } = props;
 
   const { isDarkMode, styles } = useStyles();
@@ -64,6 +68,7 @@ export default function FrameButton(props: PropsWithChildren<Props>) {
       style={({ pressed }) => [
         styles.pressable,
         shouldShowPressed({ pressed }) && styles.pressed,
+        deemphasizeWhenDisabled && disabled && styles.deemphasized,
         style,
       ]}
     >
@@ -73,6 +78,7 @@ export default function FrameButton(props: PropsWithChildren<Props>) {
 }
 
 FrameButton.defaultProps = {
+  deemphasizeWhenDisabled: false,
   disabled: false,
   onContainerSizeChange: () => {},
   onPress: () => {},
