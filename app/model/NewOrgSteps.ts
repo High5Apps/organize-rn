@@ -6,16 +6,16 @@ function randomIntFromInterval(min: number, max: number) {
 }
 
 type NewOrgStep = {
-  body: string,
-  header: string,
-  headline: string,
-  iconName: string,
-  maxLength: number,
-  message?: string | ((params: NewOrgScreenParams) => string),
-  param: NewOrgParam,
-  paramType: 'number' | 'string',
-  placeholder: () => string,
-  title: string,
+  body: string;
+  header: string;
+  headline: string;
+  iconName: string;
+  maxLength: number;
+  message?: string | ((params: NewOrgScreenParams) => string);
+  param: NewOrgParam;
+  paramType: 'number' | 'string';
+  placeholder: () => string;
+  title: string;
 };
 
 const message = 'You can change this later';
