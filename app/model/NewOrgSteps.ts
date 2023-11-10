@@ -18,6 +18,8 @@ type NewOrgStep = {
   title: string,
 };
 
+const message = 'You can change this later';
+
 const NewOrgSteps: NewOrgStep[] = [
   {
     body: 'You can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
@@ -25,7 +27,7 @@ const NewOrgSteps: NewOrgStep[] = [
     headline: 'What should I name my Org?',
     iconName: 'badge',
     maxLength: 35,
-    message: "Don't worry- you can change the info in any of these steps later.",
+    message,
     param: 'name',
     paramType: 'string',
     placeholder: () => `Local ${randomIntFromInterval(100, 10000)}`,
@@ -37,10 +39,10 @@ const NewOrgSteps: NewOrgStep[] = [
     headline: 'How should I define my potential members?',
     iconName: 'menu-book',
     maxLength: 75,
-    message: 'Choose the broadest definition that still allows you to recruit at least 70% of all potential members.',
+    message,
     param: 'definition',
     paramType: 'string',
-    placeholder: () => 'An employee of <company> at store <#>',
+    placeholder: () => 'An employee of *employer* at *location*',
     title: 'Define a Potential Member',
   },
 ];
