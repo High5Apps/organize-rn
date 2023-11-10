@@ -46,8 +46,7 @@ const useStyles = () => {
     },
     requestProgress: {
       marginHorizontal: spacing.m,
-    },
-    titleInputRow: {
+      marginBottom: spacing.m,
     },
   });
 
@@ -222,7 +221,6 @@ export default function NewPostScreen({
             }
           }}
           placeholder="Title"
-          style={styles.titleInputRow}
           value={title}
         />
         <MultilineTextInput
