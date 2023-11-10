@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "android:device": "npm run android -- --deviceId=$(adb devices | tail -n +2 | grep -m 1 -v emulator | cut -f1)",
-    "android:device:release": "npm run android:device -- --mode=release",
+    "android": "./scripts/run-android && npm run tether:android",
+    "android:device": "./scripts/run-android --device && npm run tether:android",
+    "android:device:release": "./scripts/run-android --device --release",
     "check-dependencies": "rnx-align-deps",
     "deeplink:android": "adb shell am start -W -a android.intent.action.VIEW -d organize://$npm_config_path com.organize",
     "deeplink:ios": "xcrun simctl openurl booted organize://$npm_config_path",

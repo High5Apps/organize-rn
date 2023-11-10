@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# USAGE
+#   run-android
+# OPTIONS
+#   --device
+#     Run on the first physical device in `adb devices`
+#   --release
+#     Run in release mode
+# EXAMPLES
+#   run-android --device --release
+
+set -e
+
+while test $# -gt 0
+do
+  case "$1" in
+    --device)
+      device_id=$(adb devices | tail -n +2 | grep -m 1 -v emulator | cut -f1)
+      device_flag="--deviceId=$device_id"
+      ;;
+    --release)
+      mode_flag="--mode=release"
+      ;;
+  esac
+  shift
+done
+
+npx react-native run-android $device_flag $mode_flag
