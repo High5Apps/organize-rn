@@ -94,9 +94,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           style={messageMultiline && styles.multilineTextInput}
           value={input}
         />
-        <Text style={styles.message}>
-          {typeof message === 'function' ? message(params) : message}
-        </Text>
+        <Text style={styles.message}>{message}</Text>
         <SecondaryButton
           iconName="help-outline"
           label="Learn More"

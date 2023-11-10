@@ -1,4 +1,4 @@
-import type { NewOrgParam, NewOrgScreenParams } from '../navigation';
+import type { NewOrgParam } from '../navigation';
 
 // Min included, max excluded, i.e. the interval [min, max)
 function randomIntFromInterval(min: number, max: number) {
@@ -11,7 +11,7 @@ type NewOrgStep = {
   headline: string;
   iconName: string;
   maxLength: number;
-  message?: string | ((params: NewOrgScreenParams) => string);
+  message?: string;
   messageMultiline: boolean;
   param: NewOrgParam;
   paramType: 'number' | 'string';
