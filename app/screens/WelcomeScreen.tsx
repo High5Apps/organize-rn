@@ -17,6 +17,7 @@ const useStyles = () => {
     button: {
       height: sizes.buttonHeight,
       marginHorizontal: spacing.s,
+      flex: 1,
     },
     scrollView: {
       marginTop: spacing.m,

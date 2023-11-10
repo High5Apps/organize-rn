@@ -17,7 +17,6 @@ const useStyles = () => {
       marginHorizontal: spacing.xs,
     },
     pressable: {
-      flex: 1,
       flexDirection: 'row',
       height: sizes.buttonHeight,
       justifyContent: 'center',
