@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ForwardedRef, forwardRef } from 'react';
-import { StyleSheet, TextInput, TextInputProps } from 'react-native';
+import {
+  StyleSheet, TextInput, TextInputProps, View,
+} from 'react-native';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -9,10 +11,16 @@ const useStyles = () => {
   } = useTheme();
 
   const styles = StyleSheet.create({
+    bottomBorder: {
+      backgroundColor: colors.primary,
+      bottom: 0,
+      end: 0,
+      height: sizes.border,
+      position: 'absolute',
+      start: spacing.m,
+    },
     textInput: {
       backgroundColor: colors.fill,
-      borderBottomColor: colors.separator,
-      borderBottomWidth: sizes.separator,
       color: colors.label,
       height: sizes.buttonHeight,
       fontFamily: font.weights.regular,
@@ -38,12 +46,15 @@ function TextInputRow(props: TextInputProps, ref: ForwardedRef<TextInput>) {
   };
 
   return (
-    <TextInput
-      {...defaultProps}
-      {...props}
-      ref={ref}
-      style={[styles.textInput, style]}
-    />
+    <View>
+      <TextInput
+        {...defaultProps}
+        {...props}
+        ref={ref}
+        style={[styles.textInput, style]}
+      />
+      <View style={styles.bottomBorder} />
+    </View>
   );
 }
 

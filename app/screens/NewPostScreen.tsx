@@ -1,7 +1,9 @@
 import React, {
   useLayoutEffect, useMemo, useRef, useState,
 } from 'react';
-import { Keyboard, StyleSheet, TextInput } from 'react-native';
+import {
+  Keyboard, StyleSheet, TextInput, View,
+} from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
@@ -31,21 +33,21 @@ const useStyles = () => {
       alignSelf: 'flex-end',
       flex: 0,
       height: sizes.buttonHeight,
-      marginBottom: spacing.m,
       marginEnd: spacing.m,
       paddingHorizontal: spacing.m,
+    },
+    container: {
+      flex: 1,
+      rowGap: spacing.m,
     },
     multilineTextInput: {
       flex: 1,
       marginHorizontal: spacing.m,
-      marginBottom: spacing.m,
     },
     requestProgress: {
       marginHorizontal: spacing.m,
-      marginBottom: spacing.m,
     },
     titleInputRow: {
-      marginBottom: spacing.m,
     },
   });
 
@@ -205,40 +207,42 @@ export default function NewPostScreen({
           selection={postCategory}
         />
       )}
-      <TextInputRow
-        // Prevents dismissing the keyboard when hitting next on Android before
-        // entering any input
-        blurOnSubmit={false}
-        enablesReturnKeyAutomatically // iOS only
-        maxLength={MAX_TITLE_LENGTH}
-        onChangeText={setTitle}
-        onEndEditing={({ nativeEvent: { text } }) => setTitle(text)}
-        onSubmitEditing={({ nativeEvent: { text } }) => {
-          if (text.length) {
-            multilineTextInputRef.current?.focus();
-          }
-        }}
-        placeholder="Title"
-        style={styles.titleInputRow}
-        value={title}
-      />
-      <MultilineTextInput
-        maxLength={MAX_BODY_LENGTH}
-        onChangeText={setBody}
-        onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
-        placeholder="Body (optional)"
-        style={styles.multilineTextInput}
-        returnKeyType="default"
-        ref={multilineTextInputRef}
-        value={body}
-      />
-      <PrimaryButton
-        iconName="publish"
-        label="Publish"
-        onPress={onPublishPressed}
-        style={styles.button}
-      />
-      <RequestProgress style={styles.requestProgress} />
+      <View style={styles.container}>
+        <TextInputRow
+          // Prevents dismissing the keyboard when hitting next on Android
+          // before entering any input
+          blurOnSubmit={false}
+          enablesReturnKeyAutomatically // iOS only
+          maxLength={MAX_TITLE_LENGTH}
+          onChangeText={setTitle}
+          onEndEditing={({ nativeEvent: { text } }) => setTitle(text)}
+          onSubmitEditing={({ nativeEvent: { text } }) => {
+            if (text.length) {
+              multilineTextInputRef.current?.focus();
+            }
+          }}
+          placeholder="Title"
+          style={styles.titleInputRow}
+          value={title}
+        />
+        <MultilineTextInput
+          maxLength={MAX_BODY_LENGTH}
+          onChangeText={setBody}
+          onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
+          placeholder="Body (optional)"
+          style={styles.multilineTextInput}
+          returnKeyType="default"
+          ref={multilineTextInputRef}
+          value={body}
+        />
+        <PrimaryButton
+          iconName="publish"
+          label="Publish"
+          onPress={onPublishPressed}
+          style={styles.button}
+        />
+        <RequestProgress style={styles.requestProgress} />
+      </View>
     </KeyboardAvoidingScreenBackground>
   );
 }
