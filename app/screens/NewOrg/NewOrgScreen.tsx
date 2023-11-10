@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import NewOrgModal from './NewOrgModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
-  KeyboardAvoidingScreenBackground, SecondaryButton, TextInputRow,
+  HeaderText, KeyboardAvoidingScreenBackground, SecondaryButton, TextInputRow,
 } from '../../components';
 import { NewOrgSteps } from '../../model';
 import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
@@ -14,6 +14,10 @@ const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
+    headerText: {
+      marginHorizontal: spacing.m,
+      marginBottom: spacing.s,
+    },
     message: {
       color: colors.label,
       fontFamily: font.weights.regular,
@@ -36,8 +40,8 @@ const useStyles = () => {
 export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const currentStep = route.params.step;
   const {
-    body, headline, iconName, maxLength, message, param, paramType, placeholder,
-    title,
+    body, header, headline, iconName, maxLength, message, param, paramType,
+    placeholder, title,
   } = NewOrgSteps[currentStep];
   const initialInput: string = route.params[param]?.toString() || '';
 
@@ -68,6 +72,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         <Text style={styles.title}>
           {title}
         </Text>
+        <HeaderText style={styles.headerText}>{header}</HeaderText>
         <TextInputRow
           autoFocus={false}
           blurOnSubmit={false}
@@ -78,7 +83,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
             if (nextDisabled) { return; }
             navigateNext();
           }}
-          placeholder={placeholder}
+          placeholder={useMemo(placeholder, [])}
           value={input}
         />
         <Text style={styles.message}>
