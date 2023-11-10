@@ -1,5 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import {
+  Keyboard, KeyboardAvoidingView, StyleProp, StyleSheet, ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useHeaderHeight } from '@react-navigation/elements';
 import ScreenBackground from './ScreenBackground';
@@ -35,11 +37,12 @@ const useStyles = () => {
 };
 
 type Props = {
+  style?: StyleProp<ViewStyle>;
   topNavigationBarHidden?: boolean;
 };
 
 export default function KeyboardAvoidingScreenBackground({
-  children, topNavigationBarHidden,
+  children, style, topNavigationBarHidden,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
@@ -58,7 +61,7 @@ export default function KeyboardAvoidingScreenBackground({
       <KeyboardAvoidingView
         behavior="padding"
         keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.keyboardAvoidingView}
+        style={[styles.keyboardAvoidingView, style]}
       >
         {children}
       </KeyboardAvoidingView>
@@ -67,5 +70,6 @@ export default function KeyboardAvoidingScreenBackground({
 }
 
 KeyboardAvoidingScreenBackground.defaultProps = {
+  style: {},
   topNavigationBarHidden: false,
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput,
@@ -45,26 +45,24 @@ export default function NewYesNoBallotScreen() {
   const { styles } = useStyles();
 
   return (
-    <KeyboardAvoidingScreenBackground>
-      <View style={styles.container}>
-        <HeaderText>Question</HeaderText>
-        <MultilineTextInput
-          blurOnSubmit
-          enablesReturnKeyAutomatically
-          maxLength={MAX_QUESTION_LENGTH}
-          onChangeText={setQuestion}
-          placeholder="Should we..."
-          style={styles.multilineTextInput}
-          returnKeyType="done"
-          value={question}
-        />
-        <HeaderText>Voting Ends On</HeaderText>
-        <DateTimeSelector
-          dateTime={votingEnd}
-          setDateTime={setVotingEnd}
-          style={styles.dateTimeSelector}
-        />
-      </View>
+    <KeyboardAvoidingScreenBackground style={styles.container}>
+      <HeaderText>Question</HeaderText>
+      <MultilineTextInput
+        blurOnSubmit
+        enablesReturnKeyAutomatically
+        maxLength={MAX_QUESTION_LENGTH}
+        onChangeText={setQuestion}
+        placeholder="Should we..."
+        style={styles.multilineTextInput}
+        returnKeyType="done"
+        value={question}
+      />
+      <HeaderText>Voting Ends On</HeaderText>
+      <DateTimeSelector
+        dateTime={votingEnd}
+        setDateTime={setVotingEnd}
+        style={styles.dateTimeSelector}
+      />
     </KeyboardAvoidingScreenBackground>
   );
 }
