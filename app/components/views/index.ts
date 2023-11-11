@@ -13,7 +13,6 @@ export { default as KeyboardAvoidingScreenBackground } from './KeyboardAvoidingS
 export { default as LockingScrollView } from './LockingScrollView';
 export { default as MembershipReview } from './MembershipReview';
 export { default as ProgressBar } from './ProgressBar';
-export { default as useRequestProgress } from './RequestProgress';
 export { default as SafeAreaPadding } from './SafeAreaPadding';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';

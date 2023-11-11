@@ -6,8 +6,9 @@ import {
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
-import { ItemSeparator, SectionHeader, useRequestProgress } from '../views';
+import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
+import useRequestProgress from './RequestProgress';
 import {
   Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
 } from '../../model';

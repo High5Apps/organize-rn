@@ -8,10 +8,11 @@ import { useScrollToTop } from '@react-navigation/native';
 import {
   GENERIC_ERROR_MESSAGE, Post, PostCategory, PostSort, isDefined, usePosts,
 } from '../../model';
-import { ItemSeparator, useRequestProgress } from '../views';
+import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
 import usePullToRefresh from './PullToRefresh';
+import useRequestProgress from './RequestProgress';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

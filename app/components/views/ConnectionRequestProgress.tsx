@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import useRequestProgress from './RequestProgress';
+import { useRequestProgress } from '../controls';
 import {
   GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useUserContext,
 } from '../../model';
