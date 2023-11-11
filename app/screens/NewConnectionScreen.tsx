@@ -109,7 +109,7 @@ export default function NewConnectionScreen() {
       <>
         <RequestProgress />
         <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
-          {connectionPreview && (result !== 'success') && (
+          {!!qrValue && connectionPreview && (result !== 'success') && (
             <PrimaryButton
               iconName="person-add"
               label="Connect"
