@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
-  PrimaryButton, ScreenBackground, useRequestProgress,
+  PrimaryButton, ResultType, ScreenBackground, useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
 import { ConnectionPreview, createConnection } from '../networking';
@@ -44,12 +44,6 @@ export default function NewConnectionScreen() {
   } = useRequestProgress();
 
   useEffect(() => {
-    if (result === 'error') {
-      setQRValue(null);
-    }
-  }, [result]);
-
-  useEffect(() => {
     if (qrValue) {
       setResult('none');
     }
@@ -64,24 +58,34 @@ export default function NewConnectionScreen() {
     setLoading(true);
     setResult('none');
 
+    let message: string | undefined;
+    let connectionResult: ResultType;
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const sharerJwt = qrValue.jwt;
       const {
-        errorMessage, status,
+        errorMessage: maybeErrorMessage, status,
       } = await createConnection({ jwt, sharerJwt });
 
-      if (errorMessage) {
-        setResult('error', { message: errorMessage });
-      } else if (status === Status.Success) {
-        setResult('success', { message: 'Reconnected successfully' });
+      if (maybeErrorMessage) {
+        message = maybeErrorMessage;
+        connectionResult = 'error';
       } else {
-        setResult('success', { message: 'Connected successfully' });
+        message = (status === Status.Success)
+          ? 'Reconnected successfully' : 'Connected successfully';
+        connectionResult = 'success';
       }
     } catch (error) {
       console.error(error);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+      connectionResult = 'error';
+      message = GENERIC_ERROR_MESSAGE;
     }
+
+    if (connectionResult === 'error') {
+      setQRValue(null);
+    }
+
+    setResult(connectionResult, { message });
 
     setLoading(false);
   };

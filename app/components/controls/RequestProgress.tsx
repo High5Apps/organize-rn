@@ -3,6 +3,7 @@ import {
   ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
+import type { ResultType } from './types';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -27,8 +28,6 @@ const useStyles = () => {
 
   return { colors, styles };
 };
-
-type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
 
 type SetResultOptions = {
   message?: string;
