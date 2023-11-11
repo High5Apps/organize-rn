@@ -107,7 +107,9 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       </LockingScrollView>
       <>
         <RequestProgress />
-        {connectionPreview && <Agreement buttonLabel={primaryButtonLabel} />}
+        {!!qrValue && connectionPreview && (
+          <Agreement buttonLabel={primaryButtonLabel} />
+        )}
         <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
             iconName="navigate-before"
@@ -115,7 +117,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
             onPress={navigation.goBack}
             style={[styles.button, styles.backButton]}
           />
-          {connectionPreview && (
+          {!!qrValue && connectionPreview && (
             <PrimaryButton
               iconName="person-add"
               label={primaryButtonLabel}
