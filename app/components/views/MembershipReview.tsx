@@ -21,17 +21,19 @@ const reviewFrameProvider = ({ org }: ConnectionPreview) => (
 );
 
 type Props = {
-  onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
+  onConnectionPreview: (connectionPreview: ConnectionPreview) => void;
+  onConnectionPreviewError: (errorMessage: string) => void;
   qrValue: QRCodeValue;
   style?: StyleProp<ViewStyle>;
 };
 
 export default function MembershipReview({
-  onConnectionPreview, qrValue, style,
+  onConnectionPreview, onConnectionPreviewError, qrValue, style,
 }: Props) {
   return (
     <ConnectionRequestProgress
       onConnectionPreview={onConnectionPreview}
+      onConnectionPreviewError={onConnectionPreviewError}
       qrCodeValue={qrValue}
       reviewFrameProvider={reviewFrameProvider}
       style={style}
@@ -40,6 +42,5 @@ export default function MembershipReview({
 }
 
 MembershipReview.defaultProps = {
-  onConnectionPreview: () => {},
   style: {},
 };

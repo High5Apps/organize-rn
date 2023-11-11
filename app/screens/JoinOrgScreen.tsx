@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, MembershipReview,
@@ -52,6 +52,11 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     }
   }, [qrValue]);
 
+  const setErrorMessage = useCallback((message: string) => {
+    setResult('error', { message });
+    setQRValue(null);
+  }, []);
+
   const onJoinPressed = async () => {
     if (!qrValue || !connectionPreview) { return; }
 
@@ -79,10 +84,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
       errorMessage = GENERIC_ERROR_MESSAGE;
     }
 
-    if (errorMessage) {
-      setResult('error', { message: errorMessage });
-      setQRValue(null);
-    }
+    setErrorMessage(errorMessage);
   };
 
   return (
@@ -98,6 +100,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
           ReviewComponent={!!qrValue && (
             <MembershipReview
               onConnectionPreview={setConnectionPreview}
+              onConnectionPreviewError={setErrorMessage}
               qrValue={qrValue}
               style={StyleSheet.absoluteFill}
             />

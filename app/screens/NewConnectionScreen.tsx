@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
@@ -49,6 +49,11 @@ export default function NewConnectionScreen() {
     }
   }, [qrValue]);
 
+  const setErrorMessage = useCallback((message: string) => {
+    setResult('error', { message });
+    setQRValue(null);
+  }, []);
+
   const onConnectPressed = async () => {
     if (!qrValue || !currentUser) {
       console.warn('Expected qrValue and currentUser to be set');
@@ -82,10 +87,10 @@ export default function NewConnectionScreen() {
     }
 
     if (connectionResult === 'error') {
-      setQRValue(null);
+      setErrorMessage(message);
+    } else {
+      setResult(connectionResult, { message });
     }
-
-    setResult(connectionResult, { message });
 
     setLoading(false);
   };
@@ -103,6 +108,7 @@ export default function NewConnectionScreen() {
           ReviewComponent={!!qrValue && (
             <ConnectionReview
               onConnectionPreview={setConnectionPreview}
+              onConnectionPreviewError={setErrorMessage}
               qrValue={qrValue}
               style={StyleSheet.absoluteFill}
             />

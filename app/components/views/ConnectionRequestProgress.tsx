@@ -24,18 +24,20 @@ const useStyles = () => {
 };
 
 type Props = {
-  onConnectionPreview?: (connectionPreview: ConnectionPreview) => void;
+  onConnectionPreview: (connectionPreview: ConnectionPreview) => void;
+  onConnectionPreviewError: (errorMessage: string) => void;
   qrCodeValue: QRCodeValue;
   reviewFrameProvider: (response: ConnectionPreview) => JSX.Element;
   style?: StyleProp<ViewStyle>;
 };
 
 export default function ConnectionRequestProgress({
-  onConnectionPreview, qrCodeValue, reviewFrameProvider, style,
+  onConnectionPreview, onConnectionPreviewError, qrCodeValue,
+  reviewFrameProvider, style,
 }: Props) {
   const { groupKey, jwt: sharerJwt } = qrCodeValue;
   const { styles } = useStyles();
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const { RequestProgress, setLoading } = useRequestProgress();
   const [response, setResponse] = useState<ConnectionPreview>();
 
   const { currentUser } = useUserContext();
@@ -45,6 +47,8 @@ export default function ConnectionRequestProgress({
     const unsubscribe = () => { subscribed = false; };
 
     const fetchRequestPreview = async () => {
+      setLoading(true);
+
       try {
         const responseOrError = await previewConnection({
           groupKey, sharerJwt,
@@ -54,29 +58,26 @@ export default function ConnectionRequestProgress({
 
         if (isErrorResponse(responseOrError)) {
           const { errorMessage } = ErrorResponse(responseOrError);
-          setResult('error', { message: errorMessage });
-          return;
-        }
+          onConnectionPreviewError?.(errorMessage);
+        } else {
+          const connectionPreview = responseOrError;
 
-        const connectionPreview = responseOrError;
-
-        if (currentUser && currentUser.org) {
-          if (currentUser.org.id !== connectionPreview.org.id) {
-            setResult('error', { message: OTHER_ORG_ERROR_MESSAGE });
-            return;
+          if (currentUser && currentUser.org
+              && (currentUser.org.id !== connectionPreview.org.id)) {
+            onConnectionPreviewError?.(OTHER_ORG_ERROR_MESSAGE);
+          } else {
+            setResponse(connectionPreview);
+            onConnectionPreview?.(connectionPreview);
           }
         }
-
-        setResponse(connectionPreview);
-        setResult('success');
-        onConnectionPreview?.(connectionPreview);
       } catch (error) {
         console.error(error);
-        setResult('error', { message: GENERIC_ERROR_MESSAGE });
+        onConnectionPreviewError?.(GENERIC_ERROR_MESSAGE);
       }
+
+      setLoading(false);
     };
 
-    setLoading(true);
     fetchRequestPreview();
 
     return unsubscribe;
@@ -91,6 +92,5 @@ export default function ConnectionRequestProgress({
 }
 
 ConnectionRequestProgress.defaultProps = {
-  onConnectionPreview: () => {},
   style: {},
 };
