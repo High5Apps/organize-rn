@@ -6,7 +6,6 @@ import {
   useRequestProgress,
 } from '../components';
 import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
-import { UserType } from '../model/User';
 import type { JoinOrgScreenProps } from '../navigation';
 import useTheme from '../Theme';
 import { ConnectionPreview } from '../networking';
@@ -45,15 +44,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
 
   const { styles } = useStyles();
   const { createCurrentUser, setCurrentUser } = useUserContext();
-  const {
-    RequestProgress, result, setLoading, setResult,
-  } = useRequestProgress();
-
-  useEffect(() => {
-    if (result === 'error') {
-      setQRValue(null);
-    }
-  }, [result]);
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
   useEffect(() => {
     if (qrValue) {
@@ -71,29 +62,26 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
     const { org } = connectionPreview;
     const { id: orgId, ...unpublishedOrg } = org;
 
-    let currentUser: UserType | null = null;
-    let succeeded = false;
+    let errorMessage: string | undefined;
     try {
       const userOrErrorMessage = await createCurrentUser({
         groupKey, orgId, unpublishedOrg, sharerJwt,
       });
 
       if (typeof userOrErrorMessage === 'string') {
-        const message = userOrErrorMessage;
-        setResult('error', { message });
+        errorMessage = userOrErrorMessage;
+      } else {
+        setCurrentUser(userOrErrorMessage);
         return;
       }
-
-      currentUser = userOrErrorMessage;
-
-      succeeded = true;
     } catch (error) {
       console.error(error);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+      errorMessage = GENERIC_ERROR_MESSAGE;
     }
 
-    if (succeeded) {
-      setCurrentUser(currentUser);
+    if (errorMessage) {
+      setResult('error', { message: errorMessage });
+      setQRValue(null);
     }
   };
 
