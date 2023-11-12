@@ -26,14 +26,7 @@ type Return = {
 export async function createConnection({
   jwt, sharerJwt,
 }: CreateProps): Promise<Return> {
-  const response = await post({
-    bodyObject: {
-      sharer_jwt: sharerJwt,
-    },
-    jwt,
-    uri: connectionsURI,
-  });
-
+  const response = await post({ jwt, sharerJwt, uri: connectionsURI });
   const json = await response.json();
 
   if (!response.ok) {
@@ -59,9 +52,8 @@ type PreviewProps = SharerJwt & {
 export async function previewConnection({
   groupKey, sharerJwt,
 }: PreviewProps): Promise<ConnectionPreview | ErrorResponseType> {
-  const uri = connectionPreviewURI(sharerJwt);
-  const response = await get({ uri });
-
+  const uri = connectionPreviewURI;
+  const response = await get({ sharerJwt, uri });
   const json = await response.json();
 
   if (!response.ok) {

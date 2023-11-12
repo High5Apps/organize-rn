@@ -9,7 +9,7 @@ const apiRoute = `${origin}/api/${version}`;
 export const commentUpvotesURI = (commentId: string) => `${apiRoute}/comments/${commentId}/upvotes`;
 
 export const connectionsURI = `${apiRoute}/connections`;
-export const connectionPreviewURI = (sharerJwt: string) => `${apiRoute}/connection_preview?sharer_jwt=${sharerJwt}`;
+export const connectionPreviewURI = `${apiRoute}/connection_preview`;
 
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;

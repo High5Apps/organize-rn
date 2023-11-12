@@ -13,38 +13,48 @@ const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
-function headers(jwt?: string) {
-  let optionalHeaders = {};
+type HeaderProps = {
+  jwt?: string;
+  sharerJwt?: string;
+};
+
+function headers({ jwt, sharerJwt }: HeaderProps) {
+  const optionalHeaders: { [key: string]: string } = {};
+
   if (jwt) {
-    optionalHeaders = { Authorization: `Bearer ${jwt}` };
+    optionalHeaders.Authorization = `Bearer ${jwt}`;
+  }
+
+  if (sharerJwt) {
+    optionalHeaders['Sharer-Authorization'] = `Bearer ${sharerJwt}`;
   }
 
   return { ...defaultHeaders, ...optionalHeaders };
 }
 
-type GetProps = {
-  jwt?: string;
+type GetProps = HeaderProps & {
   uri: string;
 };
 
-export async function get({ jwt, uri }: GetProps) {
+export async function get({ jwt, uri, sharerJwt }: GetProps) {
   const response = await fetch(uri, {
     method: 'GET',
-    headers: headers(jwt),
+    headers: headers({ jwt, sharerJwt }),
   });
   return response;
 }
 
-type PostProps = {
-  bodyObject: any;
-  jwt?: string;
+type PostProps = HeaderProps & {
+  bodyObject?: any;
   uri: string;
 };
 
-export async function post({ bodyObject, jwt, uri }: PostProps) {
+export async function post({
+  bodyObject, jwt, sharerJwt, uri,
+}: PostProps) {
   const response = await fetch(uri, {
     method: 'POST',
-    headers: headers(jwt),
+    headers: headers({ jwt, sharerJwt }),
     body: JSON.stringify(bodyObject),
   });
   return response;
