@@ -91,30 +91,63 @@ class AESModule: NSObject {
 
   @objc
   func encrypt(_ wrappedKey: String, wrapperKeyId: String, message: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-    guard let messageData = message.data(using: .utf8) else {
-      reject(Self.AES_ERROR_CODE, "Failed to convert message into UTF-8 data", nil)
-      return
-    }
-
     guard let symmetricKey = try? unwrapSymmetricKey(wrappedKey, wrapperKeyId) else {
       reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
       return
     }
+    
+    let encryptedMessage: EncryptedMessage
+    do {
+      encryptedMessage = try encrypt(message, with: symmetricKey)
+    } catch {
+      reject(Self.AES_ERROR_CODE, error.localizedDescription, error)
+      return
+    }
+    
+    resolve(encryptedMessage.dictionary)
+  }
+  
+  @objc
+  func encryptMany(_ wrappedKey: String, wrapperKeyId: String, messages: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    guard let symmetricKey = try? unwrapSymmetricKey(wrappedKey, wrapperKeyId) else {
+      reject(Self.AES_ERROR_CODE, "Failed to unwrap symmetric key", nil)
+      return
+    }
+    
+    let encryptedMessages: [EncryptedMessage]
+    do {
+      encryptedMessages = try messages.map { element in
+        guard let message = element as? String else {
+          throw AESError.runtimeError("Failed to convert message to String")
+        }
+        
+        let encryptedMessage = try encrypt(message, with: symmetricKey)
+        return encryptedMessage
+      }
+    } catch {
+      reject(Self.AES_ERROR_CODE, error.localizedDescription, error)
+      return
+    }
+    
+    resolve(encryptedMessages.map({ encryptedMessage in
+      encryptedMessage.dictionary
+    }))
+  }
+  
+  private func encrypt(_ message: String, with symmetricKey: SymmetricKey) throws -> EncryptedMessage {
+    guard let messageData = message.data(using: .utf8) else {
+      throw AESError.runtimeError("Failed to convert message into UTF-8 data")
+    }
 
     guard let encryptedMessageData = try? AES.GCM.seal(messageData, using: symmetricKey) else {
-      reject(Self.AES_ERROR_CODE, "Failed to encrypt data", nil)
-      return
+      throw AESError.runtimeError("Failed to encrypt data")
     }
     
     let ciphertext = encryptedMessageData.ciphertext.base64EncodedString()
     let initializationVector = encryptedMessageData.nonce.dataRepresentation.base64EncodedString()
     let integrityCheck = encryptedMessageData.tag.base64EncodedString()
     
-    resolve([
-      Self.KEY_ENCRYPTED_MESSAGE: ciphertext,
-      Self.KEY_INITIALIZATION_VECTOR: initializationVector,
-      Self.KEY_INTEGRITY_CHECK: integrityCheck,
-    ]);
+    return EncryptedMessage(ciphertext, initializationVector, integrityCheck)
   }
   
   private func unwrapSymmetricKey(_ wrappedKey: String, _ wrapperKeyId: String) throws -> SymmetricKey {
@@ -177,6 +210,11 @@ class AESModule: NSObject {
     let base64EncryptedMessage: String
     let base64InitializationVector: String
     let base64IntegrityCheck: String
+    
+    var dictionary: [String: Any]? {
+      guard let data = try? JSONEncoder().encode(self) else { return nil }
+      return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
     
     init(_ base64EncryptedMessage: String, _ base64InitializationVector: String, _ base64IntegrityCheck: String) {
       self.base64EncryptedMessage = base64EncryptedMessage

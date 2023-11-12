@@ -45,5 +45,13 @@ RCT_EXTERN_METHOD(
   rejecter: (RCTPromiseRejectBlock) reject
 );
 
+RCT_EXTERN_METHOD(
+  encryptMany: (NSString *) wrappedKey
+  wrapperKeyId: (NSString *) wrapperKeyId
+  messages: (NSArray *) messages
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
 @end
 

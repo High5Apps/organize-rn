@@ -161,15 +161,49 @@ public class AESModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        byte[] messageBytes = fromUtf8(message);
-        byte[] ciphertextAndIntegrityCheck;
+        ReadableMap resultMap = null;
         try {
-            ciphertextAndIntegrityCheck = cipher.doFinal(messageBytes);
-        } catch (BadPaddingException | IllegalBlockSizeException e) {
+            resultMap = encrypt(cipher, message);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             Log.e(getName(), e.toString());
-            promise.reject(new AESException("Failed to encrypt message: " + message));
+            promise.reject(e);
             return;
         }
+
+        promise.resolve(resultMap);
+    }
+
+    @ReactMethod
+    public void encryptMany(String wrappedKey, String wrapperKeyId, ReadableArray messages, Promise promise) {
+        SecretKey secretKey;
+        try {
+            secretKey = unwrapSecretKey(wrappedKey, wrapperKeyId);
+        } catch (IllegalBlockSizeException | RSAModule.RSAException | BadPaddingException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
+        }
+
+        WritableArray resultArray = new WritableNativeArray();
+        try {
+            for (int i = 0; i < messages.size(); i++) {
+                Cipher cipher = getCipher(Cipher.ENCRYPT_MODE, secretKey);
+                String message = messages.getString(i);
+                ReadableMap encryptedMessage = encrypt(cipher, message);
+                resultArray.pushMap(encryptedMessage);
+            }
+        } catch (AESException | IllegalBlockSizeException | BadPaddingException e) {
+            Log.e(getName(), e.toString());
+            promise.reject(e);
+            return;
+        }
+
+        promise.resolve(resultArray);
+    }
+
+    private ReadableMap encrypt(Cipher cipher, String message) throws IllegalBlockSizeException, BadPaddingException {
+        byte[] messageBytes = fromUtf8(message);
+        byte[] ciphertextAndIntegrityCheck = cipher.doFinal(messageBytes);
 
         int totalLength = ciphertextAndIntegrityCheck.length;
         int ciphertextLength = totalLength - INTEGRITY_CHECK_LENGTH_BYTES;
@@ -182,7 +216,7 @@ public class AESModule extends ReactContextBaseJavaModule {
         resultMap.putString(KEY_ENCRYPTED_MESSAGE, toBase64(ciphertext));
         resultMap.putString(KEY_INITIALIZATION_VECTOR, toBase64(initializationVector));
         resultMap.putString(KEY_INTEGRITY_CHECK, toBase64(integrityCheck));
-        promise.resolve(resultMap);
+        return resultMap;
     }
 
     private GCMParameterSpec getSpec(String base64InitializationVector) {

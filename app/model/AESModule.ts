@@ -39,6 +39,11 @@ export interface AESInterface {
   encrypt(
     wrappedKey: string, wrapperKeyId: string, message: string,
   ): Promise<AESEncryptedData>;
+  encryptMany(
+    wrappedKey: string,
+    wrapperKeyId: string,
+    messages: string[],
+  ): Promise<AESEncryptedData[]>
 }
 
 export default AESModule as AESInterface;

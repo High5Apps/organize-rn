@@ -50,9 +50,18 @@ async function encrypt(
   return AESModule.encrypt(wrappedKey, wrapperKeyId, message);
 }
 
+async function encryptMany(
+  wrappedKey: string,
+  wrapperKeyId: string,
+  messages: string[],
+): Promise<AESEncryptedData[]> {
+  return AESModule.encryptMany(wrappedKey, wrapperKeyId, messages);
+}
+
 export default {
   decrypt,
   decryptMany,
   decryptWithExposedKey,
   encrypt,
+  encryptMany,
 };
