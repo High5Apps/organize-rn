@@ -6,7 +6,7 @@ import { ItemSeparator } from '../views';
 
 const data: BallotType[] = [
   {
-    category: 'yesOrNo',
+    category: 'yes_no',
     iconName: 'thumb-up',
     name: 'Yes or No',
   },

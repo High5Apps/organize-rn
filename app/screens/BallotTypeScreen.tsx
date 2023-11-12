@@ -8,7 +8,7 @@ export default function BallotTypeScreen({
 }: BallotTypeScreenProps) {
   const onBallotTypeRowPress = useCallback(({ category }: BallotType) => {
     let screen: keyof VoteStackParamList;
-    if (category === 'yesOrNo') {
+    if (category === 'yes_no') {
       screen = 'NewYesOrNoBallot';
     } else {
       console.warn('Unhandled BallotCategory');
