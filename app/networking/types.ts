@@ -245,3 +245,12 @@ export type Decrypt<T> = T extends ReadonlyArray<any> ? (
     } : T
   )
 );
+
+type BallotResponse = {
+  id: string;
+};
+
+export function isBallotResponse(object: unknown): object is BallotResponse {
+  const response = (object as BallotResponse);
+  return response?.id?.length > 0;
+}

@@ -6,6 +6,8 @@ const origin = __DEV__ ? 'http://localhost:3000' : 'https://getorganize.app';
 const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;
 
+export const ballotsURI = `${apiRoute}/ballots`;
+
 export const commentUpvotesURI = (commentId: string) => `${apiRoute}/comments/${commentId}/upvotes`;
 
 export const connectionsURI = `${apiRoute}/connections`;

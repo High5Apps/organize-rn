@@ -1,3 +1,4 @@
+export { createBallot } from './BallotAPI';
 export { createComment, fetchComments } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
