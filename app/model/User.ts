@@ -133,6 +133,17 @@ export default function User({
     });
   }
 
+  async function e2eEncryptMany(messages: string[]) {
+    if (!localEncryptionKeyId || !encryptedGroupKey) {
+      throw new Error('Can only encryptMany for users with a localEncryptionKeyId and encryptedGroupKey');
+    }
+    return keys.aes.encryptMany({
+      messages,
+      wrappedKey: encryptedGroupKey,
+      wrapperKeyId: localEncryptionKeyId,
+    });
+  }
+
   return {
     authenticationKeyId,
     createAuthToken,
@@ -143,6 +154,7 @@ export default function User({
     e2eDecrypt,
     e2eDecryptMany,
     e2eEncrypt,
+    e2eEncryptMany,
     localEncryptionKeyId,
     org,
     ...userData,

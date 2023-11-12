@@ -50,6 +50,11 @@ export default function Keys() {
       }: AESMessage & AESWrappedKey) {
         return AESKeychain.encrypt(wrappedKey, wrapperKeyId, message);
       },
+      async encryptMany({
+        messages, wrappedKey, wrapperKeyId,
+      }: AESWrappedKey & { messages: string[] }) {
+        return AESKeychain.encryptMany(wrappedKey, wrapperKeyId, messages);
+      },
     },
     ecc: {
       async create() {
