@@ -1,5 +1,6 @@
 import {
   E2EMultiDecryptor, E2EEncryptor, E2EDecryptor, AESEncryptedData,
+  E2EMultiEncryptor,
 } from '../model';
 import type { BackendEncryptedMessage } from './types';
 
@@ -88,6 +89,14 @@ export async function encrypt(
 ): Promise<BackendEncryptedMessage> {
   const encryptedMessage = await encryptor(message);
   return toBackendEncryptedMessage(encryptedMessage);
+}
+
+export async function encryptMany(
+  messages: string[],
+  encryptor: E2EMultiEncryptor,
+): Promise<BackendEncryptedMessage[]> {
+  const encryptedMessages = await encryptor(messages);
+  return encryptedMessages.map(toBackendEncryptedMessage);
 }
 
 export async function decrypt(
