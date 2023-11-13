@@ -66,6 +66,12 @@ export default function NewYesNoBallotScreen({
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
+  const resetForm = () => {
+    setQuestion('');
+    setVotingEnd(startOfNextHourIn7Days());
+    setResult('none');
+  };
+
   const onPublishPressed = async () => {
     if (!isCurrentUserData(currentUser)) { return; }
 
@@ -101,7 +107,8 @@ export default function NewYesNoBallotScreen({
     if (errorMessage) {
       setResult('error', { message: errorMessage });
     } else {
-      setResult('success', { message: 'Successfully created yes/no vote' });
+      resetForm();
+      setResult('success');
       navigation.navigate('Ballots');
     }
   };
