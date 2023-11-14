@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
 import type { Comment } from './types';
-import useCommentCache from './CommentCache';
+import useModelCache from './ModelCache';
 
 type CommentContextType = {
   cacheComment: (comment: Comment) => void;
@@ -17,7 +17,11 @@ const CommentContext = createContext<CommentContextType>({
 });
 
 export function CommentContextProvider({ children }: PropsWithChildren<{}>) {
-  const { cacheComment, cacheComments, getCachedComment } = useCommentCache();
+  const {
+    cacheModel: cacheComment,
+    cacheModels: cacheComments,
+    getCachedModel: getCachedComment,
+  } = useModelCache<Comment>();
 
   const commentContext = useMemo<CommentContextType>(() => ({
     cacheComment, cacheComments, getCachedComment,

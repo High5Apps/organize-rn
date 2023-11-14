@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ReactTestRenderer, act, create } from 'react-test-renderer';
-import usePostCache from '../../app/model/PostCache';
+import useModelCache from '../../app/model/ModelCache';
 import { getFakePost } from '../FakeData';
 import { Post } from '../../app/model';
 
@@ -14,7 +14,11 @@ type Props = {
 const postToId = (post: Post) => post.id;
 
 function TestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
-  const { cachePost, cachePosts, getCachedPost } = usePostCache();
+  const {
+    cacheModel: cachePost,
+    cacheModels: cachePosts,
+    getCachedModel: getCachedPost,
+  } = useModelCache<Post>();
   const [postIds, setPostIds] = useState<string[]>(posts.map(postToId));
 
   useEffect(() => {

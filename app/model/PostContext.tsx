@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
 import { Post } from './types';
-import usePostCache from './PostCache';
+import useModelCache from './ModelCache';
 
 type PostContextType = {
   cachePost: (post: Post) => void;
@@ -17,7 +17,11 @@ const PostContext = createContext<PostContextType>({
 });
 
 export function PostContextProvider({ children }: PropsWithChildren<{}>) {
-  const { cachePost, cachePosts, getCachedPost } = usePostCache();
+  const {
+    cacheModel: cachePost,
+    cacheModels: cachePosts,
+    getCachedModel: getCachedPost,
+  } = useModelCache<Post>();
 
   const postContext = useMemo<PostContextType>(() => ({
     cachePost, cachePosts, getCachedPost,
