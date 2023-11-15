@@ -1,4 +1,5 @@
 export { default as useAppState } from './AppState';
+export { BallotContextProvider } from './BallotContext';
 export { default as useCachedValue } from './CachedValue';
 export { CachedValueContextProvider } from './CachedValueContext';
 export {
