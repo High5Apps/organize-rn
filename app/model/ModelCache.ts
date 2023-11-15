@@ -4,6 +4,10 @@ export type Model = {
   id: string;
 };
 
+export function getIdsFrom<T extends Model>(models?: T[]) {
+  return (models ?? []).map((model) => model.id);
+}
+
 function modelToEntry<T extends Model>(model: T) {
   return [model.id, model] as const;
 }

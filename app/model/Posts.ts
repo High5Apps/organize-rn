@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useUserContext } from './UserContext';
 import {
-  Post, PostCategory, PostSort, isCurrentUserData, isDefined,
+  PostCategory, PostSort, isCurrentUserData, isDefined,
 } from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
+import { getIdsFrom } from './ModelCache';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
-
-const getPostIdsFrom = (posts?: Post[]) => (posts ?? []).map((post) => post.id);
 
 type Props = {
   category?: PostCategory;
@@ -63,7 +62,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
 
     cachePosts(fetchedPosts);
     setNextPageNumber(firstPageIndex + 1);
-    setPostIds(getPostIdsFrom(fetchedPosts));
+    setPostIds(getIdsFrom(fetchedPosts));
     const hasNextPage = paginationData?.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
     setReady(true);
@@ -98,7 +97,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
 
     cachePosts(fetchedPosts);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setPostIds([...postIds, ...getPostIdsFrom(fetchedPosts)]);
+    setPostIds([...postIds, ...getIdsFrom(fetchedPosts)]);
 
     return result;
   }

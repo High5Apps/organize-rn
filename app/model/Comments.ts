@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Comment, isCurrentUserData, isDefined } from './types';
+import { isCurrentUserData, isDefined } from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
 import { useCommentContext } from './CommentContext';
+import { getIdsFrom } from './ModelCache';
 
 export const MAX_COMMENT_DEPTH = 8;
 export const MAX_COMMENT_LENGTH = 10000;
-
-const getCommentIdsFrom = (comments?: Comment[]) => (comments ?? []).map((c) => c.id);
 
 export default function useComments(postId?: string) {
   const { cacheComment, cacheComments, getCachedComment } = useCommentContext();
@@ -38,7 +37,7 @@ export default function useComments(postId?: string) {
     }
 
     cacheComments(fetchedComments);
-    setCommentIds(getCommentIdsFrom(fetchedComments));
+    setCommentIds(getIdsFrom(fetchedComments));
     setReady(true);
 
     const isEmpty = (fetchedComments.length === 0);
