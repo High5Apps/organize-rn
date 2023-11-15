@@ -1,4 +1,6 @@
-import type { Org, PostCategory, VoteState } from '../model';
+import type {
+  BallotCategory, Org, PostCategory, VoteState,
+} from '../model';
 
 export type ErrorResponseType = {
   error_messages: string[];
@@ -253,4 +255,32 @@ type BallotResponse = {
 export function isBallotResponse(object: unknown): object is BallotResponse {
   const response = (object as BallotResponse);
   return response?.id?.length > 0;
+}
+
+export type BallotIndexBallot = {
+  category: BallotCategory,
+  encrypted_question: BackendEncryptedMessage;
+  id: string;
+  voting_ends_at: string;
+};
+
+function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
+  const ballot = (object as BallotIndexBallot);
+  return ballot?.id?.length > 0
+    && ballot.category?.length > 0
+    && isBackendEncryptedMessage(ballot.encrypted_question)
+    && ballot.voting_ends_at?.length > 0;
+}
+
+type BallotIndexResponse = {
+  ballots: BallotIndexBallot[];
+  meta?: PaginationData;
+};
+
+export function isBallotIndexResponse(object: unknown): object is BallotIndexResponse {
+  const response = (object as BallotIndexResponse);
+  return response?.ballots
+    && Array.isArray(response.ballots)
+    && response.ballots.every(isBallotIndexBallot)
+    && (!response?.meta || isPaginationData(response?.meta));
 }

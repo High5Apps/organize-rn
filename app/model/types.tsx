@@ -149,3 +149,12 @@ export type BallotType = {
   iconName: string;
   name: string;
 };
+
+export type BallotSort = 'active' | 'inactive';
+
+export type Ballot = {
+  category: BallotCategory;
+  id: string;
+  question: string;
+  votingEndsAt: Date;
+};
