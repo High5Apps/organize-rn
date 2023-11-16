@@ -1,14 +1,16 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import { Ballot, GENERIC_ERROR_MESSAGE, useBallots } from '../../model';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, ListEmptyMessage } from '../views';
 import BallotRow from './BallotRow';
 import usePullToRefresh from './PullToRefresh';
 import useRequestProgress from './RequestProgress';
 import useTheme from '../../Theme';
+
+const LIST_EMPTY_MESSAGE = 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -31,7 +33,7 @@ export default function BallotList({
   contentContainerStyle, onItemPress,
 }: Props) {
   const { styles } = useStyles();
-  const { ballots, fetchFirstPageOfBallots } = useBallots();
+  const { ballots, fetchFirstPageOfBallots, ready } = useBallots();
 
   const {
     RequestProgress: FirstPageRequestProgress,
@@ -55,7 +57,11 @@ export default function BallotList({
   const listRef = useRef(null);
   useScrollToTop(listRef);
 
-  const ListHeaderComponent = useCallback(
+  const ListEmptyComponent = useMemo(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+  ), []);
+
+  const ListHeaderComponent = useMemo(
     () => <FirstPageRequestProgress style={styles.requestProgress} />,
     [FirstPageRequestProgress],
   );
@@ -69,6 +75,7 @@ export default function BallotList({
       contentContainerStyle={contentContainerStyle}
       data={ballots}
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       ref={listRef}
