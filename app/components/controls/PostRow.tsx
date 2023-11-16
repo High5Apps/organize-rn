@@ -16,9 +16,12 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     icon: {
-      alignSelf: 'center',
+      // This attempts to align the top of the icons with the top of the title
+      // text, itself, not with the top of the text container
+      marginTop: 6,
     },
     container: {
+      alignItems: 'flex-start',
       backgroundColor: colors.fill,
       flexDirection: 'row',
       paddingEnd: spacing.s,
