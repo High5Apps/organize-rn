@@ -112,14 +112,12 @@ export default function NotableUserList({
     return notableUserSections;
   }, [colors, currentUser, graphData, selectedUserId]);
 
-  const { refreshControl } = usePullToRefresh({
+  const {
+    ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,
+  } = usePullToRefresh({
     onRefresh: async () => {
       setSelectedUserId(undefined);
-      try {
-        await updateOrgData();
-      } catch (e) {
-        console.error(e);
-      }
+      await updateOrgData();
     },
   });
 
@@ -130,9 +128,10 @@ export default function NotableUserList({
         setListHeaderComponentHeight(height);
       }}
     >
+      <PullToRefreshErrorMessage />
       {ListHeaderComponent}
     </View>
-  ), [ListHeaderComponent]);
+  ), [ListHeaderComponent, PullToRefreshErrorMessage]);
 
   return (
     <SectionList
