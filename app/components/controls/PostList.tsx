@@ -13,20 +13,14 @@ import PostRow from './PostRow';
 import useTheme from '../../Theme';
 import usePullToRefresh from './PullToRefresh';
 import useRequestProgress from './RequestProgress';
+import useInfiniteScroll from './InfiniteScroll';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const { spacing } = useTheme();
 
   const styles = StyleSheet.create({
     requestProgress: {
       margin: spacing.m,
-    },
-    text: {
-      color: colors.label,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
-      margin: spacing.m,
-      textAlign: 'center',
     },
   });
 
@@ -110,14 +104,6 @@ export default function PostList({
     setResult: setFirstPageResult,
   } = useRequestProgress();
 
-  const {
-    loading: loadingNextPage,
-    RequestProgress: NextPageRequestProgress,
-    result: nextPageResult,
-    setLoading: setLoadingNextPage,
-    setResult: setNextPageResult,
-  } = useRequestProgress();
-
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
   ), [cachePost, onItemPress]);
@@ -125,7 +111,9 @@ export default function PostList({
   const { refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
       setFirstPageResult('none');
-      setNextPageResult('none');
+
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      clearNextPageError();
 
       try {
         await fetchFirstPageOfPosts();
@@ -138,14 +126,17 @@ export default function PostList({
     refreshOnMount: true,
   });
 
+  const {
+    clearError: clearNextPageError, ListFooterComponent, onEndReached,
+    onEndReachedThreshold,
+  } = useInfiniteScroll({
+    getDisabled: () => (!data.length || refreshing || fetchedLastPage),
+    onLoadNextPage: fetchNextPageOfPosts,
+  });
+
   const ListHeaderComponent = useCallback(
     () => <FirstPageRequestProgress style={styles.requestProgress} />,
     [FirstPageRequestProgress],
-  );
-
-  const ListFooterComponent = useCallback(
-    () => <NextPageRequestProgress style={styles.requestProgress} />,
-    [NextPageRequestProgress],
   );
 
   return (
@@ -156,27 +147,8 @@ export default function PostList({
       ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
       contentContainerStyle={contentContainerStyle}
-      onEndReached={async () => {
-        if (
-          !data.length || nextPageResult === 'error' || loadingNextPage
-          || refreshing || fetchedLastPage
-        ) {
-          return;
-        }
-
-        setLoadingNextPage(true);
-        try {
-          const { hasNextPage } = await fetchNextPageOfPosts();
-          if (!hasNextPage) {
-            setNextPageResult('info', { message: 'You reached the end' });
-          }
-        } catch (e) {
-          console.error(e);
-          setNextPageResult('error', { message: GENERIC_ERROR_MESSAGE });
-        }
-        setLoadingNextPage(false);
-      }}
-      onEndReachedThreshold={0.5}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       ref={listRef}
       refreshControl={refreshControl}
       renderItem={renderItem}

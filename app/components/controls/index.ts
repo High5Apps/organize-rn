@@ -9,6 +9,7 @@ export { default as DateTimeSelector } from './DateTimeSelector';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';
+export { default as useInfiniteScroll } from './InfiniteScroll';
 export { default as MultilineTextInput } from './MultilineTextInput';
 export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NotableUserList } from './NotableUserList';
