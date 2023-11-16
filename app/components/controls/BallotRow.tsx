@@ -16,7 +16,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       backgroundColor: colors.fill,
       columnGap: spacing.m,
       flexDirection: 'row',
@@ -27,10 +27,18 @@ const useStyles = () => {
     icon: {
       color: colors.primary,
       fontSize: sizes.icon,
+
+      // This attempts to align the top of the icons with the top of the
+      // question text, itself, not with the top of the text container
+      marginTop: 7,
     },
     innerContainer: {
       flex: 1,
       flexDirection: 'column',
+
+      // This attempts to align the top of the icons with the top of the
+      // question text, itself, not with the top of the text container
+      marginTop: 2,
     },
     subtitle: {
       color: colors.labelSecondary,
