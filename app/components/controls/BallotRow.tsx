@@ -15,9 +15,6 @@ const useStyles = () => {
   } = useTheme();
 
   const styles = StyleSheet.create({
-    active: {
-      fontFamily: font.weights.semiBold,
-    },
     container: {
       alignItems: 'center',
       backgroundColor: colors.fill,
@@ -42,6 +39,9 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
+    },
+    title: {
+      fontFamily: font.weights.semiBold,
     },
   });
 
@@ -70,7 +70,7 @@ export default function BallotRow({ item, onPress }: Props) {
       <View style={styles.container}>
         <Icon name={ballotTypeMap[category].iconName} style={styles.icon} />
         <View style={styles.innerContainer}>
-          <Text style={[styles.text, active && styles.active]}>{question}</Text>
+          <Text style={[styles.text, styles.title]}>{question}</Text>
           <Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
         </View>
         <DisclosureIcon />
