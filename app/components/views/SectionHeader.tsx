@@ -47,3 +47,15 @@ SectionHeader.defaultProps = {
   buttonText: undefined,
   onPress: () => {},
 };
+
+type TitledSection = {
+  title: string;
+};
+
+type SectionHeaderProps = {
+  section: TitledSection;
+};
+
+export const renderSectionHeader = ({
+  section: { title },
+}: SectionHeaderProps) => <SectionHeader>{title}</SectionHeader>;

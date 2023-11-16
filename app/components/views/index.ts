@@ -17,6 +17,6 @@ export { default as ProgressBar } from './ProgressBar';
 export { default as SafeAreaPadding } from './SafeAreaPadding';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';
-export { default as SectionHeader } from './SectionHeader';
+export { default as SectionHeader, renderSectionHeader } from './SectionHeader';
 export { default as StatusBar } from './StatusBar';
 export { default as TextBoldener } from './TextBoldener';

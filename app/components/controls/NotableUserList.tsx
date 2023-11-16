@@ -3,12 +3,11 @@ import React, {
 } from 'react';
 import { ListRenderItem, SectionList } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import SectionHeader from '../views/SectionHeader';
 import {
   OrgGraphUser, getCircleColors, getHighestRank, useGraphData, useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, renderSectionHeader } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
 import usePullToRefresh from './PullToRefresh';
 
@@ -25,10 +24,6 @@ type NotableUserSection = {
   data: NotableUserItem[];
 };
 
-type SectionHeaderProps = {
-  section: NotableUserSection;
-};
-
 type Props = {
   disableRows?: boolean;
   ListHeaderComponent?: ReactElement;
@@ -36,11 +31,6 @@ type Props = {
   scrollEnabled?: boolean;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
-};
-
-const renderSectionHeader = ({ section }: SectionHeaderProps) => {
-  const { title } = section;
-  return <SectionHeader>{title}</SectionHeader>;
 };
 
 export default function NotableUserList({
