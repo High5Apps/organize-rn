@@ -1,7 +1,10 @@
 import React, {
   Dispatch, ReactElement, SetStateAction, useCallback, useMemo, useRef,
+  useState,
 } from 'react';
-import { ListRenderItem, SectionList } from 'react-native';
+import {
+  LayoutChangeEvent, ListRenderItem, SectionList, View,
+} from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
   OrgGraphUser, getCircleColors, getHighestRank, useGraphData, useUserContext,
@@ -27,16 +30,17 @@ type NotableUserSection = {
 type Props = {
   disableRows?: boolean;
   ListHeaderComponent?: ReactElement;
-  listHeaderComponentHeight?: number;
   scrollEnabled?: boolean;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export default function NotableUserList({
-  disableRows, ListHeaderComponent, listHeaderComponentHeight, scrollEnabled,
-  selectedUserId, setSelectedUserId,
+  disableRows, ListHeaderComponent, scrollEnabled, selectedUserId,
+  setSelectedUserId,
 }: Props) {
+  const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
+
   const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
   useScrollToTop(sectionListRef);
 
@@ -48,6 +52,10 @@ export default function NotableUserList({
       sectionListRef.current?.scrollToLocation({
         itemIndex: 0,
         sectionIndex: 0,
+
+        // Without this, on Android, it would scroll to the top of the pressed
+        // row instead of the top of the screen. It doesn't seem to be needed
+        // on iOS.
         viewOffset: listHeaderComponentHeight,
       });
       setSelectedUserId(id);
@@ -115,10 +123,21 @@ export default function NotableUserList({
     },
   });
 
+  const WrappedListHeaderComponent = useMemo(() => (
+    <View
+      onLayout={(event: LayoutChangeEvent) => {
+        const { height } = event.nativeEvent.layout;
+        setListHeaderComponentHeight(height);
+      }}
+    >
+      {ListHeaderComponent}
+    </View>
+  ), [ListHeaderComponent]);
+
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponent={WrappedListHeaderComponent}
       nestedScrollEnabled
       ref={sectionListRef}
       refreshControl={refreshControl}
@@ -133,7 +152,6 @@ export default function NotableUserList({
 NotableUserList.defaultProps = {
   disableRows: true,
   ListHeaderComponent: undefined,
-  listHeaderComponentHeight: 0,
   scrollEnabled: true,
   selectedUserId: undefined,
 };

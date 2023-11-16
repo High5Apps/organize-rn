@@ -1,5 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
@@ -21,7 +20,6 @@ function SettingsButton() {
 export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
-  const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
   const [graphRendered, setGraphRendered] = useState(false);
 
   useLayoutEffect(() => {
@@ -29,31 +27,25 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     navigation.setOptions({ headerRight });
   }, [navigation]);
 
+  const ListHeaderComponent = useMemo(() => (
+    <>
+      <SectionHeader>Members and connections</SectionHeader>
+      <OrgGraph
+        onInteraction={(inProgress: boolean) => setScrollEnabled(!inProgress)}
+        onRenderingProgressChanged={
+          (progress) => setGraphRendered(progress >= 1)
+        }
+        selectedUserId={selectedUserId}
+        setSelectedUserId={setSelectedUserId}
+      />
+    </>
+  ), [selectedUserId]);
+
   return (
     <ScreenBackground>
       <NotableUserList
         disableRows={!graphRendered}
-        ListHeaderComponent={(
-          <View
-            onLayout={(event: LayoutChangeEvent) => {
-              const { height } = event.nativeEvent.layout;
-              setListHeaderComponentHeight(height);
-            }}
-          >
-            <SectionHeader>Members and connections</SectionHeader>
-            <OrgGraph
-              onInteraction={
-                (inProgress: boolean) => setScrollEnabled(!inProgress)
-              }
-              onRenderingProgressChanged={
-                (progress) => setGraphRendered(progress >= 1)
-              }
-              selectedUserId={selectedUserId}
-              setSelectedUserId={setSelectedUserId}
-            />
-          </View>
-        )}
-        listHeaderComponentHeight={listHeaderComponentHeight}
+        ListHeaderComponent={ListHeaderComponent}
         scrollEnabled={scrollEnabled}
         selectedUserId={selectedUserId}
         setSelectedUserId={setSelectedUserId}
