@@ -1,10 +1,12 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import {
-  FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
+  ListRenderItemInfo, SectionList, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { Ballot, GENERIC_ERROR_MESSAGE, useBallots } from '../../model';
-import { ItemSeparator, ListEmptyMessage } from '../views';
+import {
+  Ballot, GENERIC_ERROR_MESSAGE, isDefined, useBallots,
+} from '../../model';
+import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import BallotRow from './BallotRow';
 import usePullToRefresh from './PullToRefresh';
 import useRequestProgress from './RequestProgress';
@@ -24,6 +26,11 @@ const useStyles = () => {
   return { styles };
 };
 
+type BallotSection = {
+  title: string;
+  data: Ballot[];
+};
+
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   onItemPress?: (item: Ballot) => void;
@@ -33,7 +40,18 @@ export default function BallotList({
   contentContainerStyle, onItemPress,
 }: Props) {
   const { styles } = useStyles();
-  const { ballots, fetchFirstPageOfBallots, ready } = useBallots();
+  const {
+    activeBallots, inactiveBallots, fetchFirstPageOfBallots, ready,
+  } = useBallots();
+
+  const sections: BallotSection[] = useMemo(() => (
+    [
+      { title: 'Active Votes', data: activeBallots },
+      { title: 'Completed Votes', data: inactiveBallots },
+    ]
+      .map((section) => (section.data.length > 0 ? section : undefined))
+      .filter(isDefined)
+  ), [activeBallots, inactiveBallots]);
 
   const {
     RequestProgress: FirstPageRequestProgress,
@@ -71,16 +89,17 @@ export default function BallotList({
   ), [onItemPress]);
 
   return (
-    <FlatList
+    <SectionList
       contentContainerStyle={contentContainerStyle}
-      data={ballots}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
       ref={listRef}
       refreshControl={refreshControl}
       refreshing={refreshing}
+      sections={sections}
     />
   );
 }

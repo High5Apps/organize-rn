@@ -10,10 +10,15 @@ const firstPageIndex = 1;
 
 export default function useBallots() {
   const { cacheBallots, getCachedBallot } = useBallotContext();
-  const [ballotIds, setBallotIds] = useState<string[]>([]);
-  const ballots = useMemo(
-    () => ballotIds.map(getCachedBallot).filter(isDefined),
-    [ballotIds, getCachedBallot],
+  const [activeBallotIds, setActiveBallotIds] = useState<string[]>([]);
+  const activeBallots = useMemo(
+    () => activeBallotIds.map(getCachedBallot).filter(isDefined),
+    [activeBallotIds, getCachedBallot],
+  );
+  const [inactiveBallotIds, setInactiveBallotIds] = useState<string[]>([]);
+  const inactiveBallots = useMemo(
+    () => inactiveBallotIds.map(getCachedBallot).filter(isDefined),
+    [inactiveBallotIds, getCachedBallot],
   );
   const [activeCutoff, setActiveCutoff] = useState<Date>(new Date());
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
@@ -34,9 +39,9 @@ export default function useBallots() {
     const inactiveJwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const [
-      { ballots: activeBallots, errorMessage: activeErrorMessage },
+      { ballots: fetchedActiveBallots, errorMessage: activeErrorMessage },
       {
-        ballots: inactiveBallots, errorMessage: inactiveErrorMessage,
+        ballots: fetchedInactiveBallots, errorMessage: inactiveErrorMessage,
         paginationData,
       },
     ] = await Promise.all([
@@ -68,9 +73,10 @@ export default function useBallots() {
     const hasNextPage = paginationData && paginationData.nextPage !== null;
     const result = { hasNextPage };
 
-    const fetchedBallots = [...activeBallots!, ...inactiveBallots!];
-    cacheBallots(fetchedBallots);
-    setBallotIds(getIdsFrom(fetchedBallots));
+    cacheBallots(fetchedActiveBallots);
+    cacheBallots(fetchedInactiveBallots);
+    setActiveBallotIds(getIdsFrom(fetchedActiveBallots));
+    setInactiveBallotIds(getIdsFrom(fetchedInactiveBallots));
     setNextPageNumber(firstPageIndex + 1);
     setFetchedLastPage(!hasNextPage);
     setReady(true);
@@ -108,13 +114,14 @@ export default function useBallots() {
 
     cacheBallots(fetchedBallots);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setBallotIds([...ballotIds, ...getIdsFrom(fetchedBallots)]);
+    setInactiveBallotIds([...inactiveBallotIds, ...getIdsFrom(fetchedBallots)]);
 
     return result;
   }
 
   return {
-    ballots,
+    activeBallots,
+    inactiveBallots,
     fetchedLastPage,
     fetchFirstPageOfBallots,
     fetchNextPageOfBallots,
