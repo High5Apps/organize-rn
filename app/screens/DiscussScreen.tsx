@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import {
-  PostList, PrimaryButton, ScreenBackground, TextBoldener,
+  ListEmptyMessage, PostList, PrimaryButton, ScreenBackground,
 } from '../components';
 import useTheme from '../Theme';
 import type {
@@ -11,17 +11,12 @@ import type {
 import { Post, PostCategory, PostSort } from '../model';
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { sizes, spacing } = useTheme();
 
   const buttonMargin = spacing.m;
   const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
 
   const styles = StyleSheet.create({
-    bold: {
-      fontFamily: font.weights.bold,
-    },
     button: {
       bottom: buttonMargin,
       end: buttonMargin,
@@ -31,13 +26,6 @@ const useStyles = () => {
     },
     contentContainerStyle: {
       paddingBottom: buttonBoundingBoxHeight,
-    },
-    text: {
-      color: colors.label,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
-      margin: spacing.m,
-      textAlign: 'center',
     },
   });
 
@@ -79,19 +67,17 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
     [navigation],
   );
 
+  const ListEmptyComponent = useMemo(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={emptyListMessage} />
+  ), []);
+
   return (
     <ScreenBackground>
       <PostList
         category={category}
         contentContainerStyle={styles.contentContainerStyle}
         insertedPostIds={insertedPostIds}
-        ListEmptyComponent={(
-          <TextBoldener
-            boldStyle={styles.bold}
-            baseStyle={styles.text}
-            text={emptyListMessage}
-          />
-        )}
+        ListEmptyComponent={ListEmptyComponent}
         onItemPress={onItemPress}
         sort={sort}
       />
