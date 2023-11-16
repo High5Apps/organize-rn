@@ -1,26 +1,43 @@
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { RefreshControl as RNRefreshControl } from 'react-native';
+import { RefreshControl as RNRefreshControl, StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
+import useRequestProgress from './RequestProgress';
+import { GENERIC_ERROR_MESSAGE } from '../../model';
+
+const useStyles = () => {
+  const { colors, spacing } = useTheme();
+
+  const styles = StyleSheet.create({
+    requestProgress: {
+      margin: spacing.m,
+    },
+  });
+
+  return { colors, styles };
+};
 
 type Props = {
-  onRefresh: () => Promise<void>;
+  onRefresh: () => Promise<any>;
   refreshOnMount?: boolean;
 };
 
 export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { colors } = useTheme();
+  const { colors, styles } = useStyles();
+  const { RequestProgress, setResult } = useRequestProgress();
 
   const wrappedOnRefresh = useCallback(async () => {
+    setResult('none');
     setRefreshing(true);
 
     try {
       await onRefresh();
     } catch (error) {
       console.error(error);
+      setResult('error', { message: GENERIC_ERROR_MESSAGE });
     }
 
     setRefreshing(false);
@@ -48,5 +65,10 @@ export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
     />
   ), [onRefresh]);
 
-  return { refreshControl, refreshing };
+  const ListHeaderComponent = useCallback(
+    () => <RequestProgress style={styles.requestProgress} />,
+    [RequestProgress],
+  );
+
+  return { ListHeaderComponent, refreshControl, refreshing };
 }

@@ -2,30 +2,16 @@ import React, {
   ReactElement, RefObject, useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
+  FlatList, ListRenderItemInfo, StyleProp, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
-  GENERIC_ERROR_MESSAGE, Post, PostCategory, PostSort, isDefined, usePosts,
+  Post, PostCategory, PostSort, isDefined, usePosts,
 } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
-import useTheme from '../../Theme';
 import usePullToRefresh from './PullToRefresh';
-import useRequestProgress from './RequestProgress';
 import useInfiniteScroll from './InfiniteScroll';
-
-const useStyles = () => {
-  const { spacing } = useTheme();
-
-  const styles = StyleSheet.create({
-    requestProgress: {
-      margin: spacing.m,
-    },
-  });
-
-  return { styles };
-};
 
 function useInsertedPosts(
   posts: Post[],
@@ -85,8 +71,6 @@ export default function PostList({
   category, contentContainerStyle, insertedPostIds: maybeInsertedPostIds,
   ListEmptyComponent, onItemPress, sort,
 }: Props) {
-  const { styles } = useStyles();
-
   const listRef = useRef<FlatList<Post>>(null);
   useScrollToTop(listRef);
 
@@ -99,29 +83,17 @@ export default function PostList({
   } = useInsertedPosts(posts, ready, maybeInsertedPostIds);
   useScrollToTopOnNewPost(listRef, maybeInsertedPostIds);
 
-  const {
-    RequestProgress: FirstPageRequestProgress,
-    setResult: setFirstPageResult,
-  } = useRequestProgress();
-
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
   ), [cachePost, onItemPress]);
 
-  const { refreshControl, refreshing } = usePullToRefresh({
+  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
-      setFirstPageResult('none');
-
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       clearNextPageError();
 
-      try {
-        await fetchFirstPageOfPosts();
-        resetInsertedPosts();
-      } catch (e) {
-        console.error(e);
-        setFirstPageResult('error', { message: GENERIC_ERROR_MESSAGE });
-      }
+      await fetchFirstPageOfPosts();
+      resetInsertedPosts();
     },
     refreshOnMount: true,
   });
@@ -133,11 +105,6 @@ export default function PostList({
     getDisabled: () => (!data.length || refreshing || fetchedLastPage),
     onLoadNextPage: fetchNextPageOfPosts,
   });
-
-  const ListHeaderComponent = useCallback(
-    () => <FirstPageRequestProgress style={styles.requestProgress} />,
-    [FirstPageRequestProgress],
-  );
 
   return (
     <FlatList
