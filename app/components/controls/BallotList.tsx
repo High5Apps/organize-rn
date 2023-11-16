@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
 import { Ballot, GENERIC_ERROR_MESSAGE, useBallots } from '../../model';
 import { ItemSeparator } from '../views';
 import BallotRow from './BallotRow';
@@ -51,6 +52,9 @@ export default function BallotList({
     refreshOnMount: true,
   });
 
+  const listRef = useRef(null);
+  useScrollToTop(listRef);
+
   const ListHeaderComponent = useCallback(
     () => <FirstPageRequestProgress style={styles.requestProgress} />,
     [FirstPageRequestProgress],
@@ -67,6 +71,7 @@ export default function BallotList({
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
+      ref={listRef}
       refreshControl={refreshControl}
       refreshing={refreshing}
     />
