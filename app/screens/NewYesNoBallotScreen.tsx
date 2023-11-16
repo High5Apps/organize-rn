@@ -12,7 +12,7 @@ import { createBallot } from '../networking';
 import type { NewYesNoBallotScreenProps } from '../navigation';
 
 const CACHE_KEY_QUESTION = 'newYesNoVoteQuestion';
-const MAX_QUESTION_LENGTH = 120;
+const MAX_QUESTION_LENGTH = 140;
 const CANDIDATE_TITLES = ['Yes', 'No'];
 const BALLOT_CATEGORY = 'yes_no';
 

@@ -20,7 +20,7 @@ import type {
   DiscussTabsParamList, NewPostScreenParams, NewPostScreenProps,
 } from '../navigation';
 
-const MAX_TITLE_LENGTH = 120;
+const MAX_TITLE_LENGTH = 140;
 const MAX_BODY_LENGTH = 10000;
 const CACHE_KEY_TITLE = 'newPostTitle';
 const CACHE_KEY_BODY = 'newPostBody';
