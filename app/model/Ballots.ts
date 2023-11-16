@@ -70,7 +70,10 @@ export default function useBallots() {
       throw new Error(inactiveErrorMessage);
     }
 
-    const hasNextPage = paginationData && paginationData.nextPage !== null;
+    const hasNextPage = (paginationData !== undefined)
+      && paginationData.nextPage !== null;
+    setFetchedLastPage(!hasNextPage);
+
     const result = { hasNextPage };
 
     cacheBallots(fetchedActiveBallots);
@@ -78,7 +81,6 @@ export default function useBallots() {
     setActiveBallotIds(getIdsFrom(fetchedActiveBallots));
     setInactiveBallotIds(getIdsFrom(fetchedInactiveBallots));
     setNextPageNumber(firstPageIndex + 1);
-    setFetchedLastPage(!hasNextPage);
     setReady(true);
 
     return result;
@@ -107,7 +109,10 @@ export default function useBallots() {
       throw new Error(errorMessage);
     }
 
-    const hasNextPage = paginationData && paginationData.nextPage !== null;
+    const hasNextPage = (paginationData !== undefined)
+      && paginationData.nextPage !== null;
+    setFetchedLastPage(!hasNextPage);
+
     const result = { hasNextPage };
 
     if (!fetchedBallots?.length) { return result; }

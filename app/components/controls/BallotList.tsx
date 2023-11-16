@@ -7,6 +7,7 @@ import { Ballot, isDefined, useBallots } from '../../model';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import BallotRow from './BallotRow';
 import usePullToRefresh from './PullToRefresh';
+import useInfiniteScroll from './InfiniteScroll';
 
 const LIST_EMPTY_MESSAGE = 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!';
 
@@ -24,7 +25,8 @@ export default function BallotList({
   contentContainerStyle, onItemPress,
 }: Props) {
   const {
-    activeBallots, inactiveBallots, fetchFirstPageOfBallots, ready,
+    activeBallots, fetchedLastPage, fetchFirstPageOfBallots,
+    fetchNextPageOfBallots, inactiveBallots, ready,
   } = useBallots();
 
   const sections: BallotSection[] = useMemo(() => (
@@ -37,7 +39,21 @@ export default function BallotList({
   ), [activeBallots, inactiveBallots]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
-    onRefresh: fetchFirstPageOfBallots, refreshOnMount: true,
+    onRefresh: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      clearNextPageError();
+
+      await fetchFirstPageOfBallots();
+    },
+    refreshOnMount: true,
+  });
+
+  const {
+    clearError: clearNextPageError, ListFooterComponent, onEndReached,
+    onEndReachedThreshold,
+  } = useInfiniteScroll({
+    getDisabled: () => (!sections.length || refreshing || fetchedLastPage),
+    onLoadNextPage: fetchNextPageOfBallots,
   });
 
   const listRef = useRef(null);
@@ -56,7 +72,10 @@ export default function BallotList({
       contentContainerStyle={contentContainerStyle}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? ListEmptyComponent : null}
+      ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       ref={listRef}
