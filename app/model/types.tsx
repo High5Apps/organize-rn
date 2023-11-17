@@ -20,7 +20,7 @@ export type OrgGraph = {
 export type Org = {
   id: string;
   name: string;
-  potentialMemberDefinition: string;
+  memberDefinition: string;
   graph?: OrgGraph;
 };
 
@@ -29,7 +29,7 @@ export function isOrg(object: unknown): object is Org {
   return (
     org?.id?.length > 0
       && org?.name?.length > 0
-      && org?.potentialMemberDefinition?.length > 0
+      && org?.memberDefinition?.length > 0
   );
 }
 

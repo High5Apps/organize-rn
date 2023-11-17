@@ -4,7 +4,7 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton, useRequestProgress,
 } from '../components';
-import { useUserContext } from '../model';
+import { NewOrgSteps, useUserContext } from '../model';
 import type { OrgReviewScreenProps } from '../navigation';
 import useTheme from '../Theme';
 
@@ -81,7 +81,7 @@ export default function OrgReviewScreen({
 
     const unpublishedOrg = {
       name,
-      potentialMemberDefinition: definition,
+      memberDefinition: definition,
     };
 
     createCurrentUser({ unpublishedOrg })
@@ -102,11 +102,11 @@ export default function OrgReviewScreen({
       <Text style={styles.title}>Review Your Org</Text>
       <LockingScrollView style={styles.scrollView}>
         <View style={styles.paramContainer}>
-          <Text style={styles.label}>Name of Org:</Text>
+          <Text style={styles.label}>{`${NewOrgSteps[0].header}:`}</Text>
           <Text style={styles.value}>{name}</Text>
         </View>
         <View style={styles.paramContainer}>
-          <Text style={styles.label}>Definition of a potential member:</Text>
+          <Text style={styles.label}>{`${NewOrgSteps[1].header}:`}</Text>
           <Text style={styles.value}>{definition}</Text>
         </View>
       </LockingScrollView>

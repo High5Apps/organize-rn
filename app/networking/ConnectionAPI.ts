@@ -66,28 +66,28 @@ export async function previewConnection({
 
   const {
     encrypted_name: backendEncryptedName,
-    encrypted_potential_member_definition: backendEncryptedPotentialMemberDefinition,
+    encrypted_member_definition: backendEncryptedMemberDefinition,
   } = json.org;
   const encryptedName = fromBackendEncryptedMessage(backendEncryptedName);
-  const encryptedPotentialMemberDefinition = fromBackendEncryptedMessage(
-    backendEncryptedPotentialMemberDefinition,
+  const encryptedMemberDefinition = fromBackendEncryptedMessage(
+    backendEncryptedMemberDefinition,
   );
   const { decryptWithExposedKey } = Keys().aes;
-  const [name, potentialMemberDefinition] = await Promise.all([
+  const [name, memberDefinition] = await Promise.all([
     decryptWithExposedKey({ ...encryptedName, base64Key: groupKey }),
     decryptWithExposedKey({
-      ...encryptedPotentialMemberDefinition, base64Key: groupKey,
+      ...encryptedMemberDefinition, base64Key: groupKey,
     }),
   ]);
 
   const {
     encrypted_name: unusedEN,
-    encrypted_potential_member_definition: unusedEPMD,
+    encrypted_member_definition: unusedEMD,
     ...decryptedOrg
   } = {
     ...json.org,
     name,
-    potential_member_definition: potentialMemberDefinition,
+    member_definition: memberDefinition,
   };
   type DecryptedBackendConnection = Decrypt<PreviewConnectionResponse>;
   const decryptedJson: DecryptedBackendConnection = {

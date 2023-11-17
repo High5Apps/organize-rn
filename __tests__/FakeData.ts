@@ -4,13 +4,13 @@ import type { Comment, Org, Post } from '../app/model';
 const fakeOrg: Org = {
   id: 'fakeOrgId',
   name: 'fakeOrgName',
-  potentialMemberDefinition: 'fakeDefinition',
+  memberDefinition: 'fakeDefinition',
 };
 
 const fakeOtherOrg: Org = {
   id: 'fakeOtherOrgId',
   name: 'fakeOtherOrgName',
-  potentialMemberDefinition: 'fakeOtherDefinition',
+  memberDefinition: 'fakeOtherDefinition',
 };
 
 export const fakeUser = User({

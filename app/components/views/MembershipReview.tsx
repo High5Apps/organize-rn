@@ -10,7 +10,7 @@ const reviewFrameProvider = ({ org }: ConnectionPreview) => (
     labeledValues={[
       {
         label: 'I am',
-        value: org.potentialMemberDefinition,
+        value: org.memberDefinition,
       },
       {
         label: 'and I want to join',

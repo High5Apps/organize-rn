@@ -19,18 +19,18 @@ type Props = Authorization & UnpublishedOrg & {
 };
 
 export async function createOrg({
-  e2eEncrypt, jwt, name, potentialMemberDefinition,
+  e2eEncrypt, jwt, name, memberDefinition,
 }: Props): Promise<string | ErrorResponseType> {
   const [
-    encryptedName, encryptedPotentialMemberDefinition,
+    encryptedName, encryptedMemberDefinition,
   ] = await Promise.all([
     encrypt(name, e2eEncrypt),
-    encrypt(potentialMemberDefinition, e2eEncrypt),
+    encrypt(memberDefinition, e2eEncrypt),
   ]);
   const response = await post({
     bodyObject: {
       encrypted_name: encryptedName,
-      encrypted_potential_member_definition: encryptedPotentialMemberDefinition,
+      encrypted_member_definition: encryptedMemberDefinition,
     },
     jwt,
     uri: orgsURI,
@@ -70,18 +70,18 @@ export async function fetchOrg({
 
   const {
     encrypted_name: encryptedName,
-    encrypted_potential_member_definition: encryptedPotentialMemberDefinition,
+    encrypted_member_definition: encryptedMemberDefinition,
   } = json;
-  const [name, potentialMemberDefinition] = await Promise.all([
+  const [name, memberDefinition] = await Promise.all([
     decrypt(encryptedName, e2eDecrypt),
-    decrypt(encryptedPotentialMemberDefinition, e2eDecrypt),
+    decrypt(encryptedMemberDefinition, e2eDecrypt),
   ]);
 
   const {
     encrypted_name: unusedEN,
-    encrypted_potential_member_definition: unusedEPMD,
+    encrypted_member_definition: unusedEMD,
     ...decryptedJson
-  } = { ...json, name, potential_member_definition: potentialMemberDefinition };
+  } = { ...json, name, member_definition: memberDefinition };
   type DecryptedBackendOrg = Decrypt<OrgResponse>;
   const decryptedBackendOrg: DecryptedBackendOrg = decryptedJson;
 

@@ -37,8 +37,8 @@ const NewOrgSteps: NewOrgStep[] = [
   },
   {
     body: 'An Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
-    header: 'Definition',
-    headline: 'How should I define my potential members?',
+    header: 'Potential Member Definition',
+    headline: 'How do I decide who can join?',
     iconName: 'menu-book',
     maxLength: 75,
     message,
@@ -46,7 +46,7 @@ const NewOrgSteps: NewOrgStep[] = [
     param: 'definition',
     paramType: 'string',
     placeholder: () => 'An employee of *employer* at *location*',
-    title: 'Define a Potential Member',
+    title: 'Define Who Can Join',
   },
 ];
 
