@@ -7,7 +7,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     link: {
-      textDecorationLine: 'underline',
+      color: colors.primary,
     },
     text: {
       color: colors.labelSecondary,
