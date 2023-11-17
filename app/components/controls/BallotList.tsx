@@ -31,8 +31,8 @@ export default function BallotList({
 
   const sections: BallotSection[] = useMemo(() => (
     [
-      { title: 'Active Votes', data: activeBallots },
-      { title: 'Completed Votes', data: inactiveBallots },
+      { title: 'Active votes', data: activeBallots },
+      { title: 'Completed votes', data: inactiveBallots },
     ]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
