@@ -12,6 +12,7 @@ export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useGraphData } from './GraphData';
+export { fromJson, toJson } from './Json';
 export { default as JWT } from './JWT';
 export { default as Keys } from './Keys';
 export { default as getMessageAge } from './MessageAge';
