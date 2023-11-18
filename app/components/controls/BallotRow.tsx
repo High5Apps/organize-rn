@@ -65,7 +65,7 @@ export default function BallotRow({ item, onPress }: Props) {
   const { category, question, votingEndsAt } = item;
   const now = new Date();
   const active = votingEndsAt.getTime() > now.getTime();
-  const subtitle = active ? getTimeRemaining(votingEndsAt)
+  const subtitle = active ? `${getTimeRemaining(votingEndsAt)} to vote`
     : getMessageAge(votingEndsAt);
 
   const { colors, styles } = useStyles();
