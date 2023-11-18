@@ -2,7 +2,7 @@ import { ErrorResponseType, isErrorResponse } from './types';
 
 export default function ErrorResponse(response: ErrorResponseType) {
   return {
-    errorMessage: response.error_messages[0],
+    errorMessage: response.errorMessages[0],
   };
 }
 

@@ -1,14 +1,15 @@
 import type {
-  BallotCategory, Org, PostCategory, VoteState,
+  BallotCategory, Org, OrgGraph, OrgGraphUser, PaginationData, PostCategory,
+  VoteState,
 } from '../model';
 
 export type ErrorResponseType = {
-  error_messages: string[];
+  errorMessages: string[];
 };
 
 export function isErrorResponse(object: unknown): object is ErrorResponseType {
   const response = (object as ErrorResponseType);
-  return response?.error_messages?.length > 0;
+  return response?.errorMessages?.length > 0;
 }
 
 export type CreateOrgResponse = {
@@ -61,8 +62,8 @@ export function isBackendEncryptedMessage(object: unknown): object is BackendEnc
 export type PreviewConnectionResponse = {
   org: {
     id: string;
-    encrypted_name: BackendEncryptedMessage;
-    encrypted_member_definition: BackendEncryptedMessage;
+    encryptedName: BackendEncryptedMessage;
+    encryptedMemberDefinition: BackendEncryptedMessage;
   };
   user: {
     pseudonym: string;
@@ -79,72 +80,68 @@ export type ConnectionPreview = {
 export function isPreviewConnectionResponse(object: unknown): object is PreviewConnectionResponse {
   const response = (object as PreviewConnectionResponse);
   return (response?.org?.id.length > 0)
-    && isBackendEncryptedMessage(response.org?.encrypted_name)
-    && isBackendEncryptedMessage(response.org.encrypted_member_definition)
+    && isBackendEncryptedMessage(response.org?.encryptedName)
+    && isBackendEncryptedMessage(response.org.encryptedMemberDefinition)
     && (response.user?.pseudonym.length > 0);
 }
 
-type OrgGraphResponse = {
-  users: {
-    [id: string]: {
-      connection_count: number;
-      id: string;
-      joined_at: string;
-      offices?: string[];
-      pseudonym: string;
-      recruit_count: number;
-    }
-  };
-  connections: [string, string][];
-};
+export function isDate(object: unknown): object is Date {
+  const date = (object as Date);
+  return (date instanceof Date) && !Number.isNaN(date);
+}
 
-export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
-  const response = (object as OrgGraphResponse);
-  const firstUser = Object.values(response?.users)[0];
-  return Object.keys(response?.users).length > 0
-    && firstUser?.connection_count >= 0
-    && firstUser?.id?.length >= 0
-    && firstUser?.joined_at.length > 0
-    && firstUser?.pseudonym?.length > 0
-    && firstUser?.recruit_count >= 0
+function isOrgGraphUser(object: unknown): object is OrgGraphUser {
+  const user = (object as OrgGraphUser);
+  return user?.connectionCount >= 0
+    && user.id?.length >= 0
+    && isDate(user.joinedAt)
+    && user.pseudonym?.length > 0
+    && user.recruitCount >= 0;
+}
+
+export function isOrgGraph(object: unknown): object is OrgGraph {
+  const response = (object as OrgGraph);
+  const users = Object.values(response?.users);
+  return users.length > 0
+    && users.every(isOrgGraphUser)
     && response?.connections?.length >= 0;
 }
 
 export type OrgResponse = {
-  graph: OrgGraphResponse,
+  graph: OrgGraph,
   id: string,
-  encrypted_name: BackendEncryptedMessage;
-  encrypted_member_definition: BackendEncryptedMessage;
+  encryptedName: BackendEncryptedMessage;
+  encryptedMemberDefinition: BackendEncryptedMessage;
 };
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
   const response = (object as OrgResponse);
-  return isOrgGraphResponse(response?.graph)
+  return isOrgGraph(response?.graph)
     && response.id?.length > 0
-    && isBackendEncryptedMessage(response.encrypted_name)
-    && isBackendEncryptedMessage(response.encrypted_member_definition);
+    && isBackendEncryptedMessage(response.encryptedName)
+    && isBackendEncryptedMessage(response.encryptedMemberDefinition);
 }
 
 type PostResponse = {
   id: string;
-  created_at: string;
+  createdAt: Date;
 };
 
 export function isPostResponse(object: unknown): object is PostResponse {
   const response = (object as PostResponse);
   return response?.id?.length > 0
-    && response?.created_at?.length > 0;
+    && isDate(response.createdAt);
 }
 
 export type PostIndexPost = {
   category: PostCategory,
-  created_at: string;
-  encrypted_body?: BackendEncryptedMessage;
-  encrypted_title: BackendEncryptedMessage;
+  createdAt: Date;
+  encryptedBody?: BackendEncryptedMessage;
+  encryptedTitle: BackendEncryptedMessage;
   id: string;
-  my_vote: VoteState;
+  myVote: VoteState;
   pseudonym: string;
-  user_id: string;
+  userId: string;
   score: number;
 };
 
@@ -153,22 +150,17 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
   return post?.id?.length > 0
     && post.category?.length > 0
     && post.pseudonym?.length > 0
-    && isBackendEncryptedMessage(post.encrypted_title)
-    && post.user_id?.length > 0
-    && post.created_at?.length > 0
+    && isBackendEncryptedMessage(post.encryptedTitle)
+    && post.userId?.length > 0
+    && isDate(post.createdAt)
     && post.score !== undefined
-    && post.my_vote !== undefined;
+    && post.myVote !== undefined;
 }
-
-export type PaginationData = {
-  current_page: number;
-  next_page: number | null;
-};
 
 function isPaginationData(object: unknown): object is PaginationData {
   const response = (object as PaginationData);
-  return response?.current_page !== undefined
-    && response?.next_page !== undefined;
+  return response?.currentPage !== undefined
+    && response?.nextPage !== undefined;
 }
 
 type PostIndexResponse = {
@@ -194,26 +186,26 @@ export function isCreateCommentResponse(object: unknown): object is CreateCommen
 }
 
 export type CommentIndexComment = {
-  created_at: string;
+  createdAt: Date;
   depth: number;
-  encrypted_body: BackendEncryptedMessage;
+  encryptedBody: BackendEncryptedMessage;
   id: string;
-  my_vote: VoteState;
+  myVote: VoteState;
   pseudonym: string;
   score: number;
-  user_id: string;
+  userId: string;
   replies: CommentIndexComment[];
 };
 
 function isCommentIndexComment(object: unknown): object is CommentIndexComment {
   const comment = (object as CommentIndexComment);
-  return isBackendEncryptedMessage(comment.encrypted_body)
-    && comment.created_at?.length > 0
+  return isBackendEncryptedMessage(comment.encryptedBody)
+    && isDate(comment.createdAt)
     && comment.id?.length > 0
-    && comment.my_vote !== undefined
+    && comment.myVote !== undefined
     && comment.pseudonym?.length > 0
     && comment.score !== undefined
-    && comment.user_id?.length > 0
+    && comment.userId?.length > 0
     && comment.depth >= 0
     && Array.isArray(comment.replies)
     && comment.replies.every(isCommentIndexComment);
@@ -230,24 +222,6 @@ export function isCommentIndexResponse(object: unknown): object is CommentIndexR
     && response.comments.every(isCommentIndexComment);
 }
 
-type DecryptKey<S extends string> = (
-  S extends `encrypted_${infer T}` ? T : S
-);
-
-export type Decrypt<T> = T extends ReadonlyArray<any> ? (
-  T
-) : (
-  T extends Array<infer Item> ? (
-    Decrypt<Item>[]
-  ) : (
-    T extends object ? {
-      [K in keyof T as DecryptKey<K & string>] : (
-        T[K] extends (BackendEncryptedMessage | undefined) ? string : Decrypt<T[K]>
-      )
-    } : T
-  )
-);
-
 type BallotResponse = {
   id: string;
 };
@@ -259,17 +233,17 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
 
 export type BallotIndexBallot = {
   category: BallotCategory,
-  encrypted_question: BackendEncryptedMessage;
+  encryptedQuestion: BackendEncryptedMessage;
   id: string;
-  voting_ends_at: string;
+  votingEndsAt: Date;
 };
 
 function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
   const ballot = (object as BallotIndexBallot);
   return ballot?.id?.length > 0
     && ballot.category?.length > 0
-    && isBackendEncryptedMessage(ballot.encrypted_question)
-    && ballot.voting_ends_at?.length > 0;
+    && isBackendEncryptedMessage(ballot.encryptedQuestion)
+    && isDate(ballot.votingEndsAt);
 }
 
 type BallotIndexResponse = {

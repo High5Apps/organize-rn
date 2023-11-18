@@ -1,3 +1,4 @@
+import { fromJson } from '../model';
 import { get, post } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { usersURI, userUri } from './Routes';
@@ -20,7 +21,11 @@ export async function createUser({
     },
   });
 
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     return parseErrorResponse(json);
@@ -41,7 +46,11 @@ export async function getUser({
 }: GetProps): Promise<GetUserResponse | ErrorResponseType> {
   const uri = userUri(id);
   const response = await get({ uri, jwt });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     return parseErrorResponse(json);

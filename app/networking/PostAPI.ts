@@ -1,18 +1,13 @@
 import type {
   E2EMultiDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
 } from '../model';
+import { fromJson } from '../model';
 import {
   decryptMany, encrypt, get, post,
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { postsURI } from './Routes';
-import {
-  SnakeToCamelCaseNested, recursiveSnakeToCamel,
-} from './SnakeCaseToCamelCase';
-import type {
-  Authorization, Decrypt, PaginationData as BackendPaginationData,
-  PostIndexPost,
-} from './types';
+import type { Authorization } from './types';
 import {
   isBackendEncryptedMessage, isPostIndexResponse, isPostResponse,
 } from './types';
@@ -26,12 +21,12 @@ type Props = {
 
 type Return = {
   errorMessage: string;
-  postId?: undefined;
-  postCreatedAt?: undefined;
+  id?: never;
+  createdAt?: never;
 } | {
-  errorMessage?: undefined;
-  postId: string;
-  postCreatedAt: Date;
+  errorMessage?: never;
+  id: string;
+  createdAt: Date;
 };
 
 export async function createPost({
@@ -50,11 +45,15 @@ export async function createPost({
     jwt,
     uri: postsURI,
   });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
 
     return { errorMessage };
   }
@@ -63,7 +62,7 @@ export async function createPost({
     throw new Error('Failed to parse post ID from response');
   }
 
-  return { postCreatedAt: new Date(json.created_at), postId: json.id };
+  return json;
 }
 
 type IndexProps = {
@@ -104,11 +103,15 @@ export async function fetchPosts({
 
   const response = await get({ jwt, uri: uri.href });
 
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
     return { errorMessage };
   }
 
@@ -116,31 +119,21 @@ export async function fetchPosts({
     throw new Error('Failed to parse Posts from response');
   }
 
-  const { posts: snakeCasePosts, meta: snakeCasePaginationData } = json;
-  const encryptedTitles = snakeCasePosts.map((p) => p.encrypted_title);
-  const encryptedBodies = snakeCasePosts.map(
-    ({ encrypted_body }) => (isBackendEncryptedMessage(encrypted_body)
-      ? encrypted_body : undefined),
+  const { posts: fetchedPosts, meta: paginationData } = json;
+  const encryptedTitles = fetchedPosts.map((p) => p.encryptedTitle);
+  const encryptedBodies = fetchedPosts.map(
+    ({ encryptedBody }) => (isBackendEncryptedMessage(encryptedBody)
+      ? encryptedBody : undefined),
   );
   const [titles, bodies] = await Promise.all([
     decryptMany(encryptedTitles, e2eDecryptMany),
     decryptMany(encryptedBodies, e2eDecryptMany),
   ]);
-  const decryptedSnakeCasePosts: Decrypt<PostIndexPost>[] = snakeCasePosts.map(
-    ({ encrypted_body, encrypted_title, ...p }, i) => (
+  const posts = fetchedPosts.map(
+    ({ encryptedBody, encryptedTitle, ...p }, i) => (
       { ...p, body: bodies[i], title: titles[i]! }
     ),
   );
 
-  const postsWithStringDates = recursiveSnakeToCamel(
-    decryptedSnakeCasePosts,
-  ) as SnakeToCamelCaseNested<Decrypt<PostIndexPost>>[];
-  const posts = postsWithStringDates.map(
-    ({ createdAt, ...p }) => ({ ...p, createdAt: new Date(createdAt) }),
-  );
-
-  const paginationData = recursiveSnakeToCamel(
-    snakeCasePaginationData,
-  ) as SnakeToCamelCaseNested<BackendPaginationData>;
   return { paginationData, posts };
 }

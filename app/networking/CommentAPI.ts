@@ -1,14 +1,13 @@
-import { Comment, E2EMultiDecryptor, E2EEncryptor } from '../model';
+import {
+  Comment, E2EMultiDecryptor, E2EEncryptor, fromJson,
+} from '../model';
 import {
   decryptMany, encrypt, get, post,
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import {
-  SnakeToCamelCaseNested, recursiveSnakeToCamel,
-} from './SnakeCaseToCamelCase';
-import {
-  Authorization, CommentIndexComment, Decrypt, isCommentIndexResponse,
+  Authorization, CommentIndexComment, isCommentIndexResponse,
   isCreateCommentResponse,
 } from './types';
 
@@ -43,11 +42,15 @@ export async function createComment({
   const response = await post({
     bodyObject: { encrypted_body: encryptedBody }, jwt, uri,
   });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
 
     return { errorMessage };
   }
@@ -88,11 +91,16 @@ export async function fetchComments({
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = commentsURI(postId);
   const response = await get({ jwt, uri });
-  const json = await response.json();
+
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
 
     return { errorMessage };
   }
@@ -101,23 +109,13 @@ export async function fetchComments({
     throw new Error('Failed to parse Comments from response');
   }
 
-  const { comments: snakeCaseComments } = json;
-  const unnestedSnakeCaseComments = getUnnestedComments(snakeCaseComments);
-  const encryptedBodies = unnestedSnakeCaseComments.map((c) => c.encrypted_body);
+  const { comments: fetchedComments } = json;
+  const unnestedComments = getUnnestedComments(fetchedComments);
+  const encryptedBodies = unnestedComments.map((c) => c.encryptedBody);
   const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
-
-  type DecryptedCommentWithoutReplies =
-    Omit<Decrypt<CommentIndexComment>, 'replies'>;
-  const decryptedSnakeCaseWithoutReplies:
-  DecryptedCommentWithoutReplies[] = unnestedSnakeCaseComments.map(
-    ({ encrypted_body, replies, ...p }, i) => ({ ...p, body: bodies[i]! }),
+  const decryptedBodiesWithoutReplies = unnestedComments.map(
+    ({ encryptedBody, replies, ...p }, i) => ({ ...p, body: bodies[i]! }),
   );
 
-  const commentsWithStringDates = recursiveSnakeToCamel(
-    decryptedSnakeCaseWithoutReplies,
-  ) as SnakeToCamelCaseNested<DecryptedCommentWithoutReplies>[];
-  const comments = commentsWithStringDates.map(
-    ({ createdAt, ...c }) => ({ ...c, createdAt: new Date(createdAt) }),
-  );
-  return { comments };
+  return { comments: decryptedBodiesWithoutReplies };
 }

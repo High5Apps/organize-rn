@@ -1,6 +1,6 @@
 import {
   Ballot, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, PaginationData,
+  E2EMultiEncryptor, PaginationData, fromJson,
 } from '../model';
 import {
   decryptMany, encrypt, encryptMany, get, post,
@@ -8,12 +8,7 @@ import {
 import { parseErrorResponse } from './ErrorResponse';
 import { ballotsURI } from './Routes';
 import {
-  SnakeToCamelCaseNested, recursiveSnakeToCamel,
-} from './SnakeCaseToCamelCase';
-import {
-  Authorization, BallotIndexBallot, Decrypt,
-  PaginationData as BackendPaginationData, isBallotIndexResponse,
-  isBallotResponse,
+  Authorization, isBallotIndexResponse, isBallotResponse,
 } from './types';
 
 type Props = {
@@ -54,11 +49,15 @@ export async function createBallot({
     jwt,
     uri: ballotsURI,
   });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
     return { errorMessage };
   }
 
@@ -113,11 +112,15 @@ export async function fetchBallots({
 
   const response = await get({ jwt, uri: uri.href });
 
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.error_messages[0];
+    const errorMessage = errorResponse.errorMessages[0];
     return { errorMessage };
   }
 
@@ -125,23 +128,12 @@ export async function fetchBallots({
     throw new Error('Failed to parse Ballots from response');
   }
 
-  const { ballots: snakeCaseBallots, meta: snakeCasePaginationData } = json;
-  const encryptedQuestions = snakeCaseBallots.map((p) => p.encrypted_question);
+  const { ballots: fetchedBallots, meta: paginationData } = json;
+  const encryptedQuestions = fetchedBallots.map((p) => p.encryptedQuestion);
   const questions = await decryptMany(encryptedQuestions, e2eDecryptMany);
-  const decryptedSnakeCaseBallots:
-  Decrypt<BallotIndexBallot>[] = snakeCaseBallots.map(
-    ({ encrypted_question, ...p }, i) => ({ ...p, question: questions[i]! }),
+  const ballots = fetchedBallots.map(
+    ({ encryptedQuestion, ...p }, i) => ({ ...p, question: questions[i]! }),
   );
 
-  const ballotsWithStringDates = recursiveSnakeToCamel(
-    decryptedSnakeCaseBallots,
-  ) as SnakeToCamelCaseNested<Decrypt<BallotIndexBallot>>[];
-  const ballots = ballotsWithStringDates.map(({ votingEndsAt, ...p }) => ({
-    ...p, votingEndsAt: new Date(votingEndsAt),
-  }));
-
-  const paginationData = recursiveSnakeToCamel(
-    snakeCasePaginationData,
-  ) as SnakeToCamelCaseNested<BackendPaginationData> | undefined;
   return { ballots, paginationData };
 }

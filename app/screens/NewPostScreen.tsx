@@ -156,7 +156,7 @@ export default function NewPostScreen({
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = currentUser;
 
-      const { errorMessage, postCreatedAt, postId } = await createPost({
+      const { errorMessage, createdAt, id } = await createPost({
         body: maybeStrippedBody,
         category: postCategory,
         e2eEncrypt,
@@ -174,9 +174,9 @@ export default function NewPostScreen({
 
       const post: Post = {
         body: maybeStrippedBody,
-        createdAt: postCreatedAt,
+        createdAt,
         category: postCategory,
-        id: postId,
+        id,
         myVote: 1,
         pseudonym: currentUser.pseudonym,
         score: 1,
@@ -185,7 +185,7 @@ export default function NewPostScreen({
       };
       cachePost(post);
 
-      const params = { insertedPostIds: [postId] };
+      const params = { insertedPostIds: [id] };
 
       screenKeysToUpdate.forEach((key) => navigation.dispatch({
         ...CommonActions.setParams(params),

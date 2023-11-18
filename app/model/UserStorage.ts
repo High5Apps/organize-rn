@@ -17,7 +17,7 @@ export async function getStoredUser(): Promise<UserType | null> {
 
   let userData;
   try {
-    userData = fromJson(storedData);
+    userData = fromJson(storedData, { convertIso8601ToDate: true });
   } catch (e) {
     console.warn(`Error parsing stored user data: ${e}`);
   }

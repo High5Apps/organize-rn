@@ -1,15 +1,12 @@
-import { Keys } from '../model';
+import { fromJson, Keys } from '../model';
 import {
   fromBackendEncryptedMessage, get, post, Status,
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
 import { connectionPreviewURI, connectionsURI } from './Routes';
 import {
-  recursiveSnakeToCamel, SnakeToCamelCaseNested,
-} from './SnakeCaseToCamelCase';
-import {
-  Authorization, ConnectionPreview, Decrypt, ErrorResponseType,
-  isPreviewConnectionResponse, PreviewConnectionResponse,
+  Authorization, ConnectionPreview, ErrorResponseType,
+  isPreviewConnectionResponse,
 } from './types';
 
 type SharerJwt = {
@@ -27,11 +24,15 @@ export async function createConnection({
   jwt, sharerJwt,
 }: CreateProps): Promise<Return> {
   const response = await post({ jwt, sharerJwt, uri: connectionsURI });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     const errorResponse = parseErrorResponse(json);
-    let errorMessage = errorResponse.error_messages[0];
+    let errorMessage = errorResponse.errorMessages[0];
 
     if (response.status === Status.Unauthorized) {
       // The most legitimate reason for an unauthorized status is that the
@@ -54,7 +55,11 @@ export async function previewConnection({
 }: PreviewProps): Promise<ConnectionPreview | ErrorResponseType> {
   const uri = connectionPreviewURI;
   const response = await get({ sharerJwt, uri });
-  const json = await response.json();
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
 
   if (!response.ok) {
     return parseErrorResponse(json);
@@ -65,8 +70,8 @@ export async function previewConnection({
   }
 
   const {
-    encrypted_name: backendEncryptedName,
-    encrypted_member_definition: backendEncryptedMemberDefinition,
+    encryptedName: backendEncryptedName,
+    encryptedMemberDefinition: backendEncryptedMemberDefinition,
   } = json.org;
   const encryptedName = fromBackendEncryptedMessage(backendEncryptedName);
   const encryptedMemberDefinition = fromBackendEncryptedMessage(
@@ -81,21 +86,11 @@ export async function previewConnection({
   ]);
 
   const {
-    encrypted_name: unusedEN,
-    encrypted_member_definition: unusedEMD,
-    ...decryptedOrg
-  } = {
-    ...json.org,
-    name,
-    member_definition: memberDefinition,
-  };
-  type DecryptedBackendConnection = Decrypt<PreviewConnectionResponse>;
-  const decryptedJson: DecryptedBackendConnection = {
-    ...json, org: decryptedOrg,
-  };
+    encryptedName: unusedEN,
+    encryptedMemberDefinition: unusedEMD,
+    ...org
+  } = { ...json.org, name, memberDefinition };
+  const connectionPreview = { ...json, org };
 
-  const connectionPreview = recursiveSnakeToCamel(
-    decryptedJson,
-  ) as SnakeToCamelCaseNested<DecryptedBackendConnection>;
   return connectionPreview;
 }
