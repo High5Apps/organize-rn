@@ -25,11 +25,12 @@ const useStyles = () => {
 type Props = {
   ballotId: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
 };
 
 export default function CandidateList({
-  ballotId, contentContainerStyle, ListHeaderComponent,
+  ballotId, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
 }: Props) {
   const { candidates, ready, updateCandidates } = useCandidates(ballotId);
   const { styles } = useStyles();
@@ -68,6 +69,7 @@ export default function CandidateList({
     <FlatList
       contentContainerStyle={contentContainerStyle}
       data={candidates}
+      ListFooterComponent={ready ? ListFooterComponent : null}
       ListHeaderComponent={WrappedListHeaderComponent}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}
@@ -77,5 +79,6 @@ export default function CandidateList({
 
 CandidateList.defaultProps = {
   contentContainerStyle: {},
+  ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
 };

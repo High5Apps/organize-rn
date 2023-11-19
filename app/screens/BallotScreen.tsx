@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
 import { CandidateList, ScreenBackground } from '../components';
 import useTheme from '../Theme';
-import { GENERIC_ERROR_MESSAGE, useBallots } from '../model';
+import { GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallots } from '../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -15,6 +15,11 @@ const useStyles = () => {
     error: {
       color: colors.error,
       marginTop: spacing.m,
+      textAlign: 'center',
+    },
+    footer: {
+      color: colors.labelSecondary,
+      margin: spacing.m,
       textAlign: 'center',
     },
     header: {
@@ -42,17 +47,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const { styles } = useStyles();
 
-  if (!ballot) {
-    return (
-      <ScreenBackground>
-        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
-      </ScreenBackground>
-    );
-  }
-
   const ListHeaderComponent = useMemo(() => (
     <View style={styles.header}>
-      <Text style={[styles.text, styles.question]}>{ballot.question}</Text>
+      <Text style={[styles.text, styles.question]}>{ballot?.question}</Text>
       <Text style={[styles.text, styles.details]}>
         You can change your vote until voting ends
       </Text>
@@ -62,10 +59,25 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     </View>
   ), [ballot, styles]);
 
+  const ListFooterComponent = useMemo(() => (
+    <Text style={[styles.text, styles.footer]}>
+      {`${ballot && getTimeRemaining(ballot?.votingEndsAt)} to vote`}
+    </Text>
+  ), [ballot]);
+
+  if (!ballot) {
+    return (
+      <ScreenBackground>
+        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
+      </ScreenBackground>
+    );
+  }
+
   return (
     <ScreenBackground>
       <CandidateList
         ballotId={ballotId}
+        ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
       />
     </ScreenBackground>
