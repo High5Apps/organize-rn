@@ -135,3 +135,7 @@ export default function useBallots() {
     ready,
   };
 }
+
+export const votingTimeRemainingFormatter = (timeRemaining: string) => (
+  `${timeRemaining} until voting ends`
+);

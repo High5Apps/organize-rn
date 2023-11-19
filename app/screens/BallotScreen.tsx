@@ -3,7 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
 import { CandidateList, ScreenBackground } from '../components';
 import useTheme from '../Theme';
-import { GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallots } from '../model';
+import {
+  GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallots,
+  votingTimeRemainingFormatter,
+} from '../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -40,8 +43,6 @@ const useStyles = () => {
   return { styles };
 };
 
-const formatter = (timeRemaining: string) => `${timeRemaining} until voting ends`;
-
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
@@ -62,11 +63,16 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     </View>
   ), [ballot, styles]);
 
-  const ListFooterComponent = useMemo(() => (
-    <Text style={[styles.text, styles.footer]}>
-      {`${ballot && getTimeRemaining(ballot?.votingEndsAt, { formatter })}`}
-    </Text>
-  ), [ballot]);
+  const ListFooterComponent = useMemo(() => {
+    if (!ballot) { return undefined; }
+    return (
+      <Text style={[styles.text, styles.footer]}>
+        {getTimeRemaining(ballot.votingEndsAt, {
+          formatter: votingTimeRemainingFormatter,
+        })}
+      </Text>
+    );
+  }, [ballot]);
 
   if (!ballot) {
     return (

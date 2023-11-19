@@ -5,6 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Ballot, ballotTypeMap, getMessageAge, getTimeRemaining,
+  votingTimeRemainingFormatter,
 } from '../../model';
 import useTheme from '../../Theme';
 import { DisclosureIcon } from '../views';
@@ -65,7 +66,8 @@ export default function BallotRow({ item, onPress }: Props) {
   const { category, question, votingEndsAt } = item;
   const now = new Date();
   const active = votingEndsAt.getTime() > now.getTime();
-  const subtitle = active ? `${getTimeRemaining(votingEndsAt)} to vote`
+  const subtitle = active
+    ? getTimeRemaining(votingEndsAt, { formatter: votingTimeRemainingFormatter })
     : getMessageAge(votingEndsAt);
 
   const { colors, styles } = useStyles();
