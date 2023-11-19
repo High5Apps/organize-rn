@@ -51,17 +51,20 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const { styles } = useStyles();
 
-  const ListHeaderComponent = useMemo(() => (
-    <View style={styles.header}>
-      <Text style={[styles.text, styles.question]}>{ballot?.question}</Text>
-      <Text style={[styles.text, styles.details]}>
-        Responses will be anonymous
-      </Text>
-      <Text style={[styles.text, styles.details]}>
-        Change your mind until voting ends
-      </Text>
-    </View>
-  ), [ballot, styles]);
+  const ListHeaderComponent = useMemo(() => {
+    if (!ballot) { return undefined; }
+    return (
+      <View style={styles.header}>
+        <Text style={[styles.text, styles.question]}>{ballot.question}</Text>
+        <Text style={[styles.text, styles.details]}>
+          Responses will be anonymous
+        </Text>
+        <Text style={[styles.text, styles.details]}>
+          Change your mind until voting ends
+        </Text>
+      </View>
+    );
+  }, [ballot, styles]);
 
   const ListFooterComponent = useMemo(() => {
     if (!ballot) { return undefined; }
