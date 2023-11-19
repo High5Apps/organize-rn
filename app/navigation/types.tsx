@@ -151,8 +151,12 @@ export type DiscussGrievancesScreenProps = DiscussTabsScreenProps<'Grievances'>;
 export type DiscussDemandsScreenProps = DiscussTabsScreenProps<'Demands'>;
 export type DiscussRecentScreenProps = DiscussTabsScreenProps<'Recent'>;
 
+export type BallotScreenParams = {
+  prependedBallotIds: string[];
+};
+
 export type VoteStackParamList = {
-  Ballots: undefined;
+  Ballots: BallotScreenParams | undefined;
   BallotType: undefined;
   NewYesOrNoBallot: undefined;
 };

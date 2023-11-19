@@ -22,10 +22,10 @@ type Props = {
 
 type Return = {
   errorMessage: string;
-  ballotId?: undefined;
+  id?: never;
 } | {
-  errorMessage?: undefined;
-  ballotId: string;
+  errorMessage?: never;
+  id: string;
 };
 
 export async function createBallot({
@@ -65,7 +65,7 @@ export async function createBallot({
     throw new Error('Failed to parse ballot ID from response');
   }
 
-  return { ballotId: json.id };
+  return json;
 }
 
 type IndexProps = {

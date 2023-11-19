@@ -5,7 +5,8 @@ import {
   MultilineTextInput, PrimaryButton, useRequestProgress,
 } from '../components';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, useCachedValue, useUserContext,
+  Ballot, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallots, useCachedValue,
+  useUserContext,
 } from '../model';
 import useTheme from '../Theme';
 import { createBallot } from '../networking';
@@ -66,6 +67,8 @@ export default function NewYesNoBallotScreen({
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
+  const { cacheBallot } = useBallots();
+
   const resetForm = () => {
     setQuestion('');
     setVotingEnd(startOfNextHourIn7Days());
@@ -82,11 +85,12 @@ export default function NewYesNoBallotScreen({
     setQuestion(strippedQuestion);
 
     let errorMessage: string | undefined;
+    let id: string | undefined;
     try {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt, e2eEncryptMany } = currentUser;
 
-      const { errorMessage: maybeErrorMessage } = await createBallot({
+      ({ errorMessage, id } = await createBallot({
         candidateTitles: CANDIDATE_TITLES,
         category: BALLOT_CATEGORY,
         e2eEncrypt,
@@ -94,23 +98,29 @@ export default function NewYesNoBallotScreen({
         jwt,
         question: strippedQuestion,
         votingEndsAt: votingEnd,
-      });
-
-      if (maybeErrorMessage !== undefined) {
-        errorMessage = maybeErrorMessage;
-      }
+      }));
     } catch (error) {
       console.error(error);
       errorMessage = GENERIC_ERROR_MESSAGE;
     }
 
-    if (errorMessage) {
+    if (errorMessage !== undefined) {
       setResult('error', { message: errorMessage });
-    } else {
-      resetForm();
-      setResult('success');
-      navigation.navigate('Ballots');
+      return;
     }
+
+    resetForm();
+    setResult('success');
+
+    const ballot: Ballot = {
+      category: BALLOT_CATEGORY,
+      question: strippedQuestion,
+      votingEndsAt: votingEnd,
+      id: id!,
+    };
+    cacheBallot(ballot);
+
+    navigation.navigate('Ballots', { prependedBallotIds: [ballot.id] });
   };
 
   return (

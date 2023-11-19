@@ -9,7 +9,7 @@ import { getIdsFrom } from './ModelCache';
 const firstPageIndex = 1;
 
 export default function useBallots() {
-  const { cacheBallots, getCachedBallot } = useBallotContext();
+  const { cacheBallot, cacheBallots, getCachedBallot } = useBallotContext();
   const [activeBallotIds, setActiveBallotIds] = useState<string[]>([]);
   const activeBallots = useMemo(
     () => activeBallotIds.map(getCachedBallot).filter(isDefined),
@@ -126,10 +126,12 @@ export default function useBallots() {
 
   return {
     activeBallots,
+    cacheBallot,
     inactiveBallots,
     fetchedLastPage,
     fetchFirstPageOfBallots,
     fetchNextPageOfBallots,
+    getCachedBallot,
     ready,
   };
 }

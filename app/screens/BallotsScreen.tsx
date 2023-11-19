@@ -26,13 +26,17 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function VoteScreen({ navigation }: BallotsScreenProps) {
+export default function VoteScreen({
+  navigation, route,
+}: BallotsScreenProps) {
+  const prependedBallotIds = route.params?.prependedBallotIds;
   const { styles } = useStyles();
   return (
     <ScreenBackground>
       <BallotList
         contentContainerStyle={styles.contentContainerStyle}
         onItemPress={console.log}
+        prependedBallotIds={prependedBallotIds}
       />
       <PrimaryButton
         iconName="add"

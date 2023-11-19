@@ -3,7 +3,9 @@ import {
   ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { Ballot, isDefined, useBallots } from '../../model';
+import {
+  Ballot, isDefined, useBallots, usePrependedModels,
+} from '../../model';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import BallotRow from './BallotRow';
 import usePullToRefresh from './PullToRefresh';
@@ -19,24 +21,35 @@ type BallotSection = {
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   onItemPress?: (item: Ballot) => void;
+  prependedBallotIds?: string[];
 };
 
 export default function BallotList({
   contentContainerStyle, onItemPress,
+  prependedBallotIds: maybePrependedBallotIds,
 }: Props) {
   const {
     activeBallots, fetchedLastPage, fetchFirstPageOfBallots,
-    fetchNextPageOfBallots, inactiveBallots, ready,
+    fetchNextPageOfBallots, getCachedBallot, inactiveBallots, ready,
   } = useBallots();
+  const {
+    allModels: activeBallotsAndPrepended,
+    resetPrependedModels: resetPrependedBallots,
+  } = usePrependedModels<Ballot>({
+    getCachedModel: getCachedBallot,
+    models: activeBallots,
+    ready,
+    maybePrependedModelIds: maybePrependedBallotIds,
+  });
 
   const sections: BallotSection[] = useMemo(() => (
     [
-      { title: 'Active votes', data: activeBallots },
+      { title: 'Active votes', data: activeBallotsAndPrepended },
       { title: 'Completed votes', data: inactiveBallots },
     ]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
-  ), [activeBallots, inactiveBallots]);
+  ), [activeBallotsAndPrepended, inactiveBallots]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
@@ -44,6 +57,7 @@ export default function BallotList({
       clearNextPageError();
 
       await fetchFirstPageOfBallots();
+      resetPrependedBallots();
     },
     refreshOnMount: true,
   });
@@ -89,4 +103,5 @@ export default function BallotList({
 BallotList.defaultProps = {
   contentContainerStyle: {},
   onItemPress: () => {},
+  prependedBallotIds: undefined,
 };
