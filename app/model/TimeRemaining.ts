@@ -3,10 +3,13 @@ import {
   SECONDS_PER_MINUTE, SECONDS_PER_WEEK,
 } from './MessageAge';
 
-export default function getTimeRemaining(
-  expiration: Date,
-  maybeNow?: Date,
-) {
+type Options = {
+  now?: Date;
+};
+
+export default function getTimeRemaining(expiration: Date, {
+  now: maybeNow,
+}: Options = {}) {
   const now = maybeNow ?? new Date();
   const secondsRemaining = (
     expiration.getTime() - now.getTime()
