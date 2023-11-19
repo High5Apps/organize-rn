@@ -17,8 +17,7 @@ const useStyles = () => {
       backgroundColor: colors.fill,
       columnGap: spacing.m,
       flexDirection: 'row',
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
+      padding: spacing.m,
     },
     icon: {
       color: colors.primary,
