@@ -7,6 +7,7 @@ const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;
 
 export const ballotsURI = `${apiRoute}/ballots`;
+export const candidatesURI = (ballotId: string) => `${ballotsURI}/${ballotId}/candidates`;
 
 export const commentUpvotesURI = (commentId: string) => `${apiRoute}/comments/${commentId}/upvotes`;
 

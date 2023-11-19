@@ -169,3 +169,8 @@ export type Ballot = {
 };
 
 export type { Model } from './ModelCache';
+
+export type Candidate = {
+  title: string;
+  id: string;
+};

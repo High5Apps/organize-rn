@@ -1,4 +1,5 @@
 export { createBallot, fetchBallots } from './BallotAPI';
+export { fetchCandidates } from './CandidateAPI';
 export { createComment, fetchComments } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
