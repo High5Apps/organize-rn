@@ -21,6 +21,7 @@ export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as usePersistentValue } from './PersistentValue';
 export { default as usePosts } from './Posts';
 export { PostContextProvider } from './PostContext';
+export { default as usePrependedModels } from './PrependedModels';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from './QRCodeData';

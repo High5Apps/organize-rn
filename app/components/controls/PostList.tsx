@@ -1,74 +1,40 @@
 import React, {
-  ReactElement, RefObject, useCallback, useEffect, useRef, useState,
+  ReactElement, RefObject, useCallback, useEffect, useRef,
 } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, ViewStyle,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 import {
-  Post, PostCategory, PostSort, isDefined, usePosts,
+  Post, PostCategory, PostSort, usePosts, usePrependedModels,
 } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import usePullToRefresh from './PullToRefresh';
 import useInfiniteScroll from './InfiniteScroll';
 
-function useInsertedPosts(
-  posts: Post[],
-  ready: boolean,
-  maybeInsertedPostIds?: string[],
-) {
-  const [allPosts, setAllPosts] = useState<Post[]>(posts);
-  const [insertedPostIds, setInsertedPostIds] = useState<string[]>([]);
-
-  const { getCachedPost } = usePosts();
-
-  useEffect(() => {
-    if (!ready || !maybeInsertedPostIds?.length) { return; }
-    const newlyInsertedPostIds = maybeInsertedPostIds;
-
-    // Prepend new posts to already inserted new posts
-    // This is needed for the situation where the user creates multiple posts
-    // without pulling-to-refresh.
-    setInsertedPostIds((pids) => [...newlyInsertedPostIds, ...pids]);
-  }, [maybeInsertedPostIds, ready]);
-
-  useEffect(() => {
-    const insertedPosts = (insertedPostIds ?? []).map(getCachedPost).filter(isDefined);
-    const newAllPosts = [...insertedPosts, ...posts];
-    const deduplicatednewAllPosts = [...new Set(newAllPosts)];
-    setAllPosts(deduplicatednewAllPosts);
-  }, [posts, getCachedPost, insertedPostIds]);
-
-  function resetInsertedPosts() {
-    setInsertedPostIds([]);
-  }
-
-  return { allPosts, resetInsertedPosts };
-}
-
 function useScrollToTopOnNewPost(
   listRef: RefObject<FlatList<Post>>,
-  maybeInsertedPostIds?: string[],
+  maybePrependedPostIds?: string[],
 ) {
   useEffect(() => {
-    if (maybeInsertedPostIds?.length) {
+    if (maybePrependedPostIds?.length) {
       listRef.current?.scrollToOffset({ animated: true, offset: 0 });
     }
-  }, [listRef, maybeInsertedPostIds]);
+  }, [listRef, maybePrependedPostIds]);
 }
 
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  insertedPostIds?: string[];
+  prependedPostIds?: string[];
   ListEmptyComponent: ReactElement;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, contentContainerStyle, insertedPostIds: maybeInsertedPostIds,
+  category, contentContainerStyle, prependedPostIds: maybePrependedPostIds,
   ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const listRef = useRef<FlatList<Post>>(null);
@@ -76,12 +42,17 @@ export default function PostList({
 
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
-    posts, ready,
+    getCachedPost, posts, ready,
   } = usePosts({ category, sort });
   const {
-    allPosts: data, resetInsertedPosts,
-  } = useInsertedPosts(posts, ready, maybeInsertedPostIds);
-  useScrollToTopOnNewPost(listRef, maybeInsertedPostIds);
+    allModels: data, resetPrependedModels: resetPrependedPosts,
+  } = usePrependedModels<Post>({
+    getCachedModel: getCachedPost,
+    maybePrependedModelIds: maybePrependedPostIds,
+    models: posts,
+    ready,
+  });
+  useScrollToTopOnNewPost(listRef, maybePrependedPostIds);
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
@@ -93,7 +64,7 @@ export default function PostList({
       clearNextPageError();
 
       await fetchFirstPageOfPosts();
-      resetInsertedPosts();
+      resetPrependedPosts();
     },
     refreshOnMount: true,
   });
@@ -126,6 +97,6 @@ export default function PostList({
 PostList.defaultProps = {
   category: undefined,
   contentContainerStyle: {},
-  insertedPostIds: undefined,
+  prependedPostIds: undefined,
   onItemPress: () => {},
 };

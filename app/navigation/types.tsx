@@ -130,7 +130,7 @@ export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;
 export type NewReplyScreenProps = DiscussStackScreenProps<'NewReply'>;
 
 export type DiscussScreenParams = {
-  insertedPostIds: string[];
+  prependedPostIds: string[];
 };
 
 export type DiscussTabsParamList = {

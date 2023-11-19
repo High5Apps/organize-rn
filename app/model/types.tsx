@@ -166,3 +166,5 @@ export type Ballot = {
   question: string;
   votingEndsAt: Date;
 };
+
+export type { Model } from './ModelCache';
