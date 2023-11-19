@@ -11,7 +11,6 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     details: {
       color: colors.labelSecondary,
-      marginTop: spacing.xs,
     },
     error: {
       color: colors.error,
@@ -28,6 +27,7 @@ const useStyles = () => {
     },
     question: {
       fontFamily: font.weights.semiBold,
+      marginBottom: spacing.xs,
     },
     text: {
       color: colors.label,
@@ -55,6 +55,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
       <Text style={[styles.text, styles.question]}>{ballot?.question}</Text>
       <Text style={[styles.text, styles.details]}>
         You can change your vote until voting ends
+      </Text>
+      <Text style={[styles.text, styles.details]}>
         Responses will be anonymous
       </Text>
     </View>
