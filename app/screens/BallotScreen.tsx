@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
-import { ScreenBackground } from '../components';
+import { CandidateList, ScreenBackground } from '../components';
 import useTheme from '../Theme';
 import { GENERIC_ERROR_MESSAGE, useBallots } from '../model';
 
@@ -16,6 +16,9 @@ const useStyles = () => {
       color: colors.error,
       marginTop: spacing.m,
       textAlign: 'center',
+    },
+    list: {
+      marginVertical: spacing.m,
     },
     question: {
       fontFamily: font.weights.semiBold,
@@ -55,6 +58,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
       <Text style={[styles.text, styles.details]}>
         Responses will be anonymous
       </Text>
+      <CandidateList ballotId={ballotId} contentContainerStyle={styles.list} />
     </ScreenBackground>
   );
 }

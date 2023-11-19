@@ -1,7 +1,7 @@
 export { default as BallotList } from './BallotList';
 export { default as BallotTypeList } from './BallotTypeList';
-export { default as BallotTypeRow } from './BallotTypeRow';
 export { default as ButtonRow } from './ButtonRow';
+export { default as CandidateList } from './CandidateList';
 export { default as CameraControl } from './CameraControl';
 export { default as CommentList } from './CommentList';
 export { default as CommentRow } from './CommentRow';
