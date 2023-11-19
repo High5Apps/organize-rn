@@ -91,4 +91,13 @@ describe('getMessageAge', () => {
     const age = getTimeRemaining(expiration, options);
     expect(age).toBe('100w left');
   });
+
+  describe('formatter', () => {
+    it('should allow changing the format', () => {
+      const expiration = getDateFromOffset(now, SECONDS_PER_MINUTE - 1);
+      const formatter = (s: string) => `Only ${s} remaining!`;
+      const age = getTimeRemaining(expiration, { ...options, formatter });
+      expect(age).toBe('Only 59s remaining!');
+    });
+  });
 });

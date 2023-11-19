@@ -4,41 +4,45 @@ import {
 } from './MessageAge';
 
 type Options = {
+  formatter?: (timeRemaining: string) => string;
   now?: Date;
 };
 
+const defaultFormatter = (timeRemaining: string) => (`${timeRemaining} left`);
+
 export default function getTimeRemaining(expiration: Date, {
-  now: maybeNow,
+  formatter: maybeFormatter, now: maybeNow,
 }: Options = {}) {
+  const formatter = maybeFormatter ?? defaultFormatter;
   const now = maybeNow ?? new Date();
   const secondsRemaining = (
     expiration.getTime() - now.getTime()
   ) / MILLISECONDS_PER_SECOND;
 
   if (secondsRemaining < 0) {
-    return '0s left';
+    return formatter('0s');
   }
 
   if (secondsRemaining < SECONDS_PER_MINUTE) {
     const seconds = Math.floor(secondsRemaining);
-    return `${seconds}s left`;
+    return formatter(`${seconds}s`);
   }
 
   if (secondsRemaining < SECONDS_PER_HOUR) {
     const minutes = Math.floor(secondsRemaining / SECONDS_PER_MINUTE);
-    return `${minutes}m left`;
+    return formatter(`${minutes}m`);
   }
 
   if (secondsRemaining < SECONDS_PER_DAY) {
     const hours = Math.floor(secondsRemaining / SECONDS_PER_HOUR);
-    return `${hours}h left`;
+    return formatter(`${hours}h`);
   }
 
   if (secondsRemaining < 2 * SECONDS_PER_WEEK) {
     const days = Math.floor(secondsRemaining / SECONDS_PER_DAY);
-    return `${days}d left`;
+    return formatter(`${days}d`);
   }
 
   const weeks = Math.floor(secondsRemaining / SECONDS_PER_WEEK);
-  return `${weeks}w left`;
+  return formatter(`${weeks}w`);
 }
