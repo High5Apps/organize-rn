@@ -40,6 +40,8 @@ const useStyles = () => {
   return { styles };
 };
 
+const formatter = (timeRemaining: string) => `Voting ends in ${timeRemaining}`;
+
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
@@ -60,7 +62,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const ListFooterComponent = useMemo(() => (
     <Text style={[styles.text, styles.footer]}>
-      {`${ballot && getTimeRemaining(ballot?.votingEndsAt)} to vote`}
+      {`${ballot && getTimeRemaining(ballot?.votingEndsAt, { formatter })}`}
     </Text>
   ), [ballot]);
 
