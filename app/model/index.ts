@@ -4,6 +4,7 @@ export { BallotContextProvider } from './BallotContext';
 export { ballotTypes, ballotTypeMap } from './BallotTypes';
 export { default as useCachedValue } from './CachedValue';
 export { CachedValueContextProvider } from './CachedValueContext';
+export { default as useCandidates } from './Candidates';
 export {
   default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
 } from './Comments';
