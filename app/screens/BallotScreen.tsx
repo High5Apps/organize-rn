@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
 import { CandidateList, ScreenBackground } from '../components';
 import useTheme from '../Theme';
@@ -17,19 +17,17 @@ const useStyles = () => {
       marginTop: spacing.m,
       textAlign: 'center',
     },
-    list: {
-      marginVertical: spacing.m,
+    header: {
+      margin: spacing.m,
     },
     question: {
       fontFamily: font.weights.semiBold,
-      marginTop: spacing.m,
     },
     text: {
       color: colors.label,
       flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
-      marginHorizontal: spacing.m,
     },
   });
 
@@ -52,13 +50,21 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     );
   }
 
-  return (
-    <ScreenBackground>
+  const ListHeaderComponent = useMemo(() => (
+    <View style={styles.header}>
       <Text style={[styles.text, styles.question]}>{ballot.question}</Text>
       <Text style={[styles.text, styles.details]}>
         Responses will be anonymous
       </Text>
-      <CandidateList ballotId={ballotId} contentContainerStyle={styles.list} />
+    </View>
+  ), [ballot, styles]);
+
+  return (
+    <ScreenBackground>
+      <CandidateList
+        ballotId={ballotId}
+        ListHeaderComponent={ListHeaderComponent}
+      />
     </ScreenBackground>
   );
 }

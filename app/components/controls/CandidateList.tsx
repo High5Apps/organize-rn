@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  ReactElement, useCallback, useEffect, useMemo,
+} from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
@@ -13,7 +15,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     requestProgress: {
-      margin: spacing.m,
+      marginHorizontal: spacing.m,
     },
   });
 
@@ -23,10 +25,11 @@ const useStyles = () => {
 type Props = {
   ballotId: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  ListHeaderComponent?: ReactElement;
 };
 
 export default function CandidateList({
-  ballotId, contentContainerStyle,
+  ballotId, contentContainerStyle, ListHeaderComponent,
 }: Props) {
   const { candidates, ready, updateCandidates } = useCandidates(ballotId);
   const { styles } = useStyles();
@@ -54,14 +57,18 @@ export default function CandidateList({
     <CandidateRow item={item} onPress={console.log} />
   ), []);
 
-  if (!ready) {
-    return <RequestProgress style={styles.requestProgress} />;
-  }
+  const WrappedListHeaderComponent = useMemo(() => (
+    <>
+      {ListHeaderComponent}
+      {!ready && <RequestProgress style={styles.requestProgress} />}
+    </>
+  ), [ListHeaderComponent, ready, styles]);
 
   return (
     <FlatList
       contentContainerStyle={contentContainerStyle}
       data={candidates}
+      ListHeaderComponent={WrappedListHeaderComponent}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}
     />
@@ -70,4 +77,5 @@ export default function CandidateList({
 
 CandidateList.defaultProps = {
   contentContainerStyle: {},
+  ListHeaderComponent: undefined,
 };
