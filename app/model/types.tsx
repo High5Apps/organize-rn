@@ -1,4 +1,3 @@
-import type { VoteStackParamList } from '../navigation';
 import type { AESEncryptedData } from './AESModule';
 
 export type OrgGraphUser = {
@@ -151,11 +150,13 @@ export type BallotType = {
   name: string;
 };
 
+type NewBallotScreen = 'NewYesOrNoBallot';
+
 export type BallotTypeInfo = {
   category: BallotCategory;
   iconName: string;
   name: string;
-  newScreenName: keyof VoteStackParamList;
+  newScreenName: NewBallotScreen;
 };
 
 export type BallotSort = 'active' | 'inactive';

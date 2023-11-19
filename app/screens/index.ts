@@ -1,3 +1,5 @@
+export { default as BallotScreen } from './BallotScreen';
+export { default as BallotsScreen } from './BallotsScreen';
 export { default as BallotTypeScreen } from './BallotTypeScreen';
 export { default as ConnectScreen } from './ConnectScreen';
 export { default as DiscussDemandsScreen } from './DiscussDemandsScreen';
@@ -16,5 +18,4 @@ export { default as OrgScreen } from './OrgScreen';
 export { default as PostScreen } from './PostScreen';
 export { default as PlaceholderScreen } from './PlaceholderScreen';
 export { default as SettingsScreen } from './SettingsScreen';
-export { default as BallotsScreen } from './BallotsScreen';
 export { default as WelcomeScreen } from './WelcomeScreen';

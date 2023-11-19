@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BallotsScreen, BallotTypeScreen, NewYesNoBallotScreen } from '../screens';
+import {
+  BallotScreen, BallotsScreen, BallotTypeScreen, NewYesNoBallotScreen,
+} from '../screens';
 import { VoteStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 
@@ -10,7 +12,8 @@ export default function VoteStack() {
   const screenOptions = useDefaultStackNavigatorScreenOptions();
 
   return (
-    <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Navigator screenOptions={screenOptions} initialRouteName="Ballots">
+      <Stack.Screen component={BallotScreen} name="Ballot" />
       <Stack.Screen
         component={BallotsScreen}
         name="Ballots"

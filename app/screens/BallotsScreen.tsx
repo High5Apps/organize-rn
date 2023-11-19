@@ -35,7 +35,14 @@ export default function VoteScreen({
     <ScreenBackground>
       <BallotList
         contentContainerStyle={styles.contentContainerStyle}
-        onItemPress={console.log}
+        onItemPress={({ id, votingEndsAt }) => {
+          const active = votingEndsAt.getTime() > new Date().getTime();
+          if (active) {
+            navigation.navigate('Ballot', { ballotId: id });
+          } else {
+            console.log('TODO: Navigate to results');
+          }
+        }}
         prependedBallotIds={prependedBallotIds}
       />
       <PrimaryButton
