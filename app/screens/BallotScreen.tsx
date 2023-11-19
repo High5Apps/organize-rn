@@ -40,7 +40,7 @@ const useStyles = () => {
   return { styles };
 };
 
-const formatter = (timeRemaining: string) => `Voting ends in ${timeRemaining}`;
+const formatter = (timeRemaining: string) => `${timeRemaining} until voting ends`;
 
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
@@ -54,10 +54,10 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     <View style={styles.header}>
       <Text style={[styles.text, styles.question]}>{ballot?.question}</Text>
       <Text style={[styles.text, styles.details]}>
-        You can change your vote until voting ends
+        Responses will be anonymous
       </Text>
       <Text style={[styles.text, styles.details]}>
-        Responses will be anonymous
+        Change your mind until voting ends
       </Text>
     </View>
   ), [ballot, styles]);
