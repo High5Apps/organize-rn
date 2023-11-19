@@ -54,6 +54,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     <View style={styles.header}>
       <Text style={[styles.text, styles.question]}>{ballot.question}</Text>
       <Text style={[styles.text, styles.details]}>
+        You can change your vote until voting ends
+      </Text>
+      <Text style={[styles.text, styles.details]}>
         Responses will be anonymous
       </Text>
     </View>
