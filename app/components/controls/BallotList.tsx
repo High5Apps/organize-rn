@@ -28,18 +28,26 @@ export default function BallotList({
   contentContainerStyle, onItemPress,
   prependedBallotIds: maybePrependedBallotIds,
 }: Props) {
+  const listRef = useRef<SectionList<Ballot, BallotSection>>(null);
+  useScrollToTop(listRef);
+  const scrollToTop = () => listRef.current?.scrollToLocation({
+    itemIndex: 0, sectionIndex: 0,
+  });
+
   const {
     activeBallots, fetchedLastPage, fetchFirstPageOfBallots,
     fetchNextPageOfBallots, getCachedBallot, inactiveBallots, ready,
   } = useBallots();
+
   const {
     allModels: activeBallotsAndPrepended,
     resetPrependedModels: resetPrependedBallots,
   } = usePrependedModels<Ballot>({
     getCachedModel: getCachedBallot,
-    models: activeBallots,
-    ready,
     maybePrependedModelIds: maybePrependedBallotIds,
+    models: activeBallots,
+    onNewPrependedModel: scrollToTop,
+    ready,
   });
 
   const sections: BallotSection[] = useMemo(() => (
@@ -69,9 +77,6 @@ export default function BallotList({
     getDisabled: () => (!sections.length || refreshing || fetchedLastPage),
     onLoadNextPage: fetchNextPageOfBallots,
   });
-
-  const listRef = useRef(null);
-  useScrollToTop(listRef);
 
   const ListEmptyComponent = useMemo(() => (
     <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
