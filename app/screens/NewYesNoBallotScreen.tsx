@@ -115,6 +115,7 @@ export default function NewYesNoBallotScreen({
     const ballot: Ballot = {
       category: BALLOT_CATEGORY,
       question: strippedQuestion,
+      userId: currentUser.id,
       votingEndsAt: votingEnd,
       id: id!,
     };

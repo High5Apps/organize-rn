@@ -235,6 +235,7 @@ export type BallotIndexBallot = {
   category: BallotCategory,
   encryptedQuestion: BackendEncryptedMessage;
   id: string;
+  userId: string;
   votingEndsAt: Date;
 };
 
@@ -243,6 +244,7 @@ function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
   return ballot?.id?.length > 0
     && ballot.category?.length > 0
     && isBackendEncryptedMessage(ballot.encryptedQuestion)
+    && ballot.userId?.length > 0
     && isDate(ballot.votingEndsAt);
 }
 

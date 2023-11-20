@@ -165,6 +165,7 @@ export type Ballot = {
   category: BallotCategory;
   id: string;
   question: string;
+  userId: string;
   votingEndsAt: Date;
 };
 
