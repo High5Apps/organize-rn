@@ -4,12 +4,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
-import {
-  Comment, MAX_COMMENT_DEPTH, getMessageAge, useUserContext,
-} from '../../model';
+import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
+import { HighlightedRowContainer } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -19,21 +18,10 @@ const useStyles = () => {
   // The deepest comment width should be at least 2/3 of the screen width
   const nestedMarginStart = (screenWidth / 3) / (MAX_COMMENT_DEPTH - 1);
 
-  const containerPaddingStart = spacing.s;
-
   const styles = StyleSheet.create({
-    container: {
-      backgroundColor: colors.fill,
-      flexDirection: 'row',
+    highlightedRowContainer: {
       paddingEnd: spacing.m,
       paddingVertical: spacing.xs,
-    },
-    highlightOff: {
-      paddingStart: containerPaddingStart,
-    },
-    highlightOn: {
-      borderColor: colors.primary,
-      borderStartWidth: containerPaddingStart,
     },
     innerContainer: {
       flex: 1,
@@ -81,9 +69,6 @@ function CommentRow({
     body, createdAt, depth, id, myVote, pseudonym, score, userId,
   } = item;
 
-  const { currentUser } = useUserContext();
-  const highlighted = userId === currentUser?.id;
-
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
 
@@ -115,12 +100,12 @@ function CommentRow({
   ) : BodyText;
 
   return (
-    <View
-      style={[
-        styles.container,
+    <HighlightedRowContainer
+      style={StyleSheet.flatten([
+        styles.highlightedRowContainer,
         { marginStart },
-        highlighted ? styles.highlightOn : styles.highlightOff,
-      ]}
+      ])}
+      userId={userId}
     >
       <UpvoteControl
         commentId={id}
@@ -146,7 +131,7 @@ function CommentRow({
           </View>
         )}
       </View>
-    </View>
+    </HighlightedRowContainer>
   );
 }
 

@@ -3,16 +3,12 @@ import {
   ScrollView, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import useTheme from '../../Theme';
-import {
-  Post, VoteState, getMessageAge, useUserContext,
-} from '../../model';
+import { Post, VoteState, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
-import { DisclosureIcon } from '../views';
+import { DisclosureIcon, HighlightedRowContainer } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
-
-  const containerPaddingStart = spacing.s;
 
   const styles = StyleSheet.create({
     icon: {
@@ -20,23 +16,13 @@ const useStyles = () => {
       // text, itself, not with the top of the text container
       marginTop: 6,
     },
-    container: {
+    highlightedRowContainer: {
       alignItems: 'flex-start',
-      backgroundColor: colors.fill,
-      flexDirection: 'row',
-      paddingEnd: spacing.s,
     },
     innerContainer: {
       flex: 1,
       flexDirection: 'column',
       paddingVertical: spacing.s,
-    },
-    highlightOff: {
-      paddingStart: containerPaddingStart,
-    },
-    highlightOn: {
-      borderColor: colors.primary,
-      borderStartWidth: containerPaddingStart,
     },
     scrollViewContainer: {
       maxHeight: 120,
@@ -78,9 +64,6 @@ function PostRow({
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
-  const { currentUser } = useUserContext();
-  const highlighted = userId === currentUser?.id;
-
   const TitleText = (
     <Text
       selectable={enableBodyTextSelection}
@@ -103,11 +86,9 @@ function PostRow({
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <View
-        style={[
-          styles.container,
-          highlighted ? styles.highlightOn : styles.highlightOff,
-        ]}
+      <HighlightedRowContainer
+        style={styles.highlightedRowContainer}
+        userId={userId}
       >
         <UpvoteControl
           errorItemFriendlyDifferentiator={title}
@@ -127,7 +108,7 @@ function PostRow({
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         {!disabled && <DisclosureIcon style={styles.icon} />}
-      </View>
+      </HighlightedRowContainer>
     </TouchableHighlight>
   );
 }
