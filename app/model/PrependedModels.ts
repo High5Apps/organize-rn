@@ -5,11 +5,12 @@ type Props<T extends Model> = {
   getCachedModel: (id: string) => T | undefined;
   maybePrependedModelIds?: string[];
   models: T[];
+  onNewPrependedModel?: () => void;
   ready: boolean;
 };
 
 export default function usePrependedModels<T extends Model>({
-  getCachedModel, models, ready, maybePrependedModelIds,
+  getCachedModel, maybePrependedModelIds, models, onNewPrependedModel, ready,
 }: Props<T>) {
   const [allModels, setAllModels] = useState<T[]>(models);
   const [prependedModelIds, setPrependedModelIds] = useState<string[]>([]);
@@ -32,6 +33,12 @@ export default function usePrependedModels<T extends Model>({
     const deduplicatedNewAllModels = [...new Set(newAllModels)];
     setAllModels(deduplicatedNewAllModels);
   }, [models, getCachedModel, prependedModelIds]);
+
+  useEffect(() => {
+    if (maybePrependedModelIds?.length) {
+      onNewPrependedModel?.();
+    }
+  }, [maybePrependedModelIds]);
 
   function resetPrependedModels() {
     setPrependedModelIds([]);

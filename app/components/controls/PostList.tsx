@@ -1,6 +1,4 @@
-import React, {
-  ReactElement, RefObject, useCallback, useEffect, useRef,
-} from 'react';
+import React, { ReactElement, useCallback, useRef } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, ViewStyle,
 } from 'react-native';
@@ -12,17 +10,6 @@ import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
 import usePullToRefresh from './PullToRefresh';
 import useInfiniteScroll from './InfiniteScroll';
-
-function useScrollToTopOnNewPost(
-  listRef: RefObject<FlatList<Post>>,
-  maybePrependedPostIds?: string[],
-) {
-  useEffect(() => {
-    if (maybePrependedPostIds?.length) {
-      listRef.current?.scrollToOffset({ animated: true, offset: 0 });
-    }
-  }, [listRef, maybePrependedPostIds]);
-}
 
 type Props = {
   category?: PostCategory;
@@ -39,20 +26,24 @@ export default function PostList({
 }: Props) {
   const listRef = useRef<FlatList<Post>>(null);
   useScrollToTop(listRef);
+  const scrollToTop = () => listRef.current?.scrollToOffset({
+    animated: true, offset: 0,
+  });
 
   const {
     cachePost, fetchedLastPage, fetchFirstPageOfPosts, fetchNextPageOfPosts,
     getCachedPost, posts, ready,
   } = usePosts({ category, sort });
+
   const {
     allModels: data, resetPrependedModels: resetPrependedPosts,
   } = usePrependedModels<Post>({
     getCachedModel: getCachedPost,
     maybePrependedModelIds: maybePrependedPostIds,
     models: posts,
+    onNewPrependedModel: scrollToTop,
     ready,
   });
-  useScrollToTopOnNewPost(listRef, maybePrependedPostIds);
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Post>) => (
     <PostRow item={item} onPress={onItemPress} onPostChanged={cachePost} />
