@@ -8,7 +8,7 @@ import {
   votingTimeRemainingFormatter,
 } from '../../model';
 import useTheme from '../../Theme';
-import { DisclosureIcon } from '../views';
+import { DisclosureIcon, HighlightedRowContainer } from '../views';
 
 const useStyles = () => {
   const {
@@ -17,12 +17,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'flex-start',
-      backgroundColor: colors.fill,
       columnGap: spacing.m,
-      flexDirection: 'row',
-      paddingEnd: spacing.s,
-      paddingStart: spacing.m,
       paddingVertical: spacing.s,
     },
     icon: {
@@ -32,6 +27,8 @@ const useStyles = () => {
       // This attempts to align the top of the icons with the top of the
       // question text, itself, not with the top of the text container
       marginTop: 7,
+
+      paddingStart: spacing.s,
     },
     innerContainer: {
       flex: 1,
@@ -63,7 +60,9 @@ type Props = {
 };
 
 export default function BallotRow({ item, onPress }: Props) {
-  const { category, question, votingEndsAt } = item;
+  const {
+    category, question, userId, votingEndsAt,
+  } = item;
   const now = new Date();
   const active = votingEndsAt.getTime() > now.getTime();
   const subtitle = active
@@ -77,14 +76,14 @@ export default function BallotRow({ item, onPress }: Props) {
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <View style={styles.container}>
+      <HighlightedRowContainer style={styles.container} userId={userId}>
         <Icon name={ballotTypeMap[category].iconName} style={styles.icon} />
         <View style={styles.innerContainer}>
           <Text style={[styles.text, styles.title]}>{question}</Text>
           <Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
         </View>
         <DisclosureIcon />
-      </View>
+      </HighlightedRowContainer>
     </TouchableHighlight>
   );
 }
