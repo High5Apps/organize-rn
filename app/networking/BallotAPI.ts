@@ -1,14 +1,14 @@
 import {
   BallotPreview, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, PaginationData, fromJson,
+  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor,
 } from '../model';
 import {
-  decryptMany, encrypt, encryptMany, get, post,
+  decrypt, decryptMany, encrypt, encryptMany, get, post,
 } from './API';
 import { parseErrorResponse } from './ErrorResponse';
-import { ballotsURI } from './Routes';
+import { ballotURI, ballotsURI } from './Routes';
 import {
-  Authorization, isBallotIndexResponse, isBallotResponse,
+  Authorization, isBallotIndexResponse, isBallotResponse, isCreateBallotResponse,
 } from './types';
 
 type Props = {
@@ -61,7 +61,7 @@ export async function createBallot({
     return { errorMessage };
   }
 
-  if (!isBallotResponse(json)) {
+  if (!isCreateBallotResponse(json)) {
     throw new Error('Failed to parse ballot ID from response');
   }
 
@@ -138,4 +138,59 @@ export async function fetchBallotPreviews({
   );
 
   return { ballotPreviews, paginationData };
+}
+
+type FetchBallotProps = Authorization & {
+  ballotId: string;
+  e2eDecrypt: E2EDecryptor;
+  e2eDecryptMany: E2EMultiDecryptor;
+};
+
+type FetchBallotReturn = {
+  ballot: Ballot;
+  errorMessage?: never;
+} | {
+  ballot?: never;
+  errorMessage: string;
+};
+
+export async function fetchBallot({
+  ballotId, e2eDecrypt, e2eDecryptMany, jwt,
+}: FetchBallotProps): Promise<FetchBallotReturn> {
+  const uri = ballotURI(ballotId);
+  const response = await get({ jwt, uri });
+
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    const errorResponse = parseErrorResponse(json);
+    const errorMessage = errorResponse.errorMessages[0];
+    return { errorMessage };
+  }
+
+  if (!isBallotResponse(json)) {
+    throw new Error('Failed to parse Ballot from response');
+  }
+
+  const { encryptedQuestion, ...partialBallot } = json.ballot;
+  const encryptedCandidateTitles = json.candidates.map((c) => c.encryptedTitle);
+  const [question, candidateTitles] = await Promise.all([
+    decrypt(encryptedQuestion, e2eDecrypt),
+    decryptMany(encryptedCandidateTitles, e2eDecryptMany),
+  ]);
+
+  const candidates = json.candidates.map(
+    ({ encryptedTitle, ...rest }, i) => ({ ...rest, title: candidateTitles[i]! }),
+  );
+  const ballot: Ballot = {
+    ...partialBallot,
+    question,
+    candidates,
+  };
+
+  return { ballot };
 }

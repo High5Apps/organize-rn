@@ -175,3 +175,7 @@ export type Candidate = {
   title: string;
   id: string;
 };
+
+export type Ballot = BallotPreview & {
+  candidates: Candidate[];
+};

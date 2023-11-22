@@ -222,12 +222,12 @@ export function isCommentIndexResponse(object: unknown): object is CommentIndexR
     && response.comments.every(isCommentIndexComment);
 }
 
-type BallotResponse = {
+type CreateBallotResponse = {
   id: string;
 };
 
-export function isBallotResponse(object: unknown): object is BallotResponse {
-  const response = (object as BallotResponse);
+export function isCreateBallotResponse(object: unknown): object is CreateBallotResponse {
+  const response = (object as CreateBallotResponse);
   return response?.id?.length > 0;
 }
 
@@ -259,6 +259,29 @@ export function isBallotIndexResponse(object: unknown): object is BallotIndexRes
     && Array.isArray(response.ballots)
     && response.ballots.every(isBallotIndexBallot)
     && (!response?.meta || isPaginationData(response?.meta));
+}
+
+type BallotCandidate = {
+  encryptedTitle: BackendEncryptedMessage;
+  id: string;
+};
+
+function isBallotCandidate(object: unknown): object is BallotCandidate {
+  const ballotCandidate = (object as BallotCandidate);
+  return ballotCandidate?.id?.length > 0
+    && isBackendEncryptedMessage(ballotCandidate.encryptedTitle);
+}
+
+type BallotResponse = {
+  ballot: BallotIndexBallot;
+  candidates: BallotCandidate[];
+};
+
+export function isBallotResponse(object: unknown): object is BallotResponse {
+  const response = (object as BallotResponse);
+  return isBallotIndexBallot(response.ballot)
+    && Array.isArray(response?.candidates)
+    && response.candidates.every(isBallotCandidate);
 }
 
 export type CandidateIndexCandidate = {
