@@ -30,9 +30,10 @@ export default function BallotList({
 }: Props) {
   const listRef = useRef<SectionList<Ballot, BallotSection>>(null);
   useScrollToTop(listRef);
-  const scrollToTop = () => listRef.current?.scrollToLocation({
-    itemIndex: 0, sectionIndex: 0,
-  });
+  const scrollToTop = () => {
+    if (!listRef.current?.props.sections.length) { return; }
+    listRef.current?.scrollToLocation({ itemIndex: 0, sectionIndex: 0 });
+  };
 
   const {
     activeBallots, fetchedLastPage, fetchFirstPageOfBallots,
