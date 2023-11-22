@@ -1,5 +1,5 @@
 import {
-  Ballot, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
+  BallotPreview, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
   E2EMultiEncryptor, PaginationData, fromJson,
 } from '../model';
 import {
@@ -80,14 +80,14 @@ type IndexProps = {
 type IndexReturn = {
   errorMessage: string;
   paginationData?: never;
-  ballots?: never;
+  ballotPreviews?: never;
 } | {
   errorMessage?: never;
   paginationData?: PaginationData;
-  ballots: Ballot[];
+  ballotPreviews: BallotPreview[];
 };
 
-export async function fetchBallots({
+export async function fetchBallotPreviews({
   activeAt, createdBefore, e2eDecryptMany, jwt, inactiveAt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(ballotsURI);
@@ -128,12 +128,14 @@ export async function fetchBallots({
     throw new Error('Failed to parse Ballots from response');
   }
 
-  const { ballots: fetchedBallots, meta: paginationData } = json;
-  const encryptedQuestions = fetchedBallots.map((p) => p.encryptedQuestion);
+  const { ballots: fetchedBallotPreviews, meta: paginationData } = json;
+  const encryptedQuestions = fetchedBallotPreviews.map(
+    (ballotPreview) => ballotPreview.encryptedQuestion,
+  );
   const questions = await decryptMany(encryptedQuestions, e2eDecryptMany);
-  const ballots = fetchedBallots.map(
-    ({ encryptedQuestion, ...p }, i) => ({ ...p, question: questions[i]! }),
+  const ballotPreviews = fetchedBallotPreviews.map(
+    ({ encryptedQuestion, ...b }, i) => ({ ...b, question: questions[i]! }),
   );
 
-  return { ballots, paginationData };
+  return { ballotPreviews, paginationData };
 }

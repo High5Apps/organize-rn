@@ -1,4 +1,4 @@
-export { createBallot, fetchBallots } from './BallotAPI';
+export { createBallot, fetchBallotPreviews } from './BallotAPI';
 export { fetchCandidates } from './CandidateAPI';
 export { createComment, fetchComments } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';

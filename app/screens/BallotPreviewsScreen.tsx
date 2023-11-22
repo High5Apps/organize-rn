@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { BallotList, PrimaryButton, ScreenBackground } from '../components';
+import {
+  BallotPreviewList, PrimaryButton, ScreenBackground,
+} from '../components';
 import useTheme from '../Theme';
-import type { BallotsScreenProps } from '../navigation';
+import type { BallotPreviewsScreenProps } from '../navigation';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -28,12 +30,12 @@ const useStyles = () => {
 
 export default function VoteScreen({
   navigation, route,
-}: BallotsScreenProps) {
+}: BallotPreviewsScreenProps) {
   const prependedBallotIds = route.params?.prependedBallotIds;
   const { styles } = useStyles();
   return (
     <ScreenBackground>
-      <BallotList
+      <BallotPreviewList
         contentContainerStyle={styles.contentContainerStyle}
         onItemPress={({ id, votingEndsAt }) => {
           const active = votingEndsAt.getTime() > new Date().getTime();

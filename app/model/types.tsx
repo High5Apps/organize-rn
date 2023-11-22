@@ -161,7 +161,7 @@ export type BallotTypeInfo = {
 
 export type BallotSort = 'active' | 'inactive';
 
-export type Ballot = {
+export type BallotPreview = {
   category: BallotCategory;
   id: string;
   question: string;

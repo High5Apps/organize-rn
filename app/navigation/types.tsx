@@ -155,13 +155,13 @@ export type BallotScreenParams = {
   ballotId: string;
 };
 
-export type BallotsScreenParams = {
+export type BallotPreviewsScreenParams = {
   prependedBallotIds: string[];
 };
 
 export type VoteStackParamList = {
   Ballot: BallotScreenParams;
-  Ballots: BallotsScreenParams | undefined;
+  BallotPreviews: BallotPreviewsScreenParams | undefined;
   BallotType: undefined;
   NewYesOrNoBallot: undefined;
 };
@@ -173,7 +173,7 @@ export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
   >;
 
 export type BallotScreenProps = VoteStackScreenProps<'Ballot'>;
-export type BallotsScreenProps = VoteStackScreenProps<'Ballots'>;
+export type BallotPreviewsScreenProps = VoteStackScreenProps<'BallotPreviews'>;
 export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
 export type NewYesNoBallotScreenProps = VoteStackScreenProps<'NewYesOrNoBallot'>;
 

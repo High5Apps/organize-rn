@@ -1,4 +1,4 @@
-export { default as BallotList } from './BallotList';
+export { default as BallotPreviewList } from './BallotPreviewList';
 export { default as BallotTypeList } from './BallotTypeList';
 export { default as ButtonRow } from './ButtonRow';
 export { default as CandidateList } from './CandidateList';

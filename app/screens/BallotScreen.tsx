@@ -4,7 +4,7 @@ import type { BallotScreenProps } from '../navigation';
 import { CandidateList, ScreenBackground } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallots,
+  GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
   votingTimeRemainingFormatter,
 } from '../model';
 
@@ -46,16 +46,18 @@ const useStyles = () => {
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
-  const { getCachedBallot } = useBallots();
-  const ballot = getCachedBallot(ballotId);
+  const { getCachedBallotPreview } = useBallotPreviews();
+  const ballotPreview = getCachedBallotPreview(ballotId);
 
   const { styles } = useStyles();
 
   const ListHeaderComponent = useMemo(() => {
-    if (!ballot) { return undefined; }
+    if (!ballotPreview) { return undefined; }
     return (
       <View style={styles.header}>
-        <Text style={[styles.text, styles.question]}>{ballot.question}</Text>
+        <Text style={[styles.text, styles.question]}>
+          {ballotPreview.question}
+        </Text>
         <Text style={[styles.text, styles.details]}>
           Responses will be anonymous
         </Text>
@@ -64,20 +66,20 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         </Text>
       </View>
     );
-  }, [ballot, styles]);
+  }, [ballotPreview, styles]);
 
   const ListFooterComponent = useMemo(() => {
-    if (!ballot) { return undefined; }
+    if (!ballotPreview) { return undefined; }
     return (
       <Text style={[styles.text, styles.footer]}>
-        {getTimeRemaining(ballot.votingEndsAt, {
+        {getTimeRemaining(ballotPreview.votingEndsAt, {
           formatter: votingTimeRemainingFormatter,
         })}
       </Text>
     );
-  }, [ballot]);
+  }, [ballotPreview]);
 
-  if (!ballot) {
+  if (!ballotPreview) {
     return (
       <ScreenBackground>
         <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>

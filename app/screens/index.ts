@@ -1,5 +1,5 @@
 export { default as BallotScreen } from './BallotScreen';
-export { default as BallotsScreen } from './BallotsScreen';
+export { default as BallotPreviewsScreen } from './BallotPreviewsScreen';
 export { default as BallotTypeScreen } from './BallotTypeScreen';
 export { default as ConnectScreen } from './ConnectScreen';
 export { default as DiscussDemandsScreen } from './DiscussDemandsScreen';

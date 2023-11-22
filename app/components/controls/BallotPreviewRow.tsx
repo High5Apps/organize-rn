@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  Ballot, ballotTypeMap, getMessageAge, getTimeRemaining,
+  BallotPreview, ballotTypeMap, getMessageAge, getTimeRemaining,
   votingTimeRemainingFormatter,
 } from '../../model';
 import useTheme from '../../Theme';
@@ -55,8 +55,8 @@ const useStyles = () => {
 };
 
 type Props = {
-  item: Ballot;
-  onPress?: (item: Ballot) => void;
+  item: BallotPreview;
+  onPress?: (item: BallotPreview) => void;
 };
 
 export default function BallotRow({ item, onPress }: Props) {

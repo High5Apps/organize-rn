@@ -5,8 +5,8 @@ import {
   MultilineTextInput, PrimaryButton, useRequestProgress,
 } from '../components';
 import {
-  Ballot, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallots, useCachedValue,
-  useUserContext,
+  BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
+  useCachedValue, useUserContext,
 } from '../model';
 import useTheme from '../Theme';
 import { createBallot } from '../networking';
@@ -67,7 +67,7 @@ export default function NewYesNoBallotScreen({
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
-  const { cacheBallot } = useBallots();
+  const { cacheBallotPreview } = useBallotPreviews();
 
   const resetForm = () => {
     setQuestion('');
@@ -112,16 +112,18 @@ export default function NewYesNoBallotScreen({
     resetForm();
     setResult('success');
 
-    const ballot: Ballot = {
+    const ballotPreview: BallotPreview = {
       category: BALLOT_CATEGORY,
       question: strippedQuestion,
       userId: currentUser.id,
       votingEndsAt: votingEnd,
       id: id!,
     };
-    cacheBallot(ballot);
+    cacheBallotPreview(ballotPreview);
 
-    navigation.navigate('Ballots', { prependedBallotIds: [ballot.id] });
+    navigation.navigate('BallotPreviews', {
+      prependedBallotIds: [ballotPreview.id],
+    });
   };
 
   return (

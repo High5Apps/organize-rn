@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { fetchBallots } from '../networking';
-import { useBallotContext } from './BallotContext';
+import { fetchBallotPreviews } from '../networking';
+import { useBallotPreviewContext } from './BallotPreviewContext';
 import { useUserContext } from './UserContext';
 import { isCurrentUserData, isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
@@ -8,17 +8,19 @@ import { getIdsFrom } from './ModelCache';
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
 
-export default function useBallots() {
-  const { cacheBallot, cacheBallots, getCachedBallot } = useBallotContext();
+export default function useBallotPreviews() {
+  const {
+    cacheBallotPreview, cacheBallotPreviews, getCachedBallotPreview,
+  } = useBallotPreviewContext();
   const [activeBallotIds, setActiveBallotIds] = useState<string[]>([]);
-  const activeBallots = useMemo(
-    () => activeBallotIds.map(getCachedBallot).filter(isDefined),
-    [activeBallotIds, getCachedBallot],
+  const activeBallotPreviews = useMemo(
+    () => activeBallotIds.map(getCachedBallotPreview).filter(isDefined),
+    [activeBallotIds, getCachedBallotPreview],
   );
   const [inactiveBallotIds, setInactiveBallotIds] = useState<string[]>([]);
-  const inactiveBallots = useMemo(
-    () => inactiveBallotIds.map(getCachedBallot).filter(isDefined),
-    [inactiveBallotIds, getCachedBallot],
+  const inactiveBallotPreviews = useMemo(
+    () => inactiveBallotIds.map(getCachedBallotPreview).filter(isDefined),
+    [inactiveBallotIds, getCachedBallotPreview],
   );
   const [activeCutoff, setActiveCutoff] = useState<Date>(new Date());
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
@@ -27,7 +29,7 @@ export default function useBallots() {
 
   const { currentUser } = useUserContext();
 
-  async function fetchFirstPageOfBallots() {
+  async function fetchFirstPageOfBallotPreviews() {
     if (!isCurrentUserData(currentUser)) {
       throw new Error('Expected current user to be set');
     }
@@ -39,20 +41,24 @@ export default function useBallots() {
     const inactiveJwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const [
-      { ballots: fetchedActiveBallots, errorMessage: activeErrorMessage },
       {
-        ballots: fetchedInactiveBallots, errorMessage: inactiveErrorMessage,
+        ballotPreviews: fetchedActiveBallotPreviews,
+        errorMessage: activeErrorMessage,
+      },
+      {
+        ballotPreviews: fetchedInactiveBallotPreviews,
+        errorMessage: inactiveErrorMessage,
         paginationData,
       },
     ] = await Promise.all([
-      fetchBallots({
+      fetchBallotPreviews({
         activeAt: now,
         createdBefore: now,
         e2eDecryptMany,
         jwt: activeJwt,
         sort: 'active',
       }),
-      fetchBallots({
+      fetchBallotPreviews({
         createdBefore: now,
         e2eDecryptMany,
         inactiveAt: now,
@@ -76,17 +82,17 @@ export default function useBallots() {
 
     const result = { hasNextPage };
 
-    cacheBallots(fetchedActiveBallots);
-    cacheBallots(fetchedInactiveBallots);
-    setActiveBallotIds(getIdsFrom(fetchedActiveBallots));
-    setInactiveBallotIds(getIdsFrom(fetchedInactiveBallots));
+    cacheBallotPreviews(fetchedActiveBallotPreviews);
+    cacheBallotPreviews(fetchedInactiveBallotPreviews);
+    setActiveBallotIds(getIdsFrom(fetchedActiveBallotPreviews));
+    setInactiveBallotIds(getIdsFrom(fetchedInactiveBallotPreviews));
     setNextPageNumber(firstPageIndex + 1);
     setReady(true);
 
     return result;
   }
 
-  async function fetchNextPageOfBallots() {
+  async function fetchNextPageOfBallotPreviews() {
     if (!isCurrentUserData(currentUser)) {
       throw new Error('Expected current user to be set');
     }
@@ -95,8 +101,8 @@ export default function useBallots() {
     const { e2eDecryptMany } = currentUser;
 
     const {
-      errorMessage, ballots: fetchedBallots, paginationData,
-    } = await fetchBallots({
+      errorMessage, ballotPreviews: fetchedBallotPreviews, paginationData,
+    } = await fetchBallotPreviews({
       createdBefore: activeCutoff,
       inactiveAt: activeCutoff,
       e2eDecryptMany,
@@ -115,23 +121,25 @@ export default function useBallots() {
 
     const result = { hasNextPage };
 
-    if (!fetchedBallots?.length) { return result; }
+    if (!fetchedBallotPreviews?.length) { return result; }
 
-    cacheBallots(fetchedBallots);
+    cacheBallotPreviews(fetchedBallotPreviews);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setInactiveBallotIds([...inactiveBallotIds, ...getIdsFrom(fetchedBallots)]);
+    setInactiveBallotIds([
+      ...inactiveBallotIds, ...getIdsFrom(fetchedBallotPreviews),
+    ]);
 
     return result;
   }
 
   return {
-    activeBallots,
-    cacheBallot,
-    inactiveBallots,
+    activeBallotPreviews,
+    cacheBallotPreview,
+    inactiveBallotPreviews,
     fetchedLastPage,
-    fetchFirstPageOfBallots,
-    fetchNextPageOfBallots,
-    getCachedBallot,
+    fetchFirstPageOfBallotPreviews,
+    fetchNextPageOfBallotPreviews,
+    getCachedBallotPreview,
     ready,
   };
 }

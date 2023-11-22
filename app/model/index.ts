@@ -1,6 +1,8 @@
 export { default as useAppState } from './AppState';
-export { default as useBallots, votingTimeRemainingFormatter } from './Ballots';
-export { BallotContextProvider } from './BallotContext';
+export {
+  default as useBallotPreviews, votingTimeRemainingFormatter,
+} from './BallotPreviews';
+export { BallotPreviewContextProvider } from './BallotPreviewContext';
 export { ballotTypes, ballotTypeMap } from './BallotTypes';
 export { default as useCachedValue } from './CachedValue';
 export { CachedValueContextProvider } from './CachedValueContext';
