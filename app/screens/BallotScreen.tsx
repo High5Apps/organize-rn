@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
-import { CandidateList, ScreenBackground } from '../components';
+import { CandidateList, ScreenBackground, useRequestProgress } from '../components';
 import useTheme from '../Theme';
 import {
-  GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
-  votingTimeRemainingFormatter,
+  Ballot, GENERIC_ERROR_MESSAGE, getTimeRemaining, isCurrentUserData,
+  useBallotPreviews, useUserContext, votingTimeRemainingFormatter,
 } from '../model';
+import { fetchBallot } from '../networking';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -32,6 +33,9 @@ const useStyles = () => {
       fontFamily: font.weights.semiBold,
       marginBottom: spacing.xs,
     },
+    requestProgress: {
+      margin: spacing.m,
+    },
     text: {
       color: colors.label,
       flexShrink: 1,
@@ -46,10 +50,47 @@ const useStyles = () => {
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
+  const [ballot, setBallot] = useState<Ballot | undefined>();
+
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
 
   const { styles } = useStyles();
+
+  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const { currentUser } = useUserContext();
+
+  useEffect(() => {
+    async function fetchBallotOnMount() {
+      if (!isCurrentUserData(currentUser)) { return; }
+
+      setResult('none');
+      setLoading(true);
+
+      const { e2eDecrypt, e2eDecryptMany } = currentUser;
+      const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+      let errorMessage: string | undefined;
+      let fetchedBallot: Ballot | undefined;
+      try {
+        ({ ballot: fetchedBallot, errorMessage } = await fetchBallot({
+          ballotId, e2eDecrypt, e2eDecryptMany, jwt,
+        }));
+      } catch (error) {
+        errorMessage = GENERIC_ERROR_MESSAGE;
+      }
+
+      if (errorMessage !== undefined) {
+        setResult('error', { message: errorMessage });
+        return;
+      }
+
+      setBallot(fetchedBallot);
+      setLoading(false);
+    }
+
+    fetchBallotOnMount().catch(console.error);
+  }, []);
 
   const ListHeaderComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
@@ -64,6 +105,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         <Text style={[styles.text, styles.details]}>
           Change your mind until voting ends
         </Text>
+        <RequestProgress style={styles.requestProgress} />
       </View>
     );
   }, [ballotPreview, styles]);
@@ -90,7 +132,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   return (
     <ScreenBackground>
       <CandidateList
-        ballotId={ballotId}
+        candidates={ballot?.candidates ?? null}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
       />
