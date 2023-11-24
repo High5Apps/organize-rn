@@ -104,11 +104,15 @@ export default function NotableUserList({
     notableUserSections.push({ title: 'Officers', data: officersData });
 
     const currentOrgGraphUser = users[currentUser.id];
-    const meData = [{
-      user: currentOrgGraphUser,
-      ...getCircleColors({ colors, isMe: true, user: currentOrgGraphUser }),
-    }];
-    notableUserSections.push({ title: 'Me', data: meData });
+    const { offices } = currentOrgGraphUser;
+    const isOfficer = offices && offices.length > 0;
+    if (!isOfficer) {
+      const meData = [{
+        user: currentOrgGraphUser,
+        ...getCircleColors({ colors, isMe: true, user: currentOrgGraphUser }),
+      }];
+      notableUserSections.push({ title: 'Me', data: meData });
+    }
 
     return notableUserSections;
   }, [colors, currentUser, graphData, selectedUserId]);
