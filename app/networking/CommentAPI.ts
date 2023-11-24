@@ -4,7 +4,7 @@ import {
 import {
   decryptMany, encrypt, get, post,
 } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import {
   Authorization, CommentIndexComment, isCommentIndexResponse,
@@ -49,10 +49,7 @@ export async function createComment({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isCreateCommentResponse(json)) {
@@ -99,10 +96,7 @@ export async function fetchComments({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isCommentIndexResponse(json)) {

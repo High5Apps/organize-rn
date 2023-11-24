@@ -2,11 +2,10 @@ import { fromJson, Keys } from '../model';
 import {
   fromBackendEncryptedMessage, get, post, Status,
 } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { connectionPreviewURI, connectionsURI } from './Routes';
 import {
-  Authorization, ConnectionPreview, ErrorResponseType,
-  isPreviewConnectionResponse,
+  Authorization, ConnectionPreview, isPreviewConnectionResponse,
 } from './types';
 
 type SharerJwt = {
@@ -31,8 +30,7 @@ export async function createConnection({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    let errorMessage = errorResponse.errorMessages[0];
+    let { errorMessage } = parseFirstErrorOrThrow(json);
 
     if (response.status === Status.Unauthorized) {
       // The most legitimate reason for an unauthorized status is that the
@@ -50,9 +48,17 @@ type PreviewProps = SharerJwt & {
   groupKey: string;
 };
 
+type PreviewConnectionReturn = {
+  connectionPreview: ConnectionPreview;
+  errorMessage?: never;
+} | {
+  connectionPreview?: never;
+  errorMessage: string;
+};
+
 export async function previewConnection({
   groupKey, sharerJwt,
-}: PreviewProps): Promise<ConnectionPreview | ErrorResponseType> {
+}: PreviewProps): Promise<PreviewConnectionReturn> {
   const uri = connectionPreviewURI;
   const response = await get({ sharerJwt, uri });
   const text = await response.text();
@@ -62,7 +68,7 @@ export async function previewConnection({
   });
 
   if (!response.ok) {
-    return parseErrorResponse(json);
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isPreviewConnectionResponse(json)) {
@@ -92,5 +98,5 @@ export async function previewConnection({
   } = { ...json.org, name, memberDefinition };
   const connectionPreview = { ...json, org };
 
-  return connectionPreview;
+  return { connectionPreview };
 }

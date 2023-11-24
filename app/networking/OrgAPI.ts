@@ -3,20 +3,27 @@ import { fromJson } from '../model';
 import {
   decrypt, encrypt, get, post,
 } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
 import {
-  Authorization, ErrorResponseType, isCreateOrgResponse, isOrgResponse,
-  UnpublishedOrg,
+  Authorization, isCreateOrgResponse, isOrgResponse, UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {
   e2eEncrypt: E2EEncryptor;
 };
 
+type CreateReturn = {
+  id: string;
+  errorMessage?: never;
+} | {
+  id?: never;
+  errorMessage: string;
+};
+
 export async function createOrg({
   e2eEncrypt, jwt, name, memberDefinition,
-}: Props): Promise<string | ErrorResponseType> {
+}: Props): Promise<CreateReturn> {
   const [
     encryptedName, encryptedMemberDefinition,
   ] = await Promise.all([
@@ -39,22 +46,29 @@ export async function createOrg({
   });
 
   if (!response.ok) {
-    return parseErrorResponse(json);
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isCreateOrgResponse(json)) {
     throw new Error('Failed to parse Org from response');
   }
-  return json.id;
+  return { id: json.id };
 }
 
 type FetchOrgProps = Authorization & {
   e2eDecrypt: E2EDecryptor;
 };
+type FetchOrgReturn = {
+  org: Org;
+  errorMessage?: never;
+} | {
+  org?: never;
+  errorMessage: string;
+};
 
 export async function fetchOrg({
   e2eDecrypt, jwt,
-}: FetchOrgProps): Promise<Org | ErrorResponseType> {
+}: FetchOrgProps): Promise<FetchOrgReturn> {
   const uri = orgURI;
   const response = await get({ jwt, uri });
 
@@ -65,7 +79,7 @@ export async function fetchOrg({
   });
 
   if (!response.ok) {
-    return parseErrorResponse(json);
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isOrgResponse(json)) {
@@ -83,5 +97,5 @@ export async function fetchOrg({
     ...org
   } = { ...json, name, memberDefinition };
 
-  return org;
+  return { org };
 }

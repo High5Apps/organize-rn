@@ -5,7 +5,7 @@ import {
 import {
   decrypt, decryptMany, encrypt, encryptMany, get, post,
 } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { ballotURI, ballotsURI } from './Routes';
 import {
   Authorization, isBallotIndexResponse, isBallotResponse, isCreateBallotResponse,
@@ -56,9 +56,7 @@ export async function createBallot({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isCreateBallotResponse(json)) {
@@ -119,9 +117,7 @@ export async function fetchBallotPreviews({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isBallotIndexResponse(json)) {
@@ -167,9 +163,7 @@ export async function fetchBallot({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isBallotResponse(json)) {

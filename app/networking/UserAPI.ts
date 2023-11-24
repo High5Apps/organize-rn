@@ -1,19 +1,26 @@
 import { fromJson } from '../model';
 import { get, post } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { usersURI, userUri } from './Routes';
 import {
-  Authorization, ErrorResponseType, GetUserResponse, isCreateUserResponse,
-  isGetUserResponse,
+  Authorization, GetUserResponse, isCreateUserResponse, isGetUserResponse,
 } from './types';
 
 type CreateProps = {
   authenticationKey: string;
 };
 
+type CreateReturn = {
+  id: string;
+  errorMessage?: never;
+} | {
+  id?: never;
+  errorMessage: string;
+};
+
 export async function createUser({
   authenticationKey,
-}: CreateProps): Promise<string | ErrorResponseType> {
+}: CreateProps): Promise<CreateReturn> {
   const response = await post({
     uri: usersURI,
     bodyObject: {
@@ -28,22 +35,30 @@ export async function createUser({
   });
 
   if (!response.ok) {
-    return parseErrorResponse(json);
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isCreateUserResponse(json)) {
     throw new Error('Failed to parse User from response');
   }
-  return json.id;
+  return { id: json.id };
 }
 
 type GetProps = {
   id: string;
 } & Authorization;
 
+type GetReturn = {
+  user: GetUserResponse;
+  errorMessage?: never;
+} | {
+  user?: never;
+  errorMessage: string;
+};
+
 export async function getUser({
   id, jwt,
-}: GetProps): Promise<GetUserResponse | ErrorResponseType> {
+}: GetProps): Promise<GetReturn> {
   const uri = userUri(id);
   const response = await get({ uri, jwt });
   const text = await response.text();
@@ -53,12 +68,12 @@ export async function getUser({
   });
 
   if (!response.ok) {
-    return parseErrorResponse(json);
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isGetUserResponse(json)) {
     throw new Error('Failed to parse User from response');
   }
 
-  return json;
+  return { user: json };
 }

@@ -6,9 +6,7 @@ import { useRequestProgress } from '../controls';
 import {
   GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useUserContext,
 } from '../../model';
-import {
-  ConnectionPreview, ErrorResponse, isErrorResponse, previewConnection,
-} from '../../networking';
+import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -50,25 +48,21 @@ export default function ConnectionRequestProgress({
       setLoading(true);
 
       try {
-        const responseOrError = await previewConnection({
+        const { connectionPreview, errorMessage } = await previewConnection({
           groupKey, sharerJwt,
         });
 
         if (!subscribed) { return; }
 
-        if (isErrorResponse(responseOrError)) {
-          const { errorMessage } = ErrorResponse(responseOrError);
+        if (errorMessage !== undefined) {
           onConnectionPreviewError?.(errorMessage);
+        } else if (currentUser && currentUser.org
+            && (currentUser.org.id !== connectionPreview.org.id)
+        ) {
+          onConnectionPreviewError?.(OTHER_ORG_ERROR_MESSAGE);
         } else {
-          const connectionPreview = responseOrError;
-
-          if (currentUser && currentUser.org
-              && (currentUser.org.id !== connectionPreview.org.id)) {
-            onConnectionPreviewError?.(OTHER_ORG_ERROR_MESSAGE);
-          } else {
-            setResponse(connectionPreview);
-            onConnectionPreview?.(connectionPreview);
-          }
+          setResponse(connectionPreview);
+          onConnectionPreview?.(connectionPreview);
         }
       } catch (error) {
         console.error(error);

@@ -5,7 +5,7 @@ import { fromJson } from '../model';
 import {
   decryptMany, encrypt, get, post,
 } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { postsURI } from './Routes';
 import type { Authorization } from './types';
 import {
@@ -52,10 +52,7 @@ export async function createPost({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isPostResponse(json)) {
@@ -74,9 +71,13 @@ type IndexProps = {
 };
 
 type IndexReturn = {
-  errorMessage?: string;
-  paginationData?: PaginationData;
-  posts?: Post[];
+  errorMessage?: never;
+  paginationData: PaginationData;
+  posts: Post[];
+} | {
+  errorMessage: string;
+  paginationData?: never;
+  posts?: never;
 };
 
 export async function fetchPosts({
@@ -110,9 +111,7 @@ export async function fetchPosts({
   });
 
   if (!response.ok) {
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   if (!isPostIndexResponse(json)) {

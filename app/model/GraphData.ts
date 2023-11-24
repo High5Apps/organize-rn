@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
-import { ErrorResponse, fetchOrg, isErrorResponse } from '../networking';
+import { fetchOrg } from '../networking';
 import { useUserContext } from './UserContext';
 import { Org, OrgGraph as OrgGraphType, isCurrentUserData } from './types';
 import getCircleColors from './OrgScreenCircleColors';
@@ -56,14 +56,12 @@ export default function useGraphData() {
     }
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecrypt } = currentUser;
-    const responseOrError = await fetchOrg({ e2eDecrypt, jwt });
+    const { errorMessage, org } = await fetchOrg({ e2eDecrypt, jwt });
 
-    if (isErrorResponse(responseOrError)) {
-      const { errorMessage } = ErrorResponse(responseOrError);
+    if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
 
-    const org = responseOrError;
     if (orgChanged(currentUser.org, org)) {
       const updatedCurrentUser = { ...currentUser };
       updatedCurrentUser.org = org;

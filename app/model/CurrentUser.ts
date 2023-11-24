@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  createConnection, createOrg, createUser, ErrorResponse, getUser,
-  isErrorResponse, UnpublishedOrg,
+  createConnection, createOrg, createUser, getUser, UnpublishedOrg,
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 import Keys from './Keys';
@@ -33,13 +32,13 @@ async function createCurrentUser({
 
   let userId: string;
   try {
-    const response = await createUser({ authenticationKey });
+    const { errorMessage, id } = await createUser({ authenticationKey });
 
-    if (isErrorResponse(response)) {
-      return ErrorResponse(response).errorMessage;
+    if (errorMessage !== undefined) {
+      return errorMessage;
     }
 
-    userId = response;
+    userId = id;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -67,13 +66,15 @@ async function createCurrentUser({
     try {
       const jwt = await partialUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = partialUser;
-      const response = await createOrg({ ...unpublishedOrg, e2eEncrypt, jwt });
+      const { errorMessage, id } = await createOrg({
+        ...unpublishedOrg, e2eEncrypt, jwt,
+      });
 
-      if (isErrorResponse(response)) {
-        return ErrorResponse(response).errorMessage;
+      if (errorMessage !== undefined) {
+        return errorMessage;
       }
 
-      orgId = response;
+      orgId = id;
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -107,13 +108,15 @@ async function createCurrentUser({
   let pseudonym: string;
   try {
     const jwt = await partialUser.createAuthToken({ scope: '*' });
-    const response = await getUser({ id: userId, jwt });
+    const {
+      errorMessage, user: fetchedUser,
+    } = await getUser({ id: userId, jwt });
 
-    if (isErrorResponse(response)) {
-      return ErrorResponse(response).errorMessage;
+    if (errorMessage !== undefined) {
+      return errorMessage;
     }
 
-    pseudonym = response.pseudonym;
+    pseudonym = fetchedUser.pseudonym;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);

@@ -3,15 +3,6 @@ import type {
   VoteState,
 } from '../model';
 
-export type ErrorResponseType = {
-  errorMessages: string[];
-};
-
-export function isErrorResponse(object: unknown): object is ErrorResponseType {
-  const response = (object as ErrorResponseType);
-  return response?.errorMessages?.length > 0;
-}
-
 export type CreateOrgResponse = {
   id: string;
 };

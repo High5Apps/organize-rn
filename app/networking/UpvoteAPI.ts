@@ -1,7 +1,7 @@
 import type { VoteState } from '../model';
 import { fromJson } from '../model';
 import { post } from './API';
-import { parseErrorResponse } from './ErrorResponse';
+import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { commentUpvotesURI, postUpvotesURI } from './Routes';
 import { Authorization } from './types';
 
@@ -36,10 +36,7 @@ export default async function createOrUpdateUpvote({
       convertIso8601ToDate: true,
       convertSnakeToCamel: true,
     });
-    const errorResponse = parseErrorResponse(json);
-    const errorMessage = errorResponse.errorMessages[0];
-
-    return { errorMessage };
+    return parseFirstErrorOrThrow(json);
   }
 
   return {};
