@@ -70,24 +70,32 @@ const useStyles = () => {
 };
 
 type Props = {
+  currentUserId?: string;
   disabled?: boolean;
   item: NotableUserItem;
   onPress?: (item: NotableUserItem) => void;
 };
 
-function NotableUserRow({ disabled, item, onPress }: Props) {
+function NotableUserRow({
+  currentUserId, disabled, item, onPress,
+}: Props) {
   const {
     circleBorderColor, circleBackgroundColor, user: {
-      connectionCount, joinedAt, offices, pseudonym, recruitCount,
+      connectionCount, id, joinedAt, offices, pseudonym, recruitCount,
     },
   } = item;
+  const isCurrentUser = id === currentUserId;
 
   const { colors, styles } = useStyles();
 
   const tenure = getTenure(joinedAt);
 
   const joinedOffices = offices?.join('/');
-  const title = [pseudonym, joinedOffices].filter((e) => e).join(', ');
+  const title = [
+    pseudonym,
+    joinedOffices,
+    isCurrentUser && 'Me',
+  ].filter((e) => e).join(', ');
 
   return (
     <TouchableHighlight
@@ -122,6 +130,7 @@ function NotableUserRow({ disabled, item, onPress }: Props) {
 }
 
 NotableUserRow.defaultProps = {
+  currentUserId: undefined,
   disabled: false,
   onPress: () => {},
 };

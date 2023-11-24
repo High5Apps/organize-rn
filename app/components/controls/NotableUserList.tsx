@@ -66,9 +66,10 @@ export default function NotableUserList({
   const renderItem: ListRenderItem<NotableUserItem> = useCallback(
     ({ item }) => (
       <NotableUserRow
+        currentUserId={currentUser?.id}
+        disabled={disableRows}
         item={item}
         onPress={onPress}
-        disabled={disableRows}
       />
     ),
     [onPress, disableRows],
