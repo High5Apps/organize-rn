@@ -36,10 +36,13 @@ const useStyles = () => {
 type Props = {
   item: Candidate;
   onPress?: (item: Candidate) => void;
+  selected?: boolean;
 };
 
-export default function CandidateRow({ item, onPress }: Props) {
+export default function CandidateRow({ item, onPress, selected }: Props) {
   const { title } = item;
+
+  const iconName = selected ? 'radio-button-checked' : 'radio-button-unchecked';
 
   const { colors, styles } = useStyles();
 
@@ -49,7 +52,7 @@ export default function CandidateRow({ item, onPress }: Props) {
       underlayColor={colors.label}
     >
       <View style={styles.container}>
-        <Icon name="radio-button-unchecked" style={styles.icon} />
+        <Icon name={iconName} style={styles.icon} />
         <Text style={styles.text}>{title}</Text>
       </View>
     </TouchableHighlight>
@@ -58,4 +61,5 @@ export default function CandidateRow({ item, onPress }: Props) {
 
 CandidateRow.defaultProps = {
   onPress: () => {},
+  selected: false,
 };

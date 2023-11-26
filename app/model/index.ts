@@ -35,4 +35,5 @@ export { default as getTimeRemaining } from './TimeRemaining';
 export { default as truncateText } from './TruncateText';
 export { default as User } from './User';
 export { UserContextProvider, useUserContext } from './UserContext';
+export { default as useVoteUpdater } from './VoteUpdater';
 export * from './types';

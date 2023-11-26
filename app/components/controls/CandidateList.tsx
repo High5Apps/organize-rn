@@ -11,14 +11,21 @@ type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
+  onRowPressed?: (candidate: Candidate) => void;
+  selectedCandidateIds?: string[];
 };
 
 export default function CandidateList({
   candidates, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
+  onRowPressed, selectedCandidateIds,
 }: Props) {
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => (
-    <CandidateRow item={item} onPress={console.log} />
-  ), []);
+    <CandidateRow
+      item={item}
+      onPress={onRowPressed}
+      selected={selectedCandidateIds?.includes(item.id)}
+    />
+  ), [onRowPressed, selectedCandidateIds]);
 
   return (
     <FlatList
@@ -36,4 +43,6 @@ CandidateList.defaultProps = {
   contentContainerStyle: {},
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
+  onRowPressed: () => null,
+  selectedCandidateIds: undefined,
 };

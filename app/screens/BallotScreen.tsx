@@ -1,15 +1,18 @@
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  Alert, StyleSheet, Text, View,
+} from 'react-native';
 import type { BallotScreenProps } from '../navigation';
 import {
   CandidateList, ScreenBackground, useRequestProgress,
 } from '../components';
 import useTheme from '../Theme';
 import {
-  Ballot, GENERIC_ERROR_MESSAGE, getTimeRemaining, isCurrentUserData,
-  useBallotPreviews, useUserContext, votingTimeRemainingFormatter,
+  Ballot, Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, isCurrentUserData,
+  useBallotPreviews, useUserContext, useVoteUpdater,
+  votingTimeRemainingFormatter,
 } from '../model';
 import { fetchBallot } from '../networking';
 
@@ -55,6 +58,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
   const [ballot, setBallot] = useState<Ballot | undefined>();
+  const {
+    onNewCandidateSelection, selectedCandidateIds,
+  } = useVoteUpdater({ ballot });
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
@@ -127,6 +133,14 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     );
   }, [ballotPreview]);
 
+  const onRowPressed = useCallback(async (candidate: Candidate) => {
+    try {
+      await onNewCandidateSelection(candidate);
+    } catch (error) {
+      Alert.alert('Failed to update your vote. Please try again.');
+    }
+  }, [onNewCandidateSelection]);
+
   if (!ballotPreview) {
     return (
       <ScreenBackground>
@@ -141,6 +155,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         candidates={ballot?.candidates ?? null}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
+        onRowPressed={onRowPressed}
+        selectedCandidateIds={selectedCandidateIds}
       />
     </ScreenBackground>
   );
