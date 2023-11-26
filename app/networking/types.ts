@@ -264,13 +264,16 @@ function isBallotCandidate(object: unknown): object is BallotCandidate {
 }
 
 type BallotResponse = {
-  ballot: BallotIndexBallot;
+  ballot: BallotIndexBallot & {
+    maxCandidateIdsPerVote: number;
+  };
   candidates: BallotCandidate[];
 };
 
 export function isBallotResponse(object: unknown): object is BallotResponse {
   const response = (object as BallotResponse);
   return isBallotIndexBallot(response.ballot)
+    && response.ballot.maxCandidateIdsPerVote !== undefined
     && Array.isArray(response?.candidates)
     && response.candidates.every(isBallotCandidate);
 }

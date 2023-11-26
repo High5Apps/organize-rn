@@ -178,4 +178,5 @@ export type Candidate = {
 
 export type Ballot = BallotPreview & {
   candidates: Candidate[];
+  maxCandidateIdsPerVote: number
 };
