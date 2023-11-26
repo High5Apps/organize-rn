@@ -28,3 +28,5 @@ export const repliesURI = (commentId: string) => `${commentURI(commentId)}/comme
 
 export const usersURI = `${apiRoute}/users`;
 export const userUri = (userId: string) => `${usersURI}/${userId}`;
+
+export const votesURI = (ballotId: string) => `${ballotURI(ballotId)}/votes`;

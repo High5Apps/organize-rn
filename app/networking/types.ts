@@ -299,3 +299,12 @@ export function isCandidateIndexResponse(object: unknown): object is CandidateIn
     && Array.isArray(response.candidates)
     && response.candidates.every(isCandidateIndexCandidate);
 }
+
+type CreateVoteResponse = {
+  id: string;
+};
+
+export function isCreateVoteResponse(object: unknown): object is CreateVoteResponse {
+  const response = (object as CreateVoteResponse);
+  return response?.id?.length > 0;
+}
