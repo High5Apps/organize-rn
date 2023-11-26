@@ -1,7 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
-import { CandidateList, ScreenBackground, useRequestProgress } from '../components';
+import {
+  CandidateList, ScreenBackground, useRequestProgress,
+} from '../components';
 import useTheme from '../Theme';
 import {
   Ballot, GENERIC_ERROR_MESSAGE, getTimeRemaining, isCurrentUserData,
@@ -59,37 +63,39 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
   const { currentUser } = useUserContext();
+  if (!isCurrentUserData(currentUser)) { return null; }
+  const { createAuthToken, e2eDecrypt, e2eDecryptMany } = currentUser;
 
-  useEffect(() => {
-    async function fetchBallotOnMount() {
-      if (!isCurrentUserData(currentUser)) { return; }
+  const updateBallot = useCallback(async () => {
+    setResult('none');
+    setLoading(true);
 
-      setResult('none');
-      setLoading(true);
+    const jwt = await createAuthToken({ scope: '*' });
 
-      const { e2eDecrypt, e2eDecryptMany } = currentUser;
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-
-      let errorMessage: string | undefined;
-      let fetchedBallot: Ballot | undefined;
-      try {
-        ({ ballot: fetchedBallot, errorMessage } = await fetchBallot({
-          ballotId, e2eDecrypt, e2eDecryptMany, jwt,
-        }));
-      } catch (error) {
-        errorMessage = GENERIC_ERROR_MESSAGE;
-      }
-
-      if (errorMessage !== undefined) {
-        setResult('error', { message: errorMessage });
-        return;
-      }
-
-      setBallot(fetchedBallot);
-      setLoading(false);
+    let errorMessage: string | undefined;
+    let fetchedBallot: Ballot | undefined;
+    try {
+      ({ ballot: fetchedBallot, errorMessage } = await fetchBallot({
+        ballotId, e2eDecrypt, e2eDecryptMany, jwt,
+      }));
+    } catch (error) {
+      errorMessage = GENERIC_ERROR_MESSAGE;
     }
 
-    fetchBallotOnMount().catch(console.error);
+    if (errorMessage !== undefined) {
+      setResult('error', {
+        message: `${errorMessage}\nTap here to try again`,
+        onPress: updateBallot,
+      });
+      return;
+    }
+
+    setBallot(fetchedBallot);
+    setLoading(false);
+  }, [ballotId, createAuthToken, e2eDecrypt, e2eDecryptMany]);
+
+  useEffect(() => {
+    updateBallot().catch(console.error);
   }, []);
 
   const ListHeaderComponent = useMemo(() => {
