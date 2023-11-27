@@ -268,6 +268,7 @@ type BallotResponse = {
     maxCandidateIdsPerVote: number;
   };
   candidates: BallotCandidate[];
+  myVote: string[];
 };
 
 export function isBallotResponse(object: unknown): object is BallotResponse {
@@ -275,7 +276,8 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
   return isBallotIndexBallot(response.ballot)
     && response.ballot.maxCandidateIdsPerVote !== undefined
     && Array.isArray(response?.candidates)
-    && response.candidates.every(isBallotCandidate);
+    && response.candidates.every(isBallotCandidate)
+    && Array.isArray(response.myVote);
 }
 
 export type CandidateIndexCandidate = {

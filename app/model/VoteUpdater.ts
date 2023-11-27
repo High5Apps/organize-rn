@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Ballot, Candidate, isCurrentUserData } from './types';
 import { useUserContext } from './UserContext';
 import { createVote } from '../networking';
@@ -13,6 +13,12 @@ export default function useVoteUpdater({ ballot }: Props) {
   ] = useState<string[] | undefined>();
 
   const { currentUser } = useUserContext();
+
+  useEffect(() => {
+    if (ballot !== undefined) {
+      setSelectedCandidateIds(ballot.myVote);
+    }
+  }, [ballot?.myVote]);
 
   const onNewCandidateSelection = useCallback(async ({
     id: candidateId,
