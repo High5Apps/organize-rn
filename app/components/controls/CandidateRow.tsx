@@ -28,18 +28,25 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
+    waitingForChange: {
+      opacity: 0.5,
+    },
   });
 
   return { colors, styles };
 };
 
 type Props = {
+  disabled?: boolean;
   item: Candidate;
   onPress?: (item: Candidate) => void;
   selected?: boolean;
+  waitingForChange?: boolean;
 };
 
-export default function CandidateRow({ item, onPress, selected }: Props) {
+export default function CandidateRow({
+  disabled, item, onPress, selected, waitingForChange,
+}: Props) {
   const { title } = item;
 
   const iconName = selected ? 'radio-button-checked' : 'radio-button-unchecked';
@@ -48,11 +55,15 @@ export default function CandidateRow({ item, onPress, selected }: Props) {
 
   return (
     <TouchableHighlight
+      disabled={disabled}
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
       <View style={styles.container}>
-        <Icon name={iconName} style={styles.icon} />
+        <Icon
+          name={iconName}
+          style={[styles.icon, waitingForChange && styles.waitingForChange]}
+        />
         <Text style={styles.text}>{title}</Text>
       </View>
     </TouchableHighlight>
@@ -60,6 +71,8 @@ export default function CandidateRow({ item, onPress, selected }: Props) {
 }
 
 CandidateRow.defaultProps = {
+  disabled: false,
   onPress: () => {},
   selected: false,
+  waitingForChange: false,
 };

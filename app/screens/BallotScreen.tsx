@@ -59,7 +59,10 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const [ballot, setBallot] = useState<Ballot | undefined>();
   const {
-    onNewCandidateSelection, selectedCandidateIds,
+    onNewCandidateSelection,
+    selectedCandidateIds,
+    waitingForDeselectedCandidateIds,
+    waitingForSelectedCandidateIds,
   } = useVoteUpdater({ ballot });
 
   const { getCachedBallotPreview } = useBallotPreviews();
@@ -157,6 +160,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         ListHeaderComponent={ListHeaderComponent}
         onRowPressed={onRowPressed}
         selectedCandidateIds={selectedCandidateIds}
+        waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
+        waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
       />
     </ScreenBackground>
   );

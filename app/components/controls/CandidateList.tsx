@@ -13,19 +13,38 @@ type Props = {
   ListHeaderComponent?: ReactElement;
   onRowPressed?: (candidate: Candidate) => void;
   selectedCandidateIds?: string[];
+  waitingForDeselectedCandidateIds: string[];
+  waitingForSelectedCandidateIds: string[];
 };
 
 export default function CandidateList({
   candidates, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
-  onRowPressed, selectedCandidateIds,
+  onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
+  waitingForSelectedCandidateIds,
 }: Props) {
-  const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => (
-    <CandidateRow
-      item={item}
-      onPress={onRowPressed}
-      selected={selectedCandidateIds?.includes(item.id)}
-    />
-  ), [onRowPressed, selectedCandidateIds]);
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
+    const { id } = item;
+    const previouslySelected = selectedCandidateIds?.includes(id);
+    const waitingToSelect = waitingForSelectedCandidateIds.includes(id);
+    const waitingToDeselect = waitingForDeselectedCandidateIds.includes(id);
+    const waitingForChange = waitingToSelect || waitingToDeselect;
+    const selected = waitingForChange ? (waitingToSelect || !waitingToDeselect)
+      : previouslySelected;
+    const disabled = waitingForSelectedCandidateIds.length > 0
+      || waitingForDeselectedCandidateIds.length > 0;
+    return (
+      <CandidateRow
+        disabled={disabled}
+        item={item}
+        onPress={onRowPressed}
+        selected={selected}
+        waitingForChange={waitingForChange}
+      />
+    );
+  }, [
+    onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
+    waitingForSelectedCandidateIds,
+  ]);
 
   return (
     <FlatList
