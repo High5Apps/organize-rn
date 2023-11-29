@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { AESEncryptedData } from './AESModule';
 import JWT from './JWT';
-import Keys from './Keys';
-import type { Org, Scope, UserData } from './types';
+import { Keys } from './keys';
+import type {
+  E2EDecryptor, E2EEncryptor, E2EMultiDecryptor, E2EMultiEncryptor, Org, Scope,
+  UserData,
+} from './types';
 
 export const defaultAuthTokenTTLSeconds = 60;
 
@@ -98,7 +100,7 @@ export default function User({
     return groupKey;
   }
 
-  async function e2eDecrypt(aesEncyptedData: AESEncryptedData) {
+  const e2eDecrypt: E2EDecryptor = async (aesEncyptedData) => {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
     }
@@ -108,9 +110,9 @@ export default function User({
       wrapperKeyId: localEncryptionKeyId,
     });
     return message;
-  }
+  };
 
-  async function e2eDecryptMany(aesEncyptedData: (AESEncryptedData | null)[]) {
+  const e2eDecryptMany: E2EMultiDecryptor = async (aesEncyptedData) => {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
     }
@@ -120,9 +122,9 @@ export default function User({
       wrapperKeyId: localEncryptionKeyId,
     });
     return messages;
-  }
+  };
 
-  async function e2eEncrypt(message: string) {
+  const e2eEncrypt: E2EEncryptor = async (message: string) => {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
     }
@@ -131,9 +133,9 @@ export default function User({
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
     });
-  }
+  };
 
-  async function e2eEncryptMany(messages: string[]) {
+  const e2eEncryptMany: E2EMultiEncryptor = async (messages: string[]) => {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encryptMany for users with a localEncryptionKeyId and encryptedGroupKey');
     }
@@ -142,7 +144,7 @@ export default function User({
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
     });
-  }
+  };
 
   return {
     authenticationKeyId,

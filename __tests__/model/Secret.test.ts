@@ -1,4 +1,4 @@
-import { Secret } from '../../app/model';
+import Secret from '../../app/model/keys/Secret';
 
 function decodedByteCount(base64String: string) {
   const paddingLength = base64String.split('=').length - 1;

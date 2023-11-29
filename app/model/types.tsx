@@ -1,4 +1,4 @@
-import type { AESEncryptedData } from './AESModule';
+import type { AESEncryptedData } from './keys';
 
 export type OrgGraphUser = {
   connectionCount: number;
@@ -134,7 +134,6 @@ export function isNonNull<T>(argument: T | null): argument is T {
 
 export type PostSort = 'new' | 'old' | 'top' | 'hot';
 
-export type { AESEncryptedData } from './AESModule';
 export type E2EEncryptor = (message: string) => Promise<AESEncryptedData>;
 export type E2EMultiEncryptor =
   (messages: string[]) => Promise<AESEncryptedData[]>;

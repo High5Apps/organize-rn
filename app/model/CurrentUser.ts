@@ -3,7 +3,7 @@ import {
   createConnection, createOrg, createUser, getUser, UnpublishedOrg,
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
-import Keys from './Keys';
+import { Keys } from './keys';
 import User, { UserType } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
 
