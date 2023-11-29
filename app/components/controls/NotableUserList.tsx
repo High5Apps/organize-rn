@@ -12,7 +12,7 @@ import {
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
-import usePullToRefresh from './PullToRefresh';
+import { usePullToRefresh } from '../hooks';
 
 export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
   const officers = users.filter((user) => user.offices?.[0]);

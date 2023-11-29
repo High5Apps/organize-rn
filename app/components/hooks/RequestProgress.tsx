@@ -3,7 +3,7 @@ import {
   ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
-import type { ResultType } from './types';
+import { ResultType } from './types';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

@@ -8,11 +8,11 @@ import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
-import useRequestProgress from './RequestProgress';
 import {
   Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
 } from '../../model';
 import type { InsertedComment } from '../../navigation';
+import { useRequestProgress } from '../hooks';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

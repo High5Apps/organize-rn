@@ -8,8 +8,7 @@ import {
 } from '../../model';
 import { ItemSeparator } from '../views';
 import PostRow from './PostRow';
-import usePullToRefresh from './PullToRefresh';
-import useInfiniteScroll from './InfiniteScroll';
+import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 
 type Props = {
   category?: PostCategory;
