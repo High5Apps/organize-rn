@@ -175,8 +175,14 @@ export type Candidate = {
   id: string;
 };
 
+export type Result = {
+  candidateId: string;
+  voteCount: number;
+};
+
 export type Ballot = BallotPreview & {
   candidates: Candidate[];
-  maxCandidateIdsPerVote: number
-  myVote: string[],
+  maxCandidateIdsPerVote: number;
+  myVote: string[];
+  results?: Result[];
 };

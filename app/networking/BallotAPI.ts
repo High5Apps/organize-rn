@@ -185,6 +185,7 @@ export async function fetchBallot({
     question,
     candidates,
     myVote: json.myVote,
+    results: json.results,
   };
 
   return { ballot };
