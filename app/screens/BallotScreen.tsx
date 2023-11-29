@@ -1,20 +1,14 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
 import type { BallotScreenProps } from '../navigation';
-import {
-  CandidateList, ScreenBackground, useRequestProgress,
-} from '../components';
+import { CandidateList, ScreenBackground, useBallot } from '../components';
 import useTheme from '../Theme';
 import {
-  Ballot, Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, isCurrentUserData,
-  useBallotPreviews, useUserContext, useVoteUpdater,
-  votingTimeRemainingFormatter,
+  Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
+  useVoteUpdater, votingTimeRemainingFormatter,
 } from '../model';
-import { fetchBallot } from '../networking';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -40,9 +34,6 @@ const useStyles = () => {
       fontFamily: font.weights.semiBold,
       marginBottom: spacing.xs,
     },
-    requestProgress: {
-      margin: spacing.m,
-    },
     text: {
       color: colors.label,
       flexShrink: 1,
@@ -57,7 +48,8 @@ const useStyles = () => {
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
-  const [ballot, setBallot] = useState<Ballot | undefined>();
+  const { ballot, RequestProgress } = useBallot(ballotId);
+
   const {
     onNewCandidateSelection,
     selectedCandidateIds,
@@ -69,43 +61,6 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   const ballotPreview = getCachedBallotPreview(ballotId);
 
   const { styles } = useStyles();
-
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
-  const { currentUser } = useUserContext();
-  if (!isCurrentUserData(currentUser)) { return null; }
-  const { createAuthToken, e2eDecrypt, e2eDecryptMany } = currentUser;
-
-  const updateBallot = useCallback(async () => {
-    setResult('none');
-    setLoading(true);
-
-    const jwt = await createAuthToken({ scope: '*' });
-
-    let errorMessage: string | undefined;
-    let fetchedBallot: Ballot | undefined;
-    try {
-      ({ ballot: fetchedBallot, errorMessage } = await fetchBallot({
-        ballotId, e2eDecrypt, e2eDecryptMany, jwt,
-      }));
-    } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
-    }
-
-    if (errorMessage !== undefined) {
-      setResult('error', {
-        message: `${errorMessage}\nTap here to try again`,
-        onPress: updateBallot,
-      });
-      return;
-    }
-
-    setBallot(fetchedBallot);
-    setLoading(false);
-  }, [ballotId, createAuthToken, e2eDecrypt, e2eDecryptMany]);
-
-  useEffect(() => {
-    updateBallot().catch(console.error);
-  }, []);
 
   const ListHeaderComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
@@ -120,7 +75,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         <Text style={[styles.text, styles.details]}>
           Change your mind until voting ends
         </Text>
-        <RequestProgress style={styles.requestProgress} />
+        <RequestProgress />
       </View>
     );
   }, [ballotPreview, styles]);
