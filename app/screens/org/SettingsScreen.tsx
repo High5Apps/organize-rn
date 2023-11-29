@@ -3,9 +3,9 @@ import {
   Pressable, SectionList, StyleSheet, Text, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScreenBackground, SectionHeader } from '../components';
-import { SettingsItem, SettingsSection, useSettings } from '../model';
-import useTheme from '../Theme';
+import { ScreenBackground, SectionHeader } from '../../components';
+import { SettingsItem, SettingsSection, useSettings } from '../../model';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {

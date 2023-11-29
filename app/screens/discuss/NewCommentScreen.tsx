@@ -1,7 +1,7 @@
 import React from 'react';
-import type { NewCommentScreenProps } from '../navigation';
-import { PostRow } from '../components';
-import { usePosts } from '../model';
+import type { NewCommentScreenProps } from '../../navigation';
+import { PostRow } from '../../components';
+import { usePosts } from '../../model';
 import NewCommentScreenBase from './NewCommentScreenBase';
 
 export default function NewCommentScreen({

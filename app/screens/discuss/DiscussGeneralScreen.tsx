@@ -1,6 +1,6 @@
 import React from 'react';
 import DiscussScreen from './DiscussScreen';
-import type { DiscussGeneralScreenProps } from '../navigation';
+import type { DiscussGeneralScreenProps } from '../../navigation';
 
 export default function DiscussGeneralScreen({
   navigation, route,

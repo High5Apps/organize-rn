@@ -3,14 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, PrimaryButton, useRequestProgress,
-} from '../components';
+} from '../../components';
 import {
   BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
   useCachedValue, useUserContext,
-} from '../model';
-import useTheme from '../Theme';
-import { createBallot } from '../networking';
-import type { NewYesNoBallotScreenProps } from '../navigation';
+} from '../../model';
+import useTheme from '../../Theme';
+import { createBallot } from '../../networking';
+import type { NewYesNoBallotScreenProps } from '../../navigation';
 
 const CACHE_KEY_QUESTION = 'newYesNoVoteQuestion';
 const MAX_QUESTION_LENGTH = 140;

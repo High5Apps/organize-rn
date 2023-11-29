@@ -1,7 +1,7 @@
-import { NewOrgSteps } from '../../model';
+import { NewOrgSteps } from '../../../model';
 import type {
   NewOrgScreenNavigationProp, NewOrgScreenParams, OrgReviewParams,
-} from '../../navigation';
+} from '../../../navigation';
 
 const name = 'NewOrg';
 

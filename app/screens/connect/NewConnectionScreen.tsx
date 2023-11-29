@@ -3,11 +3,13 @@ import { StyleSheet } from 'react-native';
 import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
   PrimaryButton, ResultType, ScreenBackground, useRequestProgress,
-} from '../components';
-import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
-import { ConnectionPreview, createConnection } from '../networking';
-import { Status } from '../networking/API';
-import useTheme from '../Theme';
+} from '../../components';
+import {
+  GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext,
+} from '../../model';
+import { ConnectionPreview, createConnection } from '../../networking';
+import { Status } from '../../networking/API';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();

@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import {
   ListEmptyMessage, PostList, PrimaryButton, ScreenBackground,
-} from '../components';
-import useTheme from '../Theme';
+} from '../../components';
+import useTheme from '../../Theme';
 import type {
   DiscussTabsParamList, DiscussTabsScreenProps, InternalRoute,
-} from '../navigation';
-import { Post, PostCategory, PostSort } from '../model';
+} from '../../navigation';
+import { Post, PostCategory, PostSort } from '../../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();

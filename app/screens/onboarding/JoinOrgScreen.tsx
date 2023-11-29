@@ -4,11 +4,13 @@ import {
   Agreement, ButtonRow, LockingScrollView, MembershipReview,
   NewConnectionControl, PrimaryButton, ScreenBackground, SecondaryButton,
   useRequestProgress,
-} from '../components';
-import { GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext } from '../model';
-import type { JoinOrgScreenProps } from '../navigation';
-import useTheme from '../Theme';
-import { ConnectionPreview } from '../networking';
+} from '../../components';
+import {
+  GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext,
+} from '../../model';
+import type { JoinOrgScreenProps } from '../../navigation';
+import useTheme from '../../Theme';
+import { ConnectionPreview } from '../../networking';
 
 const useStyles = () => {
   const { spacing } = useTheme();

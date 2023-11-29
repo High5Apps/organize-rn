@@ -5,10 +5,12 @@ import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
   SecondaryButton, TextInputRow,
-} from '../../components';
-import { NewOrgSteps } from '../../model';
-import type { NewOrgScreenParams, NewOrgScreenProps } from '../../navigation';
-import useTheme from '../../Theme';
+} from '../../../components';
+import { NewOrgSteps } from '../../../model';
+import type {
+  NewOrgScreenParams, NewOrgScreenProps,
+} from '../../../navigation';
+import useTheme from '../../../Theme';
 import NewOrgStepNavigator from './NewOrgStepNavigator';
 
 const useStyles = () => {

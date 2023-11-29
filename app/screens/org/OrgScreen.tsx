@@ -2,10 +2,10 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
-} from '../components';
+} from '../../components';
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
-} from '../navigation';
+} from '../../navigation';
 
 function SettingsButton() {
   const navigation: SettingsScreenNavigationProp = useNavigation();

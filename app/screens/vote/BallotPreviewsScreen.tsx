@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import {
   BallotPreviewList, PrimaryButton, ScreenBackground,
-} from '../components';
-import useTheme from '../Theme';
-import type { BallotPreviewsScreenProps } from '../navigation';
+} from '../../components';
+import useTheme from '../../Theme';
+import type { BallotPreviewsScreenProps } from '../../navigation';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();

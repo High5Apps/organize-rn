@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
   ButtonRow, LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
-} from '../components';
-import type { ConnectScreenProps } from '../navigation';
-import useTheme from '../Theme';
+} from '../../components';
+import type { ConnectScreenProps } from '../../navigation';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {

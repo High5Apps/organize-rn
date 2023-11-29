@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { CircleLogo } from '../../assets';
+import { CircleLogo } from '../../../assets';
 import {
   AutoscaledText, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton,
-} from '../components';
-import type { WelcomeScreenProps } from '../navigation';
-import useTheme from '../Theme';
+} from '../../components';
+import type { WelcomeScreenProps } from '../../navigation';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {

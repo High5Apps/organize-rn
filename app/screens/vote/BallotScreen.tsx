@@ -2,13 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
-import type { BallotScreenProps } from '../navigation';
-import { CandidateList, ScreenBackground, useBallot } from '../components';
-import useTheme from '../Theme';
+import type { BallotScreenProps } from '../../navigation';
+import { CandidateList, ScreenBackground, useBallot } from '../../components';
+import useTheme from '../../Theme';
 import {
   Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
   useVoteUpdater, votingTimeRemainingFormatter,
-} from '../model';
+} from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

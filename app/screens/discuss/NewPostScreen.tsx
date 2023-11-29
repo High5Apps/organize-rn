@@ -8,17 +8,17 @@ import { CommonActions } from '@react-navigation/native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
   PrimaryButton, TextInputRow, useRequestProgress,
-} from '../components';
+} from '../../components';
 import {
   GENERIC_ERROR_MESSAGE, isCurrentUserData, isDefined, useCachedValue, usePosts,
   useUserContext,
-} from '../model';
-import type { Post, PostCategory } from '../model';
-import useTheme from '../Theme';
-import { createPost } from '../networking';
+} from '../../model';
+import type { Post, PostCategory } from '../../model';
+import useTheme from '../../Theme';
+import { createPost } from '../../networking';
 import type {
   DiscussTabsParamList, NewPostScreenParams, NewPostScreenProps,
-} from '../navigation';
+} from '../../navigation';
 
 const MAX_TITLE_LENGTH = 140;
 const MAX_BODY_LENGTH = 10000;

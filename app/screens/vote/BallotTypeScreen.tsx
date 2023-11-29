@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { BallotTypeList, ScreenBackground } from '../components';
-import type { BallotTypeScreenProps } from '../navigation';
-import { BallotType, ballotTypeMap } from '../model';
+import { BallotTypeList, ScreenBackground } from '../../components';
+import type { BallotTypeScreenProps } from '../../navigation';
+import { BallotType, ballotTypeMap } from '../../model';
 
 export default function BallotTypeScreen({
   navigation,

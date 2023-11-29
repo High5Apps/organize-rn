@@ -1,7 +1,7 @@
 import React from 'react';
-import type { NewReplyScreenProps } from '../navigation';
-import { useComments } from '../model';
-import { CommentRow } from '../components';
+import type { NewReplyScreenProps } from '../../navigation';
+import { useComments } from '../../model';
+import { CommentRow } from '../../components';
 import NewCommentScreenBase from './NewCommentScreenBase';
 
 export default function NewReplyScreen({

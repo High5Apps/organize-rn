@@ -3,13 +3,13 @@ import { Keyboard, StyleSheet } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PrimaryButton,
   useRequestProgress,
-} from '../components';
-import useTheme from '../Theme';
+} from '../../components';
+import useTheme from '../../Theme';
 import {
   Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData,
   useCachedValue, useComments, useUserContext,
-} from '../model';
-import { createComment } from '../networking';
+} from '../../model';
+import { createComment } from '../../networking';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();

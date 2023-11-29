@@ -1,9 +1,9 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { CommentList, PrimaryButton, ScreenBackground } from '../components';
-import type { PostScreenProps } from '../navigation';
-import { usePosts } from '../model';
-import useTheme from '../Theme';
+import { CommentList, PrimaryButton, ScreenBackground } from '../../components';
+import type { PostScreenProps } from '../../navigation';
+import { usePosts } from '../../model';
+import useTheme from '../../Theme';
 
 function toTitleCase(s: string) {
   return s.replace(/(^|\s)\S/g, (c) => c.toUpperCase());

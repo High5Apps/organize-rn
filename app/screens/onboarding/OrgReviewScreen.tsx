@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton, useRequestProgress,
-} from '../components';
-import { NewOrgSteps, useUserContext } from '../model';
-import type { OrgReviewScreenProps } from '../navigation';
-import useTheme from '../Theme';
+} from '../../components';
+import { NewOrgSteps, useUserContext } from '../../model';
+import type { OrgReviewScreenProps } from '../../navigation';
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
