@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ScreenBackground } from '../../components';
-import useTheme from '../../Theme';
+import { ScreenBackground } from '../components';
+import useTheme from '../Theme';
 
 const useStyles = () => {
   const { colors, font } = useTheme();
