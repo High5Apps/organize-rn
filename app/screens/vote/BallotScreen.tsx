@@ -99,25 +99,21 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     }
   }, [onNewCandidateSelection]);
 
-  if (!ballotPreview) {
-    return (
-      <ScreenBackground>
-        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
-      </ScreenBackground>
-    );
-  }
-
   return (
     <ScreenBackground>
-      <CandidateList
-        candidates={ballot?.candidates ?? null}
-        ListFooterComponent={ListFooterComponent}
-        ListHeaderComponent={ListHeaderComponent}
-        onRowPressed={onRowPressed}
-        selectedCandidateIds={selectedCandidateIds}
-        waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
-        waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
-      />
+      {ballotPreview ? (
+        <CandidateList
+          candidates={ballot?.candidates ?? null}
+          ListFooterComponent={ListFooterComponent}
+          ListHeaderComponent={ListHeaderComponent}
+          onRowPressed={onRowPressed}
+          selectedCandidateIds={selectedCandidateIds}
+          waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
+          waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
+        />
+      ) : (
+        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
+      )}
     </ScreenBackground>
   );
 }

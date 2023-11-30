@@ -54,20 +54,16 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     );
   }, [ballotPreview, styles]);
 
-  if (!ballotPreview) {
-    return (
-      <ScreenBackground>
-        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
-      </ScreenBackground>
-    );
-  }
-
   return (
     <ScreenBackground>
-      <ResultList
-        rankedResults={rankedResults}
-        ListHeaderComponent={ListHeaderComponent}
-      />
+      {ballotPreview ? (
+        <ResultList
+          rankedResults={rankedResults}
+          ListHeaderComponent={ListHeaderComponent}
+        />
+      ) : (
+        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
+      )}
     </ScreenBackground>
   );
 }
