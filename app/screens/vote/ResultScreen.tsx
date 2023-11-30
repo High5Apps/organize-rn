@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ResultScreenProps } from '../../navigation';
-import { ResultList, ScreenBackground, useBallot } from '../../components';
+import {
+  ResultGraph, ResultList, ScreenBackground, useBallot,
+} from '../../components';
 import { GENERIC_ERROR_MESSAGE, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 
@@ -50,6 +52,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
           {ballotPreview.question}
         </Text>
         <RequestProgress />
+        <ResultGraph rankedResults={rankedResults} />
       </View>
     );
   }, [ballotPreview, styles]);
