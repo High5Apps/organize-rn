@@ -1,11 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
 import {
-  Ballot, GENERIC_ERROR_MESSAGE, isCurrentUserData, useUserContext,
+  Ballot, GENERIC_ERROR_MESSAGE, Result, isCurrentUserData, isDefined,
+  useUserContext,
 } from '../../model';
 import { fetchBallot } from '../../networking';
+import { RankedResult } from './types';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -70,5 +74,19 @@ export default function useBallot(ballotId: string) {
     [UnstyledRequestProgress],
   );
 
-  return { ballot, RequestProgress };
+  const rankedResults: RankedResult[] | undefined = useMemo(() => {
+    function getRankedResult({
+      candidateId, voteCount,
+    }: Result, rank: number): RankedResult | undefined {
+      const candidate = ballot?.candidates.find(({ id }) => id === candidateId);
+      if (!candidate) { return undefined; }
+      return { candidate, rank, voteCount };
+    }
+
+    return ballot?.results
+      ?.map((result, i) => getRankedResult(result, i))
+      .filter(isDefined);
+  }, [ballot]);
+
+  return { ballot, rankedResults, RequestProgress };
 }
