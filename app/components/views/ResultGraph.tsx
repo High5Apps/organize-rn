@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleProp, StyleSheet, Text, View, ViewStyle,
+} from 'react-native';
 import { RankedResult } from '../hooks';
 import useTheme from '../../Theme';
 
@@ -51,9 +53,10 @@ const useStyles = () => {
 
 type Props = {
   rankedResults?: RankedResult[];
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function ResultGraph({ rankedResults }: Props) {
+export default function ResultGraph({ rankedResults, style }: Props) {
   const { styles } = useStyles();
 
   if (!rankedResults) { return null; }
@@ -64,7 +67,7 @@ export default function ResultGraph({ rankedResults }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.labelColumn}>
         { rankedResults.map(({ candidate: { id, title } }) => (
           <Text key={id} style={[styles.text, styles.candidateTitle]}>
@@ -86,4 +89,5 @@ export default function ResultGraph({ rankedResults }: Props) {
 
 ResultGraph.defaultProps = {
   rankedResults: undefined,
+  style: {},
 };

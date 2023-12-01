@@ -19,9 +19,11 @@ const useStyles = () => {
     header: {
       margin: spacing.m,
     },
+    graph: {
+      marginTop: spacing.m,
+    },
     question: {
       fontFamily: font.weights.semiBold,
-      marginBottom: spacing.xs,
     },
     text: {
       color: colors.label,
@@ -52,7 +54,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
           {ballotPreview.question}
         </Text>
         <RequestProgress />
-        <ResultGraph rankedResults={rankedResults} />
+        <ResultGraph rankedResults={rankedResults} style={styles.graph} />
       </View>
     );
   }, [ballotPreview, styles]);
