@@ -30,11 +30,6 @@ const useStyles = () => {
       flex: 1,
       flexDirection: 'column',
     },
-    labelColumn: {
-      alignItems: 'flex-end',
-      flexDirection: 'column',
-      justifyContent: 'space-around',
-    },
     row: {
       flexDirection: 'row',
       marginVertical: spacing.s,
@@ -43,8 +38,16 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
-      marginHorizontal: spacing.xs,
+      marginHorizontal: spacing.s,
       paddingVertical: spacing.s,
+    },
+    textColumn: {
+      alignItems: 'flex-end',
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+    },
+    textInvisible: {
+      marginHorizontal: 0,
     },
   });
 
@@ -68,7 +71,7 @@ export default function ResultGraph({ rankedResults, style }: Props) {
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.labelColumn}>
+      <View style={styles.textColumn}>
         { rankedResults.map(({ candidate: { id, title } }) => (
           <Text key={id} style={[styles.text, styles.candidateTitle]}>
             {title}
@@ -79,6 +82,18 @@ export default function ResultGraph({ rankedResults, style }: Props) {
         { rankedResults.map(({ candidate: { id }, voteCount }) => (
           <View key={id} style={[styles.row, { width: getWidth(voteCount) }]}>
             <View style={styles.bar} />
+            <Text style={[styles.text, styles.textInvisible]}>
+              {/* This makes the bar the same height as the padded text */}
+              {/* eslint-disable-next-line
+                react/jsx-curly-brace-presence, no-irregular-whitespace */}
+              {'​'}
+            </Text>
+          </View>
+        ))}
+      </View>
+      <View style={styles.textColumn}>
+        { rankedResults.map(({ candidate: { id }, voteCount }) => (
+          <View key={id} style={styles.row}>
             <Text style={styles.text}>{voteCount}</Text>
           </View>
         ))}
