@@ -66,7 +66,8 @@ export default function ResultGraph({ rankedResults, style }: Props) {
 
   const maxVoteCount = rankedResults[0].voteCount;
   function getWidth(voteCount: number) {
-    return `${100 * (voteCount / maxVoteCount)}%`;
+    const percent = (maxVoteCount === 0) ? 0 : 100 * (voteCount / maxVoteCount);
+    return `${percent}%`;
   }
 
   return (
