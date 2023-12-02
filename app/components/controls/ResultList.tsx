@@ -12,11 +12,20 @@ type Props = {
 export default function ResultList({
   rankedResults, ListHeaderComponent,
 }: Props) {
+  const maxVoteCount = rankedResults?.[0].voteCount;
+  const isTie = rankedResults && (
+    rankedResults[1].voteCount === maxVoteCount
+  );
+
   const renderItem = useCallback(({
     item,
-  }: ListRenderItemInfo<RankedResult>) => (
-    <ResultRow item={item} />
-  ), []);
+  }: ListRenderItemInfo<RankedResult>) => {
+    const { voteCount } = item;
+    const receivedMaxVotes = voteCount === maxVoteCount;
+    const winner = receivedMaxVotes && !isTie;
+    const tiedWinner = receivedMaxVotes && isTie;
+    return <ResultRow item={item} tiedWinner={tiedWinner} winner={winner} />;
+  }, [isTie, maxVoteCount]);
 
   return (
     <FlatList

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View,
+  StyleSheet, Text, TouchableHighlight, View, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -33,25 +33,51 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-type Props = {
+type IconNameProps = {
+  tiedWinner?: boolean;
+  winner?: boolean;
+};
+
+function getIcon({ tiedWinner, winner }: IconNameProps) {
+  let iconName: string;
+  let iconStyle: ViewStyle = {};
+
+  if (winner) {
+    iconName = 'check-circle';
+  } else if (tiedWinner) {
+    iconName = 'pause-circle-filled';
+    iconStyle = { transform: [{ rotate: '90deg' }] };
+  } else {
+    iconName = 'radio-button-unchecked';
+  }
+
+  return { iconName, iconStyle };
+}
+
+type Props = IconNameProps & {
   item: RankedResult;
 };
 
 export default function ResultRow({
-  item,
+  item, tiedWinner, winner,
 }: Props) {
-  const { candidate: { title }, rank } = item;
+  const { candidate: { title } } = item;
 
-  const iconName = rank === 0 ? 'check-circle' : 'radio-button-unchecked';
+  const { iconName, iconStyle } = getIcon({ tiedWinner, winner });
 
   const { colors, styles } = useStyles();
 
   return (
     <TouchableHighlight underlayColor={colors.label}>
       <View style={styles.container}>
-        <Icon name={iconName} style={styles.icon} />
+        <Icon name={iconName} style={[styles.icon, iconStyle]} />
         <Text style={styles.text}>{title}</Text>
       </View>
     </TouchableHighlight>
   );
 }
+
+ResultRow.defaultProps = {
+  tiedWinner: false,
+  winner: false,
+};
