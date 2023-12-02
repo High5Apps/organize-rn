@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
@@ -7,7 +7,8 @@ import { CandidateList, ScreenBackground, useBallot } from '../../components';
 import useTheme from '../../Theme';
 import {
   Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
-  useVoteUpdater, votingTimeRemainingFormatter,
+  useVoteUpdater, votingTimeRemainingExpiredFormatter,
+  votingTimeRemainingFormatter,
 } from '../../model';
 
 const useStyles = () => {
@@ -48,6 +49,9 @@ const useStyles = () => {
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
+  const [now, setNow] = useState<Date>(new Date());
+  const updateTime = () => setNow(new Date());
+
   const { ballot, RequestProgress } = useBallot(ballotId);
 
   const {
@@ -83,13 +87,15 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   const ListFooterComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
     return (
-      <Text style={[styles.text, styles.footer]}>
+      <Text style={[styles.text, styles.footer]} onPress={updateTime}>
         {getTimeRemaining(ballotPreview.votingEndsAt, {
           formatter: votingTimeRemainingFormatter,
+          expiredFormatter: votingTimeRemainingExpiredFormatter,
+          now,
         })}
       </Text>
     );
-  }, [ballotPreview]);
+  }, [ballotPreview, now]);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
@@ -97,6 +103,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     } catch (error) {
       Alert.alert('Failed to update your vote. Please try again.');
     }
+    updateTime();
   }, [onNewCandidateSelection]);
 
   return (

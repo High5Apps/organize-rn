@@ -1,6 +1,7 @@
 export { default as useAppState } from './AppState';
 export {
   default as useBallotPreviews, votingTimeRemainingFormatter,
+  votingTimeRemainingExpiredFormatter,
 } from './BallotPreviews';
 export { BallotPreviewContextProvider } from './BallotPreviewContext';
 export { ballotTypes, ballotTypeMap } from './BallotTypes';

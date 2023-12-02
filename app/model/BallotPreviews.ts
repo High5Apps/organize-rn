@@ -147,3 +147,5 @@ export default function useBallotPreviews() {
 export const votingTimeRemainingFormatter = (timeRemaining: string) => (
   `${timeRemaining} until voting ends`
 );
+
+export const votingTimeRemainingExpiredFormatter = () => 'Voting ended';

@@ -100,4 +100,23 @@ describe('getMessageAge', () => {
       expect(age).toBe('Only 59s remaining!');
     });
   });
+
+  describe('expiredFormatter', () => {
+    it('should allow changing the expired format', () => {
+      const expiration = getDateFromOffset(now, 0);
+      const unusedFormatter = (s: string) => `Not used (${s})`;
+      const expiredFormatter = (s: string) => `No time (${s}) remaining!`;
+      const age = getTimeRemaining(expiration, {
+        ...options, expiredFormatter, formatter: unusedFormatter,
+      });
+      expect(age).toBe('No time (0s) remaining!');
+    });
+
+    it('should fallback to using custom format', () => {
+      const expiration = getDateFromOffset(now, 0);
+      const formatter = (s: string) => `Used (${s})`;
+      const age = getTimeRemaining(expiration, { ...options, formatter });
+      expect(age).toBe('Used (0s)');
+    });
+  });
 });

@@ -4,6 +4,7 @@ import {
 } from './MessageAge';
 
 type Options = {
+  expiredFormatter?: (timeRemaining: string) => string;
   formatter?: (timeRemaining: string) => string;
   now?: Date;
 };
@@ -11,16 +12,18 @@ type Options = {
 const defaultFormatter = (timeRemaining: string) => (`${timeRemaining} left`);
 
 export default function getTimeRemaining(expiration: Date, {
-  formatter: maybeFormatter, now: maybeNow,
+  expiredFormatter: maybeExpiredFormatter, formatter: maybeFormatter,
+  now: maybeNow,
 }: Options = {}) {
   const formatter = maybeFormatter ?? defaultFormatter;
+  const expiredFormatter = maybeExpiredFormatter ?? formatter;
   const now = maybeNow ?? new Date();
   const secondsRemaining = (
     expiration.getTime() - now.getTime()
   ) / MILLISECONDS_PER_SECOND;
 
-  if (secondsRemaining < 0) {
-    return formatter('0s');
+  if (secondsRemaining <= 0) {
+    return expiredFormatter('0s');
   }
 
   if (secondsRemaining < SECONDS_PER_MINUTE) {
