@@ -101,7 +101,13 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     try {
       await onNewCandidateSelection(candidate);
     } catch (error) {
-      Alert.alert('Failed to update your vote. Please try again.');
+      let errorMessage = 'Failed to update your vote. Please try again.';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      Alert.alert(errorMessage);
     }
     updateTime();
   }, [onNewCandidateSelection]);
