@@ -141,7 +141,7 @@ export type E2EDecryptor = (encryptedMessage: AESEncryptedData) => Promise<strin
 export type E2EMultiDecryptor =
   (encryptedMessages: (AESEncryptedData | null)[]) => Promise<(string | null)[]>;
 
-export type BallotCategory = 'yes_no';
+export type BallotCategory = 'yes_no' | 'multiple_choice';
 
 export type BallotType = {
   category: BallotCategory;
