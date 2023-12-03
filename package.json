@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "react-native start",
     "test": "npm run check-dependencies && npm run type-check && npm run lint && jest",
-    "tether:android": "adb reverse tcp:3000 tcp:3000",
+    "tether:android": "adb reverse tcp:8080 tcp:8080",
     "type-check": "tsc"
   },
   "dependencies": {
