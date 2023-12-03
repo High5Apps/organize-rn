@@ -21,14 +21,12 @@ const useStyles = () => {
       start: spacing.m,
     },
     container: {
-      alignItems: 'center',
       backgroundColor: colors.fill,
       flexDirection: 'row',
       minHeight: sizes.buttonHeight,
       paddingStart: spacing.m,
     },
     icon: {
-      alignSelf: 'stretch',
       justifyContent: 'center',
       paddingStart: spacing.s,
     },
