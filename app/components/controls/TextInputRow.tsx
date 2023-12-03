@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   StyleSheet, TextInput, TextInputProps, View,
 } from 'react-native';
@@ -42,20 +42,26 @@ const useStyles = () => {
 };
 
 type Props = TextInputProps & {
+  focused?: boolean;
   iconEndDisabled?: boolean;
   iconEndName?: string;
   iconEndOnPress?: () => void;
 };
 
-const TextInputRow = forwardRef((
-  props: Props,
-  ref: ForwardedRef<TextInput>,
-) => {
+export default function TextInputRow(props: Props) {
   const {
-    iconEndDisabled, iconEndName, iconEndOnPress, style,
+    focused, iconEndDisabled, iconEndName, iconEndOnPress, style,
   } = props;
 
+  const ref = useRef<TextInput>(null);
+
   const { colors, styles } = useStyles();
+
+  useEffect(() => {
+    if (focused) {
+      ref.current?.focus();
+    }
+  }, [focused]);
 
   const defaultProps = {
     autoFocus: true,
@@ -83,12 +89,11 @@ const TextInputRow = forwardRef((
       <View style={styles.bottomBorder} />
     </View>
   );
-});
+}
 
 TextInputRow.defaultProps = {
+  focused: undefined,
   iconEndDisabled: false,
   iconEndName: undefined,
   iconEndOnPress: () => undefined,
 };
-
-export default TextInputRow;

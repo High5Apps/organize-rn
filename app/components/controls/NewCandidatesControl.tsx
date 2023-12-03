@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import TextInputRow from './TextInputRow';
 import TextButton from './TextButton';
 import useTheme from '../../Theme';
@@ -31,11 +31,20 @@ type Props = {
 export default function NewCandidatesControl({
   candidates, setCandidates,
 }: Props) {
+  const [
+    focusedInputIndex, setFocusedInputIndex,
+  ] = useState<number | null>(null);
+
+  const appendNewCandidate = () => setCandidates([...candidates, '']);
+
   const { styles } = useStyles();
   return (
     <View>
       {candidates.map((candidate, i) => (
         <TextInputRow
+          autoFocus={false}
+          blurOnSubmit={false}
+          focused={focusedInputIndex === i}
           iconEndDisabled={candidates[i + 1] === undefined}
           iconEndName="close"
           iconEndOnPress={ConfirmationAlert({
@@ -53,6 +62,24 @@ export default function NewCandidatesControl({
             text,
             ...candidates.slice(i + 1),
           ])}
+          onFocus={() => setFocusedInputIndex(i)}
+          onSubmitEditing={({ nativeEvent: { text } }) => {
+            if (focusedInputIndex === null) { return; }
+
+            const isOnLastInput = i === candidates.length - 1;
+            if (!isOnLastInput) {
+              setFocusedInputIndex(focusedInputIndex + 1);
+              return;
+            }
+
+            if (!text) {
+              setFocusedInputIndex(null);
+              Keyboard.dismiss();
+            } else {
+              appendNewCandidate();
+              setFocusedInputIndex(focusedInputIndex + 1);
+            }
+          }}
           placeholder={`Choice ${1 + i}`}
           value={candidate}
         />
@@ -60,7 +87,7 @@ export default function NewCandidatesControl({
       <TextButton
         containerStyle={styles.addChoiceButtonContainer}
         disabled={!candidates?.at(-1)?.length}
-        onPress={() => setCandidates([...candidates, ''])}
+        onPress={appendNewCandidate}
         style={styles.addChoiceButtonText}
       >
         Add another choice
