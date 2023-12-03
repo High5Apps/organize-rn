@@ -10,6 +10,7 @@ export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';
 export { default as MultilineTextInput } from './MultilineTextInput';
+export { default as NewCandidatesControl } from './NewCandidatesControl';
 export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NotableUserList } from './NotableUserList';
 export { default as OrgGraph } from './OrgGraph';

@@ -7,6 +7,9 @@ const useStyles = () => {
   const { colors, sizes } = useTheme();
 
   const styles = StyleSheet.create({
+    disabled: {
+      color: colors.labelSecondary,
+    },
     pressed: {
       opacity: 0.5,
     },
@@ -27,6 +30,7 @@ const useStyles = () => {
 type IconSize = 'default' | 'large';
 
 type Props = {
+  disabled?: boolean;
   iconName: string;
   iconSize?: IconSize;
   onPress?: () => void;
@@ -34,11 +38,12 @@ type Props = {
 };
 
 export default function IconButton({
-  iconName, iconSize, onPress, style,
+  disabled, iconName, iconSize, onPress, style,
 }: Props) {
   const { styles } = useStyles();
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         pressed && styles.pressed,
@@ -49,6 +54,7 @@ export default function IconButton({
         name={iconName}
         style={[
           styles.icon,
+          disabled && styles.disabled,
           (iconSize === 'default') && styles.iconDefault,
           (iconSize === 'large') && styles.iconLarge,
         ]}
@@ -58,6 +64,7 @@ export default function IconButton({
 }
 
 IconButton.defaultProps = {
+  disabled: false,
   iconSize: 'default',
   onPress: () => {},
   style: {},

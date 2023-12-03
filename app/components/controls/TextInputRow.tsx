@@ -4,6 +4,7 @@ import {
   StyleSheet, TextInput, TextInputProps, View,
 } from 'react-native';
 import useTheme from '../../Theme';
+import IconButton from './IconButton';
 
 const useStyles = () => {
   const {
@@ -19,22 +20,42 @@ const useStyles = () => {
       position: 'absolute',
       start: spacing.m,
     },
-    textInput: {
+    container: {
+      alignItems: 'center',
       backgroundColor: colors.fill,
+      flexDirection: 'row',
+      minHeight: sizes.buttonHeight,
+      paddingStart: spacing.m,
+    },
+    icon: {
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+      paddingStart: spacing.s,
+    },
+    textInput: {
       color: colors.label,
-      height: sizes.buttonHeight,
+      flex: 1,
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
     },
   });
 
   return { colors, styles };
 };
 
-function TextInputRow(props: TextInputProps, ref: ForwardedRef<TextInput>) {
-  const { style } = props;
+type Props = TextInputProps & {
+  iconEndDisabled?: boolean;
+  iconEndName?: string;
+  iconEndOnPress?: () => void;
+};
+
+const TextInputRow = forwardRef((
+  props: Props,
+  ref: ForwardedRef<TextInput>,
+) => {
+  const {
+    iconEndDisabled, iconEndName, iconEndOnPress, style,
+  } = props;
 
   const { colors, styles } = useStyles();
 
@@ -46,16 +67,30 @@ function TextInputRow(props: TextInputProps, ref: ForwardedRef<TextInput>) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         {...defaultProps}
         {...props}
         ref={ref}
         style={[styles.textInput, style]}
       />
+      {iconEndName && (
+        <IconButton
+          disabled={iconEndDisabled}
+          iconName={iconEndName}
+          onPress={iconEndOnPress}
+          style={styles.icon}
+        />
+      )}
       <View style={styles.bottomBorder} />
     </View>
   );
-}
+});
 
-export default forwardRef(TextInputRow);
+TextInputRow.defaultProps = {
+  iconEndDisabled: false,
+  iconEndName: undefined,
+  iconEndOnPress: () => undefined,
+};
+
+export default TextInputRow;
