@@ -46,7 +46,8 @@ export default function NewCandidatesControl({
               ...candidates.slice(i + 1),
             ]),
           }).show}
-          key={`${i + candidate}`}
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
           onChangeText={(text) => setCandidates([
             ...candidates.slice(0, i),
             text,
