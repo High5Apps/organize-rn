@@ -11,7 +11,7 @@ export const ballotTypes: BallotTypeInfo[] = [
     category: 'multiple_choice',
     iconName: 'check-box',
     name: 'Multiple Choice',
-    newScreenName: 'NewYesOrNoBallot',
+    newScreenName: 'NewMultipleChoiceBallot',
   },
 ];
 

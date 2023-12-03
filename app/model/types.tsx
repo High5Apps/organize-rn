@@ -149,7 +149,7 @@ export type BallotType = {
   name: string;
 };
 
-type NewBallotScreen = 'NewYesOrNoBallot';
+type NewBallotScreen = 'NewYesOrNoBallot' | 'NewMultipleChoiceBallot';
 
 export type BallotTypeInfo = {
   category: BallotCategory;
