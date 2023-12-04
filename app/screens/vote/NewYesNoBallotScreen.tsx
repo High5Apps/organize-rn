@@ -37,7 +37,7 @@ const useStyles = () => {
     },
     multilineTextInput: {
       marginBottom: spacing.s,
-      maxHeight: 100,
+      height: 100,
     },
     scrollView: {
       flex: 1,
