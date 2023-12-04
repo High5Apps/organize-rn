@@ -61,7 +61,7 @@ export default function NewMultipleChoiceBallotScreen() {
 
   const { styles } = useStyles();
 
-  const { RequestProgress } = useRequestProgress();
+  const { RequestProgress } = useRequestProgress({ removeWhenInactive: true });
 
   const onPublishPressed = () => {
     console.log({ candidates, question, votingEnd });

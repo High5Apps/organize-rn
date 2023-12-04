@@ -62,7 +62,9 @@ export default function NewYesNoBallotScreen({
 
   const { styles } = useStyles();
 
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const {
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
 
   const { cacheBallotPreview } = useBallotPreviews();
 
