@@ -47,7 +47,7 @@ export default function NewCandidatesControl({
           autoFocus={false}
           blurOnSubmit={false}
           focused={focusedInputIndex === i}
-          iconEndDisabled={candidates[i + 1] === undefined}
+          iconEndDisabled={candidates.length === 1}
           iconEndName="close"
           iconEndOnPress={ConfirmationAlert({
             destructiveAction: 'Remove',
