@@ -69,8 +69,8 @@ export default function NewCommentScreenBase({
 
   const { styles } = useStyles();
   const {
-    loading, RequestProgress, result, setLoading, setResult,
-  } = useRequestProgress();
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
   const { cacheComment, getCachedComment } = useComments();
 
   const { currentUser } = useUserContext();
@@ -141,8 +141,7 @@ export default function NewCommentScreenBase({
           returnKeyType="default"
           value={maybeBody}
         />
-        {(!loading && result === 'none') ? null
-          : <RequestProgress style={styles.requestProgress} />}
+        <RequestProgress style={styles.requestProgress} />
         <PrimaryButton
           iconName="publish"
           label="Publish"

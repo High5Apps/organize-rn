@@ -34,7 +34,11 @@ type SetResultOptions = {
   onPress?: () => void;
 };
 
-export default function useRequestProgress() {
+type Props = {
+  removeWhenInactive?: boolean;
+};
+
+export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
   const [loading, setLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
   const [resultOnPress, setResultOnPress] = useState<() => void>();
@@ -64,13 +68,14 @@ export default function useRequestProgress() {
 
   const { colors, styles } = useStyles();
 
-  type Props = {
+  type RequestProgressProps = {
     style?: StyleProp<ViewStyle>;
   };
 
-  const RequestProgress = useCallback(({ style }: Props) => {
+  const RequestProgress = useCallback(({ style }: RequestProgressProps) => {
     const isVisible = (resultType !== 'none') || loading;
-    return (
+    const remove = removeWhenInactive && !isVisible;
+    return remove ? null : (
       <View style={isVisible && style}>
         {loading && <ActivityIndicator color={colors.primary} />}
         {resultMessage && (

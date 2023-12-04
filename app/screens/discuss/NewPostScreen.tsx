@@ -122,8 +122,8 @@ export default function NewPostScreen({
   );
 
   const {
-    loading, RequestProgress, result, setLoading, setResult,
-  } = useRequestProgress();
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
 
   const { cachePost } = usePosts();
 
@@ -237,8 +237,7 @@ export default function NewPostScreen({
             ref={multilineTextInputRef}
             value={body}
           />
-          {(!loading && result === 'none') ? null
-            : <RequestProgress style={styles.requestProgress} />}
+          <RequestProgress style={styles.requestProgress} />
           <PrimaryButton
             iconName="publish"
             label="Publish"
