@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  MultilineTextInput, NewCandidatesControl, PrimaryButton, useRequestProgress,
+  MultilineTextInput, NewCandidatesControl, PrimaryButton, StepperControl,
+  useRequestProgress,
 } from '../../components';
 import { useCachedValue } from '../../model';
 import useTheme from '../../Theme';
@@ -34,6 +35,9 @@ const useStyles = () => {
     },
     scrollView: {
       flex: 1,
+    },
+    stepperControl: {
+      marginStart: spacing.m,
     },
   });
 
@@ -89,6 +93,12 @@ export default function NewMultipleChoiceBallotScreen() {
         <NewCandidatesControl
           candidates={candidates ?? ['']}
           setCandidates={setCandidates}
+        />
+        <HeaderText>Max Selections</HeaderText>
+        <StepperControl
+          max={Math.max(1, (candidates ?? []).filter((c) => c.length).length)}
+          min={1}
+          style={styles.stepperControl}
         />
         <HeaderText>Voting Ends On</HeaderText>
         <DateTimeSelector
