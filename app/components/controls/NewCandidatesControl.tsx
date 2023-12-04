@@ -51,7 +51,7 @@ export default function NewCandidatesControl({
           iconEndName="close"
           iconEndOnPress={ConfirmationAlert({
             destructiveAction: 'Remove',
-            destructiveActionInTitle: 'remove this choice',
+            destructiveActionInTitle: `remove this choice: "${candidate}"`,
             onConfirm: () => setCandidates([
               ...candidates.slice(0, i),
               ...candidates.slice(i + 1),
