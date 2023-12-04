@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Keyboard, StyleSheet } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PrimaryButton,
   useRequestProgress,
@@ -23,13 +23,17 @@ const useStyles = () => {
       marginEnd: spacing.m,
       paddingHorizontal: spacing.m,
     },
+    container: {
+      rowGap: spacing.m,
+    },
     multilineTextInput: {
-      flex: 1,
-      margin: spacing.m,
+      marginHorizontal: spacing.m,
     },
     requestProgress: {
       marginHorizontal: spacing.m,
-      marginBottom: spacing.m,
+    },
+    scrollView: {
+      flex: 1,
     },
   });
 
@@ -64,7 +68,9 @@ export default function NewCommentScreenBase({
   const [maybeBody, setBody] = useCachedValue<string | undefined>(cacheKey);
 
   const { styles } = useStyles();
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
+  const {
+    loading, RequestProgress, result, setLoading, setResult,
+  } = useRequestProgress();
   const { cacheComment, getCachedComment } = useComments();
 
   const { currentUser } = useUserContext();
@@ -120,23 +126,30 @@ export default function NewCommentScreenBase({
 
   return (
     <KeyboardAvoidingScreenBackground>
-      {HeaderComponent}
-      <MultilineTextInput
-        autoFocus
-        maxLength={MAX_COMMENT_LENGTH}
-        onChangeText={setBody}
-        placeholder="What do you think?"
-        style={styles.multilineTextInput}
-        returnKeyType="default"
-        value={maybeBody}
-      />
-      <PrimaryButton
-        iconName="publish"
-        label="Publish"
-        onPress={onPublishPressed}
-        style={styles.button}
-      />
-      <RequestProgress style={styles.requestProgress} />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        style={styles.scrollView}
+      >
+        {HeaderComponent}
+        <MultilineTextInput
+          autoFocus
+          maxLength={MAX_COMMENT_LENGTH}
+          onChangeText={setBody}
+          placeholder="What do you think?"
+          style={styles.multilineTextInput}
+          returnKeyType="default"
+          value={maybeBody}
+        />
+        {(!loading && result === 'none') ? null
+          : <RequestProgress style={styles.requestProgress} />}
+        <PrimaryButton
+          iconName="publish"
+          label="Publish"
+          onPress={onPublishPressed}
+          style={styles.button}
+        />
+      </ScrollView>
     </KeyboardAvoidingScreenBackground>
   );
 }
