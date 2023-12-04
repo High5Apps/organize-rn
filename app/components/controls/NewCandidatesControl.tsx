@@ -5,6 +5,8 @@ import TextButton from './TextButton';
 import useTheme from '../../Theme';
 import { ConfirmationAlert } from '../../model';
 
+const MAX_TITLE_LENGTH = 30;
+
 const useStyles = () => {
   const { font, spacing } = useTheme();
 
@@ -57,6 +59,7 @@ export default function NewCandidatesControl({
           }).show}
           // eslint-disable-next-line react/no-array-index-key
           key={i}
+          maxLength={MAX_TITLE_LENGTH}
           onChangeText={(text) => setCandidates([
             ...candidates.slice(0, i),
             text,
