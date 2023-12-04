@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, PrimaryButton, useRequestProgress,
@@ -38,6 +38,9 @@ const useStyles = () => {
     multilineTextInput: {
       marginBottom: spacing.s,
       maxHeight: 100,
+    },
+    scrollView: {
+      flex: 1,
     },
   });
 
@@ -126,31 +129,37 @@ export default function NewYesNoBallotScreen({
   };
 
   return (
-    <KeyboardAvoidingScreenBackground style={styles.container}>
-      <HeaderText>Question</HeaderText>
-      <MultilineTextInput
-        blurOnSubmit
-        enablesReturnKeyAutomatically
-        maxLength={MAX_QUESTION_LENGTH}
-        onChangeText={setQuestion}
-        placeholder="Should we..."
-        style={styles.multilineTextInput}
-        returnKeyType="done"
-        value={question}
-      />
-      <HeaderText>Voting Ends On</HeaderText>
-      <DateTimeSelector
-        dateTime={votingEnd}
-        setDateTime={setVotingEnd}
-        style={styles.dateTimeSelector}
-      />
-      <RequestProgress />
-      <PrimaryButton
-        iconName="publish"
-        label="Publish"
-        onPress={onPublishPressed}
-        style={styles.button}
-      />
+    <KeyboardAvoidingScreenBackground>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        style={styles.scrollView}
+      >
+        <HeaderText>Question</HeaderText>
+        <MultilineTextInput
+          blurOnSubmit
+          enablesReturnKeyAutomatically
+          maxLength={MAX_QUESTION_LENGTH}
+          onChangeText={setQuestion}
+          placeholder="Should we..."
+          style={styles.multilineTextInput}
+          returnKeyType="done"
+          value={question}
+        />
+        <HeaderText>Voting Ends On</HeaderText>
+        <DateTimeSelector
+          dateTime={votingEnd}
+          setDateTime={setVotingEnd}
+          style={styles.dateTimeSelector}
+        />
+        <RequestProgress />
+        <PrimaryButton
+          iconName="publish"
+          label="Publish"
+          onPress={onPublishPressed}
+          style={styles.button}
+        />
+      </ScrollView>
     </KeyboardAvoidingScreenBackground>
   );
 }
