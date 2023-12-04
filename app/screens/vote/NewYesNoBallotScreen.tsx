@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, PrimaryButton, useRequestProgress,
@@ -38,9 +38,6 @@ const useStyles = () => {
     multilineTextInput: {
       marginBottom: spacing.s,
       maxHeight: 100,
-    },
-    spacer: {
-      flex: 1,
     },
   });
 
@@ -145,7 +142,6 @@ export default function NewYesNoBallotScreen({
         setDateTime={setVotingEnd}
         style={styles.dateTimeSelector}
       />
-      <View style={styles.spacer} />
       <RequestProgress />
       <PrimaryButton
         iconName="publish"

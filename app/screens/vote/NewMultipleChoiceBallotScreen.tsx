@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, NewCandidatesControl, PrimaryButton, useRequestProgress,
@@ -33,9 +33,6 @@ const useStyles = () => {
       maxHeight: 100,
     },
     scrollView: {
-      flex: 1,
-    },
-    spacer: {
       flex: 1,
     },
   });
@@ -99,7 +96,6 @@ export default function NewMultipleChoiceBallotScreen() {
           setDateTime={setVotingEnd}
           style={styles.dateTimeSelector}
         />
-        <View style={styles.spacer} />
         <RequestProgress />
         <PrimaryButton
           iconName="publish"
