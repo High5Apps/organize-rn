@@ -49,14 +49,21 @@ export default function NewCandidatesControl({
           focused={focusedInputIndex === i}
           iconEndDisabled={candidates.length === 1}
           iconEndName="close"
-          iconEndOnPress={ConfirmationAlert({
-            destructiveAction: 'Remove',
-            destructiveActionInTitle: `remove this choice: "${candidate}"`,
-            onConfirm: () => setCandidates([
+          iconEndOnPress={() => {
+            const removeCandidate = () => setCandidates([
               ...candidates.slice(0, i),
               ...candidates.slice(i + 1),
-            ]),
-          }).show}
+            ]);
+            if (!candidate.length) {
+              removeCandidate();
+            } else {
+              ConfirmationAlert({
+                destructiveAction: 'Remove',
+                destructiveActionInTitle: `remove this choice: "${candidate}"`,
+                onConfirm: removeCandidate,
+              }).show();
+            }
+          }}
           // eslint-disable-next-line react/no-array-index-key
           key={i}
           maxLength={MAX_TITLE_LENGTH}
