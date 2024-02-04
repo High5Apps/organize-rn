@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import {
   StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
@@ -27,11 +27,14 @@ const useStyles = () => {
 type Props = {
   max?: number;
   min?: number;
+  setValue: Dispatch<SetStateAction<number>>
   style?: StyleProp<ViewStyle>;
+  value: number;
 };
 
-export default function StepperControl({ max, min, style }: Props) {
-  const [value, setValue] = useState(1);
+export default function StepperControl({
+  max, min, setValue, style, value,
+}: Props) {
   const { styles } = useStyles();
 
   useEffect(() => {

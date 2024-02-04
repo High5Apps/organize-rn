@@ -16,6 +16,7 @@ type Props = {
   category: BallotCategory;
   e2eEncrypt: E2EEncryptor;
   e2eEncryptMany: E2EMultiEncryptor;
+  maxSelections?: number;
   question: string;
   votingEndsAt: Date;
 };
@@ -29,8 +30,8 @@ type Return = {
 };
 
 export async function createBallot({
-  candidateTitles, category, e2eEncrypt, e2eEncryptMany, jwt, question,
-  votingEndsAt,
+  candidateTitles, category, e2eEncrypt, e2eEncryptMany, jwt, maxSelections,
+  question, votingEndsAt,
 }: Props & Authorization): Promise<Return> {
   const [encryptedCandidateTitles, encryptedQuestion] = await Promise.all([
     encryptMany(candidateTitles, e2eEncryptMany),
@@ -42,6 +43,7 @@ export async function createBallot({
       ballot: {
         category,
         encrypted_question: encryptedQuestion,
+        max_candidate_ids_per_vote: maxSelections,
         voting_ends_at: votingEndsAt.toISOString(),
       },
       candidates: encryptedCandidateTitles.map((t) => ({ encrypted_title: t })),
