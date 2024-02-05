@@ -98,8 +98,10 @@ export default function NewMultipleChoiceBallotScreen({
     const strippedQuestion = question?.trim() ?? '';
     setQuestion(strippedQuestion);
 
-    const strippedCandidates = (candidates ?? []).map((c) => c.trim());
-    const uniqueCandidates = [...new Set(strippedCandidates)];
+    const strippedNonemptyCandidates = (candidates ?? [])
+      .map((c) => c.trim())
+      .filter((c) => c.length);
+    const uniqueCandidates = [...new Set(strippedNonemptyCandidates)];
     setCandidates(uniqueCandidates);
 
     let errorMessage: string | undefined;
