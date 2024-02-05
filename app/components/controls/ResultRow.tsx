@@ -23,6 +23,16 @@ const useStyles = () => {
       color: colors.primary,
       fontSize: sizes.mediumIcon,
     },
+    rank: {
+      color: colors.primary,
+      fontSize: font.sizes.subhead,
+      fontFamily: font.weights.semiBold,
+    },
+    rankContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...StyleSheet.absoluteFillObject,
+    },
     text: {
       color: colors.label,
       fontSize: font.sizes.body,
@@ -34,28 +44,44 @@ const useStyles = () => {
 };
 
 type IconNameProps = {
-  tiedWinner?: boolean;
-  winner?: boolean;
+  multiSelectionWinnerRank?: number;
+  singleSelectionLoser?: boolean;
+  singleSelectionTied?: boolean;
+  singleSelectionWinner?: boolean;
 };
 
-function useIcon({ tiedWinner, winner }: IconNameProps) {
+function useIcon({
+  multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
+  singleSelectionWinner,
+}: IconNameProps) {
   const { styles } = useStyles();
 
   let iconName: string;
   let iconStyle: ViewStyle = {};
 
-  if (winner) {
+  if (singleSelectionWinner) {
     iconName = 'check-circle';
-  } else if (tiedWinner) {
+  } else if (singleSelectionTied) {
     iconName = 'pause-circle-filled';
     iconStyle = { transform: [{ rotate: '90deg' }] };
-  } else {
+  } else if (singleSelectionLoser) {
     iconName = 'radio-button-unchecked';
+  } else {
+    iconName = 'check-box-outline-blank';
   }
 
   return useMemo(() => (
-    <Icon name={iconName} style={[styles.icon, iconStyle]} />
-  ), [iconName, iconStyle, styles]);
+    <View>
+      <Icon name={iconName} style={[styles.icon, iconStyle]} />
+      {(multiSelectionWinnerRank !== undefined) && (
+        <View style={styles.rankContainer}>
+          <Text allowFontScaling={false} style={styles.rank}>
+            {1 + multiSelectionWinnerRank}
+          </Text>
+        </View>
+      )}
+    </View>
+  ), [iconName, iconStyle, multiSelectionWinnerRank, styles]);
 }
 
 type Props = IconNameProps & {
@@ -63,13 +89,19 @@ type Props = IconNameProps & {
 };
 
 export default function ResultRow({
-  item, tiedWinner, winner,
+  item, multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
+  singleSelectionWinner,
 }: Props) {
   const { candidate: { title } } = item;
 
   const { colors, styles } = useStyles();
 
-  const IconComponent = useIcon({ tiedWinner, winner });
+  const IconComponent = useIcon({
+    multiSelectionWinnerRank,
+    singleSelectionLoser,
+    singleSelectionTied,
+    singleSelectionWinner,
+  });
 
   return (
     <TouchableHighlight underlayColor={colors.label}>
@@ -82,6 +114,8 @@ export default function ResultRow({
 }
 
 ResultRow.defaultProps = {
-  tiedWinner: false,
-  winner: false,
+  multiSelectionWinnerRank: undefined,
+  singleSelectionLoser: undefined,
+  singleSelectionTied: undefined,
+  singleSelectionWinner: undefined,
 };

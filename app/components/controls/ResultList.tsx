@@ -5,27 +5,38 @@ import ResultRow from './ResultRow';
 import { RankedResult } from '../hooks';
 
 type Props = {
-  rankedResults?: RankedResult[];
   ListHeaderComponent?: ReactElement;
+  maxWinners?: number;
+  rankedResults?: RankedResult[];
 };
 
 export default function ResultList({
-  rankedResults, ListHeaderComponent,
+  ListHeaderComponent, maxWinners: maybeMaxWinners, rankedResults,
 }: Props) {
   const maxVoteCount = rankedResults?.[0].voteCount;
-  const isTie = rankedResults && (
-    rankedResults[1].voteCount === maxVoteCount
-  );
+  const maxWinners = maybeMaxWinners ?? 0;
+  const singleSelection = maxWinners === 1;
+  const multiSelection = maxWinners > 1;
 
   const renderItem = useCallback(({
     item,
   }: ListRenderItemInfo<RankedResult>) => {
-    const { voteCount } = item;
+    const { rank, voteCount } = item;
+    const isAWinner = item.rank < maxWinners;
     const receivedMaxVotes = voteCount === maxVoteCount;
-    const winner = receivedMaxVotes && !isTie;
-    const tiedWinner = receivedMaxVotes && isTie;
-    return <ResultRow item={item} tiedWinner={tiedWinner} winner={winner} />;
-  }, [isTie, maxVoteCount]);
+    const singleSelectionLoser = singleSelection && !isAWinner;
+    return (
+      <ResultRow
+        item={item}
+        multiSelectionWinnerRank={
+          (multiSelection && isAWinner) ? rank : undefined
+        }
+        singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
+        singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
+        singleSelectionWinner={singleSelection && isAWinner}
+      />
+    );
+  }, [maxVoteCount, maxWinners, multiSelection, singleSelection]);
 
   return (
     <FlatList
@@ -39,5 +50,6 @@ export default function ResultList({
 
 ResultList.defaultProps = {
   ListHeaderComponent: undefined,
+  maxWinners: undefined,
   rankedResults: undefined,
 };
