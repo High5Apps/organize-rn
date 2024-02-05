@@ -73,16 +73,25 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         <Text style={[styles.text, styles.question]}>
           {ballotPreview.question}
         </Text>
-        <Text style={[styles.text, styles.details]}>
-          Responses will be anonymous
-        </Text>
-        <Text style={[styles.text, styles.details]}>
-          Change your mind until voting ends
-        </Text>
+        { ballot && (
+          <>
+            {ballot.maxCandidateIdsPerVote > 1 && (
+              <Text style={[styles.text, styles.details]}>
+                {`Select up to ${ballot.maxCandidateIdsPerVote}`}
+              </Text>
+            )}
+            <Text style={[styles.text, styles.details]}>
+              Responses will be anonymous
+            </Text>
+            <Text style={[styles.text, styles.details]}>
+              Change your mind until voting ends
+            </Text>
+          </>
+        )}
         <RequestProgress />
       </View>
     );
-  }, [ballotPreview, styles]);
+  }, [ballot, ballotPreview, styles]);
 
   const ListFooterComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
