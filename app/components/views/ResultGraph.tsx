@@ -5,10 +5,14 @@ import {
 import { RankedResult } from '../hooks';
 import useTheme from '../../Theme';
 
-const useStyles = () => {
+const useStyles = (resultCount: number) => {
   const {
     colors, font, spacing, sizes,
   } = useTheme();
+
+  // For 2 results, use a spacing of 8. For 4 use 6. For 6 use 4. For 9+ use 1.
+  const rowMarginVertical = Math.max(1, 10 - resultCount);
+  const textPaddingVertical = rowMarginVertical;
 
   const styles = StyleSheet.create({
     bar: {
@@ -32,14 +36,14 @@ const useStyles = () => {
     },
     row: {
       flexDirection: 'row',
-      marginVertical: spacing.s,
+      marginVertical: rowMarginVertical,
     },
     text: {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       marginHorizontal: spacing.s,
-      paddingVertical: spacing.s,
+      paddingVertical: textPaddingVertical,
     },
     textColumn: {
       alignItems: 'flex-end',
@@ -60,7 +64,8 @@ type Props = {
 };
 
 export default function ResultGraph({ rankedResults, style }: Props) {
-  const { styles } = useStyles();
+  const resultCount = rankedResults?.length ?? 0;
+  const { styles } = useStyles(resultCount);
 
   if (!rankedResults) { return null; }
 
