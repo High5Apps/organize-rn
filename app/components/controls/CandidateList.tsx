@@ -11,6 +11,7 @@ type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
+  maxSelections?: number;
   onRowPressed?: (candidate: Candidate) => void;
   selectedCandidateIds?: string[];
   waitingForDeselectedCandidateIds: string[];
@@ -19,8 +20,8 @@ type Props = {
 
 export default function CandidateList({
   candidates, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
-  onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
-  waitingForSelectedCandidateIds,
+  maxSelections, onRowPressed, selectedCandidateIds,
+  waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
 }: Props) {
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
@@ -35,6 +36,7 @@ export default function CandidateList({
     return (
       <CandidateRow
         disabled={disabled}
+        indicatesMultipleSelectionsAllowed={(maxSelections ?? 0) > 1}
         item={item}
         onPress={onRowPressed}
         selected={selected}
@@ -42,8 +44,8 @@ export default function CandidateList({
       />
     );
   }, [
-    onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
-    waitingForSelectedCandidateIds,
+    maxSelections, onRowPressed, selectedCandidateIds,
+    waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
   ]);
 
   return (
@@ -62,6 +64,7 @@ CandidateList.defaultProps = {
   contentContainerStyle: {},
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
+  maxSelections: undefined,
   onRowPressed: () => null,
   selectedCandidateIds: undefined,
 };

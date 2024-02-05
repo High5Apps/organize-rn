@@ -128,6 +128,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
           candidates={ballot?.candidates ?? null}
           ListFooterComponent={ListFooterComponent}
           ListHeaderComponent={ListHeaderComponent}
+          maxSelections={ballot?.maxCandidateIdsPerVote}
           onRowPressed={onRowPressed}
           selectedCandidateIds={selectedCandidateIds}
           waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}

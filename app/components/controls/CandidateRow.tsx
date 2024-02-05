@@ -36,20 +36,35 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-type Props = {
+type IconNameProps = {
+  indicatesMultipleSelectionsAllowed?: boolean;
+  selected?: boolean;
+};
+
+function getIcon({
+  indicatesMultipleSelectionsAllowed, selected,
+}: IconNameProps) {
+  if (indicatesMultipleSelectionsAllowed) {
+    return selected ? 'check-box' : 'check-box-outline-blank';
+  }
+
+  return selected ? 'radio-button-checked' : 'radio-button-unchecked';
+}
+
+type Props = IconNameProps & {
   disabled?: boolean;
   item: Candidate;
   onPress?: (item: Candidate) => void;
-  selected?: boolean;
   waitingForChange?: boolean;
 };
 
 export default function CandidateRow({
-  disabled, item, onPress, selected, waitingForChange,
+  disabled, indicatesMultipleSelectionsAllowed, item, onPress, selected,
+  waitingForChange,
 }: Props) {
   const { title } = item;
 
-  const iconName = selected ? 'radio-button-checked' : 'radio-button-unchecked';
+  const iconName = getIcon({ indicatesMultipleSelectionsAllowed, selected });
 
   const { colors, styles } = useStyles();
 
@@ -72,6 +87,7 @@ export default function CandidateRow({
 
 CandidateRow.defaultProps = {
   disabled: false,
+  indicatesMultipleSelectionsAllowed: false,
   onPress: () => {},
   selected: false,
   waitingForChange: false,
