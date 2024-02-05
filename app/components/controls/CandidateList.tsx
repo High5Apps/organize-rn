@@ -20,7 +20,7 @@ type Props = {
 
 export default function CandidateList({
   candidates, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
-  maxSelections, onRowPressed, selectedCandidateIds,
+  maxSelections: maybeMaxSelections, onRowPressed, selectedCandidateIds,
   waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
 }: Props) {
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
@@ -31,20 +31,28 @@ export default function CandidateList({
     const waitingForChange = waitingToSelect || waitingToDeselect;
     const selected = waitingForChange ? (waitingToSelect || !waitingToDeselect)
       : previouslySelected;
-    const disabled = waitingForSelectedCandidateIds.length > 0
+    const disabledDueToWaiting = waitingForSelectedCandidateIds.length > 0
       || waitingForDeselectedCandidateIds.length > 0;
+    const maxSelections = maybeMaxSelections ?? 0;
+    const multipleSelectionsAllowed = maxSelections > 1;
+    const selectionCount = (selectedCandidateIds?.length ?? 0)
+      + (waitingForSelectedCandidateIds?.length ?? 0);
+    const disabledDueToMaxSelections = multipleSelectionsAllowed
+      && (selectionCount >= maxSelections)
+      && !selected;
+    const disabled = disabledDueToWaiting || disabledDueToMaxSelections;
     return (
       <CandidateRow
         disabled={disabled}
-        indicatesMultipleSelectionsAllowed={(maxSelections ?? 0) > 1}
+        indicatesMultipleSelectionsAllowed={multipleSelectionsAllowed}
         item={item}
         onPress={onRowPressed}
         selected={selected}
-        waitingForChange={waitingForChange}
+        showDisabled={disabledDueToMaxSelections || waitingForChange}
       />
     );
   }, [
-    maxSelections, onRowPressed, selectedCandidateIds,
+    maybeMaxSelections, onRowPressed, selectedCandidateIds,
     waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
   ]);
 

@@ -19,6 +19,9 @@ const useStyles = () => {
       flexDirection: 'row',
       padding: spacing.m,
     },
+    disabled: {
+      opacity: 0.5,
+    },
     icon: {
       color: colors.primary,
       fontSize: sizes.mediumIcon,
@@ -27,9 +30,6 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
-    },
-    waitingForChange: {
-      opacity: 0.5,
     },
   });
 
@@ -55,12 +55,12 @@ type Props = IconNameProps & {
   disabled?: boolean;
   item: Candidate;
   onPress?: (item: Candidate) => void;
-  waitingForChange?: boolean;
+  showDisabled?: boolean;
 };
 
 export default function CandidateRow({
   disabled, indicatesMultipleSelectionsAllowed, item, onPress, selected,
-  waitingForChange,
+  showDisabled,
 }: Props) {
   const { title } = item;
 
@@ -77,7 +77,7 @@ export default function CandidateRow({
       <View style={styles.container}>
         <Icon
           name={iconName}
-          style={[styles.icon, waitingForChange && styles.waitingForChange]}
+          style={[styles.icon, showDisabled && styles.disabled]}
         />
         <Text style={styles.text}>{title}</Text>
       </View>
@@ -90,5 +90,5 @@ CandidateRow.defaultProps = {
   indicatesMultipleSelectionsAllowed: false,
   onPress: () => {},
   selected: false,
-  waitingForChange: false,
+  showDisabled: false,
 };
