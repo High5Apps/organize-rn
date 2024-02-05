@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet, Text, TouchableHighlight, View, ViewStyle,
 } from 'react-native';
@@ -38,7 +38,9 @@ type IconNameProps = {
   winner?: boolean;
 };
 
-function getIcon({ tiedWinner, winner }: IconNameProps) {
+function useIcon({ tiedWinner, winner }: IconNameProps) {
+  const { styles } = useStyles();
+
   let iconName: string;
   let iconStyle: ViewStyle = {};
 
@@ -51,7 +53,9 @@ function getIcon({ tiedWinner, winner }: IconNameProps) {
     iconName = 'radio-button-unchecked';
   }
 
-  return { iconName, iconStyle };
+  return useMemo(() => (
+    <Icon name={iconName} style={[styles.icon, iconStyle]} />
+  ), [iconName, iconStyle, styles]);
 }
 
 type Props = IconNameProps & {
@@ -63,14 +67,14 @@ export default function ResultRow({
 }: Props) {
   const { candidate: { title } } = item;
 
-  const { iconName, iconStyle } = getIcon({ tiedWinner, winner });
-
   const { colors, styles } = useStyles();
+
+  const IconComponent = useIcon({ tiedWinner, winner });
 
   return (
     <TouchableHighlight underlayColor={colors.label}>
       <View style={styles.container}>
-        <Icon name={iconName} style={[styles.icon, iconStyle]} />
+        {IconComponent}
         <Text style={styles.text}>{title}</Text>
       </View>
     </TouchableHighlight>
