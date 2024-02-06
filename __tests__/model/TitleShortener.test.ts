@@ -19,6 +19,13 @@ describe('getShortenedTitles', () => {
     [['Creative', 'Creative Lynx', 'Marvelous Swan'], ['C', 'CL', 'MS']],
     [['aa bb cc', 'aa cc bb', 'aa bb bb'], ['ABC', 'ACB', 'ABB']],
     [['aaaaabaaa', 'aaaaacaaa'], ['aaaaa', 'aaaaa']],
+    [['😤😰🕰️ 😤', '😤😂🕰️ 🥶'], ['😤😰', '😤😂']],
+    [['😤😰🕰️ 😤', '😤😰🕰️ 🥶'], ['😤😤', '😤🥶']],
+    [['😤😰🕰️😤😤', '😤😰🕰️🥶🥶'], [`😤${E}😤`, `😤${E}🥶`]],
+
+    // This will fail until RN gets Intl.segmenter support
+    // https://stackoverflow.com/a/71619350/2421313
+    // [['🧑‍🚒😤😰🕰️', '👮😤😰🕰️'], ['🧑‍🚒', '👮']],
   ])('shortens correctly: %p -> %p', (titles, expectedShortenedTitles) => {
     const shortenedTitles = getShortenedTitles(titles);
     expect(shortenedTitles).toEqual(expectedShortenedTitles);

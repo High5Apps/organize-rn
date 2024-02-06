@@ -11,12 +11,23 @@ const allUnique = (titles: string[]) => (
   titles.length === new Set(titles).size
 );
 
+// Note that this doesn't properly handle multi-emoji graphemes like 🧑‍🚒
+// To properly handle that, Intl.segmenter will need to be supported by RN
+// https://retyui.github.io/react-native-compat-table/
+// https://stackoverflow.com/a/71619350/2421313
+const unicodeSlice = (text: string, start: number, end?: number) => (
+  Array.from(text).slice(start, end).join('')
+);
+
 const getLettersFromStartAndEnd = (s: string, start: number, end?: number) => (
-  `${s.slice(0, start)}${end ? SINGLE_CHARACTER_ELIPSIS : ''}${end ? s.slice(-1 * end) : ''}`
+  `${unicodeSlice(s, 0, start)}${end ? SINGLE_CHARACTER_ELIPSIS : ''}${end ? unicodeSlice(s, -1 * end) : ''}`
 );
 
 const getUpToNInitials = (s: string, n: number) => (
-  s.split(' ').slice(0, n).map((w) => w[0]?.toUpperCase()).join('')
+  s.split(' ')
+    .slice(0, n)
+    .map((w) => unicodeSlice(w, 0, 1)?.toUpperCase())
+    .join('')
 );
 
 export default function getShortenedTitles(titles?: string[]) {
