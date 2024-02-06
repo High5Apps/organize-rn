@@ -31,6 +31,7 @@ export { getHighestRank, getHighestOffice } from './Rank';
 export { default as useSettings } from './Settings';
 export { default as getTenure } from './Tenure';
 export { default as getTimeRemaining } from './TimeRemaining';
+export { default as getShortenedTitles } from './TitleShortener';
 export { default as truncateText } from './TruncateText';
 export { default as User } from './User';
 export { UserContextProvider, useUserContext } from './UserContext';

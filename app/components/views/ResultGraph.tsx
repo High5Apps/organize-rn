@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import { RankedResult } from '../hooks';
 import useTheme from '../../Theme';
+import { getShortenedTitles } from '../../model';
 
 const useStyles = (resultCount: number) => {
   const {
@@ -67,6 +68,11 @@ export default function ResultGraph({ rankedResults, style }: Props) {
   const resultCount = rankedResults?.length ?? 0;
   const { styles } = useStyles(resultCount);
 
+  const shortenedTitles = useMemo(
+    () => getShortenedTitles(rankedResults?.map((r) => r.candidate.title)),
+    [rankedResults],
+  );
+
   if (!rankedResults) { return null; }
 
   const maxVoteCount = rankedResults[0].voteCount;
@@ -78,9 +84,9 @@ export default function ResultGraph({ rankedResults, style }: Props) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.textColumn}>
-        { rankedResults.map(({ candidate: { id, title } }) => (
+        { rankedResults.map(({ candidate: { id } }, i) => (
           <Text key={id} style={[styles.text, styles.candidateTitle]}>
-            {title}
+            {shortenedTitles[i]}
           </Text>
         ))}
       </View>
