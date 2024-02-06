@@ -20,6 +20,9 @@ const useStyles = (resultCount: number) => {
       backgroundColor: colors.primary,
       flex: 1,
     },
+    barLoser: {
+      opacity: 0.5,
+    },
     candidateTitle: {
       // This overrides styles.text
       marginStart: 0,
@@ -60,11 +63,14 @@ const useStyles = (resultCount: number) => {
 };
 
 type Props = {
+  maxWinners?: number;
   rankedResults?: RankedResult[];
   style?: StyleProp<ViewStyle>;
 };
 
-export default function ResultGraph({ rankedResults, style }: Props) {
+export default function ResultGraph({
+  maxWinners, rankedResults, style,
+}: Props) {
   const resultCount = rankedResults?.length ?? 0;
   const { styles } = useStyles(resultCount);
 
@@ -91,9 +97,14 @@ export default function ResultGraph({ rankedResults, style }: Props) {
         ))}
       </View>
       <View style={styles.graphColumn}>
-        { rankedResults.map(({ candidate: { id }, voteCount }) => (
+        { rankedResults.map(({ candidate: { id }, rank, voteCount }) => (
           <View key={id} style={[styles.row, { width: getWidth(voteCount) }]}>
-            <View style={styles.bar} />
+            <View
+              style={[
+                styles.bar,
+                (rank < (maxWinners ?? 0)) ? {} : styles.barLoser,
+              ]}
+            />
             <Text style={[styles.text, styles.textInvisible]}>
               {/* This makes the bar the same height as the padded text */}
               {/* eslint-disable-next-line
@@ -115,6 +126,7 @@ export default function ResultGraph({ rankedResults, style }: Props) {
 }
 
 ResultGraph.defaultProps = {
+  maxWinners: undefined,
   rankedResults: undefined,
   style: {},
 };

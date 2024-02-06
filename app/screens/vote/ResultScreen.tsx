@@ -54,7 +54,11 @@ export default function ResultScreen({ route }: ResultScreenProps) {
           {ballotPreview.question}
         </Text>
         <RequestProgress />
-        <ResultGraph rankedResults={rankedResults} style={styles.graph} />
+        <ResultGraph
+          maxWinners={ballot?.maxCandidateIdsPerVote}
+          rankedResults={rankedResults}
+          style={styles.graph}
+        />
       </View>
     );
   }, [ballotPreview, styles]);
