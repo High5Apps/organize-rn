@@ -37,6 +37,7 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
+      flex: 1,
     },
   });
 
