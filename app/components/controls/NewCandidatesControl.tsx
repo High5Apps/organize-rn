@@ -5,7 +5,7 @@ import TextButton from './TextButton';
 import useTheme from '../../Theme';
 import { ConfirmationAlert } from '../../model';
 
-const MAX_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 60;
 
 const useStyles = () => {
   const { font, spacing } = useTheme();
