@@ -96,7 +96,7 @@ export default function NewCandidatesControl({
       ))}
       <TextButton
         containerStyle={styles.addChoiceButtonContainer}
-        disabled={!candidates?.at(-1)?.length}
+        disabled={!candidates[candidates.length - 1]?.length}
         onPress={appendNewCandidate}
         style={styles.addChoiceButtonText}
       >
