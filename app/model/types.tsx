@@ -141,7 +141,7 @@ export type E2EDecryptor = (encryptedMessage: AESEncryptedData) => Promise<strin
 export type E2EMultiDecryptor =
   (encryptedMessages: (AESEncryptedData | null)[]) => Promise<(string | null)[]>;
 
-export type BallotCategory = 'yes_no' | 'multiple_choice';
+export type BallotCategory = 'yes_no' | 'multiple_choice' | 'election';
 
 export type BallotType = {
   category: BallotCategory;
@@ -149,13 +149,15 @@ export type BallotType = {
   name: string;
 };
 
-type NewBallotScreen = 'NewYesOrNoBallot' | 'NewMultipleChoiceBallot';
+type NewBallotSubtypeSelectionScreen = 'OfficeType';
+type NewBallotScreen = 'NewYesOrNoBallot' | 'NewMultipleChoiceBallot' | 'NewElectionBallot';
 
 export type BallotTypeInfo = {
   category: BallotCategory;
   iconName: string;
   name: string;
   newScreenName: NewBallotScreen;
+  subtypeSelectionScreenName?: NewBallotSubtypeSelectionScreen;
 };
 
 export type BallotSort = 'active' | 'inactive';

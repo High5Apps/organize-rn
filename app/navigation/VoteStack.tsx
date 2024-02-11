@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   BallotScreen, BallotPreviewsScreen, BallotTypeScreen, NewYesNoBallotScreen,
-  ResultScreen, NewMultipleChoiceBallotScreen,
+  ResultScreen, NewMultipleChoiceBallotScreen, NewElectionBallotScreen, OfficeTypeScreen,
 } from '../screens';
 import { VoteStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
@@ -29,6 +29,11 @@ export default function VoteStack() {
         options={{ title: 'New Vote' }}
       />
       <Stack.Screen
+        component={NewElectionBallotScreen}
+        name="NewElectionBallot"
+        options={{ title: 'Election' }}
+      />
+      <Stack.Screen
         component={NewYesNoBallotScreen}
         name="NewYesOrNoBallot"
         options={{ title: 'Yes or No' }}
@@ -37,6 +42,11 @@ export default function VoteStack() {
         component={NewMultipleChoiceBallotScreen}
         name="NewMultipleChoiceBallot"
         options={{ title: 'Multiple Choice' }}
+      />
+      <Stack.Screen
+        component={OfficeTypeScreen}
+        name="OfficeType"
+        options={{ title: 'Election Office' }}
       />
       <Stack.Screen
         component={ResultScreen}

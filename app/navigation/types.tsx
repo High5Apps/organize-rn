@@ -167,8 +167,10 @@ export type VoteStackParamList = {
   Ballot: BallotScreenParams;
   BallotPreviews: BallotPreviewsScreenParams | undefined;
   BallotType: undefined;
+  NewElectionBallot: undefined;
   NewMultipleChoiceBallot: undefined;
   NewYesOrNoBallot: undefined;
+  OfficeType: undefined;
   Result: ResultScreenParams;
 };
 
@@ -181,8 +183,10 @@ export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
 export type BallotScreenProps = VoteStackScreenProps<'Ballot'>;
 export type BallotPreviewsScreenProps = VoteStackScreenProps<'BallotPreviews'>;
 export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
+export type NewElectionBallotScreenProps = VoteStackScreenProps<'NewElectionBallot'>;
 export type NewMultipleChoiceBallotScreenProps = VoteStackScreenProps<'NewMultipleChoiceBallot'>;
 export type NewYesNoBallotScreenProps = VoteStackScreenProps<'NewYesOrNoBallot'>;
+export type OfficeTypeScreenProps = VoteStackScreenProps<'OfficeType'>;
 export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 
 export type OrgStackParamList = {

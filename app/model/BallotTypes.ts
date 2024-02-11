@@ -13,6 +13,13 @@ export const ballotTypes: BallotTypeInfo[] = [
     name: 'Multiple Choice',
     newScreenName: 'NewMultipleChoiceBallot',
   },
+  {
+    category: 'election',
+    iconName: 'person',
+    name: 'Election',
+    newScreenName: 'NewElectionBallot',
+    subtypeSelectionScreenName: 'OfficeType',
+  },
 ];
 
 type BallotTypeMap = {

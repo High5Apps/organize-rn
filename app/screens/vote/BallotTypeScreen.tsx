@@ -7,7 +7,10 @@ export default function BallotTypeScreen({
   navigation,
 }: BallotTypeScreenProps) {
   const onBallotTypeRowPress = useCallback(({ category }: BallotType) => {
-    const { newScreenName: screen } = ballotTypeMap[category];
+    const {
+      newScreenName, subtypeSelectionScreenName,
+    } = ballotTypeMap[category];
+    const screen = subtypeSelectionScreenName ?? newScreenName;
     navigation.navigate(screen);
   }, [navigation]);
 
