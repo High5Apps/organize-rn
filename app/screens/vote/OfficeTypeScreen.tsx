@@ -1,9 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
-import type { OfficeTypeScreenProps } from '../../navigation';
+import { OfficeList, ScreenBackground } from '../../components';
 
-export default function OfficeTypeScreen({
-  route,
-}: OfficeTypeScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+export default function OfficeTypeScreen() {
+  return (
+    <ScreenBackground>
+      <OfficeList onPress={(item) => console.log(`Press ${item.title}`)} />
+    </ScreenBackground>
+  );
 }
