@@ -13,7 +13,7 @@ type OfficeMetadata = {
 const officeMetadata: { [key: string]: OfficeMetadata } = {
   president: { iconName: 'stars', title: 'President' },
   vice_president: { iconName: 'star', title: 'Vice President' },
-  secretary: { iconName: 'edit', title: 'Secretary' },
+  secretary: { iconName: 'border-color', title: 'Secretary' },
   treasurer: { iconName: 'payments', title: 'Treasurer' },
   steward: { iconName: 'privacy-tip', title: 'Steward' },
   trustee: { iconName: 'find-in-page', title: 'Trustee' },
