@@ -1,40 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet, Text, TouchableHighlight, View,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Office } from '../../model';
-import useTheme from '../../Theme';
-import { DisclosureIcon } from '../views';
-
-const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
-
-  const styles = StyleSheet.create({
-    container: {
-      alignItems: 'center',
-      backgroundColor: colors.fill,
-      flexDirection: 'row',
-      padding: spacing.m,
-    },
-    icon: {
-      color: colors.primary,
-      fontSize: sizes.icon,
-    },
-    text: {
-      color: colors.label,
-      flex: 1,
-      flexShrink: 1,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
-      paddingHorizontal: spacing.m,
-    },
-  });
-
-  return { colors, styles };
-};
+import IconRow from './IconRow';
 
 type Props = {
   item: Office;
@@ -44,17 +10,7 @@ type Props = {
 export default function OfficeRow({
   item: { iconName, title }, onPress,
 }: Props) {
-  const { colors, styles } = useStyles();
-
-  return (
-    <TouchableHighlight onPress={onPress} underlayColor={colors.label}>
-      <View style={styles.container}>
-        <Icon name={iconName} style={styles.icon} />
-        <Text style={styles.text}>{title}</Text>
-        {(onPress !== undefined) ? <DisclosureIcon /> : null}
-      </View>
-    </TouchableHighlight>
-  );
+  return <IconRow iconName={iconName} title={title} onPress={onPress} />;
 }
 
 OfficeRow.defaultProps = {
