@@ -11,6 +11,10 @@ export default function BallotTypeScreen({
       newScreenName, subtypeSelectionScreenName,
     } = ballotTypeMap[category];
     const screen = subtypeSelectionScreenName ?? newScreenName;
+
+    // @ts-ignore because params are only required for screens that use a
+    // subtypeSelectionScreen first to determine the relevant params, instead of
+    // navigating directly to the newScreen
     navigation.navigate(screen);
   }, [navigation]);
 

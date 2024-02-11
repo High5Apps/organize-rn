@@ -1,9 +1,15 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
+import { Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
+import { ScreenBackground } from '../../components';
 
 export default function NewElectionBallotScreen({
   route,
 }: NewElectionBallotScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+  const { officeCategory } = route.params;
+  return (
+    <ScreenBackground>
+      <Text>{officeCategory}</Text>
+    </ScreenBackground>
+  );
 }

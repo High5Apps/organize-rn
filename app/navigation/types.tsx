@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import type { PostCategory } from '../model';
+import type { OfficeCategory, PostCategory } from '../model';
 
 export type RootStackParamList = {
   WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
@@ -163,11 +163,15 @@ export type ResultScreenParams = {
   ballotId: string;
 };
 
+export type NewElectionBallotScreenParams = {
+  officeCategory: OfficeCategory
+};
+
 export type VoteStackParamList = {
   Ballot: BallotScreenParams;
   BallotPreviews: BallotPreviewsScreenParams | undefined;
   BallotType: undefined;
-  NewElectionBallot: undefined;
+  NewElectionBallot: NewElectionBallotScreenParams;
   NewMultipleChoiceBallot: undefined;
   NewYesOrNoBallot: undefined;
   OfficeType: undefined;
