@@ -188,3 +188,21 @@ export type Ballot = BallotPreview & {
   myVote: string[];
   results?: Result[];
 };
+
+const OFFICE_CATEGORIES = [
+  'president',
+  'vice_president',
+  'secretary',
+  'treasurer',
+  'steward',
+  'trustee',
+] as const;
+export { OFFICE_CATEGORIES };
+export type OfficeCategory = typeof OFFICE_CATEGORIES[number];
+
+export type Office = {
+  iconName: string;
+  open: boolean;
+  title: string;
+  type: OfficeCategory;
+};

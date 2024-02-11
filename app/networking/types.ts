@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, Org, OrgGraph, OrgGraphUser, PaginationData, PostCategory,
-  Result, VoteState,
+  BallotCategory, OfficeCategory, Org, OrgGraph, OrgGraphUser, PaginationData,
+  PostCategory, Result, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -319,4 +319,25 @@ type CreateVoteResponse = {
 export function isCreateVoteResponse(object: unknown): object is CreateVoteResponse {
   const response = (object as CreateVoteResponse);
   return response?.id?.length > 0;
+}
+
+export type OfficeIndexOffice = {
+  open: boolean;
+  type: OfficeCategory;
+};
+
+function isOfficeIndexOffice(object: unknown): object is OfficeIndexOffice {
+  const response = (object as OfficeIndexOffice);
+  return response?.open !== undefined && response.type.length > 0;
+}
+
+type OfficeIndexResponse = {
+  offices: OfficeIndexOffice[];
+};
+
+export function isOfficeIndexResponse(object: unknown): object is OfficeIndexResponse {
+  const response = (object as OfficeIndexResponse);
+  return response?.offices
+    && Array.isArray(response.offices)
+    && response.offices.every(isOfficeIndexOffice);
 }

@@ -15,6 +15,8 @@ export const commentUpvotesURI = (commentId: string) => `${apiRoute}/comments/${
 export const connectionsURI = `${apiRoute}/connections`;
 export const connectionPreviewURI = `${apiRoute}/connection_preview`;
 
+export const officesURI = `${apiRoute}/offices`;
+
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;
 
