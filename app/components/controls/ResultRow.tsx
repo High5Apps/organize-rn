@@ -23,6 +23,9 @@ const useStyles = () => {
       color: colors.primary,
       fontSize: sizes.mediumIcon,
     },
+    iconDim: {
+      opacity: 0.5,
+    },
     rank: {
       color: colors.primary,
       fontSize: font.sizes.subhead,
@@ -69,6 +72,12 @@ function useIcon({
     iconName = 'radio-button-unchecked';
   } else {
     iconName = 'check-box-outline-blank';
+  }
+
+  const isAWinner = (multiSelectionWinnerRank !== undefined)
+    || singleSelectionWinner;
+  if (!isAWinner) {
+    iconStyle = { ...iconStyle, ...styles.iconDim };
   }
 
   return useMemo(() => (
