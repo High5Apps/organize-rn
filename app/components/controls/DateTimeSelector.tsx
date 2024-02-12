@@ -1,5 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, View, ViewStyle,
+} from 'react-native';
 import TextButton from './TextButton';
 import useTheme from '../../Theme';
 import DateTimePickerModal from './DateTimePickerModal';
@@ -10,6 +12,9 @@ const useStyles = () => {
   const { colors, font } = useTheme();
 
   const styles = StyleSheet.create({
+    container: {
+      alignItems: 'flex-start',
+    },
     text: {
       color: colors.label,
       fontSize: font.sizes.body,
@@ -37,7 +42,7 @@ const formatDateTime = (d: Date) => (
 type Props = {
   dateTime: Date;
   setDateTime: Dispatch<SetStateAction<Date>>
-  style?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle>;
 };
 
 export default function DateTimeSelector({
@@ -48,10 +53,10 @@ export default function DateTimeSelector({
   const { styles } = useStyles();
 
   return (
-    <>
+    <View style={[styles.container, style]}>
       <TextButton
         onPress={() => setPickerVisible(!pickerVisible)}
-        style={[styles.textButtonOverrides, style]}
+        style={styles.textButtonOverrides}
       >
         {formatDateTime(dateTime)}
       </TextButton>
@@ -61,7 +66,7 @@ export default function DateTimeSelector({
         setVisible={setPickerVisible}
         visible={pickerVisible}
       />
-    </>
+    </View>
   );
 }
 
