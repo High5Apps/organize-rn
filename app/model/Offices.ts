@@ -19,7 +19,7 @@ const officeMetadata: { [key: string]: OfficeMetadata } = {
   trustee: { iconName: 'find-in-page', title: 'Trustee' },
 };
 
-function addMetadata(backendOffice: OfficeIndexOffice): Office {
+export function addMetadata(backendOffice: OfficeIndexOffice): Office {
   const metadata = officeMetadata[backendOffice.type] ?? {
     iconName: 'person', title: backendOffice.type,
   };

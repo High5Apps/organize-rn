@@ -16,6 +16,7 @@ export { default as NewCandidatesControl } from './NewCandidatesControl';
 export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NotableUserList } from './NotableUserList';
 export { default as OfficeList } from './OfficeList';
+export { default as OfficeRow } from './OfficeRow';
 export { default as OrgGraph } from './OrgGraph';
 export { default as PostCategorySelector } from './PostCategorySelector';
 export { default as PostList } from './PostList';
