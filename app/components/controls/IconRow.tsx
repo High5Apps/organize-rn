@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { DisclosureIcon } from '../views';
+import TextButton from './TextButton';
 
 const useStyles = () => {
   const {
@@ -30,6 +31,9 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       paddingHorizontal: spacing.m,
     },
+    textButton: {
+      fontSize: font.sizes.body,
+    },
   });
 
   return { colors, styles };
@@ -38,20 +42,36 @@ const useStyles = () => {
 type Props = {
   iconName: string;
   onPress?: () => void;
+  textButtonLabel?: string;
   title: string;
 };
 
 export default function IconRow({
-  iconName, title, onPress,
+  iconName, onPress, textButtonLabel, title,
 }: Props) {
   const { colors, styles } = useStyles();
 
+  const Accessory = useMemo(() => {
+    if (onPress === undefined) { return null; }
+
+    if (textButtonLabel === undefined) { return <DisclosureIcon />; }
+
+    return (
+      <TextButton onPress={onPress} style={styles.textButton}>
+        {textButtonLabel}
+      </TextButton>
+    );
+  }, [onPress, textButtonLabel, styles]);
+
   return (
-    <TouchableHighlight onPress={onPress} underlayColor={colors.label}>
+    <TouchableHighlight
+      onPress={textButtonLabel ? undefined : onPress}
+      underlayColor={colors.label}
+    >
       <View style={styles.container}>
         <Icon name={iconName} style={styles.icon} />
         <Text style={styles.text}>{title}</Text>
-        {(onPress !== undefined) ? <DisclosureIcon /> : null}
+        {Accessory}
       </View>
     </TouchableHighlight>
   );
@@ -59,4 +79,5 @@ export default function IconRow({
 
 IconRow.defaultProps = {
   onPress: undefined,
+  textButtonLabel: undefined,
 };

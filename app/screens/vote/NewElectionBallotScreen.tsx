@@ -61,7 +61,11 @@ export default function NewElectionBallotScreen({
         style={styles.scrollView}
       >
         <HeaderText>Office</HeaderText>
-        <OfficeRow item={office} />
+        <OfficeRow
+          item={office}
+          onPress={() => console.log('learn more')}
+          textButtonLabel="Learn more"
+        />
         <HeaderText>Nominations End On</HeaderText>
         <DateTimeSelector
           dateTime={nominationsEnd}
