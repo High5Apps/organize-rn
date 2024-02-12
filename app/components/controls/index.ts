@@ -5,7 +5,9 @@ export { default as CandidateList } from './CandidateList';
 export { default as CameraControl } from './CameraControl';
 export { default as CommentList } from './CommentList';
 export { default as CommentRow } from './CommentRow';
-export { default as DateTimeSelector } from './DateTimeSelector';
+export {
+  default as DateTimeSelector, startOfNextHourIn,
+} from './DateTimeSelector';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as IconButton } from './IconButton';

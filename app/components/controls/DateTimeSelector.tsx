@@ -68,3 +68,15 @@ export default function DateTimeSelector({
 DateTimeSelector.defaultProps = {
   style: {},
 };
+
+type DurationProps = {
+  days: number;
+};
+
+export function startOfNextHourIn({ days }: DurationProps): Date {
+  const now = new Date();
+  const then = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+  then.setHours(then.getHours() + 1);
+  then.setMinutes(0, 0, 0);
+  return then;
+}

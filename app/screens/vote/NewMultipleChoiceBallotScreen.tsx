@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, NewCandidatesControl, PrimaryButton, StepperControl,
-  useRequestProgress,
+  startOfNextHourIn, useRequestProgress,
 } from '../../components';
 import {
   BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
@@ -49,18 +49,6 @@ const useStyles = () => {
 
   return { styles };
 };
-
-type DurationProps = {
-  days: number;
-};
-
-function startOfNextHourIn({ days }: DurationProps): Date {
-  const now = new Date();
-  const nextWeek = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
-  nextWeek.setHours(nextWeek.getHours() + 1);
-  nextWeek.setMinutes(0, 0, 0);
-  return nextWeek;
-}
 
 export default function NewMultipleChoiceBallotScreen({
   navigation,

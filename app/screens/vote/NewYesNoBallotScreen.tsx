@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  MultilineTextInput, PrimaryButton, useRequestProgress,
+  MultilineTextInput, PrimaryButton, startOfNextHourIn, useRequestProgress,
 } from '../../components';
 import {
   BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
@@ -47,19 +47,11 @@ const useStyles = () => {
   return { styles };
 };
 
-function startOfNextHourIn7Days(): Date {
-  const now = new Date();
-  const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-  nextWeek.setHours(nextWeek.getHours() + 1);
-  nextWeek.setMinutes(0, 0, 0);
-  return nextWeek;
-}
-
 export default function NewYesNoBallotScreen({
   navigation,
 }: NewYesNoBallotScreenProps) {
   const [question, setQuestion] = useCachedValue<string>(CACHE_KEY_QUESTION);
-  const [votingEnd, setVotingEnd] = useState(startOfNextHourIn7Days());
+  const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 7 }));
 
   const { currentUser } = useUserContext();
 
@@ -73,7 +65,7 @@ export default function NewYesNoBallotScreen({
 
   const resetForm = () => {
     setQuestion('');
-    setVotingEnd(startOfNextHourIn7Days());
+    setVotingEnd(startOfNextHourIn({ days: 7 }));
     setResult('none');
   };
 
