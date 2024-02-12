@@ -164,7 +164,11 @@ export type ResultScreenParams = {
 };
 
 export type NewElectionBallotScreenParams = {
-  officeCategory: OfficeCategory
+  officeCategory: OfficeCategory;
+};
+
+export type OfficeDutiesScreenParams = {
+  officeCategory: OfficeCategory;
 };
 
 export type VoteStackParamList = {
@@ -174,6 +178,7 @@ export type VoteStackParamList = {
   NewElectionBallot: NewElectionBallotScreenParams;
   NewMultipleChoiceBallot: undefined;
   NewYesOrNoBallot: undefined;
+  OfficeDuties: OfficeDutiesScreenParams;
   OfficeType: undefined;
   Result: ResultScreenParams;
 };
@@ -190,6 +195,7 @@ export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
 export type NewElectionBallotScreenProps = VoteStackScreenProps<'NewElectionBallot'>;
 export type NewMultipleChoiceBallotScreenProps = VoteStackScreenProps<'NewMultipleChoiceBallot'>;
 export type NewYesNoBallotScreenProps = VoteStackScreenProps<'NewYesOrNoBallot'>;
+export type OfficeDutiesScreenProps = VoteStackScreenProps<'OfficeDuties'>;
 export type OfficeTypeScreenProps = VoteStackScreenProps<'OfficeType'>;
 export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 
