@@ -34,7 +34,7 @@ const useStyles = () => {
 };
 
 export default function NewElectionBallotScreen({
-  navigation, route,
+  route,
 }: NewElectionBallotScreenProps) {
   const { officeCategory } = route.params;
   const office = addMetadata({ type: officeCategory, open: true });
@@ -63,9 +63,7 @@ export default function NewElectionBallotScreen({
         <HeaderText>Office</HeaderText>
         <OfficeRow
           item={office}
-          onPress={() => navigation.navigate('OfficeDuties', {
-            officeCategory: office.type,
-          })}
+          onPress={() => console.log('learn more')}
           textButtonLabel="Learn more"
         />
         <HeaderText>Nominations End On</HeaderText>
