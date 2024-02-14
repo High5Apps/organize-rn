@@ -206,8 +206,3 @@ export type Office = {
   title: string;
   type: OfficeCategory;
 };
-
-export type OfficeDuty = {
-  category: OfficeCategory;
-  duties: string[];
-};
