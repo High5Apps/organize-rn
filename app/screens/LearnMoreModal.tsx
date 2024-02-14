@@ -3,8 +3,8 @@ import {
   Modal, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { IconButton, LockingScrollView, Scrim } from '../../../components';
-import useTheme from '../../../Theme';
+import { IconButton, LockingScrollView, Scrim } from '../components';
+import useTheme from '../Theme';
 
 const useStyles = () => {
   const {
@@ -65,7 +65,7 @@ type Props = StaticProps & {
   visible: boolean;
 };
 
-export default function NewOrgModal({
+export default function LearnMoreModal({
   body, headline, iconName, setVisible, visible,
 }: Props) {
   const { styles } = useStyles();

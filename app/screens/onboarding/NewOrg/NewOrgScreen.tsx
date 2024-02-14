@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import NewOrgModal from './NewOrgModal';
+import LearnMoreModal from '../../LearnMoreModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
@@ -70,7 +70,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
 
   return (
     <KeyboardAvoidingScreenBackground topNavigationBarHidden>
-      <NewOrgModal
+      <LearnMoreModal
         body={body}
         headline={headline}
         iconName={iconName}
