@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 import {
   Modal, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
@@ -55,7 +55,7 @@ const useStyles = () => {
 };
 
 export type StaticProps = {
-  body: string;
+  body?: string;
   headline: string;
   iconName: string;
 };
@@ -66,8 +66,8 @@ type Props = StaticProps & {
 };
 
 export default function LearnMoreModal({
-  body, headline, iconName, setVisible, visible,
-}: Props) {
+  body, children, headline, iconName, setVisible, visible,
+}: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   return (
     <Modal
@@ -93,9 +93,11 @@ export default function LearnMoreModal({
           </Text>
           <LockingScrollView>
             <View onStartShouldSetResponder={() => true}>
-              <Text style={styles.body}>
-                {body}
-              </Text>
+              {children ?? (
+                <Text style={styles.body}>
+                  {body}
+                </Text>
+              )}
             </View>
           </LockingScrollView>
         </View>
@@ -103,3 +105,7 @@ export default function LearnMoreModal({
     </Modal>
   );
 }
+
+LearnMoreModal.defaultProps = {
+  body: undefined,
+};
