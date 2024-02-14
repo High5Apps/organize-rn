@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
-  DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground, OfficeRow,
-  PrimaryButton, startOfNextHourIn,
+  BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
+  OfficeRow, PrimaryButton, startOfNextHourIn,
 } from '../../components';
 import useTheme from '../../Theme';
-import { addMetadata } from '../../model';
+import { OFFICE_DUTIES, addMetadata } from '../../model';
+import LearnMoreModal from '../LearnMoreModal';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -37,8 +38,10 @@ export default function NewElectionBallotScreen({
   route,
 }: NewElectionBallotScreenProps) {
   const { officeCategory } = route.params;
+  const duties = OFFICE_DUTIES[officeCategory];
   const office = addMetadata({ type: officeCategory, open: true });
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [
     nominationsEnd, setNominationsEnd,
   ] = useState(startOfNextHourIn({ days: 7 }));
@@ -55,6 +58,14 @@ export default function NewElectionBallotScreen({
 
   return (
     <KeyboardAvoidingScreenBackground>
+      <LearnMoreModal
+        headline={`What does a ${office.title} do?`}
+        iconName={office.iconName}
+        setVisible={setModalVisible}
+        visible={modalVisible}
+      >
+        <BulletedText bullets={duties} />
+      </LearnMoreModal>
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
@@ -63,7 +74,7 @@ export default function NewElectionBallotScreen({
         <HeaderText>Office</HeaderText>
         <OfficeRow
           item={office}
-          onPress={() => console.log('learn more')}
+          onPress={() => setModalVisible(true)}
           textButtonLabel="Learn more"
         />
         <HeaderText>Nominations End On</HeaderText>
