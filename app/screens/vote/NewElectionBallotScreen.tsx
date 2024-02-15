@@ -3,11 +3,17 @@ import { ScrollView, StyleSheet } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
   BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  OfficeRow, PrimaryButton, startOfNextHourIn,
+  OfficeRow, PrimaryButton, startOfNextHourIn, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import { OFFICE_DUTIES, addMetadata } from '../../model';
+import {
+  BallotPreview, GENERIC_ERROR_MESSAGE, OFFICE_DUTIES, addMetadata,
+  isCurrentUserData, useBallotPreviews, useUserContext,
+} from '../../model';
 import LearnMoreModal from '../LearnMoreModal';
+import { createBallot } from '../../networking';
+
+const BALLOT_CATEGORY = 'election';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -35,7 +41,7 @@ const useStyles = () => {
 };
 
 export default function NewElectionBallotScreen({
-  route,
+  navigation, route,
 }: NewElectionBallotScreenProps) {
   const { officeCategory } = route.params;
   const duties = OFFICE_DUTIES[officeCategory];
@@ -48,11 +54,76 @@ export default function NewElectionBallotScreen({
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 14 }));
   const [termEnd, setTermEnd] = useState(startOfNextHourIn({ days: 14 + 365 }));
 
+  const { currentUser } = useUserContext();
+
   const { styles } = useStyles();
 
-  const onPublishPressed = () => {
+  const {
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+
+  const { cacheBallotPreview } = useBallotPreviews();
+
+  const resetForm = () => {
+    setNominationsEnd(startOfNextHourIn({ days: 7 }));
+    setVotingEnd(startOfNextHourIn({ days: 14 }));
+    setTermEnd(startOfNextHourIn({ days: 14 + 365 }));
+    setResult('none');
+  };
+
+  const onPublishPressed = async () => {
     console.log({
       nominationsEnd, officeCategory, termEnd, votingEnd,
+    });
+
+    if (!isCurrentUserData(currentUser)) { return; }
+
+    setLoading(true);
+    setResult('none');
+
+    const question = `Who should we elect ${office.title}?`;
+
+    let errorMessage: string | undefined;
+    let id: string | undefined;
+    try {
+      const jwt = await currentUser.createAuthToken({ scope: '*' });
+      const { e2eEncrypt, e2eEncryptMany } = currentUser;
+
+      ({ errorMessage, id } = await createBallot({
+        category: BALLOT_CATEGORY,
+        e2eEncrypt,
+        e2eEncryptMany,
+        jwt,
+        office: officeCategory,
+        question,
+        termEndsAt: termEnd,
+        nominationsEndAt: nominationsEnd,
+        votingEndsAt: votingEnd,
+      }));
+    } catch (error) {
+      console.error(error);
+      errorMessage = GENERIC_ERROR_MESSAGE;
+    }
+
+    if (errorMessage !== undefined) {
+      setResult('error', { message: errorMessage });
+      return;
+    }
+
+    resetForm();
+    setResult('success');
+
+    const ballotPreview: BallotPreview = {
+      category: BALLOT_CATEGORY,
+      question,
+      userId: currentUser.id,
+      votingEndsAt: votingEnd,
+      id: id!,
+    };
+    cacheBallotPreview(ballotPreview);
+
+    navigation.navigate('BallotPreviews', {
+      prependedBallotIds: [ballotPreview.id],
     });
   };
 
@@ -95,6 +166,7 @@ export default function NewElectionBallotScreen({
           setDateTime={setTermEnd}
           style={styles.dateTimeSelector}
         />
+        <RequestProgress />
         <PrimaryButton
           iconName="publish"
           label="Publish"

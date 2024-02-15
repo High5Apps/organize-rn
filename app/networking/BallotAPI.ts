@@ -1,6 +1,6 @@
 import {
   BallotPreview, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor,
+  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor, OfficeCategory,
 } from '../model';
 import {
   decrypt, decryptMany, encrypt, encryptMany, get, post,
@@ -12,12 +12,15 @@ import {
 } from './types';
 
 type Props = {
-  candidateTitles: string[];
+  candidateTitles?: string[];
   category: BallotCategory;
   e2eEncrypt: E2EEncryptor;
   e2eEncryptMany: E2EMultiEncryptor;
   maxSelections?: number;
+  office?: OfficeCategory;
   question: string;
+  nominationsEndAt?: Date;
+  termEndsAt?: Date;
   votingEndsAt: Date;
 };
 
@@ -31,10 +34,10 @@ type Return = {
 
 export async function createBallot({
   candidateTitles, category, e2eEncrypt, e2eEncryptMany, jwt, maxSelections,
-  question, votingEndsAt,
+  office, question, nominationsEndAt, termEndsAt, votingEndsAt,
 }: Props & Authorization): Promise<Return> {
   const [encryptedCandidateTitles, encryptedQuestion] = await Promise.all([
-    encryptMany(candidateTitles, e2eEncryptMany),
+    candidateTitles ? encryptMany(candidateTitles, e2eEncryptMany) : [],
     encrypt(question, e2eEncrypt),
   ]);
 
@@ -44,6 +47,9 @@ export async function createBallot({
         category,
         encrypted_question: encryptedQuestion,
         max_candidate_ids_per_vote: maxSelections,
+        office,
+        nominations_end_at: nominationsEndAt?.toISOString(),
+        term_ends_at: termEndsAt?.toISOString(),
         voting_ends_at: votingEndsAt.toISOString(),
       },
       candidates: encryptedCandidateTitles.map((t) => ({ encrypted_title: t })),
