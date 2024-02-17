@@ -2,8 +2,10 @@ import React, { useCallback, useMemo } from 'react';
 import { ListRenderItemInfo, SectionList } from 'react-native';
 import { Office, isDefined, useOffices } from '../../model';
 import { usePullToRefresh } from '../hooks';
-import { ItemSeparator, renderSectionHeader } from '../views';
+import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
+
+const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nElections for a filled office open back up two months before the end of its term.';
 
 type OfficeSection = {
   title: string;
@@ -15,16 +17,17 @@ type Props = {
 };
 
 export default function OfficeList({ onPress }: Props) {
-  const { fetchOffices, filledOffices, openOffices } = useOffices();
+  const { fetchOffices, openOffices, ready } = useOffices();
 
   const sections: OfficeSection[] = useMemo(() => (
-    [
-      { title: 'Open', data: openOffices },
-      { title: 'Filled', data: filledOffices },
-    ]
+    [{ title: 'Available', data: openOffices }]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
-  ), [filledOffices, openOffices]);
+  ), [openOffices]);
+
+  const ListEmptyComponent = useMemo(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+  ), []);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: fetchOffices,
@@ -44,6 +47,7 @@ export default function OfficeList({ onPress }: Props) {
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}

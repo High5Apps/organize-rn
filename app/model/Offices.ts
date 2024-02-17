@@ -29,6 +29,7 @@ export function addMetadata(backendOffice: OfficeIndexOffice): Office {
 export default function useOffices() {
   const [filledOffices, setFilledOffices] = useState<Office[]>([]);
   const [openOffices, setOpenOffices] = useState<Office[]>([]);
+  const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useUserContext();
 
@@ -49,7 +50,11 @@ export default function useOffices() {
     const offices = backendOffices.map(addMetadata);
     setOpenOffices(offices.filter(({ open }) => open));
     setFilledOffices(offices.filter(({ open }) => !open));
+
+    setReady(true);
   }
 
-  return { fetchOffices, filledOffices, openOffices };
+  return {
+    fetchOffices, filledOffices, openOffices, ready,
+  };
 }
