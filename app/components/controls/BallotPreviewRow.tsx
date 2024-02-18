@@ -5,6 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   BallotPreview, ballotTypeMap, getMessageAge, getTimeRemaining,
+  nominationsTimeRemainingFormatter,
   votingTimeRemainingFormatter,
 } from '../../model';
 import useTheme from '../../Theme';
@@ -54,6 +55,25 @@ const useStyles = () => {
   return { colors, styles };
 };
 
+function getSubtitle(votingEndsAt: Date, nominationsEndAt: Date | undefined) {
+  const now = new Date();
+  const inNomations = nominationsEndAt
+    && nominationsEndAt?.getTime() > now.getTime();
+  const active = votingEndsAt.getTime() > now.getTime();
+
+  let subtitle;
+  if (active) {
+    const formatter = inNomations
+      ? nominationsTimeRemainingFormatter
+      : votingTimeRemainingFormatter;
+    const time = inNomations ? nominationsEndAt : votingEndsAt;
+    subtitle = getTimeRemaining(time, { formatter });
+  } else {
+    subtitle = getMessageAge(votingEndsAt);
+  }
+  return subtitle;
+}
+
 type Props = {
   item: BallotPreview;
   onPress?: (item: BallotPreview) => void;
@@ -61,13 +81,9 @@ type Props = {
 
 export default function BallotRow({ item, onPress }: Props) {
   const {
-    category, question, userId, votingEndsAt,
+    category, question, userId, nominationsEndAt, votingEndsAt,
   } = item;
-  const now = new Date();
-  const active = votingEndsAt.getTime() > now.getTime();
-  const subtitle = active
-    ? getTimeRemaining(votingEndsAt, { formatter: votingTimeRemainingFormatter })
-    : getMessageAge(votingEndsAt);
+  const subtitle = getSubtitle(votingEndsAt, nominationsEndAt);
 
   const { colors, styles } = useStyles();
 

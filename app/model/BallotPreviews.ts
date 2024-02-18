@@ -144,6 +144,10 @@ export default function useBallotPreviews() {
   };
 }
 
+export const nominationsTimeRemainingFormatter = (timeRemaining: string) => (
+  `${timeRemaining} until nominations end`
+);
+
 export const votingTimeRemainingFormatter = (timeRemaining: string) => (
   `${timeRemaining} until voting ends`
 );

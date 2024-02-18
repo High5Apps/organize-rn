@@ -227,6 +227,7 @@ export type BallotIndexBallot = {
   encryptedQuestion: BackendEncryptedMessage;
   id: string;
   userId: string;
+  nominationsEndAt?: Date;
   votingEndsAt: Date;
 };
 

@@ -117,6 +117,7 @@ export default function NewElectionBallotScreen({
       category: BALLOT_CATEGORY,
       question,
       userId: currentUser.id,
+      nominationsEndAt: nominationsEnd,
       votingEndsAt: votingEnd,
       id: id!,
     };
