@@ -90,7 +90,7 @@ function NotableUserRow({
 
   const tenure = getTenure(joinedAt);
 
-  const joinedOffices = offices?.join('/');
+  const joinedOffices = offices?.join(', ');
   const title = [
     pseudonym,
     joinedOffices,
