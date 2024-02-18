@@ -3,7 +3,8 @@ import { ScrollView, StyleSheet } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
   BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  OfficeRow, PrimaryButton, startOfNextHourIn, useRequestProgress,
+  OfficeRow, PrimaryButton, StepperControl, startOfNextHourIn,
+  useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
@@ -35,6 +36,9 @@ const useStyles = () => {
     scrollView: {
       flex: 1,
     },
+    stepperControl: {
+      marginStart: spacing.m,
+    },
   });
 
   return { styles };
@@ -47,6 +51,7 @@ export default function NewElectionBallotScreen({
   const duties = OFFICE_DUTIES[officeCategory];
   const office = addMetadata({ type: officeCategory, open: true });
 
+  const [maxSelections, setMaxSelections] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [
     nominationsEnd, setNominationsEnd,
@@ -94,6 +99,7 @@ export default function NewElectionBallotScreen({
         e2eEncrypt,
         e2eEncryptMany,
         jwt,
+        maxSelections,
         office: officeCategory,
         question,
         termEndsAt: termEnd,
@@ -149,6 +155,17 @@ export default function NewElectionBallotScreen({
           onPress={() => setModalVisible(true)}
           textButtonLabel="Learn more"
         />
+        {officeCategory === 'steward' && (
+          <>
+            <HeaderText>Max Winners</HeaderText>
+            <StepperControl
+              min={1}
+              setValue={setMaxSelections}
+              style={styles.stepperControl}
+              value={maxSelections}
+            />
+          </>
+        )}
         <HeaderText>Nominations End On</HeaderText>
         <DateTimeSelector
           dateTime={nominationsEnd}
