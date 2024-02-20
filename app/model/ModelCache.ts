@@ -25,6 +25,10 @@ export default function useModelCache<T extends Model>() {
     return modelCache.get(id);
   }
 
+  function getCachedModels() {
+    return [...modelCache.values()];
+  }
+
   function cacheModels(models?: T[]) {
     if (models === undefined) { return; }
 
@@ -44,5 +48,7 @@ export default function useModelCache<T extends Model>() {
     cacheModels([model]);
   }
 
-  return { cacheModel, cacheModels, getCachedModel };
+  return {
+    cacheModel, cacheModels, getCachedModel, getCachedModels,
+  };
 }

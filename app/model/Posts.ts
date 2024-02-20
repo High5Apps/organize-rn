@@ -21,7 +21,10 @@ type FetchPageReturn = {
 export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const sort = maybeSort ?? 'new';
 
-  const { cachePost, cachePosts, getCachedPost } = usePostContext();
+  const {
+    cachePost, cachePosts, getCachedPost, getCachedPosts,
+  } = usePostContext();
+
   const {
     ids: postIds, models: posts, setIds: setPostIds,
   } = useModels<Post>({ getCachedModel: getCachedPost });
@@ -38,26 +41,49 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
     const now = new Date();
     setCreatedAtOrBefore(now);
 
+    const {
+      posts: cachedPosts, paginationData: { nextPage: nextCachePage },
+    } = getCachedPosts({ category, page: firstPageIndex, sort });
+    setPostIds(getIdsFrom(cachedPosts));
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
-    const {
-      errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({
-      category,
-      createdAtOrBefore: now,
-      e2eDecryptMany,
-      page: firstPageIndex,
-      jwt,
-      sort,
-    });
 
-    if (errorMessage) {
-      throw new Error(errorMessage);
+    let errorMessage;
+    let paginationData;
+    let fetchedPosts;
+    try {
+      ({
+        errorMessage, paginationData, posts: fetchedPosts,
+      } = await fetchPosts({
+        category,
+        createdAtOrBefore: now,
+        e2eDecryptMany,
+        page: firstPageIndex,
+        jwt,
+        sort,
+      }));
+
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
+
+      cachePosts(fetchedPosts);
+      setPostIds(getIdsFrom(fetchedPosts));
+    } catch (error) {
+      console.error(error);
+
+      if (!cachedPosts.length) {
+        throw error;
+      }
+
+      fetchedPosts = cachedPosts;
+      paginationData = {
+        nextPage: nextCachePage,
+      };
     }
 
-    cachePosts(fetchedPosts);
     setNextPageNumber(firstPageIndex + 1);
-    setPostIds(getIdsFrom(fetchedPosts));
     const hasNextPage = paginationData?.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
     setReady(true);
@@ -68,22 +94,41 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   async function fetchNextPageOfPosts(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
+    const {
+      posts: cachedPosts, paginationData: { nextPage: nextCachePage },
+    } = getCachedPosts({ category, page: nextPageNumber, sort });
+    setPostIds([...postIds, ...getIdsFrom(cachedPosts)]);
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
 
-    const {
-      errorMessage, paginationData, posts: fetchedPosts,
-    } = await fetchPosts({
-      category,
-      createdAtOrBefore,
-      e2eDecryptMany,
-      jwt,
-      page: nextPageNumber,
-      sort,
-    });
+    let errorMessage;
+    let paginationData;
+    let fetchedPosts: Post[] | undefined;
+    try {
+      ({
+        errorMessage, paginationData, posts: fetchedPosts,
+      } = await fetchPosts({
+        category,
+        createdAtOrBefore,
+        e2eDecryptMany,
+        jwt,
+        page: nextPageNumber,
+        sort,
+      }));
 
-    if (errorMessage) {
-      throw new Error(errorMessage);
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
+
+      cachePosts(fetchedPosts);
+      setPostIds([...postIds, ...getIdsFrom(fetchedPosts)]);
+    } catch (error) {
+      console.error(error);
+      fetchedPosts = cachedPosts;
+      paginationData = {
+        nextPage: nextCachePage,
+      };
     }
 
     const hasNextPage = paginationData?.nextPage !== null;
@@ -93,9 +138,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
 
     if (!fetchedPosts?.length) { return result; }
 
-    cachePosts(fetchedPosts);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setPostIds([...postIds, ...getIdsFrom(fetchedPosts)]);
 
     return result;
   }

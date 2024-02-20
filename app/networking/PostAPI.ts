@@ -106,7 +106,7 @@ export async function fetchPost({
   return { post: { ...rest, body, title } };
 }
 
-type IndexProps = {
+export type IndexProps = {
   category?: PostCategory;
   createdAtOrBefore: Date;
   e2eDecryptMany: E2EMultiDecryptor;
@@ -114,7 +114,7 @@ type IndexProps = {
   sort: PostSort;
 };
 
-type IndexReturn = {
+export type IndexReturn = {
   errorMessage?: never;
   paginationData: PaginationData;
   posts: Post[];
