@@ -1,6 +1,6 @@
 import type {
   BallotCategory, OfficeCategory, Org, OrgGraph, OrgGraphUser, PaginationData,
-  PostCategory, Result, VoteState,
+  PostCategory, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -264,9 +264,16 @@ function isBallotCandidate(object: unknown): object is BallotCandidate {
     && isBackendEncryptedMessage(ballotCandidate.encryptedTitle);
 }
 
-function isBallotResult(object: unknown): object is Result {
-  const ballotResult = (object as Result);
+type BallotResult = {
+  candidateId: string;
+  rank: number;
+  voteCount: number;
+};
+
+function isBallotResult(object: unknown): object is BallotResult {
+  const ballotResult = (object as BallotResult);
   return ballotResult.candidateId.length > 0
+    && ballotResult.rank >= 0
     && ballotResult.voteCount !== undefined;
 }
 
@@ -276,7 +283,7 @@ type BallotResponse = {
   };
   candidates: BallotCandidate[];
   myVote: string[];
-  results: Result[];
+  results?: BallotResult[];
 };
 
 export function isBallotResponse(object: unknown): object is BallotResponse {

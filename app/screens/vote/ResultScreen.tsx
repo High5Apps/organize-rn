@@ -39,7 +39,7 @@ const useStyles = () => {
 export default function ResultScreen({ route }: ResultScreenProps) {
   const { params: { ballotId } } = route;
 
-  const { ballot, rankedResults, RequestProgress } = useBallot(ballotId);
+  const { ballot, RequestProgress } = useBallot(ballotId);
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
@@ -56,7 +56,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         <RequestProgress />
         <ResultGraph
           maxWinners={ballot?.maxCandidateIdsPerVote}
-          rankedResults={rankedResults}
+          results={ballot?.results}
           style={styles.graph}
         />
       </View>
@@ -69,7 +69,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         <ResultList
           ListHeaderComponent={ListHeaderComponent}
           maxWinners={ballot?.maxCandidateIdsPerVote}
-          rankedResults={rankedResults}
+          results={ballot?.results}
         />
       ) : (
         <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>

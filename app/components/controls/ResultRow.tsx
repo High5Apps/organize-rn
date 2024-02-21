@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { RankedResult } from '../hooks';
+import { Result } from '../../model';
 
 const useStyles = () => {
   const {
@@ -95,7 +95,7 @@ function useIcon({
 }
 
 type Props = IconNameProps & {
-  item: RankedResult;
+  item: Result;
 };
 
 export default function ResultRow({

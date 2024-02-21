@@ -1,6 +1,7 @@
 import {
   BallotPreview, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor, OfficeCategory,
+  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor,
+  OfficeCategory,
 } from '../model';
 import {
   decrypt, decryptMany, encrypt, encryptMany, get, post,
@@ -188,12 +189,18 @@ export async function fetchBallot({
   const candidates = json.candidates.map(
     ({ encryptedTitle, ...rest }, i) => ({ ...rest, title: candidateTitles[i]! }),
   );
+  const resultsWithCandidates = json.results?.map(
+    ({ candidateId, ...rest }) => ({
+      candidate: candidates.find(({ id }) => id === candidateId)!,
+      ...rest,
+    }),
+  );
   const ballot: Ballot = {
     ...partialBallot,
     question,
     candidates,
     myVote: json.myVote,
-    results: json.results,
+    results: resultsWithCandidates,
   };
 
   return { ballot };

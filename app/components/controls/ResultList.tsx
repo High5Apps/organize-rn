@@ -2,25 +2,25 @@ import React, { ReactElement, useCallback } from 'react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 import { ItemSeparator } from '../views';
 import ResultRow from './ResultRow';
-import { RankedResult } from '../hooks';
+import { Result } from '../../model';
 
 type Props = {
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
-  rankedResults?: RankedResult[];
+  results?: Result[];
 };
 
 export default function ResultList({
-  ListHeaderComponent, maxWinners: maybeMaxWinners, rankedResults,
+  ListHeaderComponent, maxWinners: maybeMaxWinners, results,
 }: Props) {
-  const maxVoteCount = rankedResults?.[0].voteCount;
+  const maxVoteCount = results?.[0].voteCount;
   const maxWinners = maybeMaxWinners ?? 0;
   const singleSelection = maxWinners === 1;
   const multiSelection = maxWinners > 1;
 
   const renderItem = useCallback(({
     item,
-  }: ListRenderItemInfo<RankedResult>) => {
+  }: ListRenderItemInfo<Result>) => {
     const { rank, voteCount } = item;
     const isAWinner = item.rank < maxWinners;
     const receivedMaxVotes = voteCount === maxVoteCount;
@@ -40,7 +40,7 @@ export default function ResultList({
 
   return (
     <FlatList
-      data={rankedResults}
+      data={results}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
@@ -51,5 +51,5 @@ export default function ResultList({
 ResultList.defaultProps = {
   ListHeaderComponent: undefined,
   maxWinners: undefined,
-  rankedResults: undefined,
+  results: undefined,
 };

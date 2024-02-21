@@ -178,8 +178,14 @@ export type Candidate = {
   id: string;
 };
 
+export function isCandidate(object: unknown): object is Candidate {
+  const candidate = (object as Candidate);
+  return (candidate?.id?.length > 0) && (candidate?.title?.length > 0);
+}
+
 export type Result = {
-  candidateId: string;
+  candidate: Candidate;
+  rank: number;
   voteCount: number;
 };
 

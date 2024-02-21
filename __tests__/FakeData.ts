@@ -1,7 +1,5 @@
 import { User } from '../app/model';
-import type {
-  Ballot, Comment, Org, Post,
-} from '../app/model';
+import type { Comment, Org, Post } from '../app/model';
 
 const fakeOrg: Org = {
   id: 'fakeOrgId',
@@ -67,27 +65,5 @@ export function getFakeComment(commentId: string, score: number): Comment {
     pseudonym: fakeUser.pseudonym,
     score,
     userId: fakeUser.id,
-  };
-}
-
-export function getFakeBallot(voteCounts: number[]): Ballot {
-  const candidates = voteCounts.map((_, i) => ({
-    id: `${i}`,
-    title: `Candidate ${i}`,
-  }));
-  const results = voteCounts.map((voteCount, i) => ({
-    candidateId: candidates[i].id,
-    voteCount,
-  }));
-  return {
-    candidates,
-    category: 'multiple_choice',
-    id: 'ballotId',
-    maxCandidateIdsPerVote: 1,
-    myVote: [],
-    question: 'question',
-    results,
-    userId: 'creatorId',
-    votingEndsAt: new Date(),
   };
 }

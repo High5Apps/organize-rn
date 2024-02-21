@@ -2,9 +2,8 @@ import React, { useMemo } from 'react';
 import {
   StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
-import { RankedResult } from '../hooks';
 import useTheme from '../../Theme';
-import { getShortenedTitles } from '../../model';
+import { Result, getShortenedTitles } from '../../model';
 
 const useStyles = (resultCount: number) => {
   const {
@@ -64,24 +63,24 @@ const useStyles = (resultCount: number) => {
 
 type Props = {
   maxWinners?: number;
-  rankedResults?: RankedResult[];
+  results?: Result[];
   style?: StyleProp<ViewStyle>;
 };
 
 export default function ResultGraph({
-  maxWinners, rankedResults, style,
+  maxWinners, results, style,
 }: Props) {
-  const resultCount = rankedResults?.length ?? 0;
+  const resultCount = results?.length ?? 0;
   const { styles } = useStyles(resultCount);
 
   const shortenedTitles = useMemo(
-    () => getShortenedTitles(rankedResults?.map((r) => r.candidate.title)),
-    [rankedResults],
+    () => getShortenedTitles(results?.map((r) => r.candidate.title)),
+    [results],
   );
 
-  if (!rankedResults) { return null; }
+  if (!results) { return null; }
 
-  const maxVoteCount = rankedResults[0].voteCount;
+  const maxVoteCount = results[0].voteCount;
   function getWidth(voteCount: number) {
     const percent = (maxVoteCount === 0) ? 0 : 100 * (voteCount / maxVoteCount);
     return `${percent}%`;
@@ -90,14 +89,14 @@ export default function ResultGraph({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.textColumn}>
-        { rankedResults.map(({ candidate: { id } }, i) => (
+        { results.map(({ candidate: { id } }, i) => (
           <Text key={id} style={[styles.text, styles.candidateTitle]}>
             {shortenedTitles[i]}
           </Text>
         ))}
       </View>
       <View style={styles.graphColumn}>
-        { rankedResults.map(({ candidate: { id }, rank, voteCount }) => (
+        { results.map(({ candidate: { id }, rank, voteCount }) => (
           <View key={id} style={[styles.row, { width: getWidth(voteCount) }]}>
             <View
               style={[
@@ -115,7 +114,7 @@ export default function ResultGraph({
         ))}
       </View>
       <View style={styles.textColumn}>
-        { rankedResults.map(({ candidate: { id }, voteCount }) => (
+        { results.map(({ candidate: { id }, voteCount }) => (
           <View key={id} style={styles.row}>
             <Text style={styles.text}>{voteCount}</Text>
           </View>
@@ -127,6 +126,6 @@ export default function ResultGraph({
 
 ResultGraph.defaultProps = {
   maxWinners: undefined,
-  rankedResults: undefined,
+  results: undefined,
   style: {},
 };
