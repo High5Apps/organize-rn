@@ -13,7 +13,7 @@ type Props = {
 export default function ResultList({
   ListHeaderComponent, maxWinners: maybeMaxWinners, results,
 }: Props) {
-  const maxVoteCount = results?.[0].voteCount;
+  const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
   const singleSelection = maxWinners === 1;
   const multiSelection = maxWinners > 1;

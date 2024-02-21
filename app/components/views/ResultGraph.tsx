@@ -78,7 +78,7 @@ export default function ResultGraph({
     [results],
   );
 
-  if (!results) { return null; }
+  if (!results || resultCount === 0) { return null; }
 
   const maxVoteCount = results[0].voteCount;
   function getWidth(voteCount: number) {
