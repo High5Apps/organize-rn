@@ -148,7 +148,7 @@ export default function NewMultipleChoiceBallotScreen({
           enablesReturnKeyAutomatically
           maxLength={MAX_QUESTION_LENGTH}
           onChangeText={setQuestion}
-          placeholder="Which should we choose?"
+          placeholder="Which of these should we..."
           style={styles.multilineTextInput}
           returnKeyType="done"
           value={question}
