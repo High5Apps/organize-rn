@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
   BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
@@ -17,7 +17,9 @@ import { createBallot } from '../../networking';
 const BALLOT_CATEGORY = 'election';
 
 const useStyles = () => {
-  const { sizes, spacing } = useTheme();
+  const {
+    colors, font, sizes, spacing,
+  } = useTheme();
 
   const styles = StyleSheet.create({
     button: {
@@ -39,6 +41,12 @@ const useStyles = () => {
     stepperControl: {
       marginStart: spacing.m,
     },
+    text: {
+      color: colors.label,
+      fontSize: font.sizes.body,
+      fontFamily: font.weights.regular,
+      marginStart: spacing.m,
+    },
   });
 
   return { styles };
@@ -50,6 +58,7 @@ export default function NewElectionBallotScreen({
   const { officeCategory } = route.params;
   const duties = OFFICE_DUTIES[officeCategory];
   const office = addMetadata({ type: officeCategory, open: true });
+  const question = `Who should we elect ${office.title}?`;
 
   const [maxSelections, setMaxSelections] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
@@ -85,8 +94,6 @@ export default function NewElectionBallotScreen({
 
     setLoading(true);
     setResult('none');
-
-    const question = `Who should we elect ${office.title}?`;
 
     let errorMessage: string | undefined;
     let id: string | undefined;
@@ -149,6 +156,8 @@ export default function NewElectionBallotScreen({
         keyboardShouldPersistTaps="handled"
         style={styles.scrollView}
       >
+        <HeaderText>Question</HeaderText>
+        <Text style={styles.text}>{question}</Text>
         <HeaderText>Office</HeaderText>
         <OfficeRow
           item={office}
