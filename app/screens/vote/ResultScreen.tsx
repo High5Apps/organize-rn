@@ -11,6 +11,9 @@ const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
+    emptyResultsText: {
+      paddingHorizontal: spacing.l,
+    },
     error: {
       color: colors.error,
       marginTop: spacing.m,
@@ -46,6 +49,12 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
   const { styles } = useStyles();
 
+  const ListEmptyComponent = useMemo(() => (
+    <Text style={[styles.text, styles.emptyResultsText]}>
+      No one accepted a nomination
+    </Text>
+  ), []);
+
   const ListHeaderComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
     return (
@@ -67,6 +76,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     <ScreenBackground>
       {ballotPreview ? (
         <ResultList
+          ListEmptyComponent={ListEmptyComponent}
           ListHeaderComponent={ListHeaderComponent}
           maxWinners={ballot?.maxCandidateIdsPerVote}
           results={ballot?.results}

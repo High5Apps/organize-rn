@@ -5,13 +5,14 @@ import ResultRow from './ResultRow';
 import { Result } from '../../model';
 
 type Props = {
+  ListEmptyComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
   results?: Result[];
 };
 
 export default function ResultList({
-  ListHeaderComponent, maxWinners: maybeMaxWinners, results,
+  ListEmptyComponent, ListHeaderComponent, maxWinners: maybeMaxWinners, results,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -42,6 +43,7 @@ export default function ResultList({
     <FlatList
       data={results}
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={(results !== undefined) ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
     />
@@ -49,6 +51,7 @@ export default function ResultList({
 }
 
 ResultList.defaultProps = {
+  ListEmptyComponent: undefined,
   ListHeaderComponent: undefined,
   maxWinners: undefined,
   results: undefined,
