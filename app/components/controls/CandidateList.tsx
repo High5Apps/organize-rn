@@ -9,6 +9,7 @@ import { ItemSeparator } from '../views';
 type Props = {
   candidates: Candidate[] | null;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxSelections?: number;
@@ -19,9 +20,10 @@ type Props = {
 };
 
 export default function CandidateList({
-  candidates, contentContainerStyle, ListFooterComponent, ListHeaderComponent,
-  maxSelections: maybeMaxSelections, onRowPressed, selectedCandidateIds,
-  waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
+  candidates, contentContainerStyle, ListEmptyComponent, ListFooterComponent,
+  ListHeaderComponent, maxSelections: maybeMaxSelections, onRowPressed,
+  selectedCandidateIds, waitingForDeselectedCandidateIds,
+  waitingForSelectedCandidateIds,
 }: Props) {
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
@@ -60,7 +62,8 @@ export default function CandidateList({
     <FlatList
       contentContainerStyle={contentContainerStyle}
       data={candidates}
-      ListFooterComponent={(candidates !== null) ? ListFooterComponent : null}
+      ListEmptyComponent={(candidates !== null) ? ListEmptyComponent : null}
+      ListFooterComponent={(candidates?.length) ? ListFooterComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}
@@ -70,6 +73,7 @@ export default function CandidateList({
 
 CandidateList.defaultProps = {
   contentContainerStyle: {},
+  ListEmptyComponent: undefined,
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
   maxSelections: undefined,

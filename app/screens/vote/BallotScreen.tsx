@@ -18,6 +18,12 @@ const useStyles = () => {
     details: {
       color: colors.labelSecondary,
     },
+    directions: {
+      marginTop: spacing.xs,
+    },
+    emptyResultsText: {
+      paddingHorizontal: spacing.l,
+    },
     error: {
       color: colors.error,
       marginTop: spacing.m,
@@ -33,7 +39,6 @@ const useStyles = () => {
     },
     question: {
       fontFamily: font.weights.semiBold,
-      marginBottom: spacing.xs,
     },
     text: {
       color: colors.label,
@@ -66,6 +71,12 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const { styles } = useStyles();
 
+  const ListEmptyComponent = useMemo(() => (
+    <Text style={[styles.text, styles.emptyResultsText]}>
+      No one accepted a nomination
+    </Text>
+  ), []);
+
   const ListHeaderComponent = useMemo(() => {
     if (!ballotPreview) { return undefined; }
     return (
@@ -73,8 +84,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         <Text style={[styles.text, styles.question]}>
           {ballotPreview.question}
         </Text>
-        { ballot && (
-          <>
+        { ballot?.candidates?.length ? (
+          <View style={styles.directions}>
             {ballot.maxCandidateIdsPerVote > 1 && (
               <Text style={[styles.text, styles.details]}>
                 {`Select up to ${ballot.maxCandidateIdsPerVote}`}
@@ -86,8 +97,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
             <Text style={[styles.text, styles.details]}>
               Change your mind until voting ends
             </Text>
-          </>
-        )}
+          </View>
+        ) : null}
         <RequestProgress />
       </View>
     );
@@ -126,6 +137,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
       {ballotPreview ? (
         <CandidateList
           candidates={ballot?.candidates ?? null}
+          ListEmptyComponent={ListEmptyComponent}
           ListFooterComponent={ListFooterComponent}
           ListHeaderComponent={ListHeaderComponent}
           maxSelections={ballot?.maxCandidateIdsPerVote}
