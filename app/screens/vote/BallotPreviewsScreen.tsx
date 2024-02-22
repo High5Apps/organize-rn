@@ -37,9 +37,16 @@ export default function VoteScreen({
     <ScreenBackground>
       <BallotPreviewList
         contentContainerStyle={styles.contentContainerStyle}
-        onItemPress={({ id, votingEndsAt }) => {
-          const active = votingEndsAt.getTime() > new Date().getTime();
-          const screenName = active ? 'Ballot' : 'Result';
+        onItemPress={({ id, nominationsEndAt, votingEndsAt }) => {
+          const now = new Date().getTime();
+          const inNominations = now < (nominationsEndAt?.getTime() ?? 0);
+          const active = now < votingEndsAt.getTime();
+          let screenName: 'Ballot' | 'Nomination' | 'Result';
+          if (active) {
+            screenName = inNominations ? 'Nomination' : 'Ballot';
+          } else {
+            screenName = 'Result';
+          }
           navigation.navigate(screenName, { ballotId: id });
         }}
         prependedBallotIds={prependedBallotIds}

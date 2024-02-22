@@ -159,6 +159,10 @@ export type BallotPreviewsScreenParams = {
   prependedBallotIds: string[];
 };
 
+export type NominationScreenParams = {
+  ballotId: string;
+};
+
 export type ResultScreenParams = {
   ballotId: string;
 };
@@ -174,6 +178,7 @@ export type VoteStackParamList = {
   NewElectionBallot: NewElectionBallotScreenParams;
   NewMultipleChoiceBallot: undefined;
   NewYesOrNoBallot: undefined;
+  Nomination: NominationScreenParams;
   OfficeType: undefined;
   Result: ResultScreenParams;
 };
@@ -190,6 +195,7 @@ export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
 export type NewElectionBallotScreenProps = VoteStackScreenProps<'NewElectionBallot'>;
 export type NewMultipleChoiceBallotScreenProps = VoteStackScreenProps<'NewMultipleChoiceBallot'>;
 export type NewYesNoBallotScreenProps = VoteStackScreenProps<'NewYesOrNoBallot'>;
+export type NominationScreenProps = VoteStackScreenProps<'Nomination'>;
 export type OfficeTypeScreenProps = VoteStackScreenProps<'OfficeType'>;
 export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 
