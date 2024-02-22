@@ -174,14 +174,9 @@ export type BallotPreview = {
 export type { Model } from './ModelCache';
 
 export type Candidate = {
-  title: string;
   id: string;
+  title: string;
 };
-
-export function isCandidate(object: unknown): object is Candidate {
-  const candidate = (object as Candidate);
-  return (candidate?.id?.length > 0) && (candidate?.title?.length > 0);
-}
 
 export type Result = {
   candidate: Candidate;

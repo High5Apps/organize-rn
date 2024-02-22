@@ -187,8 +187,11 @@ export async function fetchBallot({
   ]);
 
   const candidates = json.candidates.map(
-    ({ encryptedTitle, ...rest }, i) => ({ ...rest, title: candidateTitles[i]! }),
+    ({ id, pseudonym }, i) => ({
+      id, title: pseudonym ?? candidateTitles[i] ?? '[Unknown title]',
+    }),
   );
+
   const resultsWithCandidates = json.results?.map(
     ({ candidateId, ...rest }) => ({
       candidate: candidates.find(({ id }) => id === candidateId)!,

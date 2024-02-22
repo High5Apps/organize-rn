@@ -256,12 +256,24 @@ export function isBallotIndexResponse(object: unknown): object is BallotIndexRes
 type BallotCandidate = {
   encryptedTitle: BackendEncryptedMessage;
   id: string;
+  pseudonym?: never;
+} | {
+  encryptedTitle?: never;
+  id: string;
+  pseudonym: string;
 };
 
 function isBallotCandidate(object: unknown): object is BallotCandidate {
   const ballotCandidate = (object as BallotCandidate);
+  const hasEncryptedMessage = isBackendEncryptedMessage(
+    ballotCandidate?.encryptedTitle,
+  );
+  const hasPseudonym = ballotCandidate?.pseudonym !== undefined;
   return ballotCandidate?.id?.length > 0
-    && isBackendEncryptedMessage(ballotCandidate.encryptedTitle);
+    && (
+      (hasEncryptedMessage && !hasPseudonym)
+        || (!hasEncryptedMessage && hasPseudonym)
+    );
 }
 
 type BallotResult = {
