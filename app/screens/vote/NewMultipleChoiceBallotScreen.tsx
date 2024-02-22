@@ -54,8 +54,10 @@ export default function NewMultipleChoiceBallotScreen({
   navigation,
 }: NewMultipleChoiceBallotScreenProps) {
   const [
-    candidates, setCandidates,
+    maybeCandidates, setCandidates,
   ] = useCachedValue<string[]>(CACHE_KEY_CANDIDATES);
+  const initialCandidates = [''];
+  const candidates = maybeCandidates ?? initialCandidates;
   const [maxSelections, setMaxSelections] = useState(1);
   const [question, setQuestion] = useCachedValue<string>(CACHE_KEY_QUESTION);
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 7 }));
@@ -71,7 +73,7 @@ export default function NewMultipleChoiceBallotScreen({
   const { cacheBallotPreview } = useBallotPreviews();
 
   const resetForm = () => {
-    setCandidates(['']);
+    setCandidates(initialCandidates);
     setQuestion('');
     setVotingEnd(startOfNextHourIn({ days: 7 }));
     setResult('none');
@@ -86,11 +88,13 @@ export default function NewMultipleChoiceBallotScreen({
     const strippedQuestion = question?.trim() ?? '';
     setQuestion(strippedQuestion);
 
-    const strippedNonemptyCandidates = (candidates ?? [])
+    const strippedNonemptyCandidates = candidates
       .map((c) => c.trim())
       .filter((c) => c.length);
     const uniqueCandidates = [...new Set(strippedNonemptyCandidates)];
-    setCandidates(uniqueCandidates);
+    setCandidates(
+      uniqueCandidates.length ? uniqueCandidates : initialCandidates,
+    );
 
     let errorMessage: string | undefined;
     let id: string | undefined;
@@ -155,12 +159,12 @@ export default function NewMultipleChoiceBallotScreen({
         />
         <HeaderText>Choices</HeaderText>
         <NewCandidatesControl
-          candidates={candidates ?? ['']}
+          candidates={candidates}
           setCandidates={setCandidates}
         />
         <HeaderText>Max Selections</HeaderText>
         <StepperControl
-          max={Math.max(1, (candidates ?? []).filter((c) => c.length).length)}
+          max={Math.max(1, candidates.filter((c) => c.length).length)}
           min={1}
           setValue={setMaxSelections}
           style={styles.stepperControl}
