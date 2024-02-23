@@ -5,7 +5,7 @@ import { usePullToRefresh } from '../hooks';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
 
-const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nElections for a filled office open back up two months before the end of its term.';
+const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nTry again later';
 
 type OfficeSection = {
   title: string;
