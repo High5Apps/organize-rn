@@ -37,30 +37,36 @@ export default function useVoteUpdater({ ballot }: Props) {
   }: Candidate) => {
     if (ballot === undefined || !isCurrentUserData(currentUser)) { return; }
 
-    const { maxCandidateIdsPerVote } = ballot;
+    const { candidates, maxCandidateIdsPerVote } = ballot;
 
-    let updatedSelectedCandidateIds: string[] | undefined;
+    // Toggle selections when multiple selections are allowed or when there's
+    // only a single candidate to choose from
+    const shouldToggleSelections = (maxCandidateIdsPerVote > 1)
+      || (candidates?.length === 1);
 
-    // If only a single selection is allowed, deselect the previous selection
-    if (maxCandidateIdsPerVote === 1) {
-      if (!selectedCandidateIds?.includes(candidateId)) {
-        updatedSelectedCandidateIds = [candidateId];
-      }
-    } else if (maxCandidateIdsPerVote > 1) {
-      // If multiple selection is allowed, toggle candidate inclusion on
-      // successive selections
+    let updatedSelectedCandidateIds: string[];
+
+    if (shouldToggleSelections) {
       if (selectedCandidateIds?.includes(candidateId)) {
+        // Remove candidate when it was previously included
         updatedSelectedCandidateIds = selectedCandidateIds.filter(
           (cid) => cid !== candidateId,
         );
       } else {
+        // Add candidate when it wasn't previously included
         updatedSelectedCandidateIds = [
           ...(selectedCandidateIds ?? []), candidateId,
         ];
       }
-    }
+    } else {
+      // Return early when the selection was unchanged
+      const wasAlreadySelected = (selectedCandidateIds?.length === 1)
+        && (selectedCandidateIds[0] === candidateId);
+      if (wasAlreadySelected) { return; }
 
-    if (updatedSelectedCandidateIds === undefined) { return; }
+      // Only include the selected candidate
+      updatedSelectedCandidateIds = [candidateId];
+    }
 
     setWaitingForDeselectedCandidateIds(
       quickDifference(selectedCandidateIds ?? [], updatedSelectedCandidateIds),

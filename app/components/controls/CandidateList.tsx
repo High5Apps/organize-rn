@@ -36,6 +36,8 @@ export default function CandidateList({
     const disabledDueToWaiting = waitingForSelectedCandidateIds.length > 0
       || waitingForDeselectedCandidateIds.length > 0;
     const maxSelections = maybeMaxSelections ?? 0;
+    const shouldToggleSelections = (maxSelections > 1)
+      || (candidates?.length === 1);
     const multipleSelectionsAllowed = maxSelections > 1;
     const selectionCount = (selectedCandidateIds?.length ?? 0)
       + (waitingForSelectedCandidateIds?.length ?? 0);
@@ -46,7 +48,7 @@ export default function CandidateList({
     return (
       <CandidateRow
         disabled={disabled}
-        indicatesMultipleSelectionsAllowed={multipleSelectionsAllowed}
+        indicatesSelectionToggling={shouldToggleSelections}
         item={item}
         onPress={onRowPressed}
         selected={selected}

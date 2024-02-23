@@ -38,14 +38,14 @@ const useStyles = () => {
 };
 
 type IconNameProps = {
-  indicatesMultipleSelectionsAllowed?: boolean;
+  indicatesSelectionToggling?: boolean;
   selected?: boolean;
 };
 
 function getIcon({
-  indicatesMultipleSelectionsAllowed, selected,
+  indicatesSelectionToggling, selected,
 }: IconNameProps) {
-  if (indicatesMultipleSelectionsAllowed) {
+  if (indicatesSelectionToggling) {
     return selected ? 'check-box' : 'check-box-outline-blank';
   }
 
@@ -60,12 +60,12 @@ type Props = IconNameProps & {
 };
 
 export default function CandidateRow({
-  disabled, indicatesMultipleSelectionsAllowed, item, onPress, selected,
+  disabled, indicatesSelectionToggling, item, onPress, selected,
   showDisabled,
 }: Props) {
   const { title } = item;
 
-  const iconName = getIcon({ indicatesMultipleSelectionsAllowed, selected });
+  const iconName = getIcon({ indicatesSelectionToggling, selected });
 
   const { colors, styles } = useStyles();
 
@@ -88,7 +88,7 @@ export default function CandidateRow({
 
 CandidateRow.defaultProps = {
   disabled: false,
-  indicatesMultipleSelectionsAllowed: false,
+  indicatesSelectionToggling: false,
   onPress: () => {},
   selected: false,
   showDisabled: false,
