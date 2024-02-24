@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ResultScreenProps } from '../../navigation';
 import {
-  ResultGraph, ResultList, ScreenBackground, useBallot,
+  LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground, useBallot,
+  useLearnMoreOfficeModal,
 } from '../../components';
 import { useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
@@ -47,6 +48,10 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
   const { styles } = useStyles();
 
+  const {
+    LearnMoreOfficeModal, setModalVisible,
+  } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+
   const ListEmptyComponent = useMemo(() => (
     <Text style={[styles.text, styles.emptyResultsText]}>
       No one accepted a nomination
@@ -67,10 +72,18 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     </View>
   ), [ballotPreview, styles]);
 
+  const ListFooterComponent = useMemo(() => (
+    (ballotPreview.category === 'election')
+      ? <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+      : undefined
+  ), [ballotPreview]);
+
   return (
     <ScreenBackground>
+      <LearnMoreOfficeModal />
       <ResultList
         ListEmptyComponent={ListEmptyComponent}
+        ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
         results={ballot?.results}

@@ -6,13 +6,15 @@ import { Result } from '../../model';
 
 type Props = {
   ListEmptyComponent?: ReactElement;
+  ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
   results?: Result[];
 };
 
 export default function ResultList({
-  ListEmptyComponent, ListHeaderComponent, maxWinners: maybeMaxWinners, results,
+  ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
+  maxWinners: maybeMaxWinners, results,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -44,6 +46,7 @@ export default function ResultList({
       data={results}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={(results !== undefined) ? ListEmptyComponent : null}
+      ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
     />
@@ -52,6 +55,7 @@ export default function ResultList({
 
 ResultList.defaultProps = {
   ListEmptyComponent: undefined,
+  ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
   maxWinners: undefined,
   results: undefined,
