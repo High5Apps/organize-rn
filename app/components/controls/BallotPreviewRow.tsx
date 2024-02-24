@@ -55,7 +55,7 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-function getSubtitle(votingEndsAt: Date, nominationsEndAt: Date | undefined) {
+function getSubtitle(votingEndsAt: Date, nominationsEndAt: Date | null) {
   const now = new Date();
   const inNomations = nominationsEndAt
     && nominationsEndAt?.getTime() > now.getTime();

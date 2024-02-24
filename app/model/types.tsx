@@ -167,7 +167,7 @@ export type BallotPreview = {
   id: string;
   question: string;
   userId: string;
-  nominationsEndAt?: Date;
+  nominationsEndAt: Date | null;
   votingEndsAt: Date;
 };
 

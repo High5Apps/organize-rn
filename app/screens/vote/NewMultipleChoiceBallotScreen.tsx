@@ -128,6 +128,7 @@ export default function NewMultipleChoiceBallotScreen({
     const ballotPreview: BallotPreview = {
       category: BALLOT_CATEGORY,
       question: strippedQuestion,
+      nominationsEndAt: null,
       userId: currentUser.id,
       votingEndsAt: votingEnd,
       id: id!,
