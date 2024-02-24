@@ -47,7 +47,7 @@ export default function VoteStack() {
       <Stack.Screen
         component={NominationScreen}
         name="Nomination"
-        options={{ title: 'Nominations' }}
+        options={{ title: '' }}
       />
       <Stack.Screen
         component={OfficeTypeScreen}
