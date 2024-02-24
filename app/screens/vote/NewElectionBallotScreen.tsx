@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
-  BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  LearnMoreModal, OfficeRow, PrimaryButton, StepperControl, startOfNextHourIn,
+  DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground, OfficeRow,
+  PrimaryButton, StepperControl, startOfNextHourIn, useLearnMoreOfficeModal,
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, OFFICE_DUTIES, addMetadata,
-  isCurrentUserData, useBallotPreviews, useUserContext,
+  BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
+  useUserContext,
 } from '../../model';
 import { createBallot } from '../../networking';
 
@@ -55,12 +55,8 @@ export default function NewElectionBallotScreen({
   navigation, route,
 }: NewElectionBallotScreenProps) {
   const { officeCategory } = route.params;
-  const duties = OFFICE_DUTIES[officeCategory];
-  const office = addMetadata({ type: officeCategory, open: true });
-  const question = `Who should we elect ${office.title}?`;
 
   const [maxSelections, setMaxSelections] = useState(1);
-  const [modalVisible, setModalVisible] = useState(false);
   const [
     nominationsEnd, setNominationsEnd,
   ] = useState(startOfNextHourIn({ days: 7 }));
@@ -70,6 +66,11 @@ export default function NewElectionBallotScreen({
   const { currentUser } = useUserContext();
 
   const { styles } = useStyles();
+
+  const {
+    LearnMoreOfficeModal, office, setModalVisible,
+  } = useLearnMoreOfficeModal({ officeCategory });
+  const question = `Who should we elect ${office.title}?`;
 
   const {
     RequestProgress, setLoading, setResult,
@@ -85,10 +86,6 @@ export default function NewElectionBallotScreen({
   };
 
   const onPublishPressed = async () => {
-    console.log({
-      nominationsEnd, officeCategory, termEnd, votingEnd,
-    });
-
     if (!isCurrentUserData(currentUser)) { return; }
 
     setLoading(true);
@@ -143,14 +140,7 @@ export default function NewElectionBallotScreen({
 
   return (
     <KeyboardAvoidingScreenBackground>
-      <LearnMoreModal
-        headline={`What does a ${office.title} do?`}
-        iconName={office.iconName}
-        setVisible={setModalVisible}
-        visible={modalVisible}
-      >
-        <BulletedText bullets={duties} />
-      </LearnMoreModal>
+      <LearnMoreOfficeModal />
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
