@@ -231,9 +231,11 @@ export type BallotIndexBallot = {
 } & ({
   category: Exclude<BallotCategory, 'election'>;
   nominationsEndAt: null;
+  office: null;
 } | {
   category: Extract<BallotCategory, 'election'>;
   nominationsEndAt: Date;
+  office: OfficeCategory;
 });
 
 function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
@@ -243,7 +245,8 @@ function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
     && isBackendEncryptedMessage(ballot.encryptedQuestion)
     && ((ballot.category !== 'election')
         || ((ballot.category === 'election')
-          && isDate(ballot.nominationsEndAt))
+          && isDate(ballot.nominationsEndAt)
+          && ballot.office?.length > 0)
     )
     && ballot.userId?.length > 0
     && isDate(ballot.votingEndsAt);

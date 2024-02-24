@@ -171,9 +171,11 @@ export type BallotPreview = {
 } & ({
   category: Exclude<BallotCategory, 'election'>;
   nominationsEndAt: null;
+  office: null;
 } | {
   category: Extract<BallotCategory, 'election'>;
   nominationsEndAt: Date;
+  office: OfficeCategory;
 });
 
 export type { Model } from './ModelCache';

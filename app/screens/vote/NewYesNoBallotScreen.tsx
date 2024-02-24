@@ -108,11 +108,12 @@ export default function NewYesNoBallotScreen({
 
     const ballotPreview: BallotPreview = {
       category: BALLOT_CATEGORY,
-      question: strippedQuestion,
+      id: id!,
       nominationsEndAt: null,
+      office: null,
+      question: strippedQuestion,
       userId: currentUser.id,
       votingEndsAt: votingEnd,
-      id: id!,
     };
     cacheBallotPreview(ballotPreview);
 

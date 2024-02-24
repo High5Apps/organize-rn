@@ -128,11 +128,12 @@ export default function NewElectionBallotScreen({
 
     const ballotPreview: BallotPreview = {
       category: BALLOT_CATEGORY,
+      id: id!,
+      nominationsEndAt: nominationsEnd,
+      office: officeCategory,
       question,
       userId: currentUser.id,
-      nominationsEndAt: nominationsEnd,
       votingEndsAt: votingEnd,
-      id: id!,
     };
     cacheBallotPreview(ballotPreview);
 
