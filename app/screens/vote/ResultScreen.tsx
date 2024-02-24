@@ -73,10 +73,10 @@ export default function ResultScreen({ route }: ResultScreenProps) {
   ), [ballotPreview, styles]);
 
   const ListFooterComponent = useMemo(() => (
-    (ballotPreview.category === 'election')
+    (ballot?.category === 'election')
       ? <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
       : undefined
-  ), [ballotPreview]);
+  ), [ballot]);
 
   return (
     <ScreenBackground>
