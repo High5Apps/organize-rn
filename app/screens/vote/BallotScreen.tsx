@@ -6,9 +6,8 @@ import type { BallotScreenProps } from '../../navigation';
 import { CandidateList, ScreenBackground, useBallot } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Candidate, GENERIC_ERROR_MESSAGE, getTimeRemaining, useBallotPreviews,
-  useVoteUpdater, votingTimeRemainingExpiredFormatter,
-  votingTimeRemainingFormatter,
+  Candidate, getTimeRemaining, useBallotPreviews, useVoteUpdater,
+  votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
 } from '../../model';
 
 const useStyles = () => {
@@ -68,6 +67,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
+  if (!ballotPreview) {
+    throw new Error('Expected ballotPreview to be defined');
+  }
 
   const { styles } = useStyles();
 
@@ -77,45 +79,39 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     </Text>
   ), []);
 
-  const ListHeaderComponent = useMemo(() => {
-    if (!ballotPreview) { return undefined; }
-    return (
-      <View style={styles.header}>
-        <Text style={[styles.text, styles.question]}>
-          {ballotPreview.question}
-        </Text>
-        { ballot?.candidates?.length ? (
-          <View style={styles.directions}>
-            {ballot.maxCandidateIdsPerVote > 1 && (
-              <Text style={[styles.text, styles.details]}>
-                {`Select up to ${ballot.maxCandidateIdsPerVote}`}
-              </Text>
-            )}
-            <Text style={[styles.text, styles.details]}>
-              Responses will be anonymous
-            </Text>
-            <Text style={[styles.text, styles.details]}>
-              Change your mind until voting ends
-            </Text>
-          </View>
-        ) : null}
-        <RequestProgress />
-      </View>
-    );
-  }, [ballot, ballotPreview, styles]);
-
-  const ListFooterComponent = useMemo(() => {
-    if (!ballotPreview) { return undefined; }
-    return (
-      <Text style={[styles.text, styles.footer]} onPress={updateTime}>
-        {getTimeRemaining(ballotPreview.votingEndsAt, {
-          formatter: votingTimeRemainingFormatter,
-          expiredFormatter: votingTimeRemainingExpiredFormatter,
-          now,
-        })}
+  const ListHeaderComponent = useMemo(() => (
+    <View style={styles.header}>
+      <Text style={[styles.text, styles.question]}>
+        {ballotPreview.question}
       </Text>
-    );
-  }, [ballotPreview, now]);
+      { ballot?.candidates?.length ? (
+        <View style={styles.directions}>
+          {ballot.maxCandidateIdsPerVote > 1 && (
+            <Text style={[styles.text, styles.details]}>
+              {`Select up to ${ballot.maxCandidateIdsPerVote}`}
+            </Text>
+          )}
+          <Text style={[styles.text, styles.details]}>
+            Responses will be anonymous
+          </Text>
+          <Text style={[styles.text, styles.details]}>
+            Change your mind until voting ends
+          </Text>
+        </View>
+      ) : null}
+      <RequestProgress />
+    </View>
+  ), [ballot, ballotPreview, styles]);
+
+  const ListFooterComponent = useMemo(() => (
+    <Text style={[styles.text, styles.footer]} onPress={updateTime}>
+      {getTimeRemaining(ballotPreview.votingEndsAt, {
+        formatter: votingTimeRemainingFormatter,
+        expiredFormatter: votingTimeRemainingExpiredFormatter,
+        now,
+      })}
+    </Text>
+  ), [ballotPreview, now]);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
@@ -134,21 +130,17 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   return (
     <ScreenBackground>
-      {ballotPreview ? (
-        <CandidateList
-          candidates={ballot?.candidates ?? null}
-          ListEmptyComponent={ListEmptyComponent}
-          ListFooterComponent={ListFooterComponent}
-          ListHeaderComponent={ListHeaderComponent}
-          maxSelections={ballot?.maxCandidateIdsPerVote}
-          onRowPressed={onRowPressed}
-          selectedCandidateIds={selectedCandidateIds}
-          waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
-          waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
-        />
-      ) : (
-        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
-      )}
+      <CandidateList
+        candidates={ballot?.candidates ?? null}
+        ListEmptyComponent={ListEmptyComponent}
+        ListFooterComponent={ListFooterComponent}
+        ListHeaderComponent={ListHeaderComponent}
+        maxSelections={ballot?.maxCandidateIdsPerVote}
+        onRowPressed={onRowPressed}
+        selectedCandidateIds={selectedCandidateIds}
+        waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
+        waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
+      />
     </ScreenBackground>
   );
 }
