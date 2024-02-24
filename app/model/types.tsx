@@ -167,9 +167,14 @@ export type BallotPreview = {
   id: string;
   question: string;
   userId: string;
-  nominationsEndAt: Date | null;
   votingEndsAt: Date;
-};
+} & ({
+  category: Exclude<BallotCategory, 'election'>;
+  nominationsEndAt: null;
+} | {
+  category: Extract<BallotCategory, 'election'>;
+  nominationsEndAt: Date;
+});
 
 export type { Model } from './ModelCache';
 

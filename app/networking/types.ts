@@ -227,9 +227,14 @@ export type BallotIndexBallot = {
   encryptedQuestion: BackendEncryptedMessage;
   id: string;
   userId: string;
-  nominationsEndAt: Date | null;
   votingEndsAt: Date;
-};
+} & ({
+  category: Exclude<BallotCategory, 'election'>;
+  nominationsEndAt: null;
+} | {
+  category: Extract<BallotCategory, 'election'>;
+  nominationsEndAt: Date;
+});
 
 function isBallotIndexBallot(object: unknown): object is BallotIndexBallot {
   const ballot = (object as BallotIndexBallot);
