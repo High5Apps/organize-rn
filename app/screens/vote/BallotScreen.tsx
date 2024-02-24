@@ -3,7 +3,10 @@ import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
-import { CandidateList, ScreenBackground, useBallot } from '../../components';
+import {
+  CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
+  useLearnMoreOfficeModal,
+} from '../../components';
 import useTheme from '../../Theme';
 import {
   Candidate, getTimeRemaining, useBallotPreviews, useVoteUpdater,
@@ -28,11 +31,6 @@ const useStyles = () => {
       marginTop: spacing.m,
       textAlign: 'center',
     },
-    footer: {
-      color: colors.labelSecondary,
-      margin: spacing.m,
-      textAlign: 'center',
-    },
     header: {
       margin: spacing.m,
     },
@@ -44,6 +42,14 @@ const useStyles = () => {
       flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
+    },
+    timeRemaining: {
+      color: colors.labelSecondary,
+      marginHorizontal: spacing.m,
+      textAlign: 'center',
+    },
+    timeRemainingNotElection: {
+      marginVertical: spacing.m,
     },
   });
 
@@ -70,6 +76,10 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   if (!ballotPreview) {
     throw new Error('Expected ballotPreview to be defined');
   }
+
+  const {
+    LearnMoreOfficeModal, setModalVisible,
+  } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
 
   const { styles } = useStyles();
 
@@ -103,15 +113,30 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     </View>
   ), [ballot, ballotPreview, styles]);
 
-  const ListFooterComponent = useMemo(() => (
-    <Text style={[styles.text, styles.footer]} onPress={updateTime}>
-      {getTimeRemaining(ballotPreview.votingEndsAt, {
-        formatter: votingTimeRemainingFormatter,
-        expiredFormatter: votingTimeRemainingExpiredFormatter,
-        now,
-      })}
-    </Text>
-  ), [ballotPreview, now]);
+  const ListFooterComponent = useMemo(() => {
+    const isElection = ballotPreview.category === 'election';
+    return (
+      <>
+        {isElection && (
+          <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+        )}
+        <Text
+          style={[
+            styles.text,
+            styles.timeRemaining,
+            !isElection && styles.timeRemainingNotElection,
+          ]}
+          onPress={updateTime}
+        >
+          {getTimeRemaining(ballotPreview.votingEndsAt, {
+            formatter: votingTimeRemainingFormatter,
+            expiredFormatter: votingTimeRemainingExpiredFormatter,
+            now,
+          })}
+        </Text>
+      </>
+    );
+  }, [ballotPreview, now]);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
@@ -130,6 +155,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
   return (
     <ScreenBackground>
+      <LearnMoreOfficeModal />
       <CandidateList
         candidates={ballot?.candidates ?? null}
         ListEmptyComponent={ListEmptyComponent}

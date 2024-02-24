@@ -4,28 +4,36 @@ import LearnMoreModal from './LearnMoreModal';
 import { BulletedText } from '../views';
 
 type Props = {
-  officeCategory: OfficeCategory;
+  officeCategory: OfficeCategory | null;
 };
 
 export default function useLearnMoreOfficeModal({ officeCategory }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const duties = OFFICE_DUTIES[officeCategory];
   const office = useMemo(
-    () => addMetadata({ type: officeCategory, open: true }),
+    () => {
+      if (officeCategory === null) { return null; }
+      return addMetadata({ type: officeCategory, open: true });
+    },
     [officeCategory],
   );
 
-  const LearnMoreOfficeModal = useCallback(() => (
-    <LearnMoreModal
-      headline={`What does a ${office.title} do?`}
-      iconName={office.iconName}
-      setVisible={setModalVisible}
-      visible={modalVisible}
-    >
-      <BulletedText bullets={duties} />
-    </LearnMoreModal>
-  ), [office, modalVisible]);
+  const LearnMoreOfficeModal = useCallback(() => {
+    if (office === null) { return null; }
+
+    const duties = OFFICE_DUTIES[office.type];
+
+    return (
+      <LearnMoreModal
+        headline={`What does a ${office.title} do?`}
+        iconName={office.iconName}
+        setVisible={setModalVisible}
+        visible={modalVisible}
+      >
+        <BulletedText bullets={duties} />
+      </LearnMoreModal>
+    );
+  }, [office, modalVisible]);
 
   return { LearnMoreOfficeModal, office, setModalVisible };
 }

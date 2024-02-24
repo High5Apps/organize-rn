@@ -70,13 +70,16 @@ export default function NewElectionBallotScreen({
   const {
     LearnMoreOfficeModal, office, setModalVisible,
   } = useLearnMoreOfficeModal({ officeCategory });
-  const question = `Who should we elect ${office.title}?`;
 
   const {
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { cacheBallotPreview } = useBallotPreviews();
+
+  if (!office) { return null; }
+
+  const question = `Who should we elect ${office.title}?`;
 
   const resetForm = () => {
     setNominationsEnd(startOfNextHourIn({ days: 7 }));
