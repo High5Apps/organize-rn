@@ -26,11 +26,6 @@ const useStyles = () => {
     emptyResultsText: {
       paddingHorizontal: spacing.l,
     },
-    error: {
-      color: colors.error,
-      marginTop: spacing.m,
-      textAlign: 'center',
-    },
     header: {
       margin: spacing.m,
     },

@@ -4,7 +4,7 @@ import type { ResultScreenProps } from '../../navigation';
 import {
   ResultGraph, ResultList, ScreenBackground, useBallot,
 } from '../../components';
-import { GENERIC_ERROR_MESSAGE, useBallotPreviews } from '../../model';
+import { useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -13,11 +13,6 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     emptyResultsText: {
       paddingHorizontal: spacing.l,
-    },
-    error: {
-      color: colors.error,
-      marginTop: spacing.m,
-      textAlign: 'center',
     },
     header: {
       margin: spacing.m,
@@ -46,6 +41,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
+  if (!ballotPreview) {
+    throw new Error('Expected ballotPreview to be defined');
+  }
 
   const { styles } = useStyles();
 
@@ -55,35 +53,28 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     </Text>
   ), []);
 
-  const ListHeaderComponent = useMemo(() => {
-    if (!ballotPreview) { return undefined; }
-    return (
-      <View style={styles.header}>
-        <Text style={[styles.text, styles.question]}>
-          {ballotPreview.question}
-        </Text>
-        <RequestProgress />
-        <ResultGraph
-          maxWinners={ballot?.maxCandidateIdsPerVote}
-          results={ballot?.results}
-          style={styles.graph}
-        />
-      </View>
-    );
-  }, [ballotPreview, styles]);
+  const ListHeaderComponent = useMemo(() => (
+    <View style={styles.header}>
+      <Text style={[styles.text, styles.question]}>
+        {ballotPreview.question}
+      </Text>
+      <RequestProgress />
+      <ResultGraph
+        maxWinners={ballot?.maxCandidateIdsPerVote}
+        results={ballot?.results}
+        style={styles.graph}
+      />
+    </View>
+  ), [ballotPreview, styles]);
 
   return (
     <ScreenBackground>
-      {ballotPreview ? (
-        <ResultList
-          ListEmptyComponent={ListEmptyComponent}
-          ListHeaderComponent={ListHeaderComponent}
-          maxWinners={ballot?.maxCandidateIdsPerVote}
-          results={ballot?.results}
-        />
-      ) : (
-        <Text style={[styles.text, styles.error]}>{GENERIC_ERROR_MESSAGE}</Text>
-      )}
+      <ResultList
+        ListEmptyComponent={ListEmptyComponent}
+        ListHeaderComponent={ListHeaderComponent}
+        maxWinners={ballot?.maxCandidateIdsPerVote}
+        results={ballot?.results}
+      />
     </ScreenBackground>
   );
 }
