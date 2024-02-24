@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
   BulletedText, DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
-  OfficeRow, PrimaryButton, StepperControl, startOfNextHourIn,
+  LearnMoreModal, OfficeRow, PrimaryButton, StepperControl, startOfNextHourIn,
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
@@ -11,7 +11,6 @@ import {
   BallotPreview, GENERIC_ERROR_MESSAGE, OFFICE_DUTIES, addMetadata,
   isCurrentUserData, useBallotPreviews, useUserContext,
 } from '../../model';
-import LearnMoreModal from '../LearnMoreModal';
 import { createBallot } from '../../networking';
 
 const BALLOT_CATEGORY = 'election';

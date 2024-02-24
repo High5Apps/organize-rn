@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import LearnMoreModal from '../../LearnMoreModal';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
-  SecondaryButton, TextInputRow,
+  HeaderText, KeyboardAvoidingScreenBackground, LearnMoreModal,
+  MultilineTextInput, SecondaryButton, TextInputRow,
 } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import type {
