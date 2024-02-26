@@ -3,7 +3,10 @@ import { StyleSheet } from 'react-native';
 import type { NominationScreenProps } from '../../navigation';
 import { OfficeCategory, addMetadata, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
-import { PrimaryButton, ScreenBackground } from '../../components';
+import {
+  ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
+  useLearnMoreOfficeModal,
+} from '../../components';
 
 function useTitleUpdater(
   navigation: NominationScreenProps['navigation'],
@@ -24,10 +27,13 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     button: {
-      bottom: buttonMargin,
-      end: buttonMargin,
+      flex: 0,
       height: sizes.buttonHeight,
+      marginHorizontal: buttonMargin,
       paddingHorizontal: buttonMargin,
+    },
+    buttonRow: {
+      bottom: 0,
       position: 'absolute',
     },
     contentContainerStyle: {
@@ -53,14 +59,27 @@ export default function NominationScreen({
 
   useTitleUpdater(navigation, ballotPreview.office);
 
+  const {
+    LearnMoreOfficeModal, setModalVisible,
+  } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+
   return (
     <ScreenBackground>
-      <PrimaryButton
-        iconName="record-voice-over"
-        label="Nominate"
-        onPress={() => navigation.navigate('NewNomination')}
-        style={styles.button}
-      />
+      <LearnMoreOfficeModal />
+      <ButtonRow style={styles.buttonRow}>
+        <SecondaryButton
+          iconName="info-outline"
+          label="Learn more"
+          onPress={() => setModalVisible(true)}
+          style={styles.button}
+        />
+        <PrimaryButton
+          iconName="record-voice-over"
+          label="Nominate"
+          onPress={() => navigation.navigate('NewNomination')}
+          style={styles.button}
+        />
+      </ButtonRow>
     </ScreenBackground>
   );
 }
