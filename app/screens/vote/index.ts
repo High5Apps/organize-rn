@@ -9,3 +9,4 @@ export { default as NewYesNoBallotScreen } from './NewYesNoBallotScreen';
 export { default as NominationScreen } from './NominationScreen';
 export { default as OfficeTypeScreen } from './OfficeTypeScreen';
 export { default as ResultScreen } from './ResultScreen';
+export { default as NewNominationScreen } from './NewNominationScreen';
