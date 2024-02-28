@@ -29,12 +29,14 @@ const useStyles = () => {
     button: {
       flex: 0,
       height: sizes.buttonHeight,
-      marginHorizontal: buttonMargin,
       paddingHorizontal: buttonMargin,
     },
     buttonRow: {
       bottom: 0,
+      left: 0,
+      paddingHorizontal: spacing.m,
       position: 'absolute',
+      right: 0,
     },
     contentContainerStyle: {
       paddingBottom: buttonBoundingBoxHeight,
