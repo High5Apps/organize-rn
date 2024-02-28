@@ -30,7 +30,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   );
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
-  const [createdBefore, setCreatedBefore] = useState<Date>(new Date());
+  const [createdAtOrBefore, setCreatedAtOrBefore] = useState<Date>(new Date());
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
   const { currentUser } = useUserContext();
@@ -41,7 +41,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
     }
 
     const now = new Date();
-    setCreatedBefore(now);
+    setCreatedAtOrBefore(now);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
@@ -49,7 +49,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
       category,
-      createdBefore: now,
+      createdAtOrBefore: now,
       e2eDecryptMany,
       page: firstPageIndex,
       jwt,
@@ -81,7 +81,12 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
     const {
       errorMessage, paginationData, posts: fetchedPosts,
     } = await fetchPosts({
-      category, createdBefore, e2eDecryptMany, jwt, page: nextPageNumber, sort,
+      category,
+      createdAtOrBefore,
+      e2eDecryptMany,
+      jwt,
+      page: nextPageNumber,
+      sort,
     });
 
     if (errorMessage) {

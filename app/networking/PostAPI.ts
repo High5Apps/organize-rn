@@ -64,7 +64,7 @@ export async function createPost({
 
 type IndexProps = {
   category?: PostCategory;
-  createdBefore: Date;
+  createdAtOrBefore: Date;
   e2eDecryptMany: E2EMultiDecryptor;
   page?: number;
   sort: PostSort;
@@ -81,7 +81,7 @@ type IndexReturn = {
 };
 
 export async function fetchPosts({
-  category, createdBefore, e2eDecryptMany, jwt, page, sort,
+  category, createdAtOrBefore, e2eDecryptMany, jwt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(postsURI);
 
@@ -89,10 +89,10 @@ export async function fetchPosts({
     uri.searchParams.set('category', category);
   }
 
-  if (createdBefore !== undefined) {
+  if (createdAtOrBefore !== undefined) {
     uri.searchParams.set(
-      'created_before',
-      createdBefore.toISOString(),
+      'created_at_or_before',
+      createdAtOrBefore.toISOString(),
     );
   }
 
