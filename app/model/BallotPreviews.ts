@@ -53,13 +53,13 @@ export default function useBallotPreviews() {
     ] = await Promise.all([
       fetchBallotPreviews({
         activeAt: now,
-        createdBefore: now,
+        createdAtOrBefore: now,
         e2eDecryptMany,
         jwt: activeJwt,
         sort: 'active',
       }),
       fetchBallotPreviews({
-        createdBefore: now,
+        createdAtOrBefore: now,
         e2eDecryptMany,
         inactiveAt: now,
         jwt: inactiveJwt,
@@ -103,7 +103,7 @@ export default function useBallotPreviews() {
     const {
       errorMessage, ballotPreviews: fetchedBallotPreviews, paginationData,
     } = await fetchBallotPreviews({
-      createdBefore: activeCutoff,
+      createdAtOrBefore: activeCutoff,
       inactiveAt: activeCutoff,
       e2eDecryptMany,
       jwt,

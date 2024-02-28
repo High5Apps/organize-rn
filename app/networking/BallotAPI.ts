@@ -77,7 +77,7 @@ export async function createBallot({
 
 type IndexProps = {
   activeAt?: Date;
-  createdBefore?: Date;
+  createdAtOrBefore?: Date;
   e2eDecryptMany: E2EMultiDecryptor;
   inactiveAt?: Date;
   page?: number;
@@ -95,7 +95,7 @@ type IndexReturn = {
 };
 
 export async function fetchBallotPreviews({
-  activeAt, createdBefore, e2eDecryptMany, jwt, inactiveAt, page, sort,
+  activeAt, createdAtOrBefore, e2eDecryptMany, jwt, inactiveAt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(ballotsURI);
 
@@ -103,8 +103,11 @@ export async function fetchBallotPreviews({
     uri.searchParams.set('active_at', activeAt.toISOString());
   }
 
-  if (createdBefore !== undefined) {
-    uri.searchParams.set('created_before', createdBefore.toISOString());
+  if (createdAtOrBefore !== undefined) {
+    uri.searchParams.set(
+      'created_at_or_before',
+      createdAtOrBefore.toISOString(),
+    );
   }
 
   if (inactiveAt !== undefined) {
