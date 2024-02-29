@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   BallotPreviewContextProvider, CachedValueContextProvider,
   CommentContextProvider, PostContextProvider, UserContextProvider,
+  UserPreviewContextProvider,
 } from './model';
 import Navigation from './navigation';
 import { StatusBar } from './components';
@@ -14,11 +15,13 @@ export default function App() {
         <PostContextProvider>
           <CommentContextProvider>
             <BallotPreviewContextProvider>
-              <CachedValueContextProvider>
-                <SafeAreaProvider>
-                  <Navigation />
-                </SafeAreaProvider>
-              </CachedValueContextProvider>
+              <UserPreviewContextProvider>
+                <CachedValueContextProvider>
+                  <SafeAreaProvider>
+                    <Navigation />
+                  </SafeAreaProvider>
+                </CachedValueContextProvider>
+              </UserPreviewContextProvider>
             </BallotPreviewContextProvider>
           </CommentContextProvider>
         </PostContextProvider>

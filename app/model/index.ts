@@ -37,6 +37,8 @@ export { default as getShortenedTitles } from './TitleShortener';
 export { default as truncateText } from './TruncateText';
 export { default as User } from './User';
 export { UserContextProvider, useUserContext } from './UserContext';
+export { default as useUserPreviews } from './UserPreviews';
+export { UserPreviewContextProvider } from './UserPreviewContext';
 export { default as useVoteUpdater } from './VoteUpdater';
 export * from './keys';
 export * from './types';
