@@ -1,9 +1,12 @@
-import { fromJson } from '../model';
+import {
+  PaginationData, UserFilter, UserPreview, UserSort, fromJson, getOffice,
+} from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { usersURI, userUri } from './Routes';
 import {
   Authorization, GetUserResponse, isCreateUserResponse, isGetUserResponse,
+  isUserIndexResponse,
 } from './types';
 
 type CreateProps = {
@@ -76,4 +79,60 @@ export async function getUser({
   }
 
   return { user: json };
+}
+
+type IndexProps = {
+  filter?: UserFilter;
+  joinedAtOrBefore: Date;
+  page: number;
+  sort: UserSort;
+};
+
+type IndexReturn = {
+  errorMessage: string;
+  paginationData?: never;
+  userPreviews?: never;
+} | {
+  errorMessage?: never;
+  paginationData: PaginationData;
+  userPreviews: UserPreview[];
+};
+
+export async function fetchUserPreviews({
+  filter, joinedAtOrBefore, jwt, page, sort,
+}: IndexProps & Authorization): Promise<IndexReturn> {
+  const uri = new URL(usersURI);
+
+  uri.searchParams.set('joined_at_or_before', joinedAtOrBefore.toISOString());
+  uri.searchParams.set('page', page.toString());
+  uri.searchParams.set('sort', sort);
+
+  if (filter !== undefined) {
+    uri.searchParams.set('filter', filter);
+  }
+
+  const response = await get({ jwt, uri: uri.href });
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isUserIndexResponse(json)) {
+    throw new Error('Failed to parse UserPreviews from response');
+  }
+
+  const { users: fetchedUserPreviews, meta: paginationData } = json;
+
+  const userPreviews = fetchedUserPreviews.map((user) => {
+    const { offices: officeCategories, ...rest } = user;
+    const offices = officeCategories.map((category) => getOffice(category));
+    return { ...rest, offices };
+  });
+
+  return { paginationData, userPreviews };
 }

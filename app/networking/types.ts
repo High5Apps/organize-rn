@@ -1,6 +1,6 @@
 import type {
   BallotCategory, OfficeCategory, Org, OrgGraph, OrgGraphUser, PaginationData,
-  PostCategory, VoteState,
+  PostCategory, UserPreview, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -372,4 +372,32 @@ export function isOfficeIndexResponse(object: unknown): object is OfficeIndexRes
   return response?.offices
     && Array.isArray(response.offices)
     && response.offices.every(isOfficeIndexOffice);
+}
+
+type UserIndexUser = Omit<UserPreview, 'offices'> & {
+  offices: OfficeCategory[];
+};
+
+export function isUserIndexUser(object: unknown): object is UserIndexUser {
+  const user = (object as UserIndexUser);
+  return user?.connectionCount >= 0
+    && user.id?.length > 0
+    && isDate(user.joinedAt)
+    && user.pseudonym?.length > 0
+    && Array.isArray(user.offices)
+    && user.offices.every((category) => category.length > 0)
+    && user.recruitCount >= 0;
+}
+
+type UserIndexResponse = {
+  meta: PaginationData;
+  users: UserIndexUser[],
+};
+
+export function isUserIndexResponse(object: unknown): object is UserIndexResponse {
+  const response = (object as UserIndexResponse);
+  return response?.users
+    && Array.isArray(response.users)
+    && response.users.every(isUserIndexUser)
+    && isPaginationData(response?.meta);
 }

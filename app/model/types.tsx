@@ -221,3 +221,14 @@ export type OfficeDuty = {
   category: OfficeCategory;
   duties: string[];
 };
+
+export type UserFilter = 'officer';
+export type UserSort = 'office' | 'service';
+export type UserPreview = {
+  connectionCount: number;
+  id: string;
+  joinedAt: Date;
+  offices: Office[];
+  pseudonym: string;
+  recruitCount: number;
+};
