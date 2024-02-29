@@ -19,7 +19,7 @@ function toVisNetworkData(
       const isMe = (id === currentUserId);
       const {
         circleBorderColor, circleBackgroundColor, shadow,
-      } = getCircleColors({ colors, isMe, user });
+      } = getCircleColors({ colors, isMe, offices: user.offices });
       return {
         chosen: false,
         color: { background: circleBackgroundColor, border: circleBorderColor },

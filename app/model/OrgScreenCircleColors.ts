@@ -1,11 +1,10 @@
 import { ThemeColors } from '../Theme';
 import { getHighestOffice } from './Rank';
-import { OrgGraphUser } from './types';
 
 type GetCircleColorsProps = {
-  user: OrgGraphUser;
-  isMe?: boolean;
   colors: ThemeColors;
+  isMe?: boolean;
+  offices?: string[];
 };
 
 type GetCircleColorsReturn = {
@@ -15,10 +14,10 @@ type GetCircleColorsReturn = {
 };
 
 export default function getCircleColors({
-  colors, isMe, user,
+  colors, isMe, offices,
 }: GetCircleColorsProps): GetCircleColorsReturn {
   const { fill, office: officeColors, primary } = colors;
-  const highestOfficeName = getHighestOffice(user.offices);
+  const highestOfficeName = getHighestOffice(offices);
   let circleBackgroundColor: string;
   let circleBorderColor: string;
   let shadow: boolean;

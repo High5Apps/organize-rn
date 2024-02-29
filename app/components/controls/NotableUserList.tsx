@@ -90,7 +90,9 @@ export default function NotableUserList({
       const isMe = selectedUserId === currentUser.id;
       const data = [{
         user: selectedOrgGraphUser,
-        ...getCircleColors({ colors, isMe, user: selectedOrgGraphUser }),
+        ...getCircleColors({
+          colors, isMe, offices: selectedOrgGraphUser.offices,
+        }),
       }];
       notableUserSections.push({ title: 'Selected', data });
     }
@@ -99,7 +101,7 @@ export default function NotableUserList({
     const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
     const officersData = ordererdOfficers.map((officer) => ({
       user: officer,
-      ...getCircleColors({ colors, user: officer }),
+      ...getCircleColors({ colors, offices: officer.offices }),
     }));
     notableUserSections.push({ title: 'Officers', data: officersData });
 
@@ -109,7 +111,9 @@ export default function NotableUserList({
     if (!isOfficer) {
       const meData = [{
         user: currentOrgGraphUser,
-        ...getCircleColors({ colors, isMe: true, user: currentOrgGraphUser }),
+        ...getCircleColors({
+          colors, isMe: true, offices: currentOrgGraphUser.offices,
+        }),
       }];
       notableUserSections.push({ title: 'Me', data: meData });
     }
