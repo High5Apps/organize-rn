@@ -1,4 +1,8 @@
 const OFFICE_DUTIES = {
+  founder: [
+    'Created the Org',
+    "Performs the duties of all other officers before they're elected",
+  ],
   president: [
     'Leads the Org',
     'Represents the Org in external matters',

@@ -199,6 +199,7 @@ export type Ballot = BallotPreview & {
 };
 
 const OFFICE_CATEGORIES = [
+  'founder',
   'president',
   'vice_president',
   'secretary',

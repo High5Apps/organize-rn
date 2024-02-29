@@ -11,6 +11,7 @@ type OfficeMetadata = {
 };
 
 const officeMetadata: { [key: string]: OfficeMetadata } = {
+  founder: { iconName: 'emoji-objects', title: 'Founder' },
   president: { iconName: 'stars', title: 'President' },
   vice_president: { iconName: 'star', title: 'Vice President' },
   secretary: { iconName: 'border-color', title: 'Secretary' },
