@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { OFFICE_DUTIES, OfficeCategory, addMetadata } from '../../model';
+import { OFFICE_DUTIES, OfficeCategory, getOffice } from '../../model';
 import LearnMoreModal from './LearnMoreModal';
 import { BulletedText } from '../views';
 
@@ -13,7 +13,7 @@ export default function useLearnMoreOfficeModal({ officeCategory }: Props) {
   const office = useMemo(
     () => {
       if (officeCategory === null) { return null; }
-      return addMetadata({ type: officeCategory, open: true });
+      return getOffice(officeCategory);
     },
     [officeCategory],
   );

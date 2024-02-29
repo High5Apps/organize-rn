@@ -212,7 +212,7 @@ export type OfficeCategory = typeof OFFICE_CATEGORIES[number];
 
 export type Office = {
   iconName: string;
-  open: boolean;
+  open?: boolean;
   title: string;
   type: OfficeCategory;
 };

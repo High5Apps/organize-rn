@@ -19,7 +19,7 @@ export { fromJson, toJson } from './Json';
 export { default as JWT } from './JWT';
 export { default as getMessageAge } from './MessageAge';
 export { default as NewOrgSteps } from './NewOrgSteps';
-export { default as useOffices, addMetadata } from './Offices';
+export { default as useOffices, getOffice } from './Offices';
 export { default as OFFICE_DUTIES } from './OfficeDuties';
 export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as usePersistentValue } from './PersistentValue';

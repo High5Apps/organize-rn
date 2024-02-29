@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import {
-  OfficeIndexOffice, fetchOffices as fetchOfficesApi,
-} from '../networking';
+import { fetchOffices as fetchOfficesApi } from '../networking';
 import { useUserContext } from './UserContext';
-import { Office, isCurrentUserData } from './types';
+import { Office, OfficeCategory, isCurrentUserData } from './types';
 
 type OfficeMetadata = {
   iconName: string;
@@ -20,12 +18,18 @@ const officeMetadata: { [key: string]: OfficeMetadata } = {
   trustee: { iconName: 'find-in-page', title: 'Trustee' },
 };
 
-export function addMetadata(backendOffice: OfficeIndexOffice): Office {
-  const metadata = officeMetadata[backendOffice.type] ?? {
-    iconName: 'person', title: backendOffice.type,
-  };
-  return { ...backendOffice, ...metadata };
-}
+type Options = {
+  open?: boolean;
+};
+
+export const getOffice = (
+  category: OfficeCategory,
+  maybeOptions?: Options,
+): Office => ({
+  ...officeMetadata[category],
+  ...(maybeOptions ?? {}),
+  type: category,
+});
 
 export default function useOffices() {
   const [filledOffices, setFilledOffices] = useState<Office[]>([]);
@@ -40,15 +44,12 @@ export default function useOffices() {
     }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const {
-      errorMessage, offices: backendOffices,
-    } = await fetchOfficesApi({ jwt });
+    const { errorMessage, offices } = await fetchOfficesApi({ jwt });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
 
-    const offices = backendOffices.map(addMetadata);
     setOpenOffices(offices.filter(({ open }) => open));
     setFilledOffices(offices.filter(({ open }) => !open));
 

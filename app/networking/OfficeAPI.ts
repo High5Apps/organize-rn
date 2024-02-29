@@ -1,14 +1,14 @@
-import { fromJson } from '../model';
+import { Office, fromJson, getOffice } from '../model';
 import { get } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { officesURI } from './Routes';
 import {
-  Authorization, OfficeIndexOffice, isOfficeIndexResponse,
+  Authorization, isOfficeIndexResponse,
 } from './types';
 
 type IndexReturn = {
   errorMessage?: never;
-  offices: OfficeIndexOffice[];
+  offices: Office[];
 } | {
   errorMessage: string;
   offices?: never;
@@ -32,5 +32,9 @@ export async function fetchOffices({
     throw new Error('Failed to parse Offices from response');
   }
 
-  return json;
+  const offices = json.offices.map(
+    ({ open, type }) => getOffice(type, { open }),
+  );
+
+  return { offices };
 }

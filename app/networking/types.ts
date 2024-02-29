@@ -353,7 +353,7 @@ export function isCreateVoteResponse(object: unknown): object is CreateVoteRespo
   return response?.id?.length > 0;
 }
 
-export type OfficeIndexOffice = {
+type OfficeIndexOffice = {
   open: boolean;
   type: OfficeCategory;
 };

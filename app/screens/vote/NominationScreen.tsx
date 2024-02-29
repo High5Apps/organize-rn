@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import type { NominationScreenProps } from '../../navigation';
-import { OfficeCategory, addMetadata, useBallotPreviews } from '../../model';
+import { OfficeCategory, getOffice, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 import {
   ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
@@ -13,7 +13,7 @@ function useTitleUpdater(
   officeCategory: OfficeCategory,
 ) {
   useLayoutEffect(() => {
-    const office = addMetadata({ type: officeCategory, open: true });
+    const office = getOffice(officeCategory);
     const title = `Nominations for ${office.title}`;
     navigation.setOptions({ title });
   }, [navigation, officeCategory]);
