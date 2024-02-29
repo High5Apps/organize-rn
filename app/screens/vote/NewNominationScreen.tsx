@@ -1,9 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
-import type { NewNominationScreenProps } from '../../navigation';
+import { ScreenBackground, UserPreviewList } from '../../components';
 
-export default function NewNominationScreen({
-  route,
-}: NewNominationScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+export default function NewNominationScreen() {
+  return (
+    <ScreenBackground>
+      <UserPreviewList onItemPress={console.log} />
+    </ScreenBackground>
+  );
 }
