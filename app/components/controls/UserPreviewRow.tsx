@@ -47,16 +47,16 @@ const useStyles = () => {
       marginEnd: spacing.m,
     },
     rowTitle: {
-      alignItems: 'flex-start',
+      alignItems: 'center',
       flexDirection: 'row',
       gap: spacing.xs,
+      marginBottom: spacing.xs,
     },
     rowTitleText: {
       color: colors.label,
       flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
-      marginBottom: spacing.xs,
     },
   });
 
