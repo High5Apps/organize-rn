@@ -52,7 +52,10 @@ const useStyles = () => {
       marginEnd: spacing.m,
     },
     rowTitle: {
-      alignItems: 'center',
+      // This must be flex-start instead of center to accomodate for titles that
+      // take multiple lines
+      alignItems: 'flex-start',
+
       flexDirection: 'row',
       gap: spacing.xs,
     },
