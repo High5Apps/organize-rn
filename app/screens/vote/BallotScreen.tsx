@@ -40,11 +40,14 @@ const useStyles = () => {
     },
     timeRemaining: {
       color: colors.labelSecondary,
+      marginBottom: spacing.m,
       marginHorizontal: spacing.m,
       textAlign: 'center',
     },
     timeRemainingNotElection: {
-      marginVertical: spacing.m,
+      // Not needed for elections because LearnMoreButtonRow already has
+      // built-in margin
+      marginTop: spacing.m,
     },
   });
 
