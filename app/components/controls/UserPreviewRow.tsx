@@ -1,29 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View,
+  NativeSyntheticEvent, StyleSheet, Text, TextLayoutEventData,
+  TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { UserPreview, getCircleColors, getTenure } from '../../model';
 import useTheme from '../../Theme';
+
+const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
+
+// This returns the circleHeight and marginTop needed to center the circle on
+// the first line of text. These values scale with the text size.
+// onTextLayout must be attached to the Text component's onTextLayout event prop
+function useCircleHeight() {
+  const [circleHeight, setCircleHeight] = useState<number>();
+  const [marginTop, setMarginTop] = useState<number>();
+  const [textLayout, setTextLayout] = useState<TextLayoutEventData>();
+
+  function onTextLayout({
+    nativeEvent,
+  }: NativeSyntheticEvent<TextLayoutEventData>) {
+    setTextLayout(nativeEvent);
+  }
+
+  useEffect(() => {
+    if (!textLayout) { return; }
+
+    const { lines } = textLayout;
+    const firstLine = lines[0];
+
+    // This centers the circle on the first line text
+    setCircleHeight(CIRCLE_LINE_HEIGHT_MULTIPLE * firstLine.height);
+    setMarginTop(0.5 * (1 - CIRCLE_LINE_HEIGHT_MULTIPLE) * firstLine.height);
+  }, [textLayout]);
+
+  return { circleHeight, marginTop, onTextLayout };
+}
 
 const useStyles = () => {
   const {
     colors, font, shadows, sizes, spacing,
   } = useTheme();
 
-  // Align with the clock icon below it
-  const circlePadding = spacing.xxs;
-  const circleSize = sizes.icon - 2 * circlePadding;
+  const { circleHeight, marginTop, onTextLayout } = useCircleHeight();
 
   const styles = StyleSheet.create({
     circle: {
       aspectRatio: 1,
-      borderRadius: circleSize / 2,
+      borderRadius: (circleHeight ?? 0) / 2,
       borderWidth: 2,
-      height: circleSize,
-      padding: circlePadding,
-      marginLeft: circlePadding,
-      marginTop: circlePadding,
+      height: circleHeight ?? sizes.icon,
+      marginTop,
     },
     circleShadows: {
       ...shadows.elevation4,
@@ -57,7 +84,10 @@ const useStyles = () => {
       alignItems: 'flex-start',
 
       flexDirection: 'row',
-      gap: spacing.xs,
+      gap: spacing.s,
+
+      // Align with the clock icon below it
+      marginStart: 2,
     },
     rowTitleText: {
       color: colors.label,
@@ -71,7 +101,7 @@ const useStyles = () => {
     },
   });
 
-  return { colors, styles };
+  return { colors, onTextLayout, styles };
 };
 
 type Props = {
@@ -97,7 +127,7 @@ export default function UserPreviewRow({
     isMe && 'Me',
   ].filter((e) => e).join(', ');
 
-  const { colors, styles } = useStyles();
+  const { colors, onTextLayout, styles } = useStyles();
 
   const {
     circleBackgroundColor: backgroundColor,
@@ -119,7 +149,9 @@ export default function UserPreviewRow({
               { backgroundColor, borderColor },
             ]}
           />
-          <Text style={styles.rowTitleText}>{title}</Text>
+          <Text onTextLayout={onTextLayout} style={styles.rowTitleText}>
+            {title}
+          </Text>
         </View>
         <View style={styles.rowSubtitle}>
           <Icon name="schedule" style={styles.rowIcon} />
