@@ -1,23 +1,21 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
-  UserFilter, UserPreview, useUserContext, useUserPreviews,
+  UserPreview, useUserContext, useUserPreviews,
 } from '../../model';
 import { ItemSeparator } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import UserPreviewRow from './UserPreviewRow';
 
 type Props = {
-  filter?: UserFilter;
   onItemPress?: (item: UserPreview) => void;
 };
 
-export default function UserPreviewList({ filter, onItemPress }: Props) {
-  const sort = (filter === 'officer') ? 'office' : 'service';
+export default function UserPreviewList({ onItemPress }: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfUserPreviews, fetchNextPageOfUserPreviews,
     userPreviews,
-  } = useUserPreviews({ filter, sort });
+  } = useUserPreviews({ sort: 'service' });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
@@ -69,6 +67,5 @@ export default function UserPreviewList({ filter, onItemPress }: Props) {
 }
 
 UserPreviewList.defaultProps = {
-  filter: undefined,
   onItemPress: () => null,
 };
