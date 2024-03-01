@@ -8,7 +8,7 @@ import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, shadows, sizes, spacing,
   } = useTheme();
 
   // Align with the clock icon below it
@@ -25,12 +25,15 @@ const useStyles = () => {
       marginLeft: circlePadding,
       marginTop: circlePadding,
     },
+    circleShadows: {
+      ...shadows.elevation4,
+    },
     compact: {
       paddingVertical: spacing.s,
     },
     container: {
       backgroundColor: colors.fill,
-      gap: spacing.xs,
+      gap: spacing.s,
       padding: spacing.m,
     },
     rowIcon: {
@@ -52,7 +55,6 @@ const useStyles = () => {
       alignItems: 'center',
       flexDirection: 'row',
       gap: spacing.xs,
-      marginBottom: spacing.xs,
     },
     rowTitleText: {
       color: colors.label,
@@ -103,7 +105,13 @@ export default function UserPreviewRow({
     >
       <View style={[styles.container, compact && styles.compact]}>
         <View style={styles.rowTitle}>
-          <View style={[styles.circle, { backgroundColor, borderColor }]} />
+          <View
+            style={[
+              styles.circle,
+              styles.circleShadows,
+              { backgroundColor, borderColor },
+            ]}
+          />
           <Text style={styles.rowTitleText}>{title}</Text>
         </View>
         <View style={styles.rowSubtitle}>
