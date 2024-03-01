@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { OrgGraphUser, getTenure } from '../../model';
+import { OrgGraphUser, getOffice, getTenure } from '../../model';
 import useTheme from '../../Theme';
 
 export type NotableUserItem = {
@@ -90,7 +90,7 @@ function NotableUserRow({
 
   const tenure = getTenure(joinedAt);
 
-  const joinedOffices = offices?.join(', ');
+  const joinedOffices = offices.map((o) => getOffice(o).title).join(', ');
   const title = [
     pseudonym,
     joinedOffices,

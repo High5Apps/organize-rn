@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, OfficeCategory, Org, OrgGraph, OrgGraphUser, PaginationData,
-  PostCategory, UserPreview, VoteState,
+  BallotCategory, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
+  UserPreview, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -81,20 +81,12 @@ export function isDate(object: unknown): object is Date {
   return (date instanceof Date) && !Number.isNaN(date);
 }
 
-function isOrgGraphUser(object: unknown): object is OrgGraphUser {
-  const user = (object as OrgGraphUser);
-  return user?.connectionCount >= 0
-    && user.id?.length >= 0
-    && isDate(user.joinedAt)
-    && user.pseudonym?.length > 0
-    && user.recruitCount >= 0;
-}
-
 export function isOrgGraph(object: unknown): object is OrgGraph {
   const response = (object as OrgGraph);
   const users = Object.values(response?.users);
   return users.length > 0
-    && users.every(isOrgGraphUser)
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    && users.every(isUserIndexUser)
     && response?.connections?.length >= 0;
 }
 

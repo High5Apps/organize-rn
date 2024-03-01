@@ -1,13 +1,13 @@
 import { Platform, useColorScheme } from 'react-native';
 
 const office: { [key: string]: string } = {
-  Founder: '#0054FF',
-  President: '#00BFFF',
-  'Vice President': '#00FFFD',
-  Secretary: '#54FF00',
-  Treasurer: '#FEFF00',
-  Steward: '#FFAB00',
-  Trustee: '#FF00D0',
+  founder: '#0054FF',
+  president: '#00BFFF',
+  vice_president: '#00FFFD',
+  secretary: '#54FF00',
+  treasurer: '#FEFF00',
+  steward: '#FFAB00',
+  trustee: '#FF00D0',
 };
 
 const palette = {

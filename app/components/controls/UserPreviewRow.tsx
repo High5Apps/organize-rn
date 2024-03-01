@@ -87,11 +87,11 @@ export default function UserPreviewRow({
 
   const { colors, styles } = useStyles();
 
-  const officeTitles = offices.map((o) => o.title);
+  const officeCategories = offices.map((o) => o.type);
   const {
     circleBackgroundColor: backgroundColor,
     circleBorderColor: borderColor,
-  } = getCircleColors({ colors, isMe, offices: officeTitles });
+  } = getCircleColors({ colors, isMe, offices: officeCategories });
 
   return (
     <TouchableHighlight

@@ -29,7 +29,6 @@ export { default as usePrependedModels } from './PrependedModels';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
 } from './QRCodeData';
-export { getHighestRank, getHighestOffice } from './Rank';
 export { default as useSettings } from './Settings';
 export { default as getTenure } from './Tenure';
 export { default as getTimeRemaining } from './TimeRemaining';

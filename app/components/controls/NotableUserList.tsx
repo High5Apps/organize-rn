@@ -6,21 +6,11 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import {
-  OrgGraphUser, getCircleColors, getHighestRank, useGraphData, useUserContext,
-} from '../../model';
+import { getCircleColors, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
 import { usePullToRefresh } from '../hooks';
-
-export function getOrderedOfficers(users: OrgGraphUser[]): OrgGraphUser[] {
-  const officers = users.filter((user) => user.offices?.[0]);
-  const ordererdOfficers = officers.sort((officer, otherOfficer) => (
-    getHighestRank(officer.offices) - getHighestRank(otherOfficer.offices)
-  ));
-  return ordererdOfficers;
-}
 
 type NotableUserSection = {
   title: string;
@@ -98,7 +88,7 @@ export default function NotableUserList({
     }
 
     const orgGraphUsers = Object.values(users);
-    const ordererdOfficers = getOrderedOfficers(orgGraphUsers);
+    const ordererdOfficers = orgGraphUsers.filter((user) => user.offices[0]);
     const officersData = ordererdOfficers.map((officer) => ({
       user: officer,
       ...getCircleColors({ colors, offices: officer.offices }),

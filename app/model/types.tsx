@@ -5,7 +5,7 @@ export type OrgGraphUser = {
   id: string;
   joinedAt: Date;
   pseudonym: string;
-  offices?: string[];
+  offices: OfficeCategory[];
   recruitCount: number;
 };
 

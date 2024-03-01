@@ -1,10 +1,10 @@
 import { ThemeColors } from '../Theme';
-import { getHighestOffice } from './Rank';
+import { OfficeCategory } from './types';
 
 type GetCircleColorsProps = {
   colors: ThemeColors;
   isMe?: boolean;
-  offices?: string[];
+  offices: OfficeCategory[];
 };
 
 type GetCircleColorsReturn = {
@@ -17,7 +17,7 @@ export default function getCircleColors({
   colors, isMe, offices,
 }: GetCircleColorsProps): GetCircleColorsReturn {
   const { fill, office: officeColors, primary } = colors;
-  const highestOfficeName = getHighestOffice(offices);
+  const highestOfficeName = offices[0];
   let circleBackgroundColor: string;
   let circleBorderColor: string;
   let shadow: boolean;
