@@ -42,7 +42,14 @@ export default function UserPreviewList({ filter, onItemPress }: Props) {
   const renderItem: ListRenderItem<UserPreview> = useCallback(
     ({ item }) => {
       const isMe = item.id === currentUser?.id;
-      return <UserPreviewRow isMe={isMe} item={item} onPress={onItemPress} />;
+      return (
+        <UserPreviewRow
+          compact
+          isMe={isMe}
+          item={item}
+          onPress={onItemPress}
+        />
+      );
     },
     [currentUser, onItemPress],
   );

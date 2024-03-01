@@ -25,11 +25,13 @@ const useStyles = () => {
       marginLeft: circlePadding,
       marginTop: circlePadding,
     },
+    compact: {
+      paddingVertical: spacing.s,
+    },
     container: {
       backgroundColor: colors.fill,
       gap: spacing.xs,
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
+      padding: spacing.m,
     },
     rowIcon: {
       color: colors.labelSecondary,
@@ -64,6 +66,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  compact?: boolean;
   disabled?: boolean;
   isMe: boolean;
   item: UserPreview;
@@ -71,7 +74,7 @@ type Props = {
 };
 
 export default function UserPreviewRow({
-  disabled, isMe, item, onPress,
+  compact, disabled, isMe, item, onPress,
 }: Props) {
   const {
     connectionCount, joinedAt, offices, pseudonym, recruitCount,
@@ -98,7 +101,7 @@ export default function UserPreviewRow({
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, compact && styles.compact]}>
         <View style={styles.rowTitle}>
           <View style={[styles.circle, { backgroundColor, borderColor }]} />
           <Text style={styles.rowTitleText}>{title}</Text>
@@ -117,6 +120,7 @@ export default function UserPreviewRow({
 }
 
 UserPreviewRow.defaultProps = {
+  compact: false,
   disabled: false,
   onPress: () => null,
 };
