@@ -1,17 +1,8 @@
 import type { AESEncryptedData } from './keys';
 
-export type OrgGraphUser = {
-  connectionCount: number;
-  id: string;
-  joinedAt: Date;
-  pseudonym: string;
-  offices: OfficeCategory[];
-  recruitCount: number;
-};
-
 export type OrgGraph = {
   users: {
-    [id: string]: OrgGraphUser;
+    [id: string]: UserPreview;
   };
   connections: [string, string][];
 };

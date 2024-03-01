@@ -1,5 +1,5 @@
 import type { E2EDecryptor, E2EEncryptor, Org } from '../model';
-import { fromJson } from '../model';
+import { fromJson, getOffice } from '../model';
 import {
   decrypt, encrypt, get, post,
 } from './API';
@@ -97,5 +97,17 @@ export async function fetchOrg({
     ...org
   } = { ...json, name, memberDefinition };
 
-  return { org };
+  const { users: userMap } = org.graph;
+  const userEntries = Object.entries(userMap).map(([userId, user]) => {
+    const { offices: officeCategories, ...rest } = user;
+    const offices = officeCategories.map((category) => getOffice(category));
+    return [userId, { ...rest, offices }] as const;
+  });
+  const users = Object.fromEntries(userEntries);
+  return {
+    org: {
+      ...org,
+      graph: { users, connections: org.graph.connections },
+    },
+  };
 }

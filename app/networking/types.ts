@@ -1,5 +1,5 @@
 import type {
-  BallotCategory, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
+  BallotCategory, OfficeCategory, Org, PaginationData, PostCategory,
   UserPreview, VoteState,
 } from '../model';
 
@@ -81,8 +81,15 @@ export function isDate(object: unknown): object is Date {
   return (date instanceof Date) && !Number.isNaN(date);
 }
 
-export function isOrgGraph(object: unknown): object is OrgGraph {
-  const response = (object as OrgGraph);
+type OrgGraphResponse = {
+  users: {
+    [id: string]: UserIndexUser;
+  };
+  connections: [string, string][];
+};
+
+export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
+  const response = (object as OrgGraphResponse);
   const users = Object.values(response?.users);
   return users.length > 0
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -91,7 +98,7 @@ export function isOrgGraph(object: unknown): object is OrgGraph {
 }
 
 export type OrgResponse = {
-  graph: OrgGraph,
+  graph: OrgGraphResponse,
   id: string,
   encryptedName: BackendEncryptedMessage;
   encryptedMemberDefinition: BackendEncryptedMessage;
@@ -99,7 +106,7 @@ export type OrgResponse = {
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
   const response = (object as OrgResponse);
-  return isOrgGraph(response?.graph)
+  return isOrgGraphResponse(response?.graph)
     && response.id?.length > 0
     && isBackendEncryptedMessage(response.encryptedName)
     && isBackendEncryptedMessage(response.encryptedMemberDefinition);

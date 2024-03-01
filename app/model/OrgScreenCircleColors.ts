@@ -1,10 +1,10 @@
 import { ThemeColors } from '../Theme';
-import { OfficeCategory } from './types';
+import { Office } from './types';
 
 type GetCircleColorsProps = {
   colors: ThemeColors;
   isMe?: boolean;
-  offices: OfficeCategory[];
+  offices: Office[];
 };
 
 type GetCircleColorsReturn = {
@@ -17,12 +17,12 @@ export default function getCircleColors({
   colors, isMe, offices,
 }: GetCircleColorsProps): GetCircleColorsReturn {
   const { fill, office: officeColors, primary } = colors;
-  const highestOfficeName = offices[0];
+  const highestOfficeCategory = offices[0]?.type;
   let circleBackgroundColor: string;
   let circleBorderColor: string;
   let shadow: boolean;
-  if (highestOfficeName) {
-    circleBackgroundColor = officeColors[highestOfficeName];
+  if (highestOfficeCategory) {
+    circleBackgroundColor = officeColors[highestOfficeCategory];
     circleBorderColor = circleBackgroundColor;
     shadow = true;
   } else if (isMe) {

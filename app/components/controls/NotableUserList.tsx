@@ -6,15 +6,15 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { getCircleColors, useGraphData, useUserContext } from '../../model';
+import { UserPreview, useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
-import NotableUserRow, { type NotableUserItem } from './NotableUserRow';
 import { usePullToRefresh } from '../hooks';
+import UserPreviewRow from './UserPreviewRow';
 
 type NotableUserSection = {
   title: string;
-  data: NotableUserItem[];
+  data: UserPreview[];
 };
 
 type Props = {
@@ -31,14 +31,14 @@ export default function NotableUserList({
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
-  const sectionListRef = useRef<SectionList<NotableUserItem, NotableUserSection>>(null);
+  const sectionListRef = useRef<SectionList<UserPreview, NotableUserSection>>(null);
   useScrollToTop(sectionListRef);
 
   const { colors } = useTheme();
   const { currentUser } = useUserContext();
 
   const onPress = useCallback(
-    ({ user: { id } }: NotableUserItem) => {
+    ({ id }: UserPreview) => {
       sectionListRef.current?.scrollToLocation({
         itemIndex: 0,
         sectionIndex: 0,
@@ -53,11 +53,11 @@ export default function NotableUserList({
     [listHeaderComponentHeight, sectionListRef],
   );
 
-  const renderItem: ListRenderItem<NotableUserItem> = useCallback(
+  const renderItem: ListRenderItem<UserPreview> = useCallback(
     ({ item }) => (
-      <NotableUserRow
-        currentUserId={currentUser?.id}
+      <UserPreviewRow
         disabled={disableRows}
+        isMe={currentUser?.id === item.id}
         item={item}
         onPress={onPress}
       />
@@ -77,34 +77,19 @@ export default function NotableUserList({
 
     if (selectedUserId) {
       const selectedOrgGraphUser = users[selectedUserId];
-      const isMe = selectedUserId === currentUser.id;
-      const data = [{
-        user: selectedOrgGraphUser,
-        ...getCircleColors({
-          colors, isMe, offices: selectedOrgGraphUser.offices,
-        }),
-      }];
+      const data = [selectedOrgGraphUser];
       notableUserSections.push({ title: 'Selected', data });
     }
 
     const orgGraphUsers = Object.values(users);
     const ordererdOfficers = orgGraphUsers.filter((user) => user.offices[0]);
-    const officersData = ordererdOfficers.map((officer) => ({
-      user: officer,
-      ...getCircleColors({ colors, offices: officer.offices }),
-    }));
-    notableUserSections.push({ title: 'Officers', data: officersData });
+    notableUserSections.push({ title: 'Officers', data: ordererdOfficers });
 
     const currentOrgGraphUser = users[currentUser.id];
     const { offices } = currentOrgGraphUser;
-    const isOfficer = offices && offices.length > 0;
+    const isOfficer = offices.length > 0;
     if (!isOfficer) {
-      const meData = [{
-        user: currentOrgGraphUser,
-        ...getCircleColors({
-          colors, isMe: true, offices: currentOrgGraphUser.offices,
-        }),
-      }];
+      const meData = [currentOrgGraphUser];
       notableUserSections.push({ title: 'Me', data: meData });
     }
 
