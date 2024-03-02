@@ -105,6 +105,7 @@ export default function BallotPreviewList({
       refreshControl={refreshControl}
       refreshing={refreshing}
       sections={sections}
+      stickySectionHeadersEnabled
     />
   );
 }
