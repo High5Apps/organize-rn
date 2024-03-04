@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isCurrentUserData } from './types';
-import User, { UserType } from './User';
+import User, { StorableUser } from './User';
 import { fromJson, toJson } from './Json';
 
 const STORAGE_KEY = 'currentUser';
 
-export async function getStoredUser(): Promise<UserType | null> {
+export async function getStoredUser(): Promise<StorableUser | null> {
   let storedData = null;
   try {
     storedData = await AsyncStorage.getItem(STORAGE_KEY);
@@ -33,7 +33,7 @@ export async function getStoredUser(): Promise<UserType | null> {
   return User(userData);
 }
 
-export async function setStoredUser(user: UserType | null) {
+export async function setStoredUser(user: StorableUser | null) {
   if (user && !isCurrentUserData(user)) {
     const json = toJson(user, 2);
     console.warn(`Attempted to store invalid current user data: ${json}`);

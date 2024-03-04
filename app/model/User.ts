@@ -83,7 +83,7 @@ export default function User({
     return succeeded;
   }
 
-  function equals(user: UserType): boolean {
+  function equals(user: StorableUser): boolean {
     return user.id === userData.id
       && user.orgId === userData.orgId;
   }
@@ -163,4 +163,4 @@ export default function User({
   };
 }
 
-export type UserType = ReturnType<typeof User>;
+export type StorableUser = ReturnType<typeof User>;

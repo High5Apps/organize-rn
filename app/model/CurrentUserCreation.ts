@@ -3,7 +3,7 @@ import {
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 import { Keys } from './keys';
-import User, { UserType } from './User';
+import User, { StorableUser } from './User';
 
 export type CreateCurrentUserProps = {
   groupKey?: never;
@@ -22,7 +22,7 @@ export default async function createCurrentUser({
   orgId: maybeOrgId,
   sharerJwt: maybeSharerJwt,
   unpublishedOrg,
-}: CreateCurrentUserProps): Promise<UserType | string> {
+}: CreateCurrentUserProps): Promise<StorableUser | string> {
   const keys = Keys();
   const {
     publicKey: authenticationKey, publicKeyId: authenticationKeyId,

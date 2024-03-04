@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import useCurrentUser from '../../app/model/CurrentUser';
-import { UserType } from '../../app/model/User';
+import { StorableUser } from '../../app/model/User';
 import { getStoredUser, setStoredUser } from '../../app/model/UserStorage';
 import { fakeOtherUser, fakeUser } from '../FakeData';
 
@@ -14,9 +14,9 @@ const currentUserTestId = 'currentUserTestId';
 const intializedTestId = 'intializedTestId';
 
 type Props = {
-  newUser?: UserType | null;
+  newUser?: StorableUser | null;
   shouldLogOut?: boolean;
-  user?: UserType;
+  user?: StorableUser;
 };
 
 function TestComponent({ newUser, shouldLogOut, user }: Props) {

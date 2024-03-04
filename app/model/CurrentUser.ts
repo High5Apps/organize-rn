@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { UserType } from './User';
+import { StorableUser } from './User';
 import { getStoredUser, setStoredUser } from './UserStorage';
 
-export default function useCurrentUser(user: UserType | null = null) {
+export default function useCurrentUser(user: StorableUser | null = null) {
   const [
     currentUser, setCurrentUser,
-  ] = useState<UserType | null >(user || null);
+  ] = useState<StorableUser | null >(user || null);
   const [initialized, setInitialized] = useState(false);
 
   const logOut = async () => {

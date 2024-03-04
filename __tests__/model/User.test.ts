@@ -1,5 +1,5 @@
 import { User } from '../../app/model';
-import { UserType } from '../../app/model/User';
+import { StorableUser } from '../../app/model/User';
 import { fakeOtherUser, fakeUser } from '../FakeData';
 
 const { id, orgId, pseudonym } = fakeUser;
@@ -9,8 +9,8 @@ const {
 
 type Props = {
   equal: boolean;
-  user: UserType;
-  otherUser: UserType;
+  user: StorableUser;
+  otherUser: StorableUser;
 };
 
 function expectUsersEqual({ equal, user, otherUser }: Props) {

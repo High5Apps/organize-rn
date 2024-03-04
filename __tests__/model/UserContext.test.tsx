@@ -4,7 +4,7 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
 import { UserContextProvider, useUserContext } from '../../app/model';
 import useCurrentUser from '../../app/model/CurrentUser';
-import { UserType } from '../../app/model/User';
+import { StorableUser } from '../../app/model/User';
 import { fakeOtherUser, fakeUser } from '../FakeData';
 
 jest.useFakeTimers();
@@ -24,7 +24,7 @@ function TestComponent() {
 }
 
 type Props = {
-  user?: UserType;
+  user?: StorableUser;
 };
 
 async function renderTestComponent({ user }: Props) {
