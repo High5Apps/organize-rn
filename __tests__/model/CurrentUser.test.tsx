@@ -3,10 +3,10 @@ import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import useCurrentUser from '../../app/model/CurrentUser';
 import { StorableUser } from '../../app/model/User';
-import useStoredUser, { storeUser } from '../../app/model/UserStorage';
+import useStoredUser, { storeUser } from '../../app/model/StoredUser';
 import { fakeCurrentUser } from '../FakeData';
 
-jest.mock('../../app/model/UserStorage');
+jest.mock('../../app/model/StoredUser');
 const mockUseStoredUser = useStoredUser as jest.Mock;
 const mockSetStoredUser = jest.fn();
 const mockStoreUser = storeUser as jest.Mock;

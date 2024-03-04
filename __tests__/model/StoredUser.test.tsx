@@ -4,11 +4,11 @@ import { ReactTestRenderer, act, create } from 'react-test-renderer';
 import { isCurrentUserData } from '../../app/model';
 import useStoredUser, {
   getStoredUser, storeUser,
-} from '../../app/model/UserStorage';
+} from '../../app/model/StoredUser';
 import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
 import { StorableUser } from '../../app/model/User';
 
-describe('UserStorage', () => {
+describe('StoredUser', () => {
   beforeEach(async () => {
     await storeUser(null);
     const storedUser = await getStoredUser();

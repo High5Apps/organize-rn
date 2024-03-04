@@ -1,5 +1,5 @@
 import { StorableUser } from './User';
-import useStoredUser, { storeUser } from './UserStorage';
+import useStoredUser, { storeUser } from './StoredUser';
 
 export default function useCurrentUser(user: StorableUser | null = null) {
   const {
