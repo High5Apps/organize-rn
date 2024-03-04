@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isCurrentUserData } from './types';
 import User, { StorableUser } from './User';
@@ -33,7 +34,7 @@ export async function getStoredUser(): Promise<StorableUser | null> {
   return User(userData);
 }
 
-export async function setStoredUser(user: StorableUser | null) {
+export async function storeUser(user: StorableUser | null) {
   if (user && !isCurrentUserData(user)) {
     const json = toJson(user, 2);
     console.warn(`Attempted to store invalid current user data: ${json}`);
@@ -41,4 +42,46 @@ export async function setStoredUser(user: StorableUser | null) {
   }
 
   await AsyncStorage.setItem(STORAGE_KEY, toJson(user));
+}
+
+export default function useStoredUser(user: StorableUser | null = null) {
+  const [
+    storedUser, setStoredUser,
+  ] = useState<StorableUser | null >(user || null);
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    let subscribed = true;
+    const unsubscribe = () => { subscribed = false; };
+
+    async function initializeCurrentUser() {
+      let previouslyStoredUser = null;
+
+      try {
+        previouslyStoredUser = await getStoredUser();
+      } catch (e) {
+        console.warn(e);
+      }
+
+      if (subscribed) {
+        setStoredUser(previouslyStoredUser);
+        setInitialized(true);
+      }
+    }
+
+    if (!storedUser) {
+      initializeCurrentUser();
+    }
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    // Don't want to accidentally delete the stored user
+    if (storedUser) {
+      storeUser(storedUser);
+    }
+  }, [storedUser]);
+
+  return { initialized, storedUser, setStoredUser };
 }

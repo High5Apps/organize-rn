@@ -3,36 +3,28 @@ import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import useCurrentUser from '../../app/model/CurrentUser';
 import { StorableUser } from '../../app/model/User';
-import { getStoredUser, setStoredUser } from '../../app/model/UserStorage';
-import { fakeOtherUser, fakeUser } from '../FakeData';
+import useStoredUser, { storeUser } from '../../app/model/UserStorage';
+import { fakeCurrentUser } from '../FakeData';
 
 jest.mock('../../app/model/UserStorage');
-const mockGetStoredUser = getStoredUser as jest.Mock;
-const mockSetStoredUser = setStoredUser as jest.Mock;
+const mockUseStoredUser = useStoredUser as jest.Mock;
+const mockSetStoredUser = jest.fn();
+const mockStoreUser = storeUser as jest.Mock;
+const defaultReturn = {
+  initialized: false,
+  setStoredUser: mockSetStoredUser,
+  storedUser: fakeCurrentUser,
+};
 
 const currentUserTestId = 'currentUserTestId';
-const intializedTestId = 'intializedTestId';
 
 type Props = {
-  newUser?: StorableUser | null;
   shouldLogOut?: boolean;
   user?: StorableUser;
 };
 
-function TestComponent({ newUser, shouldLogOut, user }: Props) {
-  const {
-    currentUser, initialized, logOut, setCurrentUser,
-  } = useCurrentUser(user);
-
-  useEffect(() => {
-    expect(initialized).toBeFalsy();
-  }, []);
-
-  useEffect(() => {
-    if (newUser !== undefined) {
-      setCurrentUser(newUser);
-    }
-  }, []);
+function TestComponent({ shouldLogOut, user }: Props) {
+  const { currentUser, logOut } = useCurrentUser(user);
 
   useEffect(() => {
     if (shouldLogOut) {
@@ -40,29 +32,19 @@ function TestComponent({ newUser, shouldLogOut, user }: Props) {
     }
   }, []);
 
-  return (
-    <>
-      <Text testID={currentUserTestId}>{currentUser?.id}</Text>
-      <Text testID={intializedTestId}>{initialized}</Text>
-    </>
-  );
+  return <Text testID={currentUserTestId}>{currentUser?.id}</Text>;
 }
 
 TestComponent.defaultProps = {
-  newUser: undefined,
   shouldLogOut: false,
   user: undefined,
 };
 
-async function renderTestComponent({ newUser, shouldLogOut, user }: Props) {
+async function renderTestComponent({ shouldLogOut, user }: Props) {
   let renderer: ReactTestRenderer | undefined;
   await act(async () => {
     renderer = create((
-      <TestComponent
-        newUser={newUser}
-        shouldLogOut={shouldLogOut}
-        user={user}
-      />
+      <TestComponent shouldLogOut={shouldLogOut} user={user} />
     ));
   });
   const root = renderer?.root;
@@ -70,71 +52,16 @@ async function renderTestComponent({ newUser, shouldLogOut, user }: Props) {
     return root?.findByProps({ testID }).props.children;
   }
   const currentUserId = findByTestId(currentUserTestId);
-  const initialized = findByTestId(intializedTestId);
-  return { currentUserId, initialized };
+  return { currentUserId };
 }
 
 describe('useCurrentUser', () => {
-  describe('initialized', () => {
-    it('is true after currentUser is initialized', async () => {
-      const { initialized } = await renderTestComponent({});
-      expect(initialized).toBeTruthy();
-    });
-  });
-
-  describe('currentUser', () => {
-    it('is initialized by prop when present', async () => {
-      const { currentUserId } = await renderTestComponent({ user: fakeUser });
-      expect(currentUserId).toBe(fakeUser.id);
-    });
-
-    it('is initialized by getStoredUser when prop absent', async () => {
-      mockGetStoredUser.mockResolvedValue(fakeUser);
-      const { currentUserId } = await renderTestComponent({});
-      expect(currentUserId).toBe(fakeUser.id);
-    });
-
-    it('is initially falsy when prop absent and no storedUser', async () => {
-      mockGetStoredUser.mockResolvedValue(null);
-      const { currentUserId } = await renderTestComponent({});
-      expect(currentUserId).toBeFalsy();
-    });
-  });
-
-  describe('setCurrentUser', () => {
-    it('updates currentUser', async () => {
-      const { currentUserId } = await renderTestComponent({
-        user: fakeUser,
-        newUser: fakeOtherUser,
-      });
-      expect(currentUserId).toBe(fakeOtherUser.id);
-    });
-
-    it('updates storedUser', async () => {
-      await renderTestComponent({
-        user: fakeUser,
-        newUser: fakeOtherUser,
-      });
-      expect(mockSetStoredUser).toHaveBeenNthCalledWith(1, fakeUser);
-      expect(mockSetStoredUser).toHaveBeenNthCalledWith(2, fakeOtherUser);
-    });
-
-    it('should not clear stored user', async () => {
-      await renderTestComponent({
-        user: fakeUser,
-        newUser: null,
-      });
-      expect(mockSetStoredUser).not.toBeCalledWith(null);
-    });
-  });
-
   describe('logOut', () => {
     const mockDeleteKeys = jest.fn();
-    let currentUserId: string;
     beforeEach(async () => {
-      const user = { ...fakeUser, deleteKeys: mockDeleteKeys };
-      const result = await renderTestComponent({ shouldLogOut: true, user });
-      currentUserId = result.currentUserId;
+      const user = { ...fakeCurrentUser, deleteKeys: mockDeleteKeys };
+      mockUseStoredUser.mockReturnValue({ ...defaultReturn, storedUser: user });
+      await renderTestComponent({ shouldLogOut: true, user });
     });
 
     it('should delete keys', () => {
@@ -145,8 +72,8 @@ describe('useCurrentUser', () => {
       expect(mockSetStoredUser).toBeCalledWith(null);
     });
 
-    it('should clear currentUser', () => {
-      expect(currentUserId).toBeFalsy();
+    it('should store null user', () => {
+      expect(mockStoreUser).toBeCalledWith(null);
     });
   });
 });
