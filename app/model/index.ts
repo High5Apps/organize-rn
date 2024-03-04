@@ -13,6 +13,7 @@ export {
 export { CommentContextProvider } from './CommentContext';
 export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
+export { default as createCurrentUser } from './CurrentUserCreation';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useGraphData } from './GraphData';
 export { fromJson, toJson } from './Json';

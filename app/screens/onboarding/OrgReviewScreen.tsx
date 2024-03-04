@@ -4,7 +4,7 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton, useRequestProgress,
 } from '../../components';
-import { NewOrgSteps, useUserContext } from '../../model';
+import { NewOrgSteps, createCurrentUser, useUserContext } from '../../model';
 import type { OrgReviewScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 
@@ -70,7 +70,7 @@ export default function OrgReviewScreen({
   const name = untrimmedName.trim();
 
   const { styles } = useStyles();
-  const { createCurrentUser, setCurrentUser } = useUserContext();
+  const { setCurrentUser } = useUserContext();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
   const buttonLabel = 'Create';

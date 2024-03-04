@@ -6,7 +6,7 @@ import {
   useRequestProgress,
 } from '../../components';
 import {
-  GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext,
+  GENERIC_ERROR_MESSAGE, QRCodeValue, createCurrentUser, useUserContext,
 } from '../../model';
 import type { JoinOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -45,7 +45,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
   ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
-  const { createCurrentUser, setCurrentUser } = useUserContext();
+  const { setCurrentUser } = useUserContext();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
   useEffect(() => {
