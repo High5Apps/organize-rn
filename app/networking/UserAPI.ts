@@ -94,7 +94,7 @@ type IndexReturn = {
   userPreviews?: never;
 } | {
   errorMessage?: never;
-  paginationData: PaginationData;
+  paginationData?: PaginationData;
   userPreviews: UserPreview[];
 };
 

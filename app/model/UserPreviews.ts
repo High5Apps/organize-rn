@@ -50,7 +50,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
       throw new Error(errorMessage);
     }
 
-    const hasNextPage = paginationData.nextPage !== null;
+    const hasNextPage = !!paginationData && paginationData.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
 
     const result = { hasNextPage };
@@ -79,7 +79,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
       throw new Error(errorMessage);
     }
 
-    const hasNextPage = paginationData.nextPage !== null;
+    const hasNextPage = !!paginationData && paginationData.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
 
     const result = { hasNextPage };

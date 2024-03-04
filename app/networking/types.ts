@@ -389,7 +389,7 @@ export function isUserIndexUser(object: unknown): object is UserIndexUser {
 }
 
 type UserIndexResponse = {
-  meta: PaginationData;
+  meta?: PaginationData;
   users: UserIndexUser[],
 };
 
@@ -398,5 +398,5 @@ export function isUserIndexResponse(object: unknown): object is UserIndexRespons
   return response?.users
     && Array.isArray(response.users)
     && response.users.every(isUserIndexUser)
-    && isPaginationData(response?.meta);
+    && (!response?.meta || isPaginationData(response?.meta));
 }
