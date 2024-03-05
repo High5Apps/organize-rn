@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { fetchBallotPreviews } from '../networking';
 import { useBallotPreviewContext } from './BallotPreviewContext';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
 
@@ -27,7 +27,7 @@ export default function useBallotPreviews() {
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
   const [ready, setReady] = useState<boolean>(false);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   async function fetchFirstPageOfBallotPreviews() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { isDefined } from './types';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
 import { useCommentContext } from './CommentContext';
 import { getIdsFrom } from './ModelCache';
@@ -17,7 +17,7 @@ export default function useComments(postId?: string) {
   );
   const [ready, setReady] = useState<boolean>(false);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   async function updateComments() {
     if (!currentUser || !postId) {

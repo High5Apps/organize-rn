@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg } from '../networking';
-import { useUserContext } from './UserContext';
 import { Org, OrgGraph as OrgGraphType } from './types';
 import getCircleColors from './OrgScreenCircleColors';
+import useCurrentUser from './CurrentUser';
 
 function toVisNetworkData(
   colors: ThemeColors,
@@ -47,7 +47,7 @@ function orgChanged(oldOrg: Org, newOrg: Org) {
 }
 
 export default function useGraphData() {
-  const { currentUser, setCurrentUser } = useUserContext();
+  const { currentUser, setCurrentUser } = useCurrentUser();
   const { colors } = useTheme();
 
   async function updateOrgData() {

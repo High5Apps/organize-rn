@@ -1,5 +1,7 @@
-import useStoredUser, { storeUser } from './StoredUser';
+import { useMemo } from 'react';
+import { storeUser } from './StoredUser';
 import UserBase from './UserBase';
+import { useUserContext } from './UserContext';
 import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor,
@@ -85,16 +87,16 @@ export function CurrentUser({
 
 export type CurrentUserType = ReturnType<typeof CurrentUser>;
 
-export default function useCurrentUser(user: CurrentUserData | null = null) {
+export default function useCurrentUser() {
   const {
-    initialized,
-    storedUser,
-    setStoredUser,
-  } = useStoredUser(user);
+    currentUserData, setCurrentUserData,
+  } = useUserContext();
 
-  const clearCurrentUser = () => setStoredUser(null);
-  const currentUser = storedUser && CurrentUser(storedUser, clearCurrentUser);
-  const setCurrentUser = setStoredUser;
+  const currentUser = useMemo(() => {
+    if (!currentUserData) { return null; }
+    const clearCurrentUser = () => setCurrentUserData(null);
+    return CurrentUser(currentUserData, clearCurrentUser);
+  }, [currentUserData]);
 
-  return { currentUser, initialized, setCurrentUser };
+  return { currentUser, setCurrentUser: setCurrentUserData };
 }

@@ -7,8 +7,8 @@ import { StyleSheet } from 'react-native';
 // prevent a circular dependency issue. Normally components import from models,
 // not the other way around.
 import DelayedActivityIndicator from '../components/views/DelayedActivityIndicator';
-import useCurrentUser, { CurrentUserType } from './CurrentUser';
 import { CurrentUserData } from './types';
+import useStoredUser from './StoredUser';
 
 const useStyles = () => {
   const styles = StyleSheet.create({
@@ -21,13 +21,13 @@ const useStyles = () => {
 };
 
 type UserContextType = {
-  currentUser: CurrentUserType | null;
-  setCurrentUser: Dispatch<SetStateAction<CurrentUserData | null>>;
+  currentUserData: CurrentUserData | null;
+  setCurrentUserData: Dispatch<SetStateAction<CurrentUserData | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
-  currentUser: null,
-  setCurrentUser: () => {},
+  currentUserData: null,
+  setCurrentUserData: () => {},
 });
 
 type Props = {
@@ -38,13 +38,11 @@ export function UserContextProvider({
   children, user,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
-  const {
-    currentUser, initialized, setCurrentUser,
-  } = useCurrentUser(user);
+  const { initialized, storedUser, setStoredUser } = useStoredUser(user);
 
   const userContext = useMemo<UserContextType>(() => ({
-    currentUser, setCurrentUser,
-  }), [currentUser, setCurrentUser]);
+    currentUserData: storedUser, setCurrentUserData: setStoredUser,
+  }), [storedUser, setStoredUser]);
 
   return (
     <UserContext.Provider value={userContext}>

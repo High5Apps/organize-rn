@@ -7,7 +7,7 @@ import {
 } from '../../components';
 import {
   BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useCachedValue,
-  useUserContext,
+  useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createBallot } from '../../networking';
@@ -62,7 +62,7 @@ export default function NewMultipleChoiceBallotScreen({
   const [question, setQuestion] = useCachedValue<string>(CACHE_KEY_QUESTION);
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 7 }));
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const { styles } = useStyles();
 

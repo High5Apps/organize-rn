@@ -3,7 +3,7 @@ import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
-import { useUserContext } from '../../model';
+import { useCurrentUser } from '../../model';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();
@@ -38,7 +38,7 @@ export default function HighlightedRowContainer({
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
   const highlighted = userId === currentUser?.id;
 
   return (

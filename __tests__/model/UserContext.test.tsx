@@ -2,26 +2,26 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
-import {
-  CurrentUserData, UserContextProvider, useUserContext,
-} from '../../app/model';
-import useCurrentUser, { CurrentUser } from '../../app/model/CurrentUser';
+import { CurrentUserData, UserContextProvider } from '../../app/model';
 import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
+import { useUserContext } from '../../app/model/UserContext';
+import useStoredUser from '../../app/model/StoredUser';
 
 jest.useFakeTimers();
-jest.mock('../../app/model/CurrentUser');
-const mockUseCurrentUser = useCurrentUser as jest.Mock;
+
+jest.mock('../../app/model/StoredUser');
+const mockUseStoredUser = useStoredUser as jest.Mock;
 
 const testID = 'currentUserId';
 
 function TestComponent() {
-  const { currentUser, setCurrentUser } = useUserContext();
+  const { currentUserData, setCurrentUserData } = useUserContext();
 
   useEffect(() => {
-    setCurrentUser(fakeOtherCurrentUser);
+    setCurrentUserData(fakeOtherCurrentUser);
   }, []);
 
-  return <Text testID={testID}>{currentUser?.id}</Text>;
+  return <Text testID={testID}>{currentUserData?.id}</Text>;
 }
 
 type Props = {
@@ -42,21 +42,20 @@ async function renderTestComponent({ user }: Props) {
 }
 
 const defaultReturnValue = {
-  currentUser: null,
+  storedUser: null,
   initialized: false,
-  setCurrentUser: jest.fn(),
+  setStoredUser: jest.fn(),
 };
 
 describe('UserContext', () => {
   it('uses user prop to initialize useCurrentUser', async () => {
-    mockUseCurrentUser.mockReturnValue(defaultReturnValue);
-    const user = CurrentUser(fakeCurrentUser, () => null);
-    await renderTestComponent({ user });
-    expect(mockUseCurrentUser).toBeCalledWith(user);
+    mockUseStoredUser.mockReturnValue(defaultReturnValue);
+    await renderTestComponent({ user: fakeCurrentUser });
+    expect(mockUseStoredUser).toBeCalledWith(fakeCurrentUser);
   });
 
   it('renders spinner until currentUser intialized', async () => {
-    mockUseCurrentUser.mockReturnValue({
+    mockUseStoredUser.mockReturnValue({
       ...defaultReturnValue,
       initialized: false,
     });
@@ -68,8 +67,9 @@ describe('UserContext', () => {
   });
 
   it('renders children after currentUser initialized', async () => {
-    mockUseCurrentUser.mockReturnValue({
+    mockUseStoredUser.mockReturnValue({
       ...defaultReturnValue,
+      currentUser: fakeCurrentUser,
       initialized: true,
     });
     const { root } = await renderTestComponent({});
@@ -80,24 +80,24 @@ describe('UserContext', () => {
   });
 
   describe('userContext', () => {
-    it('contains currentUser from useCurrentUser', async () => {
-      const currentUser = fakeCurrentUser;
-      mockUseCurrentUser.mockReturnValue({
+    it('contains storedUser from useStoredUser', async () => {
+      const storedUser = fakeCurrentUser;
+      mockUseStoredUser.mockReturnValue({
         ...defaultReturnValue,
-        currentUser,
+        storedUser,
         initialized: true,
       });
       const { root } = await renderTestComponent({});
-      const currentUserId = root?.findByProps({ testID }).props.children;
-      expect(currentUserId).toBe(currentUser.id);
+      const storedUserId = root?.findByProps({ testID }).props.children;
+      expect(storedUserId).toBe(storedUser.id);
     });
 
-    it('contains setCurrentUser from useCurrentUser', async () => {
-      mockUseCurrentUser.mockReturnValue({
+    it('contains setStoredUser from useStoredUser', async () => {
+      mockUseStoredUser.mockReturnValue({
         ...defaultReturnValue,
         initialized: true,
       });
-      const mockSetCurrentUser = defaultReturnValue.setCurrentUser;
+      const mockSetCurrentUser = defaultReturnValue.setStoredUser;
       expect(mockSetCurrentUser).not.toBeCalled();
       await renderTestComponent({});
       expect(mockSetCurrentUser).toBeCalled();

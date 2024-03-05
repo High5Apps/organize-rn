@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { PostCategory, PostSort, isDefined } from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
@@ -31,7 +31,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const [createdAtOrBefore, setCreatedAtOrBefore] = useState<Date>(new Date());
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   async function fetchFirstPageOfPosts(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }

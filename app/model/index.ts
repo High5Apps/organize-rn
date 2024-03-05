@@ -13,6 +13,7 @@ export {
 export { CommentContextProvider } from './CommentContext';
 export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
+export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useGraphData } from './GraphData';
@@ -35,7 +36,7 @@ export { default as getTenure } from './Tenure';
 export { default as getTimeRemaining } from './TimeRemaining';
 export { default as getShortenedTitles } from './TitleShortener';
 export { default as truncateText } from './TruncateText';
-export { UserContextProvider, useUserContext } from './UserContext';
+export { UserContextProvider } from './UserContext';
 export { default as useUserPreviews } from './UserPreviews';
 export { UserPreviewContextProvider } from './UserPreviewContext';
 export { default as useVoteUpdater } from './VoteUpdater';

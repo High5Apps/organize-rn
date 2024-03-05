@@ -5,7 +5,7 @@ import {
   PrimaryButton, ResultType, ScreenBackground, useRequestProgress,
 } from '../../components';
 import {
-  GENERIC_ERROR_MESSAGE, QRCodeValue, useUserContext,
+  GENERIC_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
 } from '../../model';
 import { ConnectionPreview, createConnection } from '../../networking';
 import { Status } from '../../networking/API';
@@ -40,7 +40,7 @@ export default function NewConnectionScreen() {
   ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
   const {
     RequestProgress, result, setLoading, setResult,
   } = useRequestProgress();

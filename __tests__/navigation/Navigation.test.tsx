@@ -1,13 +1,13 @@
 import React from 'react';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Navigation from '../../app/navigation';
-import { useUserContext } from '../../app/model/UserContext';
 import WelcomeStack from '../../app/navigation/WelcomeStack';
 import OrgTabs from '../../app/navigation/OrgTabs';
 import { fakeCurrentUser } from '../FakeData';
+import useCurrentUser from '../../app/model/CurrentUser';
 
-jest.mock('../../app/model/UserContext');
-const mockUseUserContext = useUserContext as jest.Mock;
+jest.mock('../../app/model/CurrentUser');
+const mockUseCurrentUser = useCurrentUser as jest.Mock;
 
 async function renderNavigation() {
   let renderer: ReactTestRenderer | undefined;
@@ -21,7 +21,7 @@ async function renderNavigation() {
 
 describe('Navigation', () => {
   it('renders WelcomeStack when current user absent', async () => {
-    mockUseUserContext.mockReturnValue({ currentUser: undefined });
+    mockUseCurrentUser.mockReturnValue({ currentUser: undefined });
     const { root, unmount } = await renderNavigation();
     expect(root?.findByType(WelcomeStack)).toBeTruthy();
     expect(root?.findAllByType(OrgTabs).length).toBeFalsy();
@@ -29,7 +29,7 @@ describe('Navigation', () => {
   });
 
   it('renders WelcomeStack when current user null', async () => {
-    mockUseUserContext.mockReturnValue({ currentUser: null });
+    mockUseCurrentUser.mockReturnValue({ currentUser: null });
     const { root, unmount } = await renderNavigation();
     expect(root?.findByType(WelcomeStack)).toBeTruthy();
     expect(root?.findAllByType(OrgTabs).length).toBeFalsy();
@@ -37,7 +37,7 @@ describe('Navigation', () => {
   });
 
   it('renders OrgTabs when current user present', async () => {
-    mockUseUserContext.mockReturnValue({ currentUser: fakeCurrentUser });
+    mockUseCurrentUser.mockReturnValue({ currentUser: fakeCurrentUser });
     const { root, unmount } = await renderNavigation();
     expect(root?.findAllByType(WelcomeStack).length).toBeFalsy();
     expect(root?.findByType(OrgTabs)).toBeTruthy();

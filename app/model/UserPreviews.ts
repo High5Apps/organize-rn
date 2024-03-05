@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { fetchUserPreviews } from '../networking';
 import { useUserPreviewContext } from './UserPreviewContext';
-import { useUserContext } from './UserContext';
 import { UserFilter, UserSort, isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
+import useCurrentUser from './CurrentUser';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -27,7 +27,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
   const [ready, setReady] = useState<boolean>(false);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   async function fetchFirstPageOfUserPreviews() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }

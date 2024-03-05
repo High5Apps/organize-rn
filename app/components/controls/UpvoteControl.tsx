@@ -5,7 +5,7 @@ import {
 import useTheme from '../../Theme';
 import UpvoteButton from './UpvoteButton';
 import {
-  GENERIC_ERROR_MESSAGE, VoteState, truncateText, useUserContext,
+  GENERIC_ERROR_MESSAGE, VoteState, truncateText, useCurrentUser,
 } from '../../model';
 import { createOrUpdateUpvote } from '../../networking';
 
@@ -56,7 +56,7 @@ export default function UpvoteControl({
   const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
   const waitingForResponse = waitingForUp || waitingForDown;
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const showErrorAlert = () => {
     const upvotableType = postId ? 'Post' : 'Comment';

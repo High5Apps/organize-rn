@@ -4,11 +4,11 @@ import FramedIconPromptButton from './FramedIconPromptButton';
 import QRCodeButton from './QRCodeButtton';
 import {
   QRCodeDataFormatter, QR_CODE_TIME_TO_LIVE_SECONDS, useAppState,
-  useUserContext,
+  useCurrentUser,
 } from '../../model';
 
 export default function QRCodeControl() {
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const [revealed, setRevealed] = useState(false);
   const [qrCodeData, setQRCodeData] = useState<string>('');

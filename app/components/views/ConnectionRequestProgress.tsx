@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useRequestProgress } from '../hooks';
 import {
-  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useUserContext,
+  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
 } from '../../model';
 import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
@@ -38,7 +38,7 @@ export default function ConnectionRequestProgress({
   const { RequestProgress, setLoading } = useRequestProgress();
   const [response, setResponse] = useState<ConnectionPreview>();
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     let subscribed = true;

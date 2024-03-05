@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
-import { useGraphData, useUserContext } from '../../model';
+import { useGraphData, useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ErrorMessage, ProgressBar } from '../views';
 import { useClickHandler, useOrgGraphProgress } from '../hooks';
@@ -36,7 +36,7 @@ export default function OrgGraph({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const { colors, styles } = useStyles();
   const { primary } = colors;

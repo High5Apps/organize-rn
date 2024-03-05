@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { Share } from 'react-native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
 import ConfirmationAlert from './ConfirmationAlert';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { SettingsSection } from './types';
 
 export default function useSettings(): SettingsSection[] {
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   if (!currentUser) {
     console.warn('Expected current user to be set');

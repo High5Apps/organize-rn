@@ -7,7 +7,7 @@ import {
 import useTheme from '../../Theme';
 import {
   Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, useCachedValue,
-  useComments, useUserContext,
+  useComments, useCurrentUser,
 } from '../../model';
 import { createComment } from '../../networking';
 
@@ -73,7 +73,7 @@ export default function NewCommentScreenBase({
   } = useRequestProgress({ removeWhenInactive: true });
   const { cacheComment, getCachedComment } = useComments();
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
   if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const onPublishPressed = async () => {

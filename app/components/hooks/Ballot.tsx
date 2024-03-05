@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
-import { Ballot, GENERIC_ERROR_MESSAGE, useUserContext } from '../../model';
+import { Ballot, GENERIC_ERROR_MESSAGE, useCurrentUser } from '../../model';
 import { fetchBallot } from '../../networking';
 
 const useStyles = () => {
@@ -20,7 +20,7 @@ const useStyles = () => {
 export default function useBallot(ballotId: string) {
   const [ballot, setBallot] = useState<Ballot | undefined>();
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const {
     RequestProgress: UnstyledRequestProgress, setLoading, setResult,

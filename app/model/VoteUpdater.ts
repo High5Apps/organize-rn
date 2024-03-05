@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Ballot, Candidate } from './types';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { createVote } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 
@@ -24,7 +24,7 @@ export default function useVoteUpdater({ ballot }: Props) {
     waitingForDeselectedCandidateIds, setWaitingForDeselectedCandidateIds,
   ] = useState<string[]>([]);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (ballot !== undefined) {

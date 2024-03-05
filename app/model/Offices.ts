@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fetchOffices as fetchOfficesApi } from '../networking';
-import { useUserContext } from './UserContext';
+import useCurrentUser from './CurrentUser';
 import { Office, OfficeCategory } from './types';
 
 type OfficeMetadata = {
@@ -36,7 +36,7 @@ export default function useOffices() {
   const [openOffices, setOpenOffices] = useState<Office[]>([]);
   const [ready, setReady] = useState<boolean>(false);
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   async function fetchOffices() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }

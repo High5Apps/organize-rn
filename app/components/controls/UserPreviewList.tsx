@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
-  UserPreview, useUserContext, useUserPreviews,
+  UserPreview, useCurrentUser, useUserPreviews,
 } from '../../model';
 import { ItemSeparator } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
@@ -35,7 +35,7 @@ export default function UserPreviewList({ onItemPress }: Props) {
     onLoadNextPage: fetchNextPageOfUserPreviews,
   });
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const renderItem: ListRenderItem<UserPreview> = useCallback(
     ({ item }) => {

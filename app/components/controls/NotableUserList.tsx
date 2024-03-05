@@ -6,7 +6,7 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { UserPreview, useGraphData, useUserContext } from '../../model';
+import { UserPreview, useCurrentUser, useGraphData } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import { usePullToRefresh } from '../hooks';
@@ -35,7 +35,7 @@ export default function NotableUserList({
   useScrollToTop(sectionListRef);
 
   const { colors } = useTheme();
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const onPress = useCallback(
     ({ id }: UserPreview) => {

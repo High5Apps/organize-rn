@@ -8,7 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useUserContext,
+  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useCurrentUser,
 } from '../../model';
 import { createBallot } from '../../networking';
 
@@ -62,7 +62,7 @@ export default function NewElectionBallotScreen({
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 14 }));
   const [termEnd, setTermEnd] = useState(startOfNextHourIn({ days: 14 + 365 }));
 
-  const { currentUser } = useUserContext();
+  const { currentUser } = useCurrentUser();
 
   const { styles } = useStyles();
 
