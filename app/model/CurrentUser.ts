@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { storeUser } from './StoredUser';
 import UserBase from './UserBase';
-import { useUserContext } from './UserContext';
+import { useUserContext } from '../context';
 import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor,

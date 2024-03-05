@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { fetchUserPreviews } from '../networking';
-import { useUserPreviewContext } from './UserPreviewContext';
+import { useUserPreviewContext } from '../context';
 import { UserFilter, UserSort, isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
 import useCurrentUser from './CurrentUser';

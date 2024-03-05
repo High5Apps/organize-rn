@@ -1,4 +1,4 @@
-import { useCachedValueContext } from './CachedValueContext';
+import { useCachedValueContext } from '../context';
 
 export default function useCachedValue<T>(key: string) {
   const {

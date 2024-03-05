@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import type { UserPreview } from './types';
-import useModelCache from './ModelCache';
+import type { UserPreview } from '../model';
+import useModelCache from '../model/ModelCache';
 
 type UserPreviewContextType = {
   cacheUserPreview: (userPreview: UserPreview) => void;

@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import type { Comment } from './types';
-import useModelCache from './ModelCache';
+import type { Comment } from '../model';
+import useModelCache from '../model/ModelCache';
 
 type CommentContextType = {
   cacheComment: (comment: Comment) => void;

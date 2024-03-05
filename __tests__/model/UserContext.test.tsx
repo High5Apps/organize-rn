@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
-import { CurrentUserData, UserContextProvider } from '../../app/model';
+import { CurrentUserData } from '../../app/model';
 import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
-import { useUserContext } from '../../app/model/UserContext';
+import {
+  UserContextProvider, useUserContext,
+} from '../../app/context/UserContext';
 import useStoredUser from '../../app/model/StoredUser';
 
 jest.useFakeTimers();

@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import { Post } from './types';
-import useModelCache from './ModelCache';
+import type { Post } from '../model';
+import useModelCache from '../model/ModelCache';
 
 type PostContextType = {
   cachePost: (post: Post) => void;

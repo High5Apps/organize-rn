@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import useCurrentUser from './CurrentUser';
 import { PostCategory, PostSort, isDefined } from './types';
 import { fetchPosts } from '../networking';
-import { usePostContext } from './PostContext';
+import { usePostContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 
 // Page indexing is 1-based, not 0-based

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { fetchBallotPreviews } from '../networking';
-import { useBallotPreviewContext } from './BallotPreviewContext';
+import { useBallotPreviewContext } from '../context';
 import useCurrentUser from './CurrentUser';
 import { isDefined } from './types';
 import { getIdsFrom } from './ModelCache';

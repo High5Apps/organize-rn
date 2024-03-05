@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { isDefined } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
-import { useCommentContext } from './CommentContext';
+import { useCommentContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 
 export const MAX_COMMENT_DEPTH = 8;

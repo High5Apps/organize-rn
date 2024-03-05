@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import type { BallotPreview } from './types';
-import useModelCache from './ModelCache';
+import type { BallotPreview } from '../model';
+import useModelCache from '../model/ModelCache';
 
 type BallotPreviewContextType = {
   cacheBallotPreview: (ballotPreview: BallotPreview) => void;
