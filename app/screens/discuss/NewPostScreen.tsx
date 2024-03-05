@@ -10,8 +10,7 @@ import {
   PrimaryButton, TextInputRow, useRequestProgress,
 } from '../../components';
 import {
-  GENERIC_ERROR_MESSAGE, isCurrentUserData, isDefined, useCachedValue, usePosts,
-  useUserContext,
+  GENERIC_ERROR_MESSAGE, isDefined, useCachedValue, usePosts, useUserContext,
 } from '../../model';
 import type { Post, PostCategory } from '../../model';
 import useTheme from '../../Theme';
@@ -130,9 +129,7 @@ export default function NewPostScreen({
   const multilineTextInputRef = useRef<TextInput | null>(null);
 
   const { currentUser } = useUserContext();
-  if (!isCurrentUserData(currentUser)) {
-    throw new Error('Expected currentUser');
-  }
+  if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const resetForm = () => {
     setTitle('');

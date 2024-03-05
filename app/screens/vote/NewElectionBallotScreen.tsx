@@ -8,8 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
-  useUserContext,
+  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useUserContext,
 } from '../../model';
 import { createBallot } from '../../networking';
 
@@ -89,7 +88,7 @@ export default function NewElectionBallotScreen({
   };
 
   const onPublishPressed = async () => {
-    if (!isCurrentUserData(currentUser)) { return; }
+    if (!currentUser) { return; }
 
     setLoading(true);
     setResult('none');

@@ -5,7 +5,7 @@ import {
 import useTheme from '../../Theme';
 import UpvoteButton from './UpvoteButton';
 import {
-  GENERIC_ERROR_MESSAGE, VoteState, isCurrentUserData, truncateText, useUserContext,
+  GENERIC_ERROR_MESSAGE, VoteState, truncateText, useUserContext,
 } from '../../model';
 import { createOrUpdateUpvote } from '../../networking';
 
@@ -71,7 +71,7 @@ export default function UpvoteControl({
   const onVote = async ({
     previousVote, vote,
   }: { previousVote: VoteState, vote: VoteState }) => {
-    if (!isCurrentUserData(currentUser)) { return; }
+    if (!currentUser) { return; }
 
     setWaitingForVoteSate(vote);
 

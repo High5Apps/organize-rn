@@ -3,7 +3,7 @@ import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg } from '../networking';
 import { useUserContext } from './UserContext';
-import { Org, OrgGraph as OrgGraphType, isCurrentUserData } from './types';
+import { Org, OrgGraph as OrgGraphType } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 
 function toVisNetworkData(
@@ -51,9 +51,8 @@ export default function useGraphData() {
   const { colors } = useTheme();
 
   async function updateOrgData() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected currentUser to be set');
-    }
+    if (!currentUser) { throw new Error('Expected currentUser to be set'); }
+
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecrypt } = currentUser;
     const { errorMessage, org } = await fetchOrg({ e2eDecrypt, jwt });

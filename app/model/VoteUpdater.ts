@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Ballot, Candidate, isCurrentUserData } from './types';
+import { Ballot, Candidate } from './types';
 import { useUserContext } from './UserContext';
 import { createVote } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
@@ -35,7 +35,7 @@ export default function useVoteUpdater({ ballot }: Props) {
   const onNewCandidateSelection = useCallback(async ({
     id: candidateId,
   }: Candidate) => {
-    if (ballot === undefined || !isCurrentUserData(currentUser)) { return; }
+    if (ballot === undefined || !currentUser) { return; }
 
     const { candidates, maxCandidateIdsPerVote } = ballot;
 

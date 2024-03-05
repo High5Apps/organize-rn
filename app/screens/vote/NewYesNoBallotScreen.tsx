@@ -5,8 +5,8 @@ import {
   MultilineTextInput, PrimaryButton, startOfNextHourIn, useRequestProgress,
 } from '../../components';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, isCurrentUserData, useBallotPreviews,
-  useCachedValue, useUserContext,
+  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useCachedValue,
+  useUserContext,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createBallot } from '../../networking';
@@ -70,7 +70,7 @@ export default function NewYesNoBallotScreen({
   };
 
   const onPublishPressed = async () => {
-    if (!isCurrentUserData(currentUser)) { return; }
+    if (!currentUser) { return; }
 
     setLoading(true);
     setResult('none');

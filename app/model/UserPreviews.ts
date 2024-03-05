@@ -2,9 +2,7 @@ import { useMemo, useState } from 'react';
 import { fetchUserPreviews } from '../networking';
 import { useUserPreviewContext } from './UserPreviewContext';
 import { useUserContext } from './UserContext';
-import {
-  UserFilter, UserSort, isCurrentUserData, isDefined,
-} from './types';
+import { UserFilter, UserSort, isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
 
 // Page indexing is 1-based, not 0-based
@@ -32,9 +30,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
   const { currentUser } = useUserContext();
 
   async function fetchFirstPageOfUserPreviews() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
     setJoinedAtOrBefore(now);
@@ -64,9 +60,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
   }
 
   async function fetchNextPageOfUserPreviews() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {

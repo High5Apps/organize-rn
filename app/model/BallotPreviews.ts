@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { fetchBallotPreviews } from '../networking';
 import { useBallotPreviewContext } from './BallotPreviewContext';
 import { useUserContext } from './UserContext';
-import { isCurrentUserData, isDefined } from './types';
+import { isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
 
 // Page indexing is 1-based, not 0-based
@@ -30,9 +30,7 @@ export default function useBallotPreviews() {
   const { currentUser } = useUserContext();
 
   async function fetchFirstPageOfBallotPreviews() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
     setActiveCutoff(now);
@@ -93,9 +91,7 @@ export default function useBallotPreviews() {
   }
 
   async function fetchNextPageOfBallotPreviews() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;

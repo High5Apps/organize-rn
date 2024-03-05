@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useUserContext } from './UserContext';
-import {
-  PostCategory, PostSort, isCurrentUserData, isDefined,
-} from './types';
+import { PostCategory, PostSort, isDefined } from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from './PostContext';
 import { getIdsFrom } from './ModelCache';
@@ -36,9 +34,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const { currentUser } = useUserContext();
 
   async function fetchFirstPageOfPosts(): Promise<FetchPageReturn> {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
     setCreatedAtOrBefore(now);
@@ -71,9 +67,7 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   }
 
   async function fetchNextPageOfPosts(): Promise<FetchPageReturn> {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;

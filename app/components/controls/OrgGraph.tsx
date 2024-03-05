@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
-import { isCurrentUserData, useGraphData, useUserContext } from '../../model';
+import { useGraphData, useUserContext } from '../../model';
 import useTheme from '../../Theme';
 import { ErrorMessage, ProgressBar } from '../views';
 import { useClickHandler, useOrgGraphProgress } from '../hooks';
@@ -77,9 +77,7 @@ export default function OrgGraph({
     onRenderingProgressChanged?.(progress);
   }, [progress]);
 
-  if (!isCurrentUserData(currentUser)) {
-    throw new Error('Expected currentUser');
-  }
+  if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const options = {
     edges: {

@@ -6,8 +6,8 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, isCurrentUserData,
-  useCachedValue, useComments, useUserContext,
+  Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, useCachedValue,
+  useComments, useUserContext,
 } from '../../model';
 import { createComment } from '../../networking';
 
@@ -74,9 +74,7 @@ export default function NewCommentScreenBase({
   const { cacheComment, getCachedComment } = useComments();
 
   const { currentUser } = useUserContext();
-  if (!isCurrentUserData(currentUser)) {
-    throw new Error('Expected currentUser');
-  }
+  if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const onPublishPressed = async () => {
     Keyboard.dismiss();

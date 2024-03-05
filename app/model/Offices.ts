@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { fetchOffices as fetchOfficesApi } from '../networking';
 import { useUserContext } from './UserContext';
-import { Office, OfficeCategory, isCurrentUserData } from './types';
+import { Office, OfficeCategory } from './types';
 
 type OfficeMetadata = {
   iconName: string;
@@ -39,9 +39,7 @@ export default function useOffices() {
   const { currentUser } = useUserContext();
 
   async function fetchOffices() {
-    if (!isCurrentUserData(currentUser)) {
-      throw new Error('Expected current user to be set');
-    }
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { errorMessage, offices } = await fetchOfficesApi({ jwt });

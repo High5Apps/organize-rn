@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
-import {
-  Ballot, GENERIC_ERROR_MESSAGE, isCurrentUserData, useUserContext,
-} from '../../model';
+import { Ballot, GENERIC_ERROR_MESSAGE, useUserContext } from '../../model';
 import { fetchBallot } from '../../networking';
 
 const useStyles = () => {
@@ -32,7 +30,7 @@ export default function useBallot(ballotId: string) {
     setResult('none');
     setLoading(true);
 
-    if (!isCurrentUserData(currentUser)) { return; }
+    if (!currentUser) { return; }
     const { createAuthToken, e2eDecrypt, e2eDecryptMany } = currentUser;
 
     const jwt = await createAuthToken({ scope: '*' });

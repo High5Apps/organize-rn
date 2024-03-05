@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { isCurrentUserData, isDefined } from './types';
+import { isDefined } from './types';
 import { useUserContext } from './UserContext';
 import { fetchComments } from '../networking';
 import { useCommentContext } from './CommentContext';
@@ -20,7 +20,7 @@ export default function useComments(postId?: string) {
   const { currentUser } = useUserContext();
 
   async function updateComments() {
-    if (!isCurrentUserData(currentUser) || !postId) {
+    if (!currentUser || !postId) {
       return { isEmpty: true };
     }
 

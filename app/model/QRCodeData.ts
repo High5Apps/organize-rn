@@ -1,6 +1,6 @@
 import { CurrentUserType } from './CurrentUser';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
-import { isCurrentUserData, isQRCodeValue, QRCodeValue } from './types';
+import { isQRCodeValue, QRCodeValue } from './types';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
@@ -23,7 +23,7 @@ export function QRCodeDataFormatter({
   currentTime, currentUser,
 }: FormatterProps) {
   async function toString(): Promise<string> {
-    if (!isCurrentUserData(currentUser)) {
+    if (!currentUser) {
       throw new Error('Expected QRCode user to be the current user');
     }
 
