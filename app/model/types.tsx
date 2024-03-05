@@ -23,11 +23,14 @@ export function isOrg(object: unknown): object is Org {
   );
 }
 
-export type CurrentUserData = {
-  authenticationKeyId: string;
-  encryptedGroupKey: string;
-  id: string;
-  localEncryptionKeyId: string;
+export type UserBaseData = {
+  authenticationKeyId: string,
+  encryptedGroupKey: string,
+  id: string,
+  localEncryptionKeyId: string,
+};
+
+export type CurrentUserData = UserBaseData & {
   org: Org;
   orgId: string;
   pseudonym: string;

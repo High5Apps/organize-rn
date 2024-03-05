@@ -1,6 +1,6 @@
+import { CurrentUserType } from './CurrentUser';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
 import { isCurrentUserData, isQRCodeValue, QRCodeValue } from './types';
-import { StorableUser } from './User';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
@@ -16,7 +16,7 @@ const GROUP_KEY_PARAM = 'gk';
 
 type FormatterProps = {
   currentTime: number;
-  currentUser: StorableUser;
+  currentUser: CurrentUserType;
 };
 
 export function QRCodeDataFormatter({

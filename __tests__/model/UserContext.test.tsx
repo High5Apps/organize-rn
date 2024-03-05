@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
-import { UserContextProvider, useUserContext } from '../../app/model';
-import useCurrentUser from '../../app/model/CurrentUser';
-import User, { StorableUser } from '../../app/model/User';
+import {
+  CurrentUserData, UserContextProvider, useUserContext,
+} from '../../app/model';
+import useCurrentUser, { CurrentUser } from '../../app/model/CurrentUser';
 import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
 
 jest.useFakeTimers();
@@ -24,7 +25,7 @@ function TestComponent() {
 }
 
 type Props = {
-  user?: StorableUser;
+  user?: CurrentUserData;
 };
 
 async function renderTestComponent({ user }: Props) {
@@ -49,7 +50,7 @@ const defaultReturnValue = {
 describe('UserContext', () => {
   it('uses user prop to initialize useCurrentUser', async () => {
     mockUseCurrentUser.mockReturnValue(defaultReturnValue);
-    const user = User(fakeCurrentUser);
+    const user = CurrentUser(fakeCurrentUser, () => null);
     await renderTestComponent({ user });
     expect(mockUseCurrentUser).toBeCalledWith(user);
   });

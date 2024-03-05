@@ -3,12 +3,12 @@ import { Share } from 'react-native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
 import ConfirmationAlert from './ConfirmationAlert';
 import { useUserContext } from './UserContext';
-import { isCurrentUserData, type SettingsSection } from './types';
+import { SettingsSection } from './types';
 
 export default function useSettings(): SettingsSection[] {
-  const { currentUser, logOut } = useUserContext();
+  const { currentUser } = useUserContext();
 
-  if (!isCurrentUserData(currentUser)) {
+  if (!currentUser) {
     console.warn('Expected current user to be set');
     return [];
   }
@@ -23,7 +23,7 @@ export default function useSettings(): SettingsSection[] {
             onPress: ConfirmationAlert({
               destructiveAction: 'Leave Org',
               destructiveActionInTitle: 'leave this Org',
-              onConfirm: logOut,
+              onConfirm: currentUser.logOut,
             }).show,
             title: 'Leave Org',
           },
@@ -48,5 +48,5 @@ export default function useSettings(): SettingsSection[] {
     }
 
     return settings;
-  }, [currentUser, logOut, ENABLE_DEVELOPER_SETTINGS]);
+  }, [currentUser, ENABLE_DEVELOPER_SETTINGS]);
 }

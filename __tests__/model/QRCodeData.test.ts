@@ -1,6 +1,7 @@
 import {
-  QRCodeDataFormatter, QRCodeDataParser, QRCodeValue, User,
+  QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
+import { CurrentUser } from '../../app/model/CurrentUser';
 import { base64ToBase64Url } from '../../app/model/JWT';
 import {
   QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS,
@@ -9,11 +10,11 @@ import { fakeCurrentUser, fakeGroupKey, fakeJwtString } from '../FakeData';
 
 const currentTime = new Date().getTime();
 
-jest.mock('../../app/model/User');
-const mockUser = User as jest.Mock;
+jest.mock('../../app/model/CurrentUser');
+const mockCurrentUser = CurrentUser as jest.Mock;
 const mockCreateAuthToken = jest.fn().mockResolvedValue(fakeJwtString);
 const mockDecryptGroupKey = jest.fn().mockResolvedValue(fakeGroupKey);
-mockUser.mockReturnValue({
+mockCurrentUser.mockReturnValue({
   ...fakeCurrentUser,
   createAuthToken: mockCreateAuthToken,
   decryptGroupKey: mockDecryptGroupKey,
@@ -26,7 +27,7 @@ describe('toString', () => {
 
   beforeEach(async () => {
     const formatter = QRCodeDataFormatter({
-      currentTime, currentUser: User(fakeCurrentUser),
+      currentTime, currentUser: CurrentUser(fakeCurrentUser, () => null),
     });
     formattedString = await formatter.toString();
   });
@@ -71,7 +72,7 @@ describe('parse', () => {
   beforeAll(async () => {
     consoleWarnSpy.mockClear();
     const formatter = QRCodeDataFormatter({
-      currentTime, currentUser: User(fakeCurrentUser),
+      currentTime, currentUser: CurrentUser(fakeCurrentUser, () => null),
     });
     formattedString = await formatter.toString();
     value = QRCodeDataParser({ input: formattedString }).parse()!;

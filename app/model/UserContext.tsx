@@ -7,8 +7,7 @@ import { StyleSheet } from 'react-native';
 // prevent a circular dependency issue. Normally components import from models,
 // not the other way around.
 import DelayedActivityIndicator from '../components/views/DelayedActivityIndicator';
-import useCurrentUser from './CurrentUser';
-import type { StorableUser } from './User';
+import useCurrentUser, { CurrentUserType } from './CurrentUser';
 import { CurrentUserData } from './types';
 
 const useStyles = () => {
@@ -22,19 +21,17 @@ const useStyles = () => {
 };
 
 type UserContextType = {
-  currentUser: StorableUser | null;
-  logOut: () => Promise<void>;
+  currentUser: CurrentUserType | null;
   setCurrentUser: Dispatch<SetStateAction<CurrentUserData | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
   currentUser: null,
-  logOut: async () => {},
   setCurrentUser: () => {},
 });
 
 type Props = {
-  user?: StorableUser;
+  user?: CurrentUserData;
 };
 
 export function UserContextProvider({
@@ -42,11 +39,11 @@ export function UserContextProvider({
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   const {
-    currentUser, initialized, logOut, setCurrentUser,
+    currentUser, initialized, setCurrentUser,
   } = useCurrentUser(user);
 
   const userContext = useMemo<UserContextType>(() => ({
-    currentUser, logOut, setCurrentUser,
+    currentUser, setCurrentUser,
   }), [currentUser, setCurrentUser]);
 
   return (

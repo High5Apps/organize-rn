@@ -3,7 +3,7 @@ import {
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 import { Keys } from './keys';
-import User, { StorableUser } from './User';
+import { CurrentUserData } from './types';
 import UserBase from './UserBase';
 
 export type CreateCurrentUserProps = {
@@ -23,7 +23,7 @@ export default async function createCurrentUser({
   orgId: maybeOrgId,
   sharerJwt: maybeSharerJwt,
   unpublishedOrg,
-}: CreateCurrentUserProps): Promise<StorableUser | string> {
+}: CreateCurrentUserProps): Promise<CurrentUserData | string> {
   const keys = Keys();
   const {
     publicKey: authenticationKey, publicKeyId: authenticationKeyId,
@@ -122,7 +122,7 @@ export default async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
-  const user = User({
+  return {
     authenticationKeyId,
     encryptedGroupKey,
     id: userId,
@@ -130,6 +130,5 @@ export default async function createCurrentUser({
     org,
     orgId,
     pseudonym,
-  });
-  return user;
+  };
 }
