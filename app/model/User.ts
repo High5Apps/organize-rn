@@ -1,58 +1,24 @@
-import JWT from './JWT';
+import UserBase from './UserBase';
 import { Keys } from './keys';
 import type {
-  CurrentUserData, E2EDecryptor, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, Scope, UserData,
+  CurrentUserData, E2EDecryptor, E2EMultiDecryptor,
+  E2EMultiEncryptor, UserData,
 } from './types';
-
-export const defaultAuthTokenTTLSeconds = 60;
-
-type CreateAuthTokenProps = {
-  currentTime?: number;
-  scope: Scope;
-  timeToLiveSeconds?: number;
-};
 
 export default function User({
   authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   org, orgId, pseudonym,
 }: CurrentUserData) {
+  const baseUser = UserBase({
+    authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
+  });
+
   const userData: UserData = {
     id,
     orgId,
     pseudonym,
   };
   const keys = Keys();
-
-  async function createAuthToken({
-    currentTime: maybeCurrentTime, scope, timeToLiveSeconds: maybeTTL,
-  }: CreateAuthTokenProps): Promise<string> {
-    if (!authenticationKeyId) {
-      throw new Error(
-        'Can only create auth token for users with an authenticationKeyId',
-      );
-    }
-
-    const currentTime = maybeCurrentTime ?? new Date().getTime();
-    const timeToLiveSeconds = maybeTTL ?? defaultAuthTokenTTLSeconds;
-
-    const signer = (
-      { message }: { message: string },
-    ) => keys.ecc.sign({ message, publicKeyId: authenticationKeyId });
-
-    const expirationSecondsSinceEpoch = (
-      (currentTime / 1000) + timeToLiveSeconds
-    );
-
-    const jwt = JWT({
-      expirationSecondsSinceEpoch,
-      scope,
-      signer,
-      subject: userData.id,
-    });
-    const jwtString = await jwt.toString();
-    return jwtString;
-  }
 
   async function deleteKeys() {
     let succeeded = false;
@@ -113,17 +79,6 @@ export default function User({
     return messages;
   };
 
-  const e2eEncrypt: E2EEncryptor = async (message: string) => {
-    if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
-    }
-    return keys.aes.encrypt({
-      message,
-      wrappedKey: encryptedGroupKey,
-      wrapperKeyId: localEncryptionKeyId,
-    });
-  };
-
   const e2eEncryptMany: E2EMultiEncryptor = async (messages: string[]) => {
     if (!localEncryptionKeyId || !encryptedGroupKey) {
       throw new Error('Can only encryptMany for users with a localEncryptionKeyId and encryptedGroupKey');
@@ -136,18 +91,14 @@ export default function User({
   };
 
   return {
-    authenticationKeyId,
-    createAuthToken,
     decryptGroupKey,
     deleteKeys,
-    encryptedGroupKey,
     equals,
     e2eDecrypt,
     e2eDecryptMany,
-    e2eEncrypt,
     e2eEncryptMany,
-    localEncryptionKeyId,
     org,
+    ...baseUser,
     ...userData,
   };
 }
