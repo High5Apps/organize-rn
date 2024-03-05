@@ -1,8 +1,7 @@
 import UserBase from './UserBase';
 import { Keys } from './keys';
 import type {
-  CurrentUserData, E2EDecryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, UserData,
+  CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor,
 } from './types';
 
 export default function User({
@@ -13,11 +12,6 @@ export default function User({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   });
 
-  const userData: UserData = {
-    id,
-    orgId,
-    pseudonym,
-  };
   const keys = Keys();
 
   async function deleteKeys() {
@@ -75,8 +69,9 @@ export default function User({
     e2eDecryptMany,
     e2eEncryptMany,
     org,
+    orgId,
+    pseudonym,
     ...baseUser,
-    ...userData,
   };
 }
 

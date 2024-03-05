@@ -23,34 +23,26 @@ export function isOrg(object: unknown): object is Org {
   );
 }
 
-export type UserData = {
+export type CurrentUserData = {
+  authenticationKeyId: string;
+  encryptedGroupKey: string;
   id: string;
+  localEncryptionKeyId: string;
+  org: Org;
   orgId: string;
   pseudonym: string;
 };
 
-export function isUserData(object: unknown): object is UserData {
-  const user = (object as UserData);
-  return user?.id?.length > 0
-    && user?.orgId?.length > 0
-    && user?.pseudonym?.length > 0;
-}
-
-export type CurrentUserData = UserData & {
-  authenticationKeyId: string;
-  encryptedGroupKey: string;
-  localEncryptionKeyId: string;
-  org: Org;
-};
-
 export function isCurrentUserData(object: unknown): object is CurrentUserData {
-  if (!isUserData(object)) { return false; }
   const currentUserData = (object as CurrentUserData);
   return currentUserData
     && isOrg(currentUserData.org)
     && currentUserData.authenticationKeyId?.length > 0
     && currentUserData.encryptedGroupKey?.length > 0
-    && currentUserData.localEncryptionKeyId?.length > 0;
+    && currentUserData.localEncryptionKeyId?.length > 0
+    && currentUserData.id?.length > 0
+    && currentUserData.orgId?.length > 0
+    && currentUserData.pseudonym?.length > 0;
 }
 
 export type QRCodeValue = {

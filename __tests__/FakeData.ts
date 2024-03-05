@@ -1,5 +1,5 @@
 import type {
-  Comment, CurrentUserData, Org, Post, UserData,
+  Comment, CurrentUserData, Org, Post,
 } from '../app/model';
 
 const fakeOrg: Org = {
@@ -12,17 +12,6 @@ const fakeOtherOrg: Org = {
   id: 'fakeOtherOrgId',
   name: 'fakeOtherOrgName',
   memberDefinition: 'fakeOtherDefinition',
-};
-
-export const fakeUser: UserData = {
-  id: 'fakeUser',
-  orgId: fakeOrg.id,
-  pseudonym: 'Sincere Pelican',
-};
-export const fakeOtherUser = {
-  id: 'fakeOtherUser',
-  orgId: fakeOtherOrg.id,
-  pseudonym: 'Bold Squirrel',
 };
 
 export const fakeCurrentUser: CurrentUserData = {
@@ -53,10 +42,10 @@ export function getFakePost(postId: string, score: number): Post {
     createdAt: new Date(),
     id: `post${postId}`,
     myVote: 0,
-    pseudonym: fakeUser.pseudonym,
+    pseudonym: fakeCurrentUser.pseudonym,
     score,
     title: `Post ${postId}`,
-    userId: fakeUser.id,
+    userId: fakeCurrentUser.id,
   };
 }
 
@@ -67,8 +56,8 @@ export function getFakeComment(commentId: string, score: number): Comment {
     depth: 0,
     id: `comment${commentId}`,
     myVote: 0,
-    pseudonym: fakeUser.pseudonym,
+    pseudonym: fakeCurrentUser.pseudonym,
     score,
-    userId: fakeUser.id,
+    userId: fakeCurrentUser.id,
   };
 }

@@ -5,7 +5,7 @@ import { DelayedActivityIndicator } from '../../app/components';
 import { UserContextProvider, useUserContext } from '../../app/model';
 import useCurrentUser from '../../app/model/CurrentUser';
 import User, { StorableUser } from '../../app/model/User';
-import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
+import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
 
 jest.useFakeTimers();
 jest.mock('../../app/model/CurrentUser');
@@ -80,14 +80,15 @@ describe('UserContext', () => {
 
   describe('userContext', () => {
     it('contains currentUser from useCurrentUser', async () => {
+      const currentUser = fakeCurrentUser;
       mockUseCurrentUser.mockReturnValue({
         ...defaultReturnValue,
-        currentUser: fakeUser,
+        currentUser,
         initialized: true,
       });
       const { root } = await renderTestComponent({});
       const currentUserId = root?.findByProps({ testID }).props.children;
-      expect(currentUserId).toBe(fakeUser.id);
+      expect(currentUserId).toBe(currentUser.id);
     });
 
     it('contains setCurrentUser from useCurrentUser', async () => {

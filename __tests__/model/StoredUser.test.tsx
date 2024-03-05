@@ -5,7 +5,7 @@ import { CurrentUserData, isCurrentUserData } from '../../app/model';
 import useStoredUser, {
   getStoredUser, storeUser,
 } from '../../app/model/StoredUser';
-import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
+import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
 
 describe('StoredUser', () => {
   beforeEach(async () => {
@@ -47,10 +47,11 @@ describe('StoredUser', () => {
 
     it('should not store invalid user data', async () => {
       jest.spyOn(console, 'warn').mockImplementation();
-      expect(isCurrentUserData(fakeUser)).toBeFalsy();
-      storeUser(fakeUser as any);
+      const { pseudonym, ...invalidUser } = fakeCurrentUser;
+      expect(isCurrentUserData(invalidUser)).toBeFalsy();
+      storeUser(invalidUser as any);
       const storedUser = await getStoredUser();
-      expect(storedUser?.id).not.toEqual(fakeUser.id);
+      expect(storedUser?.id).not.toEqual(invalidUser.id);
     });
   });
 });
