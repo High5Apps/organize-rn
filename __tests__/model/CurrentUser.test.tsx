@@ -15,12 +15,12 @@ mockKeys.mockReturnValue({
 jest.mock('../../app/model/StoredUser');
 const mockStoreUser = storeUser as jest.Mock;
 
-const mockClearStoredUser = jest.fn();
+const mockClearCurrentUser = jest.fn();
 
 describe('useCurrentUser', () => {
   describe('logOut', () => {
     beforeEach(async () => {
-      const mockCurrentUser = CurrentUser(fakeCurrentUser, mockClearStoredUser);
+      const mockCurrentUser = CurrentUser(fakeCurrentUser, mockClearCurrentUser);
       await mockCurrentUser.logOut();
     });
 
@@ -29,8 +29,8 @@ describe('useCurrentUser', () => {
       expect(mockRsaDelete).toBeCalled();
     });
 
-    it('should clear storedUser', () => {
-      expect(mockClearStoredUser).toBeCalled();
+    it('should clear currentUser', () => {
+      expect(mockClearCurrentUser).toBeCalled();
     });
 
     it('should store null user', () => {

@@ -8,7 +8,7 @@ import {
 export function CurrentUser({
   authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   org, orgId, pseudonym,
-}: CurrentUserData, clearStoredUser: () => void) {
+}: CurrentUserData, clearCurrentUser: () => void) {
   const baseUser = UserBase({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   });
@@ -66,7 +66,7 @@ export function CurrentUser({
   const logOut = async () => {
     await deleteKeys();
     storeUser(null);
-    clearStoredUser();
+    clearCurrentUser();
   };
 
   return {
@@ -92,8 +92,8 @@ export default function useCurrentUser(user: CurrentUserData | null = null) {
     setStoredUser,
   } = useStoredUser(user);
 
-  const clearStoredUser = () => setStoredUser(null);
-  const currentUser = storedUser && CurrentUser(storedUser, clearStoredUser);
+  const clearCurrentUser = () => setStoredUser(null);
+  const currentUser = storedUser && CurrentUser(storedUser, clearCurrentUser);
   const setCurrentUser = setStoredUser;
 
   return { currentUser, initialized, setCurrentUser };
