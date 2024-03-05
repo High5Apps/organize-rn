@@ -23,31 +23,20 @@ export default function User({
   async function deleteKeys() {
     let succeeded = false;
 
-    if (authenticationKeyId && localEncryptionKeyId) {
-      try {
-        const results = await Promise.all([
-          keys.ecc.delete(authenticationKeyId),
-          keys.rsa.delete(localEncryptionKeyId),
-        ]);
-        succeeded = results.every((result) => result);
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      const results = await Promise.all([
+        keys.ecc.delete(authenticationKeyId),
+        keys.rsa.delete(localEncryptionKeyId),
+      ]);
+      succeeded = results.every((result) => result);
+    } catch (error) {
+      console.error(error);
     }
 
     return succeeded;
   }
 
-  function equals(user: CurrentUserData): boolean {
-    return user.id === userData.id
-      && user.orgId === userData.orgId;
-  }
-
   async function decryptGroupKey() {
-    if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only decryptGroupKey for users with a localEncryptionKeyId and encryptedGroupKey');
-    }
-
     const { message: groupKey } = await keys.rsa.decrypt({
       publicKeyId: localEncryptionKeyId,
       base64EncodedEncryptedMessage: encryptedGroupKey,
@@ -55,45 +44,33 @@ export default function User({
     return groupKey;
   }
 
-  const e2eDecrypt: E2EDecryptor = async (aesEncyptedData) => {
-    if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
-    }
-    const message = await keys.aes.decrypt({
+  const e2eDecrypt: E2EDecryptor = async (aesEncyptedData) => (
+    keys.aes.decrypt({
       ...aesEncyptedData,
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
-    });
-    return message;
-  };
+    })
+  );
 
-  const e2eDecryptMany: E2EMultiDecryptor = async (aesEncyptedData) => {
-    if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only encrypt for users with a localEncryptionKeyId and encryptedGroupKey');
-    }
-    const messages = await keys.aes.decryptMany({
+  const e2eDecryptMany: E2EMultiDecryptor = async (aesEncyptedData) => (
+    keys.aes.decryptMany({
       encryptedMessages: aesEncyptedData,
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
-    });
-    return messages;
-  };
+    })
+  );
 
-  const e2eEncryptMany: E2EMultiEncryptor = async (messages: string[]) => {
-    if (!localEncryptionKeyId || !encryptedGroupKey) {
-      throw new Error('Can only encryptMany for users with a localEncryptionKeyId and encryptedGroupKey');
-    }
-    return keys.aes.encryptMany({
+  const e2eEncryptMany: E2EMultiEncryptor = async (messages: string[]) => (
+    keys.aes.encryptMany({
       messages,
       wrappedKey: encryptedGroupKey,
       wrapperKeyId: localEncryptionKeyId,
-    });
-  };
+    })
+  );
 
   return {
     decryptGroupKey,
     deleteKeys,
-    equals,
     e2eDecrypt,
     e2eDecryptMany,
     e2eEncryptMany,
