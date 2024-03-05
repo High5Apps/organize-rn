@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+
+const useStyles = () => {
+  const styles = StyleSheet.create({
+    activityIndicator: {
+      flex: 1,
+    },
+  });
+
+  return { styles };
+};
 
 type Props = {
   delay: number;
-  style?: StyleProp<ViewStyle>;
 };
 
-export default function DelayedActivityIndicator({ delay, style }: Props) {
+export default function DelayedActivityIndicator({ delay }: Props) {
   const [animating, setAnimating] = useState(false);
+
+  const { styles } = useStyles();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -17,10 +28,6 @@ export default function DelayedActivityIndicator({ delay, style }: Props) {
   }, []);
 
   return (
-    <ActivityIndicator animating={animating} style={style} />
+    <ActivityIndicator animating={animating} style={styles.activityIndicator} />
   );
 }
-
-DelayedActivityIndicator.defaultProps = {
-  style: {},
-};
