@@ -1,12 +1,15 @@
-import { StorableUser } from './User';
 import useStoredUser, { storeUser } from './StoredUser';
+import User from './User';
+import { CurrentUserData } from './types';
 
-export default function useCurrentUser(user: StorableUser | null = null) {
+export default function useCurrentUser(user: CurrentUserData | null = null) {
   const {
     initialized,
-    storedUser: currentUser,
+    storedUser,
     setStoredUser: setCurrentUser,
   } = useStoredUser(user);
+
+  const currentUser = storedUser && User(storedUser);
 
   const logOut = async () => {
     await currentUser?.deleteKeys();

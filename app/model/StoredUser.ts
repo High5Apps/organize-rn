@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isCurrentUserData } from './types';
-import User, { StorableUser } from './User';
+import { CurrentUserData, isCurrentUserData } from './types';
 import { fromJson, toJson } from './Json';
 
 const STORAGE_KEY = 'currentUser';
 
-export async function getStoredUser(): Promise<StorableUser | null> {
+export async function getStoredUser(): Promise<CurrentUserData | null> {
   let storedData = null;
   try {
     storedData = await AsyncStorage.getItem(STORAGE_KEY);
@@ -31,10 +30,10 @@ export async function getStoredUser(): Promise<StorableUser | null> {
     return null;
   }
 
-  return User(userData);
+  return userData;
 }
 
-export async function storeUser(user: StorableUser | null) {
+export async function storeUser(user: CurrentUserData | null) {
   if (user && !isCurrentUserData(user)) {
     const json = toJson(user, 2);
     console.warn(`Attempted to store invalid current user data: ${json}`);
@@ -44,10 +43,10 @@ export async function storeUser(user: StorableUser | null) {
   await AsyncStorage.setItem(STORAGE_KEY, toJson(user));
 }
 
-export default function useStoredUser(user: StorableUser | null = null) {
+export default function useStoredUser(user: CurrentUserData | null = null) {
   const [
     storedUser, setStoredUser,
-  ] = useState<StorableUser | null >(user || null);
+  ] = useState<CurrentUserData | null >(user || null);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {

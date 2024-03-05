@@ -1,22 +1,11 @@
-import { v4 as uuidv4 } from 'uuid';
 import JWT from './JWT';
 import { Keys } from './keys';
 import type {
-  E2EDecryptor, E2EEncryptor, E2EMultiDecryptor, E2EMultiEncryptor, Org, Scope,
-  UserData,
+  CurrentUserData, E2EDecryptor, E2EEncryptor, E2EMultiDecryptor,
+  E2EMultiEncryptor, Scope, UserData,
 } from './types';
 
 export const defaultAuthTokenTTLSeconds = 60;
-
-type Props = {
-  authenticationKeyId?: string;
-  encryptedGroupKey?: string;
-  id?: string;
-  localEncryptionKeyId?: string;
-  org?: Org;
-  orgId: string;
-  pseudonym: string;
-};
 
 type CreateAuthTokenProps = {
   currentTime?: number;
@@ -25,11 +14,11 @@ type CreateAuthTokenProps = {
 };
 
 export default function User({
-  authenticationKeyId, encryptedGroupKey, id: initialId, localEncryptionKeyId,
+  authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   org, orgId, pseudonym,
-}: Props) {
+}: CurrentUserData) {
   const userData: UserData = {
-    id: initialId || uuidv4(),
+    id,
     orgId,
     pseudonym,
   };
@@ -83,7 +72,7 @@ export default function User({
     return succeeded;
   }
 
-  function equals(user: StorableUser): boolean {
+  function equals(user: CurrentUserData): boolean {
     return user.id === userData.id
       && user.orgId === userData.orgId;
   }

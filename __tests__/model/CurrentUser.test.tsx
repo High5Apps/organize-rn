@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import useCurrentUser from '../../app/model/CurrentUser';
-import { StorableUser } from '../../app/model/User';
+import User from '../../app/model/User';
 import useStoredUser, { storeUser } from '../../app/model/StoredUser';
 import { fakeCurrentUser } from '../FakeData';
+import { CurrentUserData } from '../../app/model';
 
 jest.mock('../../app/model/StoredUser');
 const mockUseStoredUser = useStoredUser as jest.Mock;
@@ -16,11 +17,16 @@ const defaultReturn = {
   storedUser: fakeCurrentUser,
 };
 
+jest.mock('../../app/model/User');
+const mockUser = User as jest.Mock;
+const mockDeleteKeys = jest.fn();
+mockUser.mockReturnValue({ ...fakeCurrentUser, deleteKeys: mockDeleteKeys });
+
 const currentUserTestId = 'currentUserTestId';
 
 type Props = {
   shouldLogOut?: boolean;
-  user?: StorableUser;
+  user?: CurrentUserData;
 };
 
 function TestComponent({ shouldLogOut, user }: Props) {
@@ -57,11 +63,9 @@ async function renderTestComponent({ shouldLogOut, user }: Props) {
 
 describe('useCurrentUser', () => {
   describe('logOut', () => {
-    const mockDeleteKeys = jest.fn();
     beforeEach(async () => {
-      const user = { ...fakeCurrentUser, deleteKeys: mockDeleteKeys };
-      mockUseStoredUser.mockReturnValue({ ...defaultReturn, storedUser: user });
-      await renderTestComponent({ shouldLogOut: true, user });
+      mockUseStoredUser.mockReturnValue(defaultReturn);
+      await renderTestComponent({ shouldLogOut: true, user: fakeCurrentUser });
     });
 
     it('should delete keys', () => {

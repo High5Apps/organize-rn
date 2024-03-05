@@ -1,5 +1,6 @@
-import { User } from '../app/model';
-import type { Comment, Org, Post } from '../app/model';
+import type {
+  Comment, CurrentUserData, Org, Post, UserData,
+} from '../app/model';
 
 const fakeOrg: Org = {
   id: 'fakeOrgId',
@@ -13,31 +14,35 @@ const fakeOtherOrg: Org = {
   memberDefinition: 'fakeOtherDefinition',
 };
 
-export const fakeUser = User({
+export const fakeUser: UserData = {
+  id: 'fakeUser',
   orgId: fakeOrg.id,
   pseudonym: 'Sincere Pelican',
-});
-export const fakeOtherUser = User({
+};
+export const fakeOtherUser = {
+  id: 'fakeOtherUser',
   orgId: fakeOtherOrg.id,
   pseudonym: 'Bold Squirrel',
-});
+};
 
-export const fakeCurrentUser = User({
+export const fakeCurrentUser: CurrentUserData = {
   authenticationKeyId: 'fakeAuthenticationKeyId',
   encryptedGroupKey: 'fakeEncryptedGroupKey',
+  id: 'fakeCurrentUser',
   localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
   org: fakeOrg,
   orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
-});
-export const fakeOtherCurrentUser = User({
+};
+export const fakeOtherCurrentUser: CurrentUserData = {
   authenticationKeyId: 'otherFakeAuthenticationKeyId',
   encryptedGroupKey: 'otherFakeEncryptedGroupKey',
+  id: 'fakeOtherCurrentUser',
   localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,
   pseudonym: 'Glorious Stingray',
-});
+};
 
 export const fakeJwtString = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2ODE2NTYzMzcsInNjcCI6ImNyZWF0ZTpjb25uZWN0aW9ucyIsInN1YiI6ImQwMjFjMWRkLWVhMDQtNDNmOS04MDg3LWEwZDcxNzJiZGVmMiJ9.t_Adk17S4KFhD7XNFn5Bf6Y2MJqOrghiFBKQRrnRdrOiFoFL-qhUu0HyEgviaono-aOzkdGewmx0w7labcdefg';
 export const fakeGroupKey = 'abcdefgxp3bzF+yoN7zTzEzmipJW6xKnPKFASWKJr5Q=';

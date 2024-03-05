@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { ReactTestRenderer, act, create } from 'react-test-renderer';
-import { isCurrentUserData } from '../../app/model';
+import { CurrentUserData, isCurrentUserData } from '../../app/model';
 import useStoredUser, {
   getStoredUser, storeUser,
 } from '../../app/model/StoredUser';
 import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
-import { StorableUser } from '../../app/model/User';
 
 describe('StoredUser', () => {
   beforeEach(async () => {
@@ -21,11 +20,11 @@ describe('StoredUser', () => {
     it('returns the last user stored with storeUser', async () => {
       await storeUser(fakeCurrentUser);
       let storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeCurrentUser)).toBeTruthy();
+      expect(storedUser?.id === fakeCurrentUser.id).toBeTruthy();
 
       await storeUser(fakeOtherCurrentUser);
       storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeOtherCurrentUser)).toBeTruthy();
+      expect(storedUser?.id === fakeOtherCurrentUser.id).toBeTruthy();
     });
   });
 
@@ -33,7 +32,7 @@ describe('StoredUser', () => {
     it('should store valid user data', async () => {
       await storeUser(fakeOtherCurrentUser);
       const storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeOtherCurrentUser)).toBeTruthy();
+      expect(storedUser?.id === fakeOtherCurrentUser.id).toBeTruthy();
     });
 
     it('should store null user data', async () => {
@@ -49,9 +48,9 @@ describe('StoredUser', () => {
     it('should not store invalid user data', async () => {
       jest.spyOn(console, 'warn').mockImplementation();
       expect(isCurrentUserData(fakeUser)).toBeFalsy();
-      storeUser(fakeUser);
+      storeUser(fakeUser as any);
       const storedUser = await getStoredUser();
-      expect(storedUser?.equals(fakeUser)).toBeFalsy();
+      expect(storedUser?.id).not.toEqual(fakeUser.id);
     });
   });
 });
@@ -60,8 +59,8 @@ const storedUserTestId = 'storedUserTestId';
 const intializedTestId = 'intializedTestId';
 
 type Props = {
-  newUser?: StorableUser | null;
-  user?: StorableUser;
+  newUser?: CurrentUserData | null;
+  user?: CurrentUserData;
 };
 
 function TestComponent({ newUser, user }: Props) {

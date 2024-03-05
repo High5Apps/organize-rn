@@ -4,8 +4,8 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
 import { UserContextProvider, useUserContext } from '../../app/model';
 import useCurrentUser from '../../app/model/CurrentUser';
-import { StorableUser } from '../../app/model/User';
-import { fakeOtherUser, fakeUser } from '../FakeData';
+import User, { StorableUser } from '../../app/model/User';
+import { fakeCurrentUser, fakeOtherCurrentUser, fakeUser } from '../FakeData';
 
 jest.useFakeTimers();
 jest.mock('../../app/model/CurrentUser');
@@ -17,7 +17,7 @@ function TestComponent() {
   const { currentUser, setCurrentUser } = useUserContext();
 
   useEffect(() => {
-    setCurrentUser(fakeOtherUser);
+    setCurrentUser(fakeOtherCurrentUser);
   }, []);
 
   return <Text testID={testID}>{currentUser?.id}</Text>;
@@ -49,8 +49,9 @@ const defaultReturnValue = {
 describe('UserContext', () => {
   it('uses user prop to initialize useCurrentUser', async () => {
     mockUseCurrentUser.mockReturnValue(defaultReturnValue);
-    await renderTestComponent({ user: fakeUser });
-    expect(mockUseCurrentUser).toBeCalledWith(fakeUser);
+    const user = User(fakeCurrentUser);
+    await renderTestComponent({ user });
+    expect(mockUseCurrentUser).toBeCalledWith(user);
   });
 
   it('renders spinner until currentUser intialized', async () => {

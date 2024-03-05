@@ -9,6 +9,7 @@ import { StyleSheet } from 'react-native';
 import DelayedActivityIndicator from '../components/views/DelayedActivityIndicator';
 import useCurrentUser from './CurrentUser';
 import type { StorableUser } from './User';
+import { CurrentUserData } from './types';
 
 const useStyles = () => {
   const styles = StyleSheet.create({
@@ -23,7 +24,7 @@ const useStyles = () => {
 type UserContextType = {
   currentUser: StorableUser | null;
   logOut: () => Promise<void>;
-  setCurrentUser: Dispatch<SetStateAction<StorableUser | null>>;
+  setCurrentUser: Dispatch<SetStateAction<CurrentUserData | null>>;
 };
 
 const UserContext = createContext<UserContextType>({
