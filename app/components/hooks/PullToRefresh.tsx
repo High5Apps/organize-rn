@@ -63,7 +63,7 @@ export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
       refreshing={refreshing}
       tintColor={colors.primary}
     />
-  ), [onRefresh]);
+  ), [refreshing, wrappedOnRefresh]);
 
   const ListHeaderComponent = useCallback(
     () => <RequestProgress style={styles.requestProgress} />,
