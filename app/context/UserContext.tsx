@@ -7,7 +7,7 @@ import React, {
 // which import from context, not the other way around.
 import DelayedActivityIndicator from '../components/views/DelayedActivityIndicator';
 import type { CurrentUserData } from '../model';
-import useStoredUser from '../model/StoredUser';
+import useStoredCurrentUserData from '../model/CurrentUserDataStorage';
 
 type UserContextType = {
   currentUserData: CurrentUserData | null;
@@ -20,17 +20,20 @@ const UserContext = createContext<UserContextType>({
 });
 
 type Props = {
-  user?: CurrentUserData;
+  initialCurrentUserData?: CurrentUserData;
 };
 
 export function UserContextProvider({
-  children, user,
+  children, initialCurrentUserData,
 }: PropsWithChildren<Props>) {
-  const { initialized, storedUser, setStoredUser } = useStoredUser(user);
+  const {
+    initialized, storedCurrentUserData, setStoredCurrentUserData,
+  } = useStoredCurrentUserData(initialCurrentUserData);
 
   const userContext = useMemo<UserContextType>(() => ({
-    currentUserData: storedUser, setCurrentUserData: setStoredUser,
-  }), [storedUser, setStoredUser]);
+    currentUserData: storedCurrentUserData,
+    setCurrentUserData: setStoredCurrentUserData,
+  }), [storedCurrentUserData, setStoredCurrentUserData]);
 
   return (
     <UserContext.Provider value={userContext}>
@@ -40,7 +43,7 @@ export function UserContextProvider({
 }
 
 UserContextProvider.defaultProps = {
-  user: undefined,
+  initialCurrentUserData: undefined,
 };
 
 export const useUserContext = () => useContext(UserContext);

@@ -1,5 +1,5 @@
 import { CurrentUser } from '../../app/model/CurrentUser';
-import { storeUser } from '../../app/model/StoredUser';
+import { storeCurrentUserData } from '../../app/model/CurrentUserDataStorage';
 import { fakeCurrentUser } from '../FakeData';
 import Keys from '../../app/model/keys/Keys';
 
@@ -12,8 +12,8 @@ mockKeys.mockReturnValue({
   rsa: { delete: mockRsaDelete },
 });
 
-jest.mock('../../app/model/StoredUser');
-const mockStoreUser = storeUser as jest.Mock;
+jest.mock('../../app/model/CurrentUserDataStorage');
+const mockStoreCurrentUserData = storeCurrentUserData as jest.Mock;
 
 const mockClearCurrentUser = jest.fn();
 
@@ -34,7 +34,7 @@ describe('useCurrentUser', () => {
     });
 
     it('should store null user', () => {
-      expect(mockStoreUser).toBeCalledWith(null);
+      expect(mockStoreCurrentUserData).toBeCalledWith(null);
     });
   });
 });

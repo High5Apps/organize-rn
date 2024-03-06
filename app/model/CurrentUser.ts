@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { storeUser } from './StoredUser';
+import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
 import { useUserContext } from '../context';
 import { Keys } from './keys';
@@ -67,7 +67,7 @@ export function CurrentUser({
 
   const logOut = async () => {
     await deleteKeys();
-    storeUser(null);
+    storeCurrentUserData(null);
     clearCurrentUser();
   };
 
