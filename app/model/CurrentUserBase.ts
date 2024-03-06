@@ -10,7 +10,7 @@ type CreateAuthTokenProps = {
   timeToLiveSeconds?: number;
 };
 
-export default function UserBase({
+export default function CurrentUserBase({
   authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
 }: UserBaseData) {
   const keys = Keys();

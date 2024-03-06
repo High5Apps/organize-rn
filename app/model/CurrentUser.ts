@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { storeUser } from './StoredUser';
-import UserBase from './UserBase';
+import CurrentUserBase from './CurrentUserBase';
 import { useUserContext } from '../context';
 import { Keys } from './keys';
 import {
@@ -11,7 +11,7 @@ export function CurrentUser({
   authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   org, orgId, pseudonym,
 }: CurrentUserData, clearCurrentUser: () => void) {
-  const baseUser = UserBase({
+  const currentUserBase = CurrentUserBase({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   });
 
@@ -72,7 +72,7 @@ export function CurrentUser({
   };
 
   return {
-    ...baseUser,
+    ...currentUserBase,
     decryptGroupKey,
     deleteKeys,
     e2eDecrypt,

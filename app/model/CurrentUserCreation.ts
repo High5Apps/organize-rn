@@ -4,7 +4,7 @@ import {
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 import { Keys } from './keys';
 import { CurrentUserData } from './types';
-import UserBase from './UserBase';
+import CurrentUserBase from './CurrentUserBase';
 
 export type CreateCurrentUserProps = {
   groupKey?: never;
@@ -53,7 +53,7 @@ export default async function createCurrentUser({
     publicKeyId: localEncryptionKeyId, message: groupKey,
   });
 
-  const baseUser = UserBase({
+  const currentUserBase = CurrentUserBase({
     authenticationKeyId, encryptedGroupKey, id: userId, localEncryptionKeyId,
   });
 
@@ -62,8 +62,8 @@ export default async function createCurrentUser({
     orgId = maybeOrgId;
   } else {
     try {
-      const jwt = await baseUser.createAuthToken({ scope: '*' });
-      const { e2eEncrypt } = baseUser;
+      const jwt = await currentUserBase.createAuthToken({ scope: '*' });
+      const { e2eEncrypt } = currentUserBase;
       const { errorMessage, id } = await createOrg({
         ...unpublishedOrg, e2eEncrypt, jwt,
       });
@@ -89,7 +89,7 @@ export default async function createCurrentUser({
   if (maybeSharerJwt) {
     const sharerJwt = maybeSharerJwt;
     try {
-      const jwt = await baseUser.createAuthToken({ scope: '*' });
+      const jwt = await currentUserBase.createAuthToken({ scope: '*' });
       const { errorMessage: maybeErrorMessage } = await createConnection({
         jwt, sharerJwt,
       });
@@ -105,7 +105,7 @@ export default async function createCurrentUser({
 
   let pseudonym: string;
   try {
-    const jwt = await baseUser.createAuthToken({ scope: '*' });
+    const jwt = await currentUserBase.createAuthToken({ scope: '*' });
     const {
       errorMessage, user: fetchedUser,
     } = await getUser({ id: userId, jwt });
