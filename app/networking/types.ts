@@ -23,14 +23,24 @@ export function isCreateUserResponse(object: unknown): object is CreateUserRespo
   return response?.id.length > 0;
 }
 
-export type GetUserResponse = {
-  id: string;
-  pseudonym: string;
+export function isDate(object: unknown): object is Date {
+  const date = (object as Date);
+  return (date instanceof Date) && !Number.isNaN(date);
+}
+
+export type UserResponse = Omit<User, 'offices'> & {
+  offices: OfficeCategory[];
 };
 
-export function isGetUserResponse(object: unknown): object is GetUserResponse {
-  const response = (object as GetUserResponse);
-  return (response?.id.length > 0) && (response?.pseudonym.length > 0);
+export function isUserResponse(object: unknown): object is UserResponse {
+  const user = (object as UserResponse);
+  return user?.connectionCount >= 0
+    && user.id?.length > 0
+    && isDate(user.joinedAt)
+    && user.pseudonym?.length > 0
+    && Array.isArray(user.offices)
+    && user.offices.every((category) => category.length > 0)
+    && user.recruitCount >= 0;
 }
 
 export type Authorization = {
@@ -76,14 +86,9 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
     && (response.user?.pseudonym.length > 0);
 }
 
-export function isDate(object: unknown): object is Date {
-  const date = (object as Date);
-  return (date instanceof Date) && !Number.isNaN(date);
-}
-
 type OrgGraphResponse = {
   users: {
-    [id: string]: UserIndexUser;
+    [id: string]: UserResponse;
   };
   connections: [string, string][];
 };
@@ -93,7 +98,7 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   const users = Object.values(response?.users);
   return users.length > 0
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    && users.every(isUserIndexUser)
+    && users.every(isUserResponse)
     && response?.connections?.length >= 0;
 }
 
@@ -373,30 +378,15 @@ export function isOfficeIndexResponse(object: unknown): object is OfficeIndexRes
     && response.offices.every(isOfficeIndexOffice);
 }
 
-type UserIndexUser = Omit<User, 'offices'> & {
-  offices: OfficeCategory[];
-};
-
-export function isUserIndexUser(object: unknown): object is UserIndexUser {
-  const user = (object as UserIndexUser);
-  return user?.connectionCount >= 0
-    && user.id?.length > 0
-    && isDate(user.joinedAt)
-    && user.pseudonym?.length > 0
-    && Array.isArray(user.offices)
-    && user.offices.every((category) => category.length > 0)
-    && user.recruitCount >= 0;
-}
-
 type UserIndexResponse = {
   meta?: PaginationData;
-  users: UserIndexUser[],
+  users: UserResponse[],
 };
 
 export function isUserIndexResponse(object: unknown): object is UserIndexResponse {
   const response = (object as UserIndexResponse);
   return response?.users
     && Array.isArray(response.users)
-    && response.users.every(isUserIndexUser)
+    && response.users.every(isUserResponse)
     && (!response?.meta || isPaginationData(response?.meta));
 }

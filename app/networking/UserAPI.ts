@@ -5,8 +5,8 @@ import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { usersURI, userUri } from './Routes';
 import {
-  Authorization, GetUserResponse, isCreateUserResponse, isGetUserResponse,
-  isUserIndexResponse,
+  Authorization, UserResponse, isCreateUserResponse, isUserIndexResponse,
+  isUserResponse,
 } from './types';
 
 type CreateProps = {
@@ -47,12 +47,18 @@ export async function createUser({
   return { id: json.id };
 }
 
+const convertUserResponseToUser = (userResponse: UserResponse) => {
+  const { offices: officeCategories, ...rest } = userResponse;
+  const offices = officeCategories.map((category) => getOffice(category));
+  return { ...rest, offices };
+};
+
 type GetProps = {
   id: string;
 } & Authorization;
 
 type GetReturn = {
-  user: GetUserResponse;
+  user: User;
   errorMessage?: never;
 } | {
   user?: never;
@@ -74,11 +80,12 @@ export async function getUser({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isGetUserResponse(json)) {
+  if (!isUserResponse(json)) {
     throw new Error('Failed to parse User from response');
   }
 
-  return { user: json };
+  const user = convertUserResponseToUser(json);
+  return { user };
 }
 
 type IndexProps = {
@@ -128,11 +135,7 @@ export async function fetchUsers({
 
   const { users: fetchedUsers, meta: paginationData } = json;
 
-  const users = fetchedUsers.map((user) => {
-    const { offices: officeCategories, ...rest } = user;
-    const offices = officeCategories.map((category) => getOffice(category));
-    return { ...rest, offices };
-  });
+  const users = fetchedUsers.map(convertUserResponseToUser);
 
   return { paginationData, users };
 }
