@@ -5,40 +5,40 @@ import { CurrentUserData, isCurrentUserData } from '../../app/model';
 import useStoredCurrentUserData, {
   getStoredCurrentUserData, storeCurrentUserData,
 } from '../../app/model/CurrentUserDataStorage';
-import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
+import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../FakeData';
 
 describe('CurrentUserDataStorage', () => {
   beforeEach(async () => {
     await storeCurrentUserData(null);
     const storedCurrentUserData = await getStoredCurrentUserData();
     expect(storedCurrentUserData).toBeNull();
-    expect(isCurrentUserData(fakeCurrentUser)).toBeTruthy();
-    expect(isCurrentUserData(fakeOtherCurrentUser)).toBeTruthy();
+    expect(isCurrentUserData(fakeCurrentUserData)).toBeTruthy();
+    expect(isCurrentUserData(fakeOtherCurrentUserData)).toBeTruthy();
   });
 
   describe('getStoredCurrentUserData', () => {
     it('returns the last user stored with storeCurrentUserData', async () => {
-      await storeCurrentUserData(fakeCurrentUser);
+      await storeCurrentUserData(fakeCurrentUserData);
       let storedCurrentUserData = await getStoredCurrentUserData();
-      expect(storedCurrentUserData?.id === fakeCurrentUser.id).toBeTruthy();
+      expect(storedCurrentUserData?.id === fakeCurrentUserData.id).toBeTruthy();
 
-      await storeCurrentUserData(fakeOtherCurrentUser);
+      await storeCurrentUserData(fakeOtherCurrentUserData);
       storedCurrentUserData = await getStoredCurrentUserData();
-      expect(storedCurrentUserData?.id === fakeOtherCurrentUser.id)
+      expect(storedCurrentUserData?.id === fakeOtherCurrentUserData.id)
         .toBeTruthy();
     });
   });
 
   describe('storeCurrentUserData', () => {
     it('should store valid user data', async () => {
-      await storeCurrentUserData(fakeOtherCurrentUser);
+      await storeCurrentUserData(fakeOtherCurrentUserData);
       const storedCurrentUserData = await getStoredCurrentUserData();
-      expect(storedCurrentUserData?.id === fakeOtherCurrentUser.id)
+      expect(storedCurrentUserData?.id === fakeOtherCurrentUserData.id)
         .toBeTruthy();
     });
 
     it('should store null user data', async () => {
-      await storeCurrentUserData(fakeOtherCurrentUser);
+      await storeCurrentUserData(fakeOtherCurrentUserData);
       let storedCurrentUserData = await getStoredCurrentUserData();
       expect(storedCurrentUserData).toBeTruthy();
 
@@ -49,11 +49,11 @@ describe('CurrentUserDataStorage', () => {
 
     it('should not store invalid user data', async () => {
       jest.spyOn(console, 'warn').mockImplementation();
-      const { pseudonym, ...invalidUser } = fakeCurrentUser;
-      expect(isCurrentUserData(invalidUser)).toBeFalsy();
-      storeCurrentUserData(invalidUser as any);
+      const { pseudonym, ...invalidCurrentUserData } = fakeCurrentUserData;
+      expect(isCurrentUserData(invalidCurrentUserData)).toBeFalsy();
+      storeCurrentUserData(invalidCurrentUserData as any);
       const storedCurrentUserData = await getStoredCurrentUserData();
-      expect(storedCurrentUserData?.id).not.toEqual(invalidUser.id);
+      expect(storedCurrentUserData?.id).not.toEqual(invalidCurrentUserData.id);
     });
   });
 });
@@ -132,7 +132,7 @@ describe('useStoredCurrentUserData', () => {
 
   describe('storedCurrentUserData', () => {
     it('is initialized by prop when present', async () => {
-      const initialCurrentUserData = fakeCurrentUser;
+      const initialCurrentUserData = fakeCurrentUserData;
       const {
         storedCurrentUserDataId,
       } = await renderTestComponent({ initialCurrentUserData });
@@ -140,7 +140,7 @@ describe('useStoredCurrentUserData', () => {
     });
 
     it('is initialized by getStoredCurrentUserData when prop absent', async () => {
-      const currentUserData = fakeCurrentUser;
+      const currentUserData = fakeCurrentUserData;
       await storeCurrentUserData(currentUserData);
       const { storedCurrentUserDataId } = await renderTestComponent({});
       expect(storedCurrentUserDataId).toBe(currentUserData.id);
@@ -154,16 +154,16 @@ describe('useStoredCurrentUserData', () => {
 
   describe('setStoredCurrentUserData', () => {
     it('updates storedCurrentUserData', async () => {
-      const newCurrentUserData = fakeOtherCurrentUser;
+      const newCurrentUserData = fakeOtherCurrentUserData;
       const { storedCurrentUserDataId } = await renderTestComponent({
-        initialCurrentUserData: fakeCurrentUser,
+        initialCurrentUserData: fakeCurrentUserData,
         newCurrentUserData,
       });
       expect(storedCurrentUserDataId).toBe(newCurrentUserData.id);
     });
 
     it('should not clear stored current user data', async () => {
-      const initialCurrentUserData = fakeCurrentUser;
+      const initialCurrentUserData = fakeCurrentUserData;
       await renderTestComponent({
         initialCurrentUserData,
         newCurrentUserData: null,

@@ -14,19 +14,19 @@ const fakeOtherOrg: Org = {
   memberDefinition: 'fakeOtherDefinition',
 };
 
-export const fakeCurrentUser: CurrentUserData = {
+export const fakeCurrentUserData: CurrentUserData = {
   authenticationKeyId: 'fakeAuthenticationKeyId',
   encryptedGroupKey: 'fakeEncryptedGroupKey',
-  id: 'fakeCurrentUser',
+  id: 'fakeCurrentUserData',
   localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
   org: fakeOrg,
   orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
 };
-export const fakeOtherCurrentUser: CurrentUserData = {
+export const fakeOtherCurrentUserData: CurrentUserData = {
   authenticationKeyId: 'otherFakeAuthenticationKeyId',
   encryptedGroupKey: 'otherFakeEncryptedGroupKey',
-  id: 'fakeOtherCurrentUser',
+  id: 'fakeOtherCurrentUserData',
   localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,
@@ -42,10 +42,10 @@ export function getFakePost(postId: string, score: number): Post {
     createdAt: new Date(),
     id: `post${postId}`,
     myVote: 0,
-    pseudonym: fakeCurrentUser.pseudonym,
+    pseudonym: fakeCurrentUserData.pseudonym,
     score,
     title: `Post ${postId}`,
-    userId: fakeCurrentUser.id,
+    userId: fakeCurrentUserData.id,
   };
 }
 
@@ -56,8 +56,8 @@ export function getFakeComment(commentId: string, score: number): Comment {
     depth: 0,
     id: `comment${commentId}`,
     myVote: 0,
-    pseudonym: fakeCurrentUser.pseudonym,
+    pseudonym: fakeCurrentUserData.pseudonym,
     score,
-    userId: fakeCurrentUser.id,
+    userId: fakeCurrentUserData.id,
   };
 }

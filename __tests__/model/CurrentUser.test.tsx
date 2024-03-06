@@ -1,6 +1,6 @@
 import { CurrentUser } from '../../app/model/CurrentUser';
 import { storeCurrentUserData } from '../../app/model/CurrentUserDataStorage';
-import { fakeCurrentUser } from '../FakeData';
+import { fakeCurrentUserData } from '../FakeData';
 import Keys from '../../app/model/keys/Keys';
 
 jest.mock('../../app/model/keys/Keys');
@@ -20,7 +20,10 @@ const mockClearCurrentUser = jest.fn();
 describe('useCurrentUser', () => {
   describe('logOut', () => {
     beforeEach(async () => {
-      const mockCurrentUser = CurrentUser(fakeCurrentUser, mockClearCurrentUser);
+      const mockCurrentUser = CurrentUser(
+        fakeCurrentUserData,
+        mockClearCurrentUser,
+      );
       await mockCurrentUser.logOut();
     });
 

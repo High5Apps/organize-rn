@@ -3,7 +3,7 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Navigation from '../../app/navigation';
 import WelcomeStack from '../../app/navigation/WelcomeStack';
 import OrgTabs from '../../app/navigation/OrgTabs';
-import { fakeCurrentUser } from '../FakeData';
+import { fakeCurrentUserData } from '../FakeData';
 import useCurrentUser from '../../app/model/CurrentUser';
 
 jest.mock('../../app/model/CurrentUser');
@@ -37,7 +37,7 @@ describe('Navigation', () => {
   });
 
   it('renders OrgTabs when current user present', async () => {
-    mockUseCurrentUser.mockReturnValue({ currentUser: fakeCurrentUser });
+    mockUseCurrentUser.mockReturnValue({ currentUser: fakeCurrentUserData });
     const { root, unmount } = await renderNavigation();
     expect(root?.findAllByType(WelcomeStack).length).toBeFalsy();
     expect(root?.findByType(OrgTabs)).toBeTruthy();

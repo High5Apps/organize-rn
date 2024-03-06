@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import { DelayedActivityIndicator } from '../../app/components';
 import { CurrentUserData } from '../../app/model';
-import { fakeCurrentUser, fakeOtherCurrentUser } from '../FakeData';
+import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../FakeData';
 import {
   UserContextProvider, useUserContext,
 } from '../../app/context/UserContext';
@@ -20,7 +20,7 @@ function TestComponent() {
   const { currentUserData, setCurrentUserData } = useUserContext();
 
   useEffect(() => {
-    setCurrentUserData(fakeOtherCurrentUser);
+    setCurrentUserData(fakeOtherCurrentUserData);
   }, []);
 
   return <Text testID={testID}>{currentUserData?.id}</Text>;
@@ -52,7 +52,7 @@ const defaultReturnValue = {
 describe('UserContext', () => {
   it('uses user prop to initialize useCurrentUser', async () => {
     mockUseStoredCurrentUserData.mockReturnValue(defaultReturnValue);
-    const initialCurrentUserData = fakeCurrentUser;
+    const initialCurrentUserData = fakeCurrentUserData;
     await renderTestComponent({ initialCurrentUserData });
     expect(mockUseStoredCurrentUserData).toBeCalledWith(initialCurrentUserData);
   });
@@ -83,7 +83,7 @@ describe('UserContext', () => {
 
   describe('userContext', () => {
     it('contains storedUser from useStoredUser', async () => {
-      const storedCurrentUserData = fakeCurrentUser;
+      const storedCurrentUserData = fakeCurrentUserData;
       mockUseStoredCurrentUserData.mockReturnValue({
         ...defaultReturnValue,
         storedCurrentUserData,
