@@ -1,5 +1,5 @@
 import React, {
-  Dispatch, SetStateAction, useEffect, useRef, useState,
+  Dispatch, SetStateAction, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
@@ -81,33 +81,36 @@ export default function OrgGraph({
     },
   };
 
-  let component;
-  if (visGraphData) {
-    component = (
-      <VisNetwork
-        style={{ backgroundColor: 'transparent' }}
-        containerStyle={{ backgroundColor: colors.fill }}
-        data={visGraphData}
-        onLoad={() => setLoading(true)}
-        onResponderGrant={() => onInteraction?.(true)}
-        onResponderRelease={() => onInteraction?.(false)}
-        onResponderTerminate={() => onInteraction?.(false)}
-        onStartShouldSetResponder={() => true}
-        options={options}
-        ref={visNetworkRef}
-        zoomFitOnStabilized={hasMultipleNodes}
-      />
-    );
-  } else if (error) {
-    component = <ErrorMessage message={error} />;
-  } else {
-    component = <ActivityIndicator color={primary} />;
-  }
+  const Component = useMemo(() => {
+    if (visGraphData) {
+      return (
+        <VisNetwork
+          style={{ backgroundColor: 'transparent' }}
+          containerStyle={{ backgroundColor: colors.fill }}
+          data={visGraphData}
+          onLoad={() => setLoading(true)}
+          onResponderGrant={() => onInteraction?.(true)}
+          onResponderRelease={() => onInteraction?.(false)}
+          onResponderTerminate={() => onInteraction?.(false)}
+          onStartShouldSetResponder={() => true}
+          options={options}
+          ref={visNetworkRef}
+          zoomFitOnStabilized={hasMultipleNodes}
+        />
+      );
+    }
+
+    if (error) {
+      return <ErrorMessage message={error} />;
+    }
+
+    return <ActivityIndicator color={primary} />;
+  }, [hasMultipleNodes, error, visGraphData]);
 
   return (
     <View style={styles.container}>
       <ProgressBar progress={progress} />
-      { component }
+      { Component }
     </View>
   );
 }
