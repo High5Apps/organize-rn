@@ -1,4 +1,6 @@
-import React, { useLayoutEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback, useEffect, useLayoutEffect, useMemo, useState,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
@@ -6,6 +8,9 @@ import {
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../../navigation';
+import { useGraphData } from '../../model';
+
+const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
 function SettingsButton() {
   const navigation: SettingsScreenNavigationProp = useNavigation();
@@ -18,6 +23,7 @@ function SettingsButton() {
 }
 
 export default function OrgScreen({ navigation }: OrgScreenProps) {
+  const [graphError, setGraphError] = useState('');
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const [graphRendered, setGraphRendered] = useState(false);
@@ -27,25 +33,44 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     navigation.setOptions({ headerRight });
   }, [navigation]);
 
+  const {
+    hasMultipleNodes, graphData, updateOrgData, visGraphData,
+  } = useGraphData();
+
+  const onRefresh = useCallback(async () => {
+    setSelectedUserId(undefined);
+    await updateOrgData().catch((e) => {
+      console.error(e);
+      setGraphError(GRAPH_LOAD_ERROR_MESSAGE);
+    });
+  }, [updateOrgData]);
+
+  useEffect(() => { onRefresh(); }, []);
+
   const ListHeaderComponent = useMemo(() => (
     <>
       <SectionHeader>Members and connections</SectionHeader>
       <OrgGraph
+        hasMultipleNodes={hasMultipleNodes}
+        error={graphError}
         onInteraction={(inProgress: boolean) => setScrollEnabled(!inProgress)}
         onRenderingProgressChanged={
           (progress) => setGraphRendered(progress >= 1)
         }
         selectedUserId={selectedUserId}
         setSelectedUserId={setSelectedUserId}
+        visGraphData={visGraphData}
       />
     </>
-  ), [selectedUserId]);
+  ), [hasMultipleNodes, graphError, selectedUserId, visGraphData]);
 
   return (
     <ScreenBackground>
       <NotableUserList
         disableRows={!graphRendered}
+        graphData={graphData}
         ListHeaderComponent={ListHeaderComponent}
+        onRefresh={onRefresh}
         scrollEnabled={scrollEnabled}
         selectedUserId={selectedUserId}
         setSelectedUserId={setSelectedUserId}

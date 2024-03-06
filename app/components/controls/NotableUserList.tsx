@@ -6,7 +6,7 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { User, useCurrentUser, useGraphData } from '../../model';
+import { OrgGraph, User, useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import { usePullToRefresh } from '../hooks';
@@ -19,15 +19,17 @@ type NotableUserSection = {
 
 type Props = {
   disableRows?: boolean;
+  graphData?: OrgGraph;
   ListHeaderComponent?: ReactElement;
+  onRefresh: () => Promise<any>;
   scrollEnabled?: boolean;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export default function NotableUserList({
-  disableRows, ListHeaderComponent, scrollEnabled, selectedUserId,
-  setSelectedUserId,
+  disableRows, graphData, ListHeaderComponent, onRefresh, scrollEnabled,
+  selectedUserId, setSelectedUserId,
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
@@ -69,7 +71,6 @@ export default function NotableUserList({
     throw new Error('Expected current user to be set');
   }
 
-  const { graphData, updateOrgData } = useGraphData();
   const sections: NotableUserSection[] = useMemo(() => {
     const notableUserSections: NotableUserSection[] = [];
     const users = graphData?.users;
@@ -98,12 +99,7 @@ export default function NotableUserList({
 
   const {
     ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,
-  } = usePullToRefresh({
-    onRefresh: async () => {
-      setSelectedUserId(undefined);
-      await updateOrgData();
-    },
-  });
+  } = usePullToRefresh({ onRefresh });
 
   const WrappedListHeaderComponent = useMemo(() => (
     <View
@@ -134,6 +130,7 @@ export default function NotableUserList({
 
 NotableUserList.defaultProps = {
   disableRows: true,
+  graphData: undefined,
   ListHeaderComponent: undefined,
   scrollEnabled: true,
   selectedUserId: undefined,

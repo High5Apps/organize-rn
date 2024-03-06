@@ -2,13 +2,11 @@ import React, {
   Dispatch, SetStateAction, useEffect, useRef, useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import VisNetwork, { VisNetworkRef } from 'react-native-vis-network';
-import { useGraphData, useCurrentUser } from '../../model';
+import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
+import { useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ErrorMessage, ProgressBar } from '../views';
 import { useClickHandler, useOrgGraphProgress } from '../hooks';
-
-const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
 const useStyles = () => {
   const { colors } = useTheme();
@@ -24,16 +22,19 @@ const useStyles = () => {
 };
 
 type Props = {
+  hasMultipleNodes: boolean;
+  error: string;
   onInteraction?: (inProgress: boolean) => void;
   onRenderingProgressChanged?: (progress: number) => void;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
+  visGraphData?: Data;
 };
 
 export default function OrgGraph({
-  onInteraction, onRenderingProgressChanged, selectedUserId, setSelectedUserId,
+  hasMultipleNodes, error, onInteraction, onRenderingProgressChanged,
+  selectedUserId, setSelectedUserId, visGraphData,
 }: Props) {
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useCurrentUser();
@@ -42,22 +43,6 @@ export default function OrgGraph({
   const { primary } = colors;
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
-
-  const { hasMultipleNodes, updateOrgData, visGraphData } = useGraphData();
-
-  useEffect(() => {
-    let subscribed = true;
-    const unsubscribe = () => { subscribed = false; };
-
-    updateOrgData().catch((e) => {
-      console.error(e);
-      if (subscribed) {
-        setError(GRAPH_LOAD_ERROR_MESSAGE);
-      }
-    });
-
-    return unsubscribe;
-  }, []);
 
   const { clickHandler } = useClickHandler(
     loading,
@@ -131,4 +116,5 @@ OrgGraph.defaultProps = {
   onInteraction: () => {},
   onRenderingProgressChanged: () => {},
   selectedUserId: undefined,
+  visGraphData: undefined,
 };
