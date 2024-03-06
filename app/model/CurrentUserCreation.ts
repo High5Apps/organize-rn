@@ -3,9 +3,8 @@ import {
 } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 import { Keys } from './keys';
-import { CurrentUserData } from './types';
+import { CurrentUserData, User } from './types';
 import CurrentUserBase from './CurrentUserBase';
-import { getOffice } from './Offices';
 
 export type CreateCurrentUserProps = {
   groupKey?: never;
@@ -104,18 +103,17 @@ export default async function createCurrentUser({
     }
   }
 
-  let pseudonym: string;
+  let fetchedUser: User;
   try {
     const jwt = await currentUserBase.createAuthToken({ scope: '*' });
-    const {
-      errorMessage, user: fetchedUser,
-    } = await getUser({ id: userId, jwt });
+    const errorMessageOrUser = await getUser({ id: userId, jwt });
+    const { errorMessage } = errorMessageOrUser;
 
     if (errorMessage !== undefined) {
       return errorMessage;
     }
 
-    pseudonym = fetchedUser.pseudonym;
+    fetchedUser = errorMessageOrUser.user;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -123,23 +121,13 @@ export default async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
-  const isFounder = !maybeSharerJwt;
-  const connectionCount = isFounder ? 0 : 1;
-  const joinedAt = new Date();
-  const offices = isFounder ? [getOffice('founder')] : [];
-  const recruitCount = 0;
-
   return {
     authenticationKeyId,
-    connectionCount,
     encryptedGroupKey,
+    ...fetchedUser,
     id: userId,
-    joinedAt,
     localEncryptionKeyId,
-    offices,
     org,
     orgId,
-    pseudonym,
-    recruitCount,
   };
 }
