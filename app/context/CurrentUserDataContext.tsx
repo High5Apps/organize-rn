@@ -9,12 +9,12 @@ import DelayedActivityIndicator from '../components/views/DelayedActivityIndicat
 import type { CurrentUserData } from '../model';
 import useStoredCurrentUserData from '../model/CurrentUserDataStorage';
 
-type UserContextType = {
+type CurrentUserDataContextType = {
   currentUserData: CurrentUserData | null;
   setCurrentUserData: Dispatch<SetStateAction<CurrentUserData | null>>;
 };
 
-const UserContext = createContext<UserContextType>({
+const CurrentUserDataContext = createContext<CurrentUserDataContextType>({
   currentUserData: null,
   setCurrentUserData: () => {},
 });
@@ -23,27 +23,29 @@ type Props = {
   initialCurrentUserData?: CurrentUserData;
 };
 
-export function UserContextProvider({
+export function CurrentUserDataContextProvider({
   children, initialCurrentUserData,
 }: PropsWithChildren<Props>) {
   const {
     initialized, storedCurrentUserData, setStoredCurrentUserData,
   } = useStoredCurrentUserData(initialCurrentUserData);
 
-  const userContext = useMemo<UserContextType>(() => ({
+  const currentUserDataContext = useMemo<CurrentUserDataContextType>(() => ({
     currentUserData: storedCurrentUserData,
     setCurrentUserData: setStoredCurrentUserData,
   }), [storedCurrentUserData, setStoredCurrentUserData]);
 
   return (
-    <UserContext.Provider value={userContext}>
+    <CurrentUserDataContext.Provider value={currentUserDataContext}>
       {initialized ? children : <DelayedActivityIndicator delay={1000} />}
-    </UserContext.Provider>
+    </CurrentUserDataContext.Provider>
   );
 }
 
-UserContextProvider.defaultProps = {
+CurrentUserDataContextProvider.defaultProps = {
   initialCurrentUserData: undefined,
 };
 
-export const useUserContext = () => useContext(UserContext);
+export const useCurrentUserDataContext = () => useContext(
+  CurrentUserDataContext,
+);

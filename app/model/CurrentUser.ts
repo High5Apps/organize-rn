@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
-import { useUserContext } from '../context';
+import { useCurrentUserDataContext } from '../context';
 import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor,
@@ -90,7 +90,7 @@ export type CurrentUserType = ReturnType<typeof CurrentUser>;
 export default function useCurrentUser() {
   const {
     currentUserData, setCurrentUserData,
-  } = useUserContext();
+  } = useCurrentUserDataContext();
 
   const currentUser = useMemo(() => {
     if (!currentUserData) { return null; }

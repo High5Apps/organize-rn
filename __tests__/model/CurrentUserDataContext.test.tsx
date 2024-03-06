@@ -5,8 +5,8 @@ import { DelayedActivityIndicator } from '../../app/components';
 import { CurrentUserData } from '../../app/model';
 import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../FakeData';
 import {
-  UserContextProvider, useUserContext,
-} from '../../app/context/UserContext';
+  CurrentUserDataContextProvider, useCurrentUserDataContext,
+} from '../../app/context/CurrentUserDataContext';
 import useStoredCurrentUserData from '../../app/model/CurrentUserDataStorage';
 
 jest.useFakeTimers();
@@ -17,7 +17,7 @@ const mockUseStoredCurrentUserData = useStoredCurrentUserData as jest.Mock;
 const testID = 'currentUserId';
 
 function TestComponent() {
-  const { currentUserData, setCurrentUserData } = useUserContext();
+  const { currentUserData, setCurrentUserData } = useCurrentUserDataContext();
 
   useEffect(() => {
     setCurrentUserData(fakeOtherCurrentUserData);
@@ -34,9 +34,11 @@ async function renderTestComponent({ initialCurrentUserData }: Props) {
   let renderer: ReactTestRenderer | undefined;
   await act(async () => {
     renderer = create((
-      <UserContextProvider initialCurrentUserData={initialCurrentUserData}>
+      <CurrentUserDataContextProvider
+        initialCurrentUserData={initialCurrentUserData}
+      >
         <TestComponent />
-      </UserContextProvider>
+      </CurrentUserDataContextProvider>
     ));
   });
   const root = renderer?.root;
@@ -49,7 +51,7 @@ const defaultReturnValue = {
   setStoredCurrentUserData: jest.fn(),
 };
 
-describe('UserContext', () => {
+describe('CurrentUserDataContext', () => {
   it('uses user prop to initialize useCurrentUser', async () => {
     mockUseStoredCurrentUserData.mockReturnValue(defaultReturnValue);
     const initialCurrentUserData = fakeCurrentUserData;
@@ -81,7 +83,7 @@ describe('UserContext', () => {
     expect(children).toBeTruthy();
   });
 
-  describe('userContext', () => {
+  describe('useCurrentUserDataContext', () => {
     it('contains storedUser from useStoredUser', async () => {
       const storedCurrentUserData = fakeCurrentUserData;
       mockUseStoredCurrentUserData.mockReturnValue({

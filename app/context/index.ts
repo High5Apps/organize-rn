@@ -6,5 +6,5 @@ export { useBallotPreviewContext } from './BallotPreviewContext';
 export { useCachedValueContext } from './CachedValueContext';
 export { useCommentContext } from './CommentContext';
 export { usePostContext } from './PostContext';
-export { useUserContext } from './UserContext';
+export { useCurrentUserDataContext } from './CurrentUserDataContext';
 export { useUserPreviewContext } from './UserPreviewContext';
