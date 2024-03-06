@@ -2,25 +2,28 @@ import { useMemo } from 'react';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg, getUser } from '../networking';
-import { Org, OrgGraph as OrgGraphType, User } from './types';
+import {
+  Office, Org, OrgGraph as OrgGraphType, User,
+} from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 function toVisNetworkData(
   colors: ThemeColors,
+  officerMap?: { [key: string]: Office[] },
   currentUserId?: string,
   orgGraph?: OrgGraphType,
 ): Data | undefined {
-  if (!orgGraph) { return undefined; }
+  if (orgGraph === undefined || officerMap === undefined) { return undefined; }
 
   return {
     nodes: Object.keys(orgGraph.users).map((id) => {
-      const user = orgGraph.users[id];
+      const offices = officerMap[id] ?? [];
       const isMe = (id === currentUserId);
       const {
         circleBorderColor, circleBackgroundColor, shadow,
-      } = getCircleColors({ colors, isMe, offices: user.offices });
+      } = getCircleColors({ colors, isMe, offices });
       return {
         chosen: false,
         color: { background: circleBackgroundColor, border: circleBorderColor },
@@ -53,7 +56,11 @@ function userChanged(user: User, otherUser: User) {
   });
 }
 
-export default function useGraphData() {
+type Props = {
+  officers?: User[];
+};
+
+export default function useGraphData({ officers }: Props) {
   const { currentUser, setCurrentUser } = useCurrentUser();
   const { colors } = useTheme();
 
@@ -93,9 +100,14 @@ export default function useGraphData() {
 
   const graphData = currentUser?.org?.graph;
 
+  const officerMap = useMemo(() => {
+    if (officers === undefined) { return undefined; }
+    return Object.fromEntries(officers.map((o) => [o.id, o.offices]));
+  }, [officers]);
+
   const visGraphData = useMemo(
-    () => toVisNetworkData(colors, currentUser?.id, graphData),
-    [colors, currentUser?.id, graphData],
+    () => toVisNetworkData(colors, officerMap, currentUser?.id, graphData),
+    [colors, currentUser?.id, graphData, officerMap],
   );
 
   const nodeCount = Object.keys(graphData?.users ?? {}).length;

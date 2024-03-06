@@ -21,6 +21,7 @@ type Props = {
   disableRows?: boolean;
   graphData?: OrgGraph;
   ListHeaderComponent?: ReactElement;
+  officers: User[];
   onRefresh: () => Promise<any>;
   scrollEnabled?: boolean;
   selectedUserId?: string;
@@ -28,8 +29,8 @@ type Props = {
 };
 
 export default function NotableUserList({
-  disableRows, graphData, ListHeaderComponent, onRefresh, scrollEnabled,
-  selectedUserId, setSelectedUserId,
+  disableRows, graphData, ListHeaderComponent, officers, onRefresh,
+  scrollEnabled, selectedUserId, setSelectedUserId,
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
@@ -82,9 +83,7 @@ export default function NotableUserList({
       notableUserSections.push({ title: 'Selected', data });
     }
 
-    const orgGraphUsers = Object.values(users);
-    const ordererdOfficers = orgGraphUsers.filter((user) => user.offices[0]);
-    notableUserSections.push({ title: 'Officers', data: ordererdOfficers });
+    notableUserSections.push({ title: 'Officers', data: officers });
 
     const currentOrgGraphUser = users[currentUser.id];
     const { offices } = currentOrgGraphUser;
@@ -95,7 +94,7 @@ export default function NotableUserList({
     }
 
     return notableUserSections;
-  }, [colors, currentUser, graphData, selectedUserId]);
+  }, [colors, currentUser, graphData, officers, selectedUserId]);
 
   const {
     ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,
