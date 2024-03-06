@@ -1,28 +1,27 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
-  UserPreview, useCurrentUser, useUserPreviews,
+  User, useCurrentUser, useUsers,
 } from '../../model';
 import { ItemSeparator } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
-import UserPreviewRow from './UserPreviewRow';
+import UserRow from './UserRow';
 
 type Props = {
-  onItemPress?: (item: UserPreview) => void;
+  onItemPress?: (item: User) => void;
 };
 
-export default function UserPreviewList({ onItemPress }: Props) {
+export default function UserList({ onItemPress }: Props) {
   const {
-    fetchedLastPage, fetchFirstPageOfUserPreviews, fetchNextPageOfUserPreviews,
-    userPreviews,
-  } = useUserPreviews({ sort: 'service' });
+    fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, users,
+  } = useUsers({ sort: 'service' });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       clearNextPageError();
 
-      await fetchFirstPageOfUserPreviews();
+      await fetchFirstPageOfUsers();
     },
     refreshOnMount: true,
   });
@@ -31,17 +30,17 @@ export default function UserPreviewList({ onItemPress }: Props) {
     clearError: clearNextPageError, ListFooterComponent, onEndReached,
     onEndReachedThreshold,
   } = useInfiniteScroll({
-    getDisabled: () => (!userPreviews.length || refreshing || fetchedLastPage),
-    onLoadNextPage: fetchNextPageOfUserPreviews,
+    getDisabled: () => (!users.length || refreshing || fetchedLastPage),
+    onLoadNextPage: fetchNextPageOfUsers,
   });
 
   const { currentUser } = useCurrentUser();
 
-  const renderItem: ListRenderItem<UserPreview> = useCallback(
+  const renderItem: ListRenderItem<User> = useCallback(
     ({ item }) => {
       const isMe = item.id === currentUser?.id;
       return (
-        <UserPreviewRow
+        <UserRow
           compact
           isMe={isMe}
           item={item}
@@ -54,7 +53,7 @@ export default function UserPreviewList({ onItemPress }: Props) {
 
   return (
     <FlatList
-      data={userPreviews}
+      data={users}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
@@ -66,6 +65,6 @@ export default function UserPreviewList({ onItemPress }: Props) {
   );
 }
 
-UserPreviewList.defaultProps = {
+UserList.defaultProps = {
   onItemPress: () => null,
 };

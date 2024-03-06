@@ -1,10 +1,10 @@
 import React from 'react';
-import { ScreenBackground, UserPreviewList } from '../../components';
+import { ScreenBackground, UserList } from '../../components';
 
 export default function NewNominationScreen() {
   return (
     <ScreenBackground>
-      <UserPreviewList onItemPress={console.log} />
+      <UserList onItemPress={console.log} />
     </ScreenBackground>
   );
 }

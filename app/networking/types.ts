@@ -1,6 +1,6 @@
 import type {
   BallotCategory, OfficeCategory, Org, PaginationData, PostCategory,
-  UserPreview, VoteState,
+  User, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -373,7 +373,7 @@ export function isOfficeIndexResponse(object: unknown): object is OfficeIndexRes
     && response.offices.every(isOfficeIndexOffice);
 }
 
-type UserIndexUser = Omit<UserPreview, 'offices'> & {
+type UserIndexUser = Omit<User, 'offices'> & {
   offices: OfficeCategory[];
 };
 

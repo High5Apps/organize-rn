@@ -6,15 +6,15 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { UserPreview, useCurrentUser, useGraphData } from '../../model';
+import { User, useCurrentUser, useGraphData } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import { usePullToRefresh } from '../hooks';
-import UserPreviewRow from './UserPreviewRow';
+import UserRow from './UserRow';
 
 type NotableUserSection = {
   title: string;
-  data: UserPreview[];
+  data: User[];
 };
 
 type Props = {
@@ -31,14 +31,14 @@ export default function NotableUserList({
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
-  const sectionListRef = useRef<SectionList<UserPreview, NotableUserSection>>(null);
+  const sectionListRef = useRef<SectionList<User, NotableUserSection>>(null);
   useScrollToTop(sectionListRef);
 
   const { colors } = useTheme();
   const { currentUser } = useCurrentUser();
 
   const onPress = useCallback(
-    ({ id }: UserPreview) => {
+    ({ id }: User) => {
       sectionListRef.current?.scrollToLocation({
         itemIndex: 0,
         sectionIndex: 0,
@@ -53,9 +53,9 @@ export default function NotableUserList({
     [listHeaderComponentHeight, sectionListRef],
   );
 
-  const renderItem: ListRenderItem<UserPreview> = useCallback(
+  const renderItem: ListRenderItem<User> = useCallback(
     ({ item }) => (
-      <UserPreviewRow
+      <UserRow
         disabled={disableRows}
         isMe={currentUser?.id === item.id}
         item={item}

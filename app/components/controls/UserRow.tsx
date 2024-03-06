@@ -4,7 +4,7 @@ import {
   TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { UserPreview, getCircleColors, getTenure } from '../../model';
+import { User, getCircleColors, getTenure } from '../../model';
 import useTheme from '../../Theme';
 
 const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
@@ -109,11 +109,11 @@ type Props = {
   compact?: boolean;
   disabled?: boolean;
   isMe: boolean;
-  item: UserPreview;
-  onPress?: (item: UserPreview) => void;
+  item: User;
+  onPress?: (item: User) => void;
 };
 
-export default function UserPreviewRow({
+export default function UserRow({
   compact, disabled, isMe, item, onPress,
 }: Props) {
   const {
@@ -167,7 +167,7 @@ export default function UserPreviewRow({
   );
 }
 
-UserPreviewRow.defaultProps = {
+UserRow.defaultProps = {
   compact: false,
   disabled: false,
   onPress: () => null,

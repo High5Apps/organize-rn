@@ -1,5 +1,5 @@
 import {
-  PaginationData, UserFilter, UserPreview, UserSort, fromJson, getOffice,
+  PaginationData, UserFilter, User, UserSort, fromJson, getOffice,
 } from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
@@ -91,14 +91,14 @@ type IndexProps = {
 type IndexReturn = {
   errorMessage: string;
   paginationData?: never;
-  userPreviews?: never;
+  users?: never;
 } | {
   errorMessage?: never;
   paginationData?: PaginationData;
-  userPreviews: UserPreview[];
+  users: User[];
 };
 
-export async function fetchUserPreviews({
+export async function fetchUsers({
   filter, joinedAtOrBefore, jwt, page, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(usersURI);
@@ -123,16 +123,16 @@ export async function fetchUserPreviews({
   }
 
   if (!isUserIndexResponse(json)) {
-    throw new Error('Failed to parse UserPreviews from response');
+    throw new Error('Failed to parse Users from response');
   }
 
-  const { users: fetchedUserPreviews, meta: paginationData } = json;
+  const { users: fetchedUsers, meta: paginationData } = json;
 
-  const userPreviews = fetchedUserPreviews.map((user) => {
+  const users = fetchedUsers.map((user) => {
     const { offices: officeCategories, ...rest } = user;
     const offices = officeCategories.map((category) => getOffice(category));
     return { ...rest, offices };
   });
 
-  return { paginationData, userPreviews };
+  return { paginationData, users };
 }

@@ -6,7 +6,7 @@ export { fetchOffices } from './OfficeAPI';
 export { createOrg, fetchOrg } from './OrgAPI';
 export { createPost, fetchPosts } from './PostAPI';
 export { default as createOrUpdateUpvote } from './UpvoteAPI';
-export { createUser, fetchUserPreviews, getUser } from './UserAPI';
+export { createUser, fetchUsers, getUser } from './UserAPI';
 export { createVote } from './VoteAPI';
 
 export * from './types';

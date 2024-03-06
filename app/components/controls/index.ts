@@ -35,5 +35,5 @@ export { default as TabBarIcon } from './TabBarIcon';
 export { default as TextButton } from './TextButton';
 export { default as TextInputRow } from './TextInputRow';
 export { default as UpvoteControl } from './UpvoteControl';
-export { default as UserPreviewList } from './UserPreviewList';
+export { default as UserList } from './UserList';
 export * from './types';

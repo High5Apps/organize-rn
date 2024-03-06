@@ -4,7 +4,7 @@ import { CurrentUserDataContextProvider } from './CurrentUserDataContext';
 import { PostContextProvider } from './PostContext';
 import { CommentContextProvider } from './CommentContext';
 import { BallotPreviewContextProvider } from './BallotPreviewContext';
-import { UserPreviewContextProvider } from './UserPreviewContext';
+import { UserContextProvider } from './UserContext';
 import { CachedValueContextProvider } from './CachedValueContext';
 
 export default function Context({ children }: PropsWithChildren<{}>) {
@@ -13,13 +13,13 @@ export default function Context({ children }: PropsWithChildren<{}>) {
       <PostContextProvider>
         <CommentContextProvider>
           <BallotPreviewContextProvider>
-            <UserPreviewContextProvider>
+            <UserContextProvider>
               <CachedValueContextProvider>
                 <SafeAreaProvider>
                   {children}
                 </SafeAreaProvider>
               </CachedValueContextProvider>
-            </UserPreviewContextProvider>
+            </UserContextProvider>
           </BallotPreviewContextProvider>
         </CommentContextProvider>
       </PostContextProvider>

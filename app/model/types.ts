@@ -2,7 +2,7 @@ import type { AESEncryptedData } from './keys';
 
 export type OrgGraph = {
   users: {
-    [id: string]: UserPreview;
+    [id: string]: User;
   };
   connections: [string, string][];
 };
@@ -210,7 +210,7 @@ export type OfficeDuty = {
 
 export type UserFilter = 'officer';
 export type UserSort = 'office' | 'service';
-export type UserPreview = {
+export type User = {
   connectionCount: number;
   id: string;
   joinedAt: Date;

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { fetchUserPreviews } from '../networking';
-import { useUserPreviewContext } from '../context';
+import { fetchUsers } from '../networking';
+import { useUserContext } from '../context';
 import { UserFilter, UserSort, isDefined } from './types';
 import { getIdsFrom } from './ModelCache';
 import useCurrentUser from './CurrentUser';
@@ -13,14 +13,12 @@ type Props = {
   sort: UserSort;
 };
 
-export default function useUserPreviews({ filter, sort }: Props) {
-  const {
-    cacheUserPreview, cacheUserPreviews, getCachedUserPreview,
-  } = useUserPreviewContext();
+export default function useUsers({ filter, sort }: Props) {
+  const { cacheUser, cacheUsers, getCachedUser } = useUserContext();
   const [userIds, setUserIds] = useState<string[]>([]);
-  const userPreviews = useMemo(
-    () => userIds.map(getCachedUserPreview).filter(isDefined),
-    [userIds, getCachedUserPreview],
+  const users = useMemo(
+    () => userIds.map(getCachedUser).filter(isDefined),
+    [userIds, getCachedUser],
   );
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [joinedAtOrBefore, setJoinedAtOrBefore] = useState<Date>(new Date());
@@ -29,7 +27,7 @@ export default function useUserPreviews({ filter, sort }: Props) {
 
   const { currentUser } = useCurrentUser();
 
-  async function fetchFirstPageOfUserPreviews() {
+  async function fetchFirstPageOfUsers() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
@@ -37,8 +35,8 @@ export default function useUserPreviews({ filter, sort }: Props) {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
-      errorMessage, paginationData, userPreviews: fetchedUserPreviews,
-    } = await fetchUserPreviews({
+      errorMessage, paginationData, users: fetchedUsers,
+    } = await fetchUsers({
       filter, joinedAtOrBefore: now, jwt, page: firstPageIndex, sort,
     });
 
@@ -51,21 +49,21 @@ export default function useUserPreviews({ filter, sort }: Props) {
 
     const result = { hasNextPage };
 
-    cacheUserPreviews(fetchedUserPreviews);
-    setUserIds(getIdsFrom(fetchedUserPreviews));
+    cacheUsers(fetchedUsers);
+    setUserIds(getIdsFrom(fetchedUsers));
     setNextPageNumber(firstPageIndex + 1);
     setReady(true);
 
     return result;
   }
 
-  async function fetchNextPageOfUserPreviews() {
+  async function fetchNextPageOfUsers() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const {
-      errorMessage, paginationData, userPreviews: fetchedUserPreviews,
-    } = await fetchUserPreviews({
+      errorMessage, paginationData, users: fetchedUsers,
+    } = await fetchUsers({
       filter, joinedAtOrBefore, jwt, page: nextPageNumber, sort,
     });
 
@@ -78,22 +76,22 @@ export default function useUserPreviews({ filter, sort }: Props) {
 
     const result = { hasNextPage };
 
-    if (!fetchedUserPreviews?.length) { return result; }
+    if (!fetchedUsers?.length) { return result; }
 
-    cacheUserPreviews(fetchedUserPreviews);
+    cacheUsers(fetchedUsers);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setUserIds([...userIds, ...getIdsFrom(fetchedUserPreviews)]);
+    setUserIds([...userIds, ...getIdsFrom(fetchedUsers)]);
 
     return result;
   }
 
   return {
-    cacheUserPreview,
+    cacheUser,
     fetchedLastPage,
-    fetchFirstPageOfUserPreviews,
-    fetchNextPageOfUserPreviews,
-    getCachedUserPreview,
+    fetchFirstPageOfUsers,
+    fetchNextPageOfUsers,
+    getCachedUser,
     ready,
-    userPreviews,
+    users,
   };
 }
