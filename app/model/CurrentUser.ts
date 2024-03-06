@@ -4,7 +4,7 @@ import CurrentUserBase from './CurrentUserBase';
 import { useCurrentUserDataContext } from '../context';
 import { Keys } from './keys';
 import {
-  CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor,
+  CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
 } from './types';
 
 export function CurrentUser({
@@ -13,6 +13,9 @@ export function CurrentUser({
 }: CurrentUserData, clearCurrentUser: () => void) {
   const currentUserBase = CurrentUserBase({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
+  });
+  const user = (): User => ({
+    connectionCount, id, joinedAt, offices, pseudonym, recruitCount,
   });
 
   const keys = Keys();
@@ -72,20 +75,17 @@ export function CurrentUser({
   };
 
   return {
-    connectionCount,
     ...currentUserBase,
     decryptGroupKey,
     deleteKeys,
     e2eDecrypt,
     e2eDecryptMany,
     e2eEncryptMany,
-    joinedAt,
     logOut,
-    offices,
     org,
     orgId,
-    pseudonym,
-    recruitCount,
+    user,
+    ...user(),
   };
 }
 
