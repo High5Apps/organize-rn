@@ -1,5 +1,40 @@
 import type { AESEncryptedData } from './keys';
 
+const OFFICE_CATEGORIES = [
+  'founder',
+  'president',
+  'vice_president',
+  'secretary',
+  'treasurer',
+  'steward',
+  'trustee',
+] as const;
+export { OFFICE_CATEGORIES };
+export type OfficeCategory = typeof OFFICE_CATEGORIES[number];
+
+export type Office = {
+  iconName: string;
+  open?: boolean;
+  title: string;
+  type: OfficeCategory;
+};
+
+export type OfficeDuty = {
+  category: OfficeCategory;
+  duties: string[];
+};
+
+export type UserFilter = 'officer';
+export type UserSort = 'office' | 'service';
+export type User = {
+  connectionCount: number;
+  id: string;
+  joinedAt: Date;
+  offices: Office[];
+  pseudonym: string;
+  recruitCount: number;
+};
+
 export type OrgGraph = {
   users: {
     [id: string]: User;
@@ -30,7 +65,7 @@ export type UserBaseData = {
   localEncryptionKeyId: string,
 };
 
-export type CurrentUserData = UserBaseData & {
+export type CurrentUserData = UserBaseData & User & {
   org: Org;
   orgId: string;
   pseudonym: string;
@@ -182,39 +217,4 @@ export type Ballot = BallotPreview & {
   maxCandidateIdsPerVote: number;
   myVote: string[];
   results?: Result[];
-};
-
-const OFFICE_CATEGORIES = [
-  'founder',
-  'president',
-  'vice_president',
-  'secretary',
-  'treasurer',
-  'steward',
-  'trustee',
-] as const;
-export { OFFICE_CATEGORIES };
-export type OfficeCategory = typeof OFFICE_CATEGORIES[number];
-
-export type Office = {
-  iconName: string;
-  open?: boolean;
-  title: string;
-  type: OfficeCategory;
-};
-
-export type OfficeDuty = {
-  category: OfficeCategory;
-  duties: string[];
-};
-
-export type UserFilter = 'officer';
-export type UserSort = 'office' | 'service';
-export type User = {
-  connectionCount: number;
-  id: string;
-  joinedAt: Date;
-  offices: Office[];
-  pseudonym: string;
-  recruitCount: number;
 };

@@ -16,21 +16,29 @@ const fakeOtherOrg: Org = {
 
 export const fakeCurrentUserData: CurrentUserData = {
   authenticationKeyId: 'fakeAuthenticationKeyId',
+  connectionCount: 0,
   encryptedGroupKey: 'fakeEncryptedGroupKey',
   id: 'fakeCurrentUserData',
+  joinedAt: new Date(),
   localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
+  offices: [],
   org: fakeOrg,
   orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
+  recruitCount: 0,
 };
 export const fakeOtherCurrentUserData: CurrentUserData = {
   authenticationKeyId: 'otherFakeAuthenticationKeyId',
+  connectionCount: 0,
   encryptedGroupKey: 'otherFakeEncryptedGroupKey',
   id: 'fakeOtherCurrentUserData',
+  joinedAt: new Date(),
   localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
+  offices: [],
   org: fakeOtherOrg,
   orgId: fakeOtherOrg.id,
   pseudonym: 'Glorious Stingray',
+  recruitCount: 0,
 };
 
 export const fakeJwtString = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2ODE2NTYzMzcsInNjcCI6ImNyZWF0ZTpjb25uZWN0aW9ucyIsInN1YiI6ImQwMjFjMWRkLWVhMDQtNDNmOS04MDg3LWEwZDcxNzJiZGVmMiJ9.t_Adk17S4KFhD7XNFn5Bf6Y2MJqOrghiFBKQRrnRdrOiFoFL-qhUu0HyEgviaono-aOzkdGewmx0w7labcdefg';

@@ -8,8 +8,8 @@ import {
 } from './types';
 
 export function CurrentUser({
-  authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
-  org, orgId, pseudonym,
+  authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
+  localEncryptionKeyId, offices, org, orgId, pseudonym, recruitCount,
 }: CurrentUserData, clearCurrentUser: () => void) {
   const currentUserBase = CurrentUserBase({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
@@ -72,16 +72,20 @@ export function CurrentUser({
   };
 
   return {
+    connectionCount,
     ...currentUserBase,
     decryptGroupKey,
     deleteKeys,
     e2eDecrypt,
     e2eDecryptMany,
     e2eEncryptMany,
+    joinedAt,
     logOut,
+    offices,
     org,
     orgId,
     pseudonym,
+    recruitCount,
   };
 }
 

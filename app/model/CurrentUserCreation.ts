@@ -5,6 +5,7 @@ import { GENERIC_ERROR_MESSAGE } from './Errors';
 import { Keys } from './keys';
 import { CurrentUserData } from './types';
 import CurrentUserBase from './CurrentUserBase';
+import { getOffice } from './Offices';
 
 export type CreateCurrentUserProps = {
   groupKey?: never;
@@ -122,13 +123,23 @@ export default async function createCurrentUser({
     return GENERIC_ERROR_MESSAGE;
   }
 
+  const isFounder = !maybeSharerJwt;
+  const connectionCount = isFounder ? 0 : 1;
+  const joinedAt = new Date();
+  const offices = isFounder ? [getOffice('founder')] : [];
+  const recruitCount = 0;
+
   return {
     authenticationKeyId,
+    connectionCount,
     encryptedGroupKey,
     id: userId,
+    joinedAt,
     localEncryptionKeyId,
+    offices,
     org,
     orgId,
     pseudonym,
+    recruitCount,
   };
 }
