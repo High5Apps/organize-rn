@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
+import isEqual from 'react-fast-compare';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg } from '../networking';
 import {
-  Office, Org, OrgGraph as OrgGraphType, User,
+  Office, OrgGraph as OrgGraphType, User,
 } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
@@ -38,17 +39,6 @@ function toVisNetworkData(
   };
 }
 
-// HACK: This is brittle in that it relies on the JSON ordering from the server
-// being stable. Fortunately it seems like it is, and this check is relatively
-// quick at 1-3ms for a 100-member Org. Plus it fails safe because if the order
-// stops being stable for some reason, it would always return true, similar to
-// the situation before this optimization was added. The "right" way to do this
-// would be to include some kind of ETAG and caching strategy on the server
-// which returns an HTTP 304 "not modified" response when unchanged.
-function orgChanged(oldOrg: Org, newOrg: Org) {
-  return JSON.stringify(oldOrg) !== JSON.stringify(newOrg);
-}
-
 type Props = {
   officers?: User[];
 };
@@ -68,7 +58,7 @@ export default function useGraphData({ officers }: Props) {
       throw new Error(errorMessage);
     }
 
-    if (orgChanged(currentUser.org, org)) {
+    if (!isEqual(currentUser.org, org)) {
       const updatedCurrentUser = { ...currentUser };
       updatedCurrentUser.org = org;
       setCurrentUser(updatedCurrentUser);

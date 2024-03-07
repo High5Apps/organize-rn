@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
+import isEqual from 'react-fast-compare';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
 import { useCurrentUserDataContext } from '../context';
@@ -7,15 +8,6 @@ import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
 } from './types';
 import { getUser } from '../networking';
-
-// Note this may have false negatives if nested object keys are in a different
-// order
-function equals(user: User, otherUser: User) {
-  return Object.keys(user).every((key) => {
-    const k = key as keyof User;
-    return JSON.stringify(user[k]) === JSON.stringify(otherUser[k]);
-  });
-}
 
 export function CurrentUser(
   currentUserData: CurrentUserData,
@@ -98,7 +90,7 @@ export function CurrentUser(
       throw new Error(errorMessage);
     }
 
-    if (!equals(user(), fetchedUser)) {
+    if (!isEqual(user(), fetchedUser)) {
       setCurrentUserData((previousCurrentUserData) => {
         if (previousCurrentUserData === null) { return null; }
         return { ...previousCurrentUserData, ...fetchedUser };
