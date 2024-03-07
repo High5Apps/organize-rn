@@ -4,6 +4,7 @@ import useCurrentUser from './CurrentUser';
 import { getUser } from '../networking';
 import { useUserContext } from '../context';
 import usePreviousValue from './PreviousValue';
+import NullUser from './NullUser';
 
 export default function useSelectedUser() {
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
@@ -24,6 +25,8 @@ export default function useSelectedUser() {
       setSelectedUser(undefined);
 
       if (!selectedUserId) { return; }
+
+      setSelectedUser(NullUser());
 
       const cachedUser = getCachedUser(selectedUserId);
       if (cachedUser) {
