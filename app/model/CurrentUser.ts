@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
 import { useCurrentUserDataContext } from '../context';
@@ -7,13 +7,19 @@ import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
 } from './types';
 
-export function CurrentUser({
-  authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
-  localEncryptionKeyId, offices, org, orgId, pseudonym, recruitCount,
-}: CurrentUserData, clearCurrentUser: () => void) {
+export function CurrentUser(
+  currentUserData: CurrentUserData,
+  setCurrentUserData: Dispatch<SetStateAction<CurrentUserData | null>>,
+) {
+  const {
+    authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
+    localEncryptionKeyId, offices, org, orgId, pseudonym, recruitCount,
+  } = currentUserData;
+
   const currentUserBase = CurrentUserBase({
     authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
   });
+
   const user = (): User => ({
     connectionCount, id, joinedAt, offices, pseudonym, recruitCount,
   });
@@ -71,7 +77,7 @@ export function CurrentUser({
   const logOut = async () => {
     await deleteKeys();
     storeCurrentUserData(null);
-    clearCurrentUser();
+    setCurrentUserData(null);
   };
 
   return {
@@ -92,14 +98,11 @@ export function CurrentUser({
 export type CurrentUserType = ReturnType<typeof CurrentUser>;
 
 export default function useCurrentUser() {
-  const {
-    currentUserData, setCurrentUserData,
-  } = useCurrentUserDataContext();
+  const { currentUserData, setCurrentUserData } = useCurrentUserDataContext();
 
   const currentUser = useMemo(() => {
     if (!currentUserData) { return null; }
-    const clearCurrentUser = () => setCurrentUserData(null);
-    return CurrentUser(currentUserData, clearCurrentUser);
+    return CurrentUser(currentUserData, setCurrentUserData);
   }, [currentUserData]);
 
   return { currentUser, setCurrentUser: setCurrentUserData };

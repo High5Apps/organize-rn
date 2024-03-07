@@ -15,14 +15,14 @@ mockKeys.mockReturnValue({
 jest.mock('../../app/model/CurrentUserDataStorage');
 const mockStoreCurrentUserData = storeCurrentUserData as jest.Mock;
 
-const mockClearCurrentUser = jest.fn();
+const mockSetCurrentUserData = jest.fn();
 
 describe('useCurrentUser', () => {
   describe('logOut', () => {
     beforeEach(async () => {
       const mockCurrentUser = CurrentUser(
         fakeCurrentUserData,
-        mockClearCurrentUser,
+        mockSetCurrentUserData,
       );
       await mockCurrentUser.logOut();
     });
@@ -33,7 +33,7 @@ describe('useCurrentUser', () => {
     });
 
     it('should clear currentUser', () => {
-      expect(mockClearCurrentUser).toBeCalled();
+      expect(mockSetCurrentUserData).toBeCalledWith(null);
     });
 
     it('should store null user', () => {
