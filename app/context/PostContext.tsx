@@ -7,7 +7,7 @@ import useModelCache from '../model/ModelCache';
 type PostContextType = {
   cachePost: (post: Post) => void;
   cachePosts: (posts?: Post[]) => void;
-  getCachedPost: (postId: string) => Post | undefined;
+  getCachedPost: (postId?: string) => Post | undefined;
 };
 
 const PostContext = createContext<PostContextType>({

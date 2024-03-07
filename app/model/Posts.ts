@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
-import { PostCategory, PostSort, isDefined } from './types';
+import { Post, PostCategory, PostSort } from './types';
 import { fetchPosts } from '../networking';
 import { usePostContext } from '../context';
 import { getIdsFrom } from './ModelCache';
+import useModels from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -21,11 +22,9 @@ export default function usePosts({ category, sort: maybeSort }: Props = {}) {
   const sort = maybeSort ?? 'new';
 
   const { cachePost, cachePosts, getCachedPost } = usePostContext();
-  const [postIds, setPostIds] = useState<string[]>([]);
-  const posts = useMemo(
-    () => postIds.map(getCachedPost).filter(isDefined),
-    [postIds, getCachedPost],
-  );
+  const {
+    ids: postIds, models: posts, setIds: setPostIds,
+  } = useModels<Post>({ getCachedModel: getCachedPost });
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [createdAtOrBefore, setCreatedAtOrBefore] = useState<Date>(new Date());

@@ -1,20 +1,19 @@
-import { useMemo, useState } from 'react';
-import { isDefined } from './types';
+import { useState } from 'react';
+import { Comment } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
 import { useCommentContext } from '../context';
 import { getIdsFrom } from './ModelCache';
+import useModels from './Models';
 
 export const MAX_COMMENT_DEPTH = 8;
 export const MAX_COMMENT_LENGTH = 10000;
 
 export default function useComments(postId?: string) {
   const { cacheComment, cacheComments, getCachedComment } = useCommentContext();
-  const [commentIds, setCommentIds] = useState<string[]>([]);
-  const comments = useMemo(
-    () => commentIds.map(getCachedComment).filter(isDefined),
-    [commentIds, getCachedComment],
-  );
+  const {
+    models: comments, setIds: setCommentIds,
+  } = useModels<Comment>({ getCachedModel: getCachedComment });
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useCurrentUser();

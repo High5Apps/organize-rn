@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { fetchBallotPreviews } from '../networking';
 import { useBallotPreviewContext } from '../context';
 import useCurrentUser from './CurrentUser';
-import { isDefined } from './types';
+import { BallotPreview } from './types';
 import { getIdsFrom } from './ModelCache';
+import useModels from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -12,16 +13,14 @@ export default function useBallotPreviews() {
   const {
     cacheBallotPreview, cacheBallotPreviews, getCachedBallotPreview,
   } = useBallotPreviewContext();
-  const [activeBallotIds, setActiveBallotIds] = useState<string[]>([]);
-  const activeBallotPreviews = useMemo(
-    () => activeBallotIds.map(getCachedBallotPreview).filter(isDefined),
-    [activeBallotIds, getCachedBallotPreview],
-  );
-  const [inactiveBallotIds, setInactiveBallotIds] = useState<string[]>([]);
-  const inactiveBallotPreviews = useMemo(
-    () => inactiveBallotIds.map(getCachedBallotPreview).filter(isDefined),
-    [inactiveBallotIds, getCachedBallotPreview],
-  );
+  const {
+    models: activeBallotPreviews, setIds: setActiveBallotIds,
+  } = useModels<BallotPreview>({ getCachedModel: getCachedBallotPreview });
+  const {
+    ids: inactiveBallotIds,
+    models: inactiveBallotPreviews,
+    setIds: setInactiveBallotIds,
+  } = useModels<BallotPreview>({ getCachedModel: getCachedBallotPreview });
   const [activeCutoff, setActiveCutoff] = useState<Date>(new Date());
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
