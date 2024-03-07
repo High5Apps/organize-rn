@@ -37,9 +37,6 @@ export type User = {
 
 export type OrgGraph = {
   userIds: string[];
-  users: {
-    [id: string]: User;
-  };
   connections: [string, string][];
 };
 

@@ -1,5 +1,5 @@
 import type {
-  BallotCategory, OfficeCategory, Org, PaginationData, PostCategory,
+  BallotCategory, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
   User, VoteState,
 } from '../model';
 
@@ -86,27 +86,17 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
     && (response.user?.pseudonym.length > 0);
 }
 
-type OrgGraphResponse = {
-  userIds: string[];
-  users: {
-    [id: string]: UserResponse;
-  };
-  connections: [string, string][];
-};
-
-export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse {
-  const response = (object as OrgGraphResponse);
-  const users = Object.values(response?.users);
-  return users.length > 0
-    && users.every(isUserResponse)
-    && response?.connections?.length >= 0
+export function isOrgGraph(object: unknown): object is OrgGraph {
+  const response = (object as OrgGraph);
+  return Array.isArray(response?.connections)
+    && response.connections.length >= 0
     && Array.isArray(response.userIds)
-    && response.userIds?.length > 0
+    && response.userIds.length > 0
     && response.userIds.every((id) => id.length);
 }
 
 export type OrgResponse = {
-  graph: OrgGraphResponse,
+  graph: OrgGraph,
   id: string,
   encryptedName: BackendEncryptedMessage;
   encryptedMemberDefinition: BackendEncryptedMessage;
@@ -114,7 +104,7 @@ export type OrgResponse = {
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
   const response = (object as OrgResponse);
-  return isOrgGraphResponse(response?.graph)
+  return isOrgGraph(response?.graph)
     && response.id?.length > 0
     && isBackendEncryptedMessage(response.encryptedName)
     && isBackendEncryptedMessage(response.encryptedMemberDefinition);
