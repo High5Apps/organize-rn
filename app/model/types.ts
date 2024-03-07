@@ -58,14 +58,14 @@ export function isOrg(object: unknown): object is Org {
   );
 }
 
-export type UserBaseData = {
+export type CurrentUserBaseData = {
   authenticationKeyId: string,
   encryptedGroupKey: string,
   id: string,
   localEncryptionKeyId: string,
 };
 
-export type CurrentUserData = UserBaseData & User & {
+export type CurrentUserData = CurrentUserBaseData & User & {
   org: Org;
   orgId: string;
   pseudonym: string;

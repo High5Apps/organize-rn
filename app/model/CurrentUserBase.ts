@@ -1,6 +1,6 @@
 import JWT from './JWT';
 import { Keys } from './keys';
-import { E2EEncryptor, Scope, UserBaseData } from './types';
+import { E2EEncryptor, Scope, CurrentUserBaseData } from './types';
 
 export const defaultAuthTokenTTLSeconds = 60;
 
@@ -12,7 +12,7 @@ type CreateAuthTokenProps = {
 
 export default function CurrentUserBase({
   authenticationKeyId, encryptedGroupKey, id, localEncryptionKeyId,
-}: UserBaseData) {
+}: CurrentUserBaseData) {
   const keys = Keys();
 
   async function createAuthToken({
