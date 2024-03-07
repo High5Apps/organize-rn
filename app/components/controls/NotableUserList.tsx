@@ -85,7 +85,7 @@ export default function NotableUserList({
 
     notableUserSections.push({ title: 'Officers', data: officers });
 
-    const currentOrgGraphUser = users[currentUser.id];
+    const currentOrgGraphUser = currentUser.user();
     const { offices } = currentOrgGraphUser;
     const isOfficer = offices.length > 0;
     if (!isOfficer) {
