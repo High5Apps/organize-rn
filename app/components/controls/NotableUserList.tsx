@@ -24,13 +24,13 @@ type Props = {
   officers: User[];
   onRefresh: () => Promise<any>;
   scrollEnabled?: boolean;
-  selectedUserId?: string;
+  selectedUser?: User;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export default function NotableUserList({
   disableRows, graphData, ListHeaderComponent, officers, onRefresh,
-  scrollEnabled, selectedUserId, setSelectedUserId,
+  scrollEnabled, selectedUser, setSelectedUserId,
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
@@ -77,9 +77,8 @@ export default function NotableUserList({
     const users = graphData?.users;
     if (!users) { return notableUserSections; }
 
-    if (selectedUserId) {
-      const selectedOrgGraphUser = users[selectedUserId];
-      const data = [selectedOrgGraphUser];
+    if (selectedUser) {
+      const data = [selectedUser];
       notableUserSections.push({ title: 'Selected', data });
     }
 
@@ -94,7 +93,7 @@ export default function NotableUserList({
     }
 
     return notableUserSections;
-  }, [colors, currentUser, graphData, officers, selectedUserId]);
+  }, [colors, currentUser, graphData, officers, selectedUser]);
 
   const {
     ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,
@@ -132,5 +131,5 @@ NotableUserList.defaultProps = {
   graphData: undefined,
   ListHeaderComponent: undefined,
   scrollEnabled: true,
-  selectedUserId: undefined,
+  selectedUser: undefined,
 };

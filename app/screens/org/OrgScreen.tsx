@@ -8,7 +8,9 @@ import {
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../../navigation';
-import { useCurrentUser, useGraphData, useUsers } from '../../model';
+import {
+  useCurrentUser, useGraphData, useSelectedUser, useUsers,
+} from '../../model';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -25,8 +27,9 @@ function SettingsButton() {
 export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [graphError, setGraphError] = useState('');
   const [scrollEnabled, setScrollEnabled] = useState(true);
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const [graphRendered, setGraphRendered] = useState(false);
+
+  const { selectedUser, setSelectedUserId } = useSelectedUser();
 
   useLayoutEffect(() => {
     const headerRight = () => <SettingsButton />;
@@ -65,12 +68,12 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
         onRenderingProgressChanged={
           (progress) => setGraphRendered(progress >= 1)
         }
-        selectedUserId={selectedUserId}
+        selectedUserId={selectedUser?.id}
         setSelectedUserId={setSelectedUserId}
         visGraphData={visGraphData}
       />
     </>
-  ), [hasMultipleNodes, graphError, selectedUserId, visGraphData]);
+  ), [hasMultipleNodes, graphError, selectedUser?.id, visGraphData]);
 
   return (
     <ScreenBackground>
@@ -81,7 +84,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
         officers={officers}
         onRefresh={onRefresh}
         scrollEnabled={scrollEnabled}
-        selectedUserId={selectedUserId}
+        selectedUser={selectedUser}
         setSelectedUserId={setSelectedUserId}
       />
     </ScreenBackground>
