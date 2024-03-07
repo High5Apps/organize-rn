@@ -6,6 +6,16 @@ import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
 } from './types';
+import { getUser } from '../networking';
+
+// Note this may have false negatives if nested object keys are in a different
+// order
+function equals(user: User, otherUser: User) {
+  return Object.keys(user).every((key) => {
+    const k = key as keyof User;
+    return JSON.stringify(user[k]) === JSON.stringify(otherUser[k]);
+  });
+}
 
 export function CurrentUser(
   currentUserData: CurrentUserData,
@@ -80,6 +90,22 @@ export function CurrentUser(
     setCurrentUserData(null);
   };
 
+  async function update() {
+    const jwt = await currentUserBase.createAuthToken({ scope: '*' });
+    const { errorMessage, user: fetchedUser } = await getUser({ id, jwt });
+
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
+    }
+
+    if (!equals(user(), fetchedUser)) {
+      setCurrentUserData((previousCurrentUserData) => {
+        if (previousCurrentUserData === null) { return null; }
+        return { ...previousCurrentUserData, ...fetchedUser };
+      });
+    }
+  }
+
   return {
     ...currentUserBase,
     decryptGroupKey,
@@ -90,6 +116,7 @@ export function CurrentUser(
     logOut,
     org,
     orgId,
+    update,
     user,
     ...user(),
   };

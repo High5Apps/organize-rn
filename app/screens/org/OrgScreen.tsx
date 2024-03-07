@@ -8,7 +8,7 @@ import {
 import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../../navigation';
-import { useGraphData, useUsers } from '../../model';
+import { useCurrentUser, useGraphData, useUsers } from '../../model';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
@@ -33,6 +33,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     navigation.setOptions({ headerRight });
   }, [navigation]);
 
+  const { currentUser } = useCurrentUser();
   const {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready,
   } = useUsers({ filter: 'officer', sort: 'office' });
@@ -43,6 +44,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   const onRefresh = useCallback(async () => {
     setSelectedUserId(undefined);
     await Promise.all([
+      currentUser?.update().catch(console.error),
       fetchOfficers().catch(console.error),
       updateOrgData().catch((e) => {
         console.error(e);

@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
-import { fetchOrg, getUser } from '../networking';
+import { fetchOrg } from '../networking';
 import {
   Office, Org, OrgGraph as OrgGraphType, User,
 } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 function toVisNetworkData(
   colors: ThemeColors,
@@ -49,12 +48,6 @@ function toVisNetworkData(
 function orgChanged(oldOrg: Org, newOrg: Org) {
   return JSON.stringify(oldOrg) !== JSON.stringify(newOrg);
 }
-function userChanged(user: User, otherUser: User) {
-  return !Object.keys(user).every((key) => {
-    const k = key as keyof User;
-    return JSON.stringify(user[k]) === JSON.stringify(otherUser[k]);
-  });
-}
 
 type Props = {
   officers?: User[];
@@ -67,32 +60,16 @@ export default function useGraphData({ officers }: Props) {
   async function updateOrgData() {
     if (!currentUser) { throw new Error('Expected currentUser to be set'); }
 
-    const [orgJwt, userJwt] = await Promise.all([
-      currentUser.createAuthToken({ scope: '*' }),
-      currentUser.createAuthToken({ scope: '*' }),
-    ]);
-    const { e2eDecrypt, id } = currentUser;
-    const [
-      { errorMessage: orgErrorMessage, org },
-      { errorMessage: userErrorMessage, user },
-    ] = await Promise.all([
-      fetchOrg({ e2eDecrypt, jwt: orgJwt }),
-      getUser({ id, jwt: userJwt }),
-    ]);
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { e2eDecrypt } = currentUser;
+    const { errorMessage, org } = await fetchOrg({ e2eDecrypt, jwt });
 
-    const shouldThrow = orgErrorMessage !== undefined
-      || org === undefined
-      || userErrorMessage !== undefined
-      || user === undefined;
-    if (shouldThrow) {
-      const errorMessage = orgErrorMessage ?? userErrorMessage;
-      throw new Error(errorMessage ?? GENERIC_ERROR_MESSAGE);
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
     }
 
-    const changed = userChanged(currentUser.user(), user)
-      || orgChanged(currentUser.org, org);
-    if (changed) {
-      const updatedCurrentUser = { ...currentUser, ...user };
+    if (orgChanged(currentUser.org, org)) {
+      const updatedCurrentUser = { ...currentUser };
       updatedCurrentUser.org = org;
       setCurrentUser(updatedCurrentUser);
     }
