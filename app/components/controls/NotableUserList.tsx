@@ -6,7 +6,7 @@ import {
   LayoutChangeEvent, ListRenderItem, SectionList, View,
 } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
-import { OrgGraph, User, useCurrentUser } from '../../model';
+import { User, useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import { usePullToRefresh } from '../hooks';
@@ -19,7 +19,6 @@ type NotableUserSection = {
 
 type Props = {
   disableRows?: boolean;
-  graphData?: OrgGraph;
   ListHeaderComponent?: ReactElement;
   officers: User[];
   onRefresh: () => Promise<any>;
@@ -29,7 +28,7 @@ type Props = {
 };
 
 export default function NotableUserList({
-  disableRows, graphData, ListHeaderComponent, officers, onRefresh,
+  disableRows, ListHeaderComponent, officers, onRefresh,
   scrollEnabled, selectedUser, setSelectedUserId,
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
@@ -74,8 +73,6 @@ export default function NotableUserList({
 
   const sections: NotableUserSection[] = useMemo(() => {
     const notableUserSections: NotableUserSection[] = [];
-    const users = graphData?.users;
-    if (!users) { return notableUserSections; }
 
     if (selectedUser) {
       const data = [selectedUser];
@@ -93,7 +90,7 @@ export default function NotableUserList({
     }
 
     return notableUserSections;
-  }, [colors, currentUser, graphData, officers, selectedUser]);
+  }, [colors, currentUser, officers, selectedUser]);
 
   const {
     ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,
@@ -128,7 +125,6 @@ export default function NotableUserList({
 
 NotableUserList.defaultProps = {
   disableRows: true,
-  graphData: undefined,
   ListHeaderComponent: undefined,
   scrollEnabled: true,
   selectedUser: undefined,

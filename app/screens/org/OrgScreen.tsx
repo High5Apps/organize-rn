@@ -41,7 +41,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready,
   } = useUsers({ filter: 'officer', sort: 'office' });
   const {
-    hasMultipleNodes, graphData, updateOrgData, visGraphData,
+    hasMultipleNodes, updateOrgData, visGraphData,
   } = useGraphData({ officers: ready ? officers : undefined });
 
   const onRefresh = useCallback(async () => {
@@ -79,7 +79,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     <ScreenBackground>
       <NotableUserList
         disableRows={!graphRendered}
-        graphData={graphData}
         ListHeaderComponent={ListHeaderComponent}
         officers={officers}
         onRefresh={onRefresh}
