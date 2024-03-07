@@ -97,7 +97,7 @@ export async function fetchOrg({
     ...org
   } = { ...json, name, memberDefinition };
 
-  const { users: userMap } = org.graph;
+  const { users: userMap, userIds } = org.graph;
   const userEntries = Object.entries(userMap).map(([userId, user]) => {
     const { offices: officeCategories, ...rest } = user;
     const offices = officeCategories.map((category) => getOffice(category));
@@ -107,7 +107,7 @@ export async function fetchOrg({
   return {
     org: {
       ...org,
-      graph: { users, connections: org.graph.connections },
+      graph: { users, connections: org.graph.connections, userIds },
     },
   };
 }

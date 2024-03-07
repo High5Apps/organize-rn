@@ -87,6 +87,7 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
 }
 
 type OrgGraphResponse = {
+  userIds: string[];
   users: {
     [id: string]: UserResponse;
   };
@@ -97,9 +98,11 @@ export function isOrgGraphResponse(object: unknown): object is OrgGraphResponse 
   const response = (object as OrgGraphResponse);
   const users = Object.values(response?.users);
   return users.length > 0
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     && users.every(isUserResponse)
-    && response?.connections?.length >= 0;
+    && response?.connections?.length >= 0
+    && Array.isArray(response.userIds)
+    && response.userIds?.length > 0
+    && response.userIds.every((id) => id.length);
 }
 
 export type OrgResponse = {

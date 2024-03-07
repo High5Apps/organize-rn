@@ -17,7 +17,7 @@ function toVisNetworkData(
   if (orgGraph === undefined || officerMap === undefined) { return undefined; }
 
   return {
-    nodes: Object.keys(orgGraph.users).map((id) => {
+    nodes: orgGraph.userIds.map((id) => {
       const offices = officerMap[id] ?? [];
       const isMe = (id === currentUserId);
       const {
@@ -87,7 +87,7 @@ export default function useGraphData({ officers }: Props) {
     [colors, currentUser?.id, graphData, officerMap],
   );
 
-  const nodeCount = Object.keys(graphData?.users ?? {}).length;
+  const nodeCount = (graphData?.userIds ?? []).length;
   const hasMultipleNodes = nodeCount > 1;
 
   return {
