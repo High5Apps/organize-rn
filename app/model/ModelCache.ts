@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import isEqual from 'react-fast-compare';
 
 export type Model = {
   id: string;
@@ -28,8 +29,14 @@ export default function useModelCache<T extends Model>() {
     if (models === undefined) { return; }
 
     setModelCache((mc) => {
+      const unequalModels = models.map((model) => {
+        const cachedModel = mc.get(model.id);
+        const equal = cachedModel && isEqual(model, cachedModel);
+        return equal ? cachedModel : model;
+      });
+
       const cachedModels = [...mc.values()];
-      return modelsToMap([...cachedModels, ...models]);
+      return modelsToMap([...cachedModels, ...unequalModels]);
     });
   }
 

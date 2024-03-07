@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { fetchUsers } from '../networking';
 import { useUserContext } from '../context';
-import { UserFilter, UserSort, isDefined } from './types';
+import { User, UserFilter, UserSort } from './types';
 import { getIdsFrom } from './ModelCache';
 import useCurrentUser from './CurrentUser';
+import useModels from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -15,11 +16,9 @@ type Props = {
 
 export default function useUsers({ filter, sort }: Props) {
   const { cacheUser, cacheUsers, getCachedUser } = useUserContext();
-  const [userIds, setUserIds] = useState<string[]>([]);
-  const users = useMemo(
-    () => userIds.map(getCachedUser).filter(isDefined),
-    [userIds, getCachedUser],
-  );
+  const {
+    ids: userIds, models: users, setIds: setUserIds,
+  } = useModels<User>({ getCachedModel: getCachedUser });
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [joinedAtOrBefore, setJoinedAtOrBefore] = useState<Date>(new Date());
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
