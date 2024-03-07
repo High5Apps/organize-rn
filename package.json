@@ -31,6 +31,7 @@
     "buffer": "^6.0.3",
     "crypto-js": "^4.1.1",
     "react": "18.2.0",
+    "react-fast-compare": "^3.2.2",
     "react-native": "^0.71.0",
     "react-native-get-random-values": "^1.8.0",
     "react-native-modal-datetime-picker": "^17.1.0",
