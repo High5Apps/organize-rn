@@ -12,9 +12,9 @@ const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
 // This returns the circleHeight and marginTop needed to center the circle on
 // the first line of text. These values scale with the text size.
 // onTextLayout must be attached to the Text component's onTextLayout event prop
-function useCircleHeight() {
-  const [circleHeight, setCircleHeight] = useState<number>();
-  const [marginTop, setMarginTop] = useState<number>();
+function useCircleHeight(initialHeight: number) {
+  const [circleHeight, setCircleHeight] = useState<number>(initialHeight);
+  const [marginTop, setMarginTop] = useState<number>(0);
   const [textLayout, setTextLayout] = useState<TextLayoutEventData>();
 
   function onTextLayout({
@@ -42,14 +42,14 @@ const useStyles = () => {
     colors, font, shadows, sizes, spacing,
   } = useTheme();
 
-  const { circleHeight, marginTop, onTextLayout } = useCircleHeight();
+  const { circleHeight, marginTop, onTextLayout } = useCircleHeight(sizes.icon);
 
   const styles = StyleSheet.create({
     circle: {
       aspectRatio: 1,
-      borderRadius: (circleHeight ?? 0) / 2,
+      borderRadius: circleHeight,
       borderWidth: 2,
-      height: circleHeight ?? sizes.icon,
+      height: circleHeight,
       marginTop,
     },
     circleShadows: {
