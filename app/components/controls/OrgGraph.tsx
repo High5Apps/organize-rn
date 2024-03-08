@@ -52,9 +52,7 @@ export default function OrgGraph({
   );
 
   useEffect(() => {
-    if (selectedUserId) {
-      clickHandler({ userId: selectedUserId });
-    }
+    clickHandler({ userId: selectedUserId });
   }, [selectedUserId]);
 
   const progress = useOrgGraphProgress(loading, visNetworkRef);

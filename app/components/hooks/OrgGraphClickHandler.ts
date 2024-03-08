@@ -37,12 +37,19 @@ function getNearestNodeInfo(
   return { nearestDistance, nearestId };
 }
 
+type ClickEvent = {
+  nodes: string[];
+  pointer: {
+    canvas: Position;
+  }
+};
+
 type ClickHandlerProps = {
-  event: any;
+  event: ClickEvent;
   userId?: never;
 } | {
   event?: never;
-  userId: string;
+  userId?: string;
 };
 
 export default function useClickHandler(
@@ -95,45 +102,47 @@ export default function useClickHandler(
       return;
     }
 
-    const {
-      nodes,
-      pointer: { canvas: canvasPointer },
-    } = event;
+    if (event) {
+      const {
+        nodes,
+        pointer: { canvas: canvasPointer },
+      } = event;
 
-    let userId: string | undefined = nodes[0];
-    if (userId) {
-      visNetwork.current.focus(userId, focusOptions);
-      setSelectedUserId(userId);
-      return;
-    }
+      let userId: string | undefined = nodes[0];
+      if (userId) {
+        visNetwork.current.focus(userId, focusOptions);
+        setSelectedUserId(userId);
+        return;
+      }
 
-    let positions;
-    try {
-      positions = await visNetwork.current.getPositions();
-    } catch (e) {
-      console.error(e);
-    }
+      let positions;
+      try {
+        positions = await visNetwork.current.getPositions();
+      } catch (e) {
+        console.error(e);
+      }
 
-    if (!positions) {
-      isEventInProgressRef.current = false;
-      return;
-    }
+      if (!positions) {
+        isEventInProgressRef.current = false;
+        return;
+      }
 
-    const {
-      nearestDistance, nearestId,
-    } = getNearestNodeInfo(canvasPointer, positions);
+      const {
+        nearestDistance, nearestId,
+      } = getNearestNodeInfo(canvasPointer, positions);
 
-    if (!nearestDistance || !nearestId) {
-      isEventInProgressRef.current = false;
-      return;
-    }
+      if (!nearestDistance || !nearestId) {
+        isEventInProgressRef.current = false;
+        return;
+      }
 
-    const normalizedDistance = nearestDistance * scale;
-    if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
-      userId = nearestId;
-      visNetwork.current.focus(userId, focusOptions);
-      setSelectedUserId(userId);
-      return;
+      const normalizedDistance = nearestDistance * scale;
+      if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
+        userId = nearestId;
+        visNetwork.current.focus(userId, focusOptions);
+        setSelectedUserId(userId);
+        return;
+      }
     }
 
     const maxZoomLevel = hasMultipleNodes ? 100 : 1;
@@ -151,7 +160,7 @@ export default function useClickHandler(
 
     const clickSubscription = visNetwork.current.addEventListener(
       'click',
-      (event: any) => clickHandler({ event }),
+      (event: ClickEvent) => clickHandler({ event }),
     );
 
     const animationFinishedSubscription = visNetwork.current.addEventListener(
