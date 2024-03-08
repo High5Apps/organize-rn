@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View,
+  StyleProp, StyleSheet, Text, TouchableHighlight, View, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -42,12 +42,13 @@ const useStyles = () => {
 type Props = {
   iconName: string;
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
   textButtonLabel?: string;
   title: string;
 };
 
 export default function IconRow({
-  iconName, onPress, textButtonLabel, title,
+  iconName, onPress, textButtonLabel, style, title,
 }: Props) {
   const { colors, styles } = useStyles();
 
@@ -68,7 +69,7 @@ export default function IconRow({
       onPress={textButtonLabel ? undefined : onPress}
       underlayColor={colors.label}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, style]}>
         <Icon name={iconName} style={styles.icon} />
         <Text style={styles.text}>{title}</Text>
         {Accessory}
@@ -79,5 +80,6 @@ export default function IconRow({
 
 IconRow.defaultProps = {
   onPress: undefined,
+  style: {},
   textButtonLabel: undefined,
 };

@@ -19,6 +19,8 @@ const useStyles = () => {
     colors, font, sizes, spacing,
   } = useTheme();
 
+  const containerPaddingHorizontal = spacing.m;
+
   const styles = StyleSheet.create({
     button: {
       alignSelf: 'flex-end',
@@ -27,11 +29,14 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
     },
     container: {
-      padding: spacing.m,
+      padding: containerPaddingHorizontal,
       rowGap: spacing.s,
     },
     dateTimeSelector: {
       marginStart: spacing.m,
+    },
+    officeRow: {
+      marginEnd: -1 * containerPaddingHorizontal,
     },
     scrollView: {
       flex: 1,
@@ -154,6 +159,7 @@ export default function NewElectionBallotScreen({
         <OfficeRow
           item={office}
           onPress={() => setModalVisible(true)}
+          style={styles.officeRow}
           textButtonLabel="Learn more"
         />
         {officeCategory === 'steward' && (
