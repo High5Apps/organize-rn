@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg } from '../networking';
 import {
-  Office, OrgGraph as OrgGraphType, User,
+  Office, OrgGraph, OrgGraph as OrgGraphType, User,
 } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
@@ -44,6 +44,8 @@ type Props = {
 };
 
 export default function useGraphData({ officers }: Props) {
+  const [graphData, setGraphData] = useState<OrgGraph>();
+
   const { currentUser, setCurrentUser } = useCurrentUser();
   const { colors } = useTheme();
 
@@ -52,20 +54,22 @@ export default function useGraphData({ officers }: Props) {
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecrypt } = currentUser;
-    const { errorMessage, org } = await fetchOrg({ e2eDecrypt, jwt });
+    const {
+      errorMessage, org: fetchedOrg, orgGraph: fetchedOrgGraph,
+    } = await fetchOrg({ e2eDecrypt, jwt });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
 
-    if (!isEqual(currentUser.org, org)) {
-      const updatedCurrentUser = { ...currentUser };
-      updatedCurrentUser.org = org;
-      setCurrentUser(updatedCurrentUser);
+    if (!isEqual(graphData, fetchedOrgGraph)) {
+      setGraphData(fetchedOrgGraph);
+    }
+
+    if (!isEqual(currentUser.org, fetchedOrg)) {
+      setCurrentUser({ ...currentUser, org: fetchedOrg });
     }
   }
-
-  const graphData = currentUser?.org?.graph;
 
   const officerMap = useMemo(() => {
     if (officers === undefined) { return undefined; }

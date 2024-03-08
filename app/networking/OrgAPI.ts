@@ -1,4 +1,6 @@
-import type { E2EDecryptor, E2EEncryptor, Org } from '../model';
+import type {
+  E2EDecryptor, E2EEncryptor, Org, OrgGraph,
+} from '../model';
 import { fromJson } from '../model';
 import {
   decrypt, encrypt, get, post,
@@ -59,11 +61,13 @@ type FetchOrgProps = Authorization & {
   e2eDecrypt: E2EDecryptor;
 };
 type FetchOrgReturn = {
-  org: Org;
   errorMessage?: never;
+  org: Org;
+  orgGraph: OrgGraph;
 } | {
-  org?: never;
   errorMessage: string;
+  org?: never;
+  orgGraph?: never;
 };
 
 export async function fetchOrg({
@@ -94,8 +98,9 @@ export async function fetchOrg({
   const {
     encryptedName: unusedEN,
     encryptedMemberDefinition: unusedEMD,
+    graph: orgGraph,
     ...org
   } = { ...json, name, memberDefinition };
 
-  return { org };
+  return { org, orgGraph };
 }

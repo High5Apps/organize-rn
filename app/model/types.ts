@@ -44,7 +44,6 @@ export type Org = {
   id: string;
   name: string;
   memberDefinition: string;
-  graph?: OrgGraph;
 };
 
 export function isOrg(object: unknown): object is Org {
