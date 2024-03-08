@@ -56,6 +56,10 @@ export default function useClickHandler(
   async function clickHandler({
     event, userId: maybeUserId,
   }: ClickHandlerProps) {
+    // isEventInProgressRef is set to false automatically after any animation
+    // ends. But you MUST manually set it to false on any code path below that
+    // returns early without animating. Otherwise, the guard condition below
+    // will mistakenly prevent any future clickHandler actions.
     if (!visNetwork.current || isEventInProgressRef.current) { return; }
     isEventInProgressRef.current = true;
 
@@ -79,6 +83,13 @@ export default function useClickHandler(
     };
 
     if (maybeUserId) {
+      const nodeInfo = await visNetwork.current.findNode(maybeUserId);
+      const nodeFound = nodeInfo.length > 0;
+      if (!nodeFound) {
+        isEventInProgressRef.current = false;
+        return;
+      }
+
       visNetwork.current.focus(maybeUserId, focusOptions);
       setSelectedUserId(maybeUserId);
       return;
