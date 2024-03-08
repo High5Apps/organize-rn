@@ -1,39 +1,9 @@
 import { useMemo } from 'react';
 import { Data, Options } from 'react-native-vis-network';
-import useTheme, { ThemeColors } from '../Theme';
-import { Office, OrgGraph, User } from './types';
+import useTheme from '../Theme';
+import { OrgGraph, User } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
-
-function toVisNetworkData(
-  colors: ThemeColors,
-  officerMap?: { [key: string]: Office[] },
-  currentUserId?: string,
-  orgGraph?: OrgGraph,
-): Data | undefined {
-  if (orgGraph === undefined || officerMap === undefined) { return undefined; }
-
-  return {
-    nodes: orgGraph.userIds.map((id) => {
-      const offices = officerMap[id] ?? [];
-      const isMe = (id === currentUserId);
-      const {
-        circleBorderColor, circleBackgroundColor, shadow,
-      } = getCircleColors({ colors, isMe, offices });
-      return {
-        chosen: false,
-        color: { background: circleBackgroundColor, border: circleBorderColor },
-        id,
-        shadow,
-      };
-    }),
-    edges: orgGraph.connections.map(([from, to]) => ({
-      chosen: false,
-      from,
-      to,
-    })),
-  };
-}
 
 type Props = {
   officers?: User[];
@@ -67,10 +37,35 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
     },
   }), [colors.primary, currentUser.org.id]);
 
-  const visGraphData = useMemo(
-    () => toVisNetworkData(colors, officerMap, currentUser?.id, orgGraph),
-    [colors, currentUser?.id, orgGraph, officerMap],
-  );
+  const visGraphData: Data | undefined = useMemo(() => {
+    if (orgGraph === undefined || officerMap === undefined) {
+      return undefined;
+    }
+
+    return {
+      nodes: orgGraph.userIds.map((id) => {
+        const offices = officerMap[id] ?? [];
+        const isMe = (id === currentUser?.id);
+        const {
+          circleBorderColor, circleBackgroundColor, shadow,
+        } = getCircleColors({ colors, isMe, offices });
+        return {
+          chosen: false,
+          color: {
+            background: circleBackgroundColor,
+            border: circleBorderColor,
+          },
+          id,
+          shadow,
+        };
+      }),
+      edges: orgGraph.connections.map(([from, to]) => ({
+        chosen: false,
+        from,
+        to,
+      })),
+    };
+  }, [colors, currentUser?.id, orgGraph, officerMap]);
 
   return { options, visGraphData };
 }
