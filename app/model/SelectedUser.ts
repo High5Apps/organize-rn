@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { User } from './types';
+import { OrgGraph, User } from './types';
 import useCurrentUser from './CurrentUser';
 import { getUser } from '../networking';
 import { useUserContext } from '../context';
 import usePreviousValue from './PreviousValue';
 import NullUser from './NullUser';
 
-export default function useSelectedUser() {
+export default function useSelectedUser(graphData?: OrgGraph) {
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const previousSelectedUserId = usePreviousValue(selectedUserId);
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
@@ -26,11 +26,21 @@ export default function useSelectedUser() {
 
       if (!selectedUserId) { return; }
 
-      setSelectedUser(NullUser());
-
       const cachedUser = getCachedUser(selectedUserId);
       if (cachedUser) {
         setSelectedUser(cachedUser);
+      } else {
+        let placeholderUser = NullUser();
+        if (graphData) {
+          // It's not possible to locally calculate recruitCount since OrgGraph
+          // doesn't include recruiterId. Sharer doesn't imply recruiter.
+          const connectionCount = graphData.connections
+            .filter(([sharerId, scannerId]) => (
+              (sharerId === selectedUserId) || (scannerId === selectedUserId)
+            )).length;
+          placeholderUser = { ...placeholderUser, connectionCount };
+        }
+        setSelectedUser(placeholderUser);
       }
 
       const jwt = await currentUser.createAuthToken({ scope: '*' });

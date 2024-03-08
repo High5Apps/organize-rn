@@ -29,8 +29,6 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [graphRendered, setGraphRendered] = useState(false);
 
-  const { selectedUser, setSelectedUserId } = useSelectedUser();
-
   useLayoutEffect(() => {
     const headerRight = () => <SettingsButton />;
     navigation.setOptions({ headerRight });
@@ -41,8 +39,9 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready,
   } = useUsers({ filter: 'officer', sort: 'office' });
   const {
-    hasMultipleNodes, updateOrgData, visGraphData,
+    graphData, hasMultipleNodes, updateOrgData, visGraphData,
   } = useGraphData({ officers: ready ? officers : undefined });
+  const { selectedUser, setSelectedUserId } = useSelectedUser(graphData);
 
   const onRefresh = useCallback(async () => {
     setSelectedUserId(undefined);
