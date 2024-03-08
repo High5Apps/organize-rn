@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import {
+  Dispatch, SetStateAction, useEffect, useMemo,
+} from 'react';
 import isEqual from 'react-fast-compare';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
-import { useCurrentUserDataContext } from '../context';
+import { useCurrentUserDataContext, useUserContext } from '../context';
 import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
@@ -118,10 +120,18 @@ export type CurrentUserType = ReturnType<typeof CurrentUser>;
 
 export default function useCurrentUser() {
   const { currentUserData, setCurrentUserData } = useCurrentUserDataContext();
+  const { cacheUser } = useUserContext();
 
   const currentUser = useMemo(() => {
     if (!currentUserData) { return null; }
     return CurrentUser(currentUserData, setCurrentUserData);
+  }, [currentUserData]);
+
+  useEffect(() => {
+    const user = currentUser?.user();
+    if (user) {
+      cacheUser(user);
+    }
   }, [currentUserData]);
 
   return { currentUser, setCurrentUser: setCurrentUserData };
