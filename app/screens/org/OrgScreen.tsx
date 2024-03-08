@@ -9,7 +9,7 @@ import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../../navigation';
 import {
-  useCurrentUser, useGraphData, useSelectedUser, useUsers,
+  useCurrentUser, useOrg, useSelectedUser, useUsers,
 } from '../../model';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
@@ -39,21 +39,21 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready,
   } = useUsers({ filter: 'officer', sort: 'office' });
   const {
-    graphData, hasMultipleNodes, updateOrgData, visGraphData,
-  } = useGraphData({ officers: ready ? officers : undefined });
-  const { selectedUser, setSelectedUserId } = useSelectedUser(graphData);
+    hasMultipleNodes, orgGraph, updateOrg, visGraphData,
+  } = useOrg({ officers: ready ? officers : undefined });
+  const { selectedUser, setSelectedUserId } = useSelectedUser(orgGraph);
 
   const onRefresh = useCallback(async () => {
     setSelectedUserId(undefined);
     await Promise.all([
       currentUser?.update().catch(console.error),
       fetchOfficers().catch(console.error),
-      updateOrgData().catch((e) => {
+      updateOrg().catch((e) => {
         console.error(e);
         setGraphError(GRAPH_LOAD_ERROR_MESSAGE);
       }),
     ]);
-  }, [fetchOfficers, updateOrgData]);
+  }, [fetchOfficers, updateOrg]);
 
   useEffect(() => { onRefresh(); }, []);
 

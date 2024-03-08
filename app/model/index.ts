@@ -13,7 +13,7 @@ export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
-export { default as useGraphData } from './GraphData';
+export { default as useOrg } from './Org';
 export { fromJson, toJson } from './Json';
 export { default as JWT } from './JWT';
 export { default as getMessageAge } from './MessageAge';

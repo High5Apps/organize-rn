@@ -4,7 +4,7 @@ import { Data } from 'react-native-vis-network';
 import useTheme, { ThemeColors } from '../Theme';
 import { fetchOrg } from '../networking';
 import {
-  Office, OrgGraph, OrgGraph as OrgGraphType, User,
+  Office, Org, OrgGraph, OrgGraph as OrgGraphType, User,
 } from './types';
 import getCircleColors from './OrgScreenCircleColors';
 import useCurrentUser from './CurrentUser';
@@ -43,13 +43,14 @@ type Props = {
   officers?: User[];
 };
 
-export default function useGraphData({ officers }: Props) {
-  const [graphData, setGraphData] = useState<OrgGraph>();
+export default function useOrg({ officers }: Props) {
+  const [org, setOrg] = useState<Org>();
+  const [orgGraph, setOrgGraph] = useState<OrgGraph>();
 
   const { currentUser, setCurrentUser } = useCurrentUser();
   const { colors } = useTheme();
 
-  async function updateOrgData() {
+  async function updateOrg() {
     if (!currentUser) { throw new Error('Expected currentUser to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -62,11 +63,12 @@ export default function useGraphData({ officers }: Props) {
       throw new Error(errorMessage);
     }
 
-    if (!isEqual(graphData, fetchedOrgGraph)) {
-      setGraphData(fetchedOrgGraph);
+    if (!isEqual(orgGraph, fetchedOrgGraph)) {
+      setOrgGraph(fetchedOrgGraph);
     }
 
-    if (!isEqual(currentUser.org, fetchedOrg)) {
+    if (!isEqual(org, fetchedOrg)) {
+      setOrg(fetchedOrg);
       setCurrentUser({ ...currentUser, org: fetchedOrg });
     }
   }
@@ -77,14 +79,14 @@ export default function useGraphData({ officers }: Props) {
   }, [officers]);
 
   const visGraphData = useMemo(
-    () => toVisNetworkData(colors, officerMap, currentUser?.id, graphData),
-    [colors, currentUser?.id, graphData, officerMap],
+    () => toVisNetworkData(colors, officerMap, currentUser?.id, orgGraph),
+    [colors, currentUser?.id, orgGraph, officerMap],
   );
 
-  const nodeCount = (graphData?.userIds ?? []).length;
+  const nodeCount = (orgGraph?.userIds ?? []).length;
   const hasMultipleNodes = nodeCount > 1;
 
   return {
-    graphData, hasMultipleNodes, updateOrgData, visGraphData,
-  } as const;
+    org, orgGraph, hasMultipleNodes, updateOrg, visGraphData,
+  };
 }

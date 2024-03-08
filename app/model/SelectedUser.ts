@@ -6,7 +6,7 @@ import { useUserContext } from '../context';
 import usePreviousValue from './PreviousValue';
 import NullUser from './NullUser';
 
-export default function useSelectedUser(graphData?: OrgGraph) {
+export default function useSelectedUser(orgGraph?: OrgGraph) {
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const previousSelectedUserId = usePreviousValue(selectedUserId);
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
@@ -31,10 +31,10 @@ export default function useSelectedUser(graphData?: OrgGraph) {
         setSelectedUser(cachedUser);
       } else {
         let placeholderUser = NullUser();
-        if (graphData) {
+        if (orgGraph) {
           // It's not possible to locally calculate recruitCount since OrgGraph
           // doesn't include recruiterId. Sharer doesn't imply recruiter.
-          const connectionCount = graphData.connections
+          const connectionCount = orgGraph.connections
             .filter(([sharerId, scannerId]) => (
               (sharerId === selectedUserId) || (scannerId === selectedUserId)
             )).length;
