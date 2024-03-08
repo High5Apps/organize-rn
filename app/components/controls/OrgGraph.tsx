@@ -2,7 +2,7 @@ import React, {
   Dispatch, SetStateAction, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import VisNetwork, { Data, VisNetworkRef } from 'react-native-vis-network';
+import VisNetwork, { Data, Options, VisNetworkRef } from 'react-native-vis-network';
 import { useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ErrorMessage, ProgressBar } from '../views';
@@ -26,13 +26,14 @@ type Props = {
   error: string;
   onInteraction?: (inProgress: boolean) => void;
   onRenderingProgressChanged?: (progress: number) => void;
+  options: Options;
   selectedUserId?: string;
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>;
   visGraphData?: Data;
 };
 
 export default function OrgGraph({
-  hasMultipleNodes, error, onInteraction, onRenderingProgressChanged,
+  hasMultipleNodes, error, onInteraction, onRenderingProgressChanged, options,
   selectedUserId, setSelectedUserId, visGraphData,
 }: Props) {
   const [loading, setLoading] = useState(false);
@@ -61,23 +62,6 @@ export default function OrgGraph({
   }, [progress]);
 
   if (!currentUser) { throw new Error('Expected currentUser'); }
-
-  const options = {
-    edges: {
-      color: primary,
-      width: 2,
-    },
-    interaction: {
-      dragNodes: false,
-      keyboard: false,
-    },
-    layout: {
-      randomSeed: currentUser.org.id,
-    },
-    nodes: {
-      borderWidth: 4,
-    },
-  };
 
   const Component = useMemo(() => {
     if (visGraphData) {

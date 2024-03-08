@@ -9,7 +9,7 @@ import type {
   OrgScreenProps, SettingsScreenNavigationProp,
 } from '../../navigation';
 import {
-  useCurrentUser, useOrg, useSelectedUser, useUsers,
+  useCurrentUser, useOrg, useSelectedUser, useUsers, useVisGraphData,
 } from '../../model';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
@@ -36,12 +36,15 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
 
   const { currentUser } = useCurrentUser();
   const {
-    users: officers, fetchFirstPageOfUsers: fetchOfficers, ready,
+    users: officers, fetchFirstPageOfUsers: fetchOfficers, ready: officersReady,
   } = useUsers({ filter: 'officer', sort: 'office' });
   const {
-    hasMultipleNodes, orgGraph, updateOrg, visGraphData,
-  } = useOrg({ officers: ready ? officers : undefined });
+    hasMultipleNodes, orgGraph, updateOrg,
+  } = useOrg();
   const { selectedUser, setSelectedUserId } = useSelectedUser(orgGraph);
+  const { options, visGraphData } = useVisGraphData({
+    officers: officersReady ? officers : undefined, orgGraph,
+  });
 
   const onRefresh = useCallback(async () => {
     setSelectedUserId(undefined);
@@ -67,6 +70,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
         onRenderingProgressChanged={
           (progress) => setGraphRendered(progress >= 1)
         }
+        options={options}
         selectedUserId={selectedUser?.id}
         setSelectedUserId={setSelectedUserId}
         visGraphData={visGraphData}

@@ -34,6 +34,7 @@ export { default as getTimeRemaining } from './TimeRemaining';
 export { default as getShortenedTitles } from './TitleShortener';
 export { default as truncateText } from './TruncateText';
 export { default as useUsers } from './Users';
+export { default as useVisGraphData } from './VisGraphData';
 export { default as useVoteUpdater } from './VoteUpdater';
 export * from './keys';
 export * from './types';
