@@ -22,6 +22,7 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
 
   const options: Options = useMemo(() => ({
     edges: {
+      chosen: false,
       color: colors.primary,
       width: 2,
     },
@@ -34,6 +35,7 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
     },
     nodes: {
       borderWidth: 4,
+      chosen: false,
     },
   }), [colors.primary, currentUser.org.id]);
 
@@ -50,7 +52,6 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
           circleBorderColor, circleBackgroundColor, shadow,
         } = getCircleColors({ colors, isMe, offices });
         return {
-          chosen: false,
           color: {
             background: circleBackgroundColor,
             border: circleBorderColor,
@@ -60,7 +61,6 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
         };
       }),
       edges: orgGraph.connections.map(([from, to]) => ({
-        chosen: false,
         from,
         to,
       })),
