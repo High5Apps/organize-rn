@@ -43,7 +43,7 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vis-network": "^0.9.1",
+    "react-native-vis-network": "^1.0.0",
     "react-native-vision-camera": "^3.6.4",
     "react-native-webview": "^12.0.2",
     "uuid": "^8.3.2"
