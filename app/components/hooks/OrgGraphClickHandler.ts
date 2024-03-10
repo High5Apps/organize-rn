@@ -82,12 +82,16 @@ export default function useClickHandler(
       return;
     }
 
-    const focusOptions = {
-      ...DEFAULT_FOCUS_OPTIONS,
+    function focusOnNode(userId: string) {
+      visNetwork.current?.selectNodes([userId], true);
+      visNetwork.current?.focus(userId, {
+        ...DEFAULT_FOCUS_OPTIONS,
 
-      // Never zoom out during focus
-      scale: Math.max(scale, DEFAULT_FOCUS_OPTIONS.scale),
-    };
+        // Never zoom out during focus
+        scale: Math.max(scale, DEFAULT_FOCUS_OPTIONS.scale),
+      });
+      setSelectedUserId(userId);
+    }
 
     if (maybeUserId) {
       const nodeInfo = await visNetwork.current.findNode(maybeUserId);
@@ -97,23 +101,14 @@ export default function useClickHandler(
         return;
       }
 
-      visNetwork.current.focus(maybeUserId, focusOptions);
-      setSelectedUserId(maybeUserId);
+      focusOnNode(maybeUserId);
       return;
     }
 
     if (event) {
-      const {
-        nodes,
-        pointer: { canvas: canvasPointer },
-      } = event;
-
-      let userId: string | undefined = nodes[0];
-      if (userId) {
-        visNetwork.current.focus(userId, focusOptions);
-        setSelectedUserId(userId);
-        return;
-      }
+      // It's not possible to use the first node in the event.nodes array to get
+      // the userId because that node is the previously selected node
+      const { pointer: { canvas: canvasPointer } } = event;
 
       let positions;
       try {
@@ -138,9 +133,7 @@ export default function useClickHandler(
 
       const normalizedDistance = nearestDistance * scale;
       if (normalizedDistance <= MAX_NORMALIZED_FOCUS_DISTANCE) {
-        userId = nearestId;
-        visNetwork.current.focus(userId, focusOptions);
-        setSelectedUserId(userId);
+        focusOnNode(nearestId);
         return;
       }
     }
@@ -150,6 +143,7 @@ export default function useClickHandler(
       animation: ANIMATION_OPTIONS,
       maxZoomLevel,
     });
+    visNetwork.current.unselectAll();
     setSelectedUserId(undefined);
   }
 

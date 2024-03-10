@@ -20,24 +20,32 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
 
   if (!currentUser) { throw new Error('Expected current user'); }
 
-  const options: Options = useMemo(() => ({
-    edges: {
-      chosen: false,
-      color: colors.primary,
-      width: 2,
-    },
-    interaction: {
-      dragNodes: false,
-      keyboard: false,
-    },
-    layout: {
-      randomSeed: currentUser.org.id,
-    },
-    nodes: {
-      borderWidth: 4,
-      chosen: false,
-    },
-  }), [colors.primary, currentUser.org.id]);
+  const options: Options = useMemo(() => {
+    const edgeWidth = 2;
+    const nodeSize = 15;
+    return {
+      edges: {
+        chosen: { label: false, edge: { width: 3 * edgeWidth } },
+        color: colors.primary,
+        width: edgeWidth,
+      },
+      interaction: {
+        dragNodes: false,
+        keyboard: false,
+        selectable: false, // Without this edges become selectable
+      },
+      layout: {
+        randomSeed: currentUser.org.id,
+      },
+      nodes: {
+        borderWidth: 4,
+        chosen: { label: false, node: { size: 1.5 * nodeSize } },
+        shape: 'dot',
+        size: nodeSize,
+      },
+      physics: { barnesHut: { avoidOverlap: 0.01 } },
+    };
+  }, [colors.primary, currentUser.org.id]);
 
   const visGraphData: Data | undefined = useMemo(() => {
     if (orgGraph === undefined || officerMap === undefined) {
