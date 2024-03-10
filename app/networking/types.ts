@@ -350,6 +350,15 @@ export function isCreateVoteResponse(object: unknown): object is CreateVoteRespo
   return response?.id?.length > 0;
 }
 
+type CreateNominationResponse = {
+  id: string;
+};
+
+export function isCreateNominationResponse(object: unknown): object is CreateNominationResponse {
+  const response = (object as CreateNominationResponse);
+  return response?.id?.length > 0;
+}
+
 type OfficeIndexOffice = {
   open: boolean;
   type: OfficeCategory;
