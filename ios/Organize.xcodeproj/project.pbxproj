@@ -29,6 +29,8 @@
 		C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0329CC51860062FF5C /* ECCModule.m */; };
 		C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
 		C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A8C0A29CC58E70062FF5C /* ECCModule.swift */; };
+		C25CB49D2B9E0B2A00142C59 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */; };
+		C25CB49E2B9E0B2A00142C59 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */; };
 		C264D8C029CC8CC70066583C /* SecKeyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */; };
 		C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */; };
 		C264D8C329CC92F80066583C /* SecKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C229CC92F80066583C /* SecKeyStore.swift */; };
@@ -91,6 +93,7 @@
 		C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Organize-Bridging-Header.h"; sourceTree = "<group>"; };
 		C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OrganizeTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C24A8C0A29CC58E70062FF5C /* ECCModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCModule.swift; sourceTree = "<group>"; };
+		C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C264D8BF29CC8CC70066583C /* SecKeyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyConvertible.swift; sourceTree = "<group>"; };
 		C264D8C229CC92F80066583C /* SecKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyStore.swift; sourceTree = "<group>"; };
 		C264D8C529CC931A0066583C /* KeyStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStoreError.swift; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				C2FB820629EFFB78006822B3 /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -331,6 +335,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C25CB49E2B9E0B2A00142C59 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +356,7 @@
 				F48D4B478EEF4A779726BA80 /* OpenSans-Medium.ttf in Resources */,
 				DBD6DCA9038F4AC782D8BC51 /* OpenSans-MediumItalic.ttf in Resources */,
 				DEBD754CDBB945758B4122FD /* OpenSans-Regular.ttf in Resources */,
+				C25CB49D2B9E0B2A00142C59 /* Colors.xcassets in Resources */,
 				D6DE628DE78C492FBCDBC14F /* OpenSans-SemiBold.ttf in Resources */,
 				F8C7DB0EE50A473FB1E36E17 /* OpenSans-SemiBoldItalic.ttf in Resources */,
 			);
