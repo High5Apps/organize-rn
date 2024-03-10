@@ -1,10 +1,14 @@
 import React from 'react';
 import { ScreenBackground, UserList } from '../../components';
+import type { NewNominationScreenProps } from '../../navigation';
 
-export default function NewNominationScreen() {
+export default function NewNominationScreen({
+  route,
+}: NewNominationScreenProps) {
+  const { ballotId } = route.params;
   return (
     <ScreenBackground>
-      <UserList onItemPress={console.log} />
+      <UserList onItemPress={({ id }) => console.log({ id, ballotId })} />
     </ScreenBackground>
   );
 }

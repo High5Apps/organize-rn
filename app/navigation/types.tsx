@@ -171,13 +171,17 @@ export type NewElectionBallotScreenParams = {
   officeCategory: OfficeCategory
 };
 
+export type NewNominationScreenParams = {
+  ballotId: string;
+};
+
 export type VoteStackParamList = {
   Ballot: BallotScreenParams;
   BallotPreviews: BallotPreviewsScreenParams | undefined;
   BallotType: undefined;
   NewElectionBallot: NewElectionBallotScreenParams;
   NewMultipleChoiceBallot: undefined;
-  NewNomination: undefined;
+  NewNomination: NewNominationScreenParams;
   NewYesOrNoBallot: undefined;
   Nomination: NominationScreenParams;
   OfficeType: undefined;

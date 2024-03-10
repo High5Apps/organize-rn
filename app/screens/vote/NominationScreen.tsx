@@ -78,7 +78,7 @@ export default function NominationScreen({
         <PrimaryButton
           iconName="record-voice-over"
           label="Nominate"
-          onPress={() => navigation.navigate('NewNomination')}
+          onPress={() => navigation.navigate('NewNomination', { ballotId })}
           style={styles.button}
         />
       </ButtonRow>
