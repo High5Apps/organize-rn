@@ -3,11 +3,13 @@ import { Alert } from 'react-native';
 type Props = {
   destructiveAction: string;
   destructiveActionInTitle?: string;
+  destructiveButtonStyle?: 'default' | 'destructive';
   onConfirm: () => void;
 };
 
 export default function ConfirmationAlert({
-  destructiveAction, destructiveActionInTitle, onConfirm,
+  destructiveAction, destructiveActionInTitle, destructiveButtonStyle,
+  onConfirm,
 }: Props) {
   const actionInTitle = destructiveActionInTitle || destructiveAction;
   return {
@@ -20,7 +22,7 @@ export default function ConfirmationAlert({
           {
             text: destructiveAction,
             onPress: onConfirm,
-            style: 'destructive',
+            style: destructiveButtonStyle ?? 'destructive',
           },
         ],
         { cancelable: true },

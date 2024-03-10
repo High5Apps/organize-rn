@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { ReactElement, useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
   User, useCurrentUser, useUsers,
@@ -8,13 +8,20 @@ import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import UserRow from './UserRow';
 
 type Props = {
+  ListFooterComponent?: ReactElement;
   onItemPress?: (item: User) => void;
+  onlyShowUserId?: string;
 };
 
-export default function UserList({ onItemPress }: Props) {
+export default function UserList({
+  ListFooterComponent, onItemPress, onlyShowUserId,
+}: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, users,
   } = useUsers({ sort: 'service' });
+  const onlyShowUser = useMemo(() => (
+    onlyShowUserId ? users.find((u) => u.id === onlyShowUserId) : undefined
+  ), [onlyShowUserId]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
@@ -27,7 +34,9 @@ export default function UserList({ onItemPress }: Props) {
   });
 
   const {
-    clearError: clearNextPageError, ListFooterComponent, onEndReached,
+    clearError: clearNextPageError,
+    ListFooterComponent: InfiniteScrollListFooterComponent,
+    onEndReached,
     onEndReachedThreshold,
   } = useInfiniteScroll({
     getDisabled: () => (!users.length || refreshing || fetchedLastPage),
@@ -42,6 +51,7 @@ export default function UserList({ onItemPress }: Props) {
       return (
         <UserRow
           compact
+          disabled={!!onlyShowUserId}
           isMe={isMe}
           item={item}
           onPress={onItemPress}
@@ -53,18 +63,21 @@ export default function UserList({ onItemPress }: Props) {
 
   return (
     <FlatList
-      data={users}
+      data={onlyShowUser !== undefined ? [onlyShowUser] : users}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={ListFooterComponent}
-      onEndReached={onEndReached}
+      ListFooterComponent={!onlyShowUserId
+        ? InfiniteScrollListFooterComponent : ListFooterComponent}
+      onEndReached={!onlyShowUserId ? onEndReached : undefined}
       onEndReachedThreshold={onEndReachedThreshold}
-      refreshControl={refreshControl}
+      refreshControl={!onlyShowUserId ? refreshControl : undefined}
       renderItem={renderItem}
     />
   );
 }
 
 UserList.defaultProps = {
+  ListFooterComponent: undefined,
   onItemPress: () => null,
+  onlyShowUserId: undefined,
 };
