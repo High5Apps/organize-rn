@@ -203,6 +203,18 @@ export type Candidate = {
   title: string;
 };
 
+export type NominationUser = {
+  id: string;
+  pseudonym: string;
+};
+
+export type Nomination = {
+  accepted: boolean | null;
+  id: string;
+  nominator: NominationUser;
+  nominee: NominationUser;
+};
+
 export type Result = {
   candidate: Candidate;
   rank: number;
@@ -213,5 +225,6 @@ export type Ballot = BallotPreview & {
   candidates: Candidate[];
   maxCandidateIdsPerVote: number;
   myVote: string[];
+  nominations?: Nomination[];
   results?: Result[];
 };

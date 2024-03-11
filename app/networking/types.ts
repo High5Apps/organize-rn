@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
-  User, VoteState,
+  BallotCategory, Nomination, NominationUser, OfficeCategory, Org, OrgGraph,
+  PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
 export type CreateOrgResponse = {
@@ -285,6 +285,20 @@ function isBallotCandidate(object: unknown): object is BallotCandidate {
     );
 }
 
+function isNominationUser(object: unknown): object is NominationUser {
+  const user = (object as NominationUser);
+  return user && user.id.length > 0 && user.pseudonym.length > 0;
+}
+
+function isBallotNomination(object: unknown): object is Nomination {
+  const nomination = (object as Nomination);
+  return nomination
+    && [null, false, true].includes(nomination.accepted)
+    && nomination.id?.length > 0
+    && isNominationUser(nomination.nominator)
+    && isNominationUser(nomination.nominee);
+}
+
 type BallotResult = {
   candidateId: string;
   rank: number;
@@ -304,6 +318,7 @@ type BallotResponse = {
   };
   candidates: BallotCandidate[];
   myVote: string[];
+  nominations?: Nomination[];
   results?: BallotResult[];
 };
 
@@ -314,6 +329,10 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
     && Array.isArray(response?.candidates)
     && response.candidates.every(isBallotCandidate)
     && Array.isArray(response.myVote)
+    && (response.nominations === undefined || (
+      Array.isArray(response.nominations)
+        && response.nominations.every(isBallotNomination)
+    ))
     && (response.results === undefined || (
       Array.isArray(response.results) && response.results.every(isBallotResult)
     ));
