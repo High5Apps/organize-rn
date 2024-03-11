@@ -2,10 +2,12 @@ import React, { useCallback, useMemo } from 'react';
 import {
   ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
 } from 'react-native';
-import { Nomination, isDefined, useNominations } from '../../model';
+import {
+  Nomination, getOffice, isDefined, useNominations,
+} from '../../model';
 import { useBallot, usePullToRefresh } from '../hooks';
 import NominationRow from './NominationRow';
-import { ItemSeparator, renderSectionHeader } from '../views';
+import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 
 type NominationSection = {
   title: string;
@@ -29,6 +31,16 @@ export default function NominationList({
     <NominationRow item={item} />
   ), []);
 
+  const ListEmptyComponent = useMemo(() => {
+    if (!ballot?.office) { return null; }
+    const officeTitle = getOffice(ballot.office).title;
+    return (
+      <ListEmptyMessage
+        asteriskDelimitedMessage={`Be the first to **nominate a candidate** for ${officeTitle}.\n\nTap the button below to get started!`}
+      />
+    );
+  }, [ballot?.office]);
+
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: updateBallot,
     refreshOnMount: true,
@@ -48,6 +60,7 @@ export default function NominationList({
     <SectionList
       contentContainerStyle={contentContainerStyle}
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={ListEmptyComponent}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
