@@ -41,9 +41,9 @@ export default function VoteScreen({
           const now = new Date().getTime();
           const inNominations = now < (nominationsEndAt?.getTime() ?? 0);
           const active = now < votingEndsAt.getTime();
-          let screenName: 'Ballot' | 'Nomination' | 'Result';
+          let screenName: 'Ballot' | 'Nominations' | 'Result';
           if (active) {
-            screenName = inNominations ? 'Nomination' : 'Ballot';
+            screenName = inNominations ? 'Nominations' : 'Ballot';
           } else {
             screenName = 'Result';
           }

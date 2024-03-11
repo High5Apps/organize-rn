@@ -46,7 +46,7 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function NominationScreen({
+export default function NominationsScreen({
   navigation, route,
 }: NominationScreenProps) {
   const { ballotId } = route.params;
