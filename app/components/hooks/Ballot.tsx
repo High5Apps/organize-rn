@@ -17,7 +17,11 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function useBallot(ballotId: string) {
+type Options = {
+  fetchOnMount?: boolean;
+};
+
+export default function useBallot(ballotId: string, options: Options = {}) {
   const [ballot, setBallot] = useState<Ballot | undefined>();
 
   const { currentUser } = useCurrentUser();
@@ -58,8 +62,10 @@ export default function useBallot(ballotId: string) {
   }, [ballotId, currentUser]);
 
   useEffect(() => {
-    updateBallot().catch(console.error);
-  }, [updateBallot]);
+    if (options?.fetchOnMount) {
+      updateBallot().catch(console.error);
+    }
+  }, [options.fetchOnMount, updateBallot]);
 
   const { styles } = useStyles();
 
@@ -68,5 +74,5 @@ export default function useBallot(ballotId: string) {
     [UnstyledRequestProgress],
   );
 
-  return { ballot, RequestProgress };
+  return { ballot, RequestProgress, updateBallot };
 }

@@ -38,7 +38,9 @@ const useStyles = () => {
 export default function ResultScreen({ route }: ResultScreenProps) {
   const { params: { ballotId } } = route;
 
-  const { ballot, RequestProgress } = useBallot(ballotId);
+  const {
+    ballot, RequestProgress,
+  } = useBallot(ballotId, { fetchOnMount: true });
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);

@@ -60,7 +60,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   const [now, setNow] = useState<Date>(new Date());
   const updateTime = () => setNow(new Date());
 
-  const { ballot, RequestProgress } = useBallot(ballotId);
+  const {
+    ballot, RequestProgress,
+  } = useBallot(ballotId, { fetchOnMount: true });
 
   const {
     onNewCandidateSelection,
