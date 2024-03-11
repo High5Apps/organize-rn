@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { ScreenBackground, UserList, useRequestProgress } from '../../components';
+import {
+  ScreenBackground, UserList, useBallot, useRequestProgress,
+} from '../../components';
 import type { NewNominationScreenProps } from '../../navigation';
 import { createNomination } from '../../networking';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, User, useCurrentUser,
+  ConfirmationAlert, GENERIC_ERROR_MESSAGE, Nomination, User, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
 
@@ -21,13 +23,14 @@ const useStyles = () => {
 };
 
 export default function NewNominationScreen({
-  route,
+  navigation, route,
 }: NewNominationScreenProps) {
   const { ballotId } = route.params;
 
   const [filteredUserId, setFilteredUserId] = useState<string>();
 
   const { currentUser } = useCurrentUser();
+  const { cacheBallot, ballot } = useBallot(ballotId);
 
   const { styles } = useStyles();
 
@@ -35,10 +38,10 @@ export default function NewNominationScreen({
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
-  const onNominate = useCallback(async (nomineeId: string) => {
-    if (!currentUser) { return; }
+  const onNominate = useCallback(async (nominee: User) => {
+    if (!currentUser || !ballot) { return; }
 
-    setFilteredUserId(nomineeId);
+    setFilteredUserId(nominee.id);
     setResult('none');
     setLoading(true);
 
@@ -46,9 +49,9 @@ export default function NewNominationScreen({
     let errorMessage: string | undefined;
     let nominationId: string | undefined;
     try {
-      ({
-        id: nominationId, errorMessage,
-      } = await createNomination({ ballotId, jwt, nomineeId }));
+      ({ id: nominationId, errorMessage } = await createNomination({
+        ballotId: ballot.id, jwt, nomineeId: nominee.id,
+      }));
     } catch (error) {
       errorMessage = GENERIC_ERROR_MESSAGE;
     }
@@ -56,24 +59,42 @@ export default function NewNominationScreen({
     if (errorMessage !== undefined) {
       setResult('error', {
         message: `${errorMessage}\nTap here to try again`,
-        onPress: () => onNominate(nomineeId),
+        onPress: () => onNominate(nominee),
       });
     }
 
     if (nominationId) {
-      console.log(`TODO: Cache local nomination and go back: ${nominationId}`);
-      setResult('success', { message: 'Successfully created nomination' });
+      setResult('success');
+
+      const nomination: Nomination = {
+        accepted: null,
+        id: nominationId,
+        nominator: {
+          id: currentUser.id,
+          pseudonym: currentUser.pseudonym,
+        },
+        nominee: {
+          id: nominee.id,
+          pseudonym: nominee.pseudonym,
+        },
+      };
+      const updatedBallot = { ...ballot };
+      updatedBallot.nominations = [nomination, ...(ballot.nominations ?? [])];
+      cacheBallot(updatedBallot);
+
+      navigation.goBack();
     }
 
     setLoading(false);
-  }, [ballotId, currentUser]);
+  }, [ballot, currentUser]);
 
-  const onItemPress = useCallback(async ({ id, pseudonym }: User) => {
+  const onItemPress = useCallback(async (nominee: User) => {
+    const { pseudonym } = nominee;
     ConfirmationAlert({
       destructiveAction: 'Nominate',
       destructiveActionInTitle: `nominate ${pseudonym}`,
       destructiveButtonStyle: 'default',
-      onConfirm: () => onNominate(id),
+      onConfirm: () => onNominate(nominee),
     }).show();
   }, [onNominate]);
 
