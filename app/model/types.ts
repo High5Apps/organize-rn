@@ -67,7 +67,6 @@ export type CurrentUserBaseData = {
 
 export type CurrentUserData = CurrentUserBaseData & User & {
   org: Org;
-  orgId: string;
 };
 
 export function isCurrentUserData(object: unknown): object is CurrentUserData {
@@ -78,7 +77,6 @@ export function isCurrentUserData(object: unknown): object is CurrentUserData {
     && currentUserData.encryptedGroupKey?.length > 0
     && currentUserData.localEncryptionKeyId?.length > 0
     && currentUserData.id?.length > 0
-    && currentUserData.orgId?.length > 0
     && currentUserData.pseudonym?.length > 0;
 }
 

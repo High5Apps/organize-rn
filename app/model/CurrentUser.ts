@@ -17,7 +17,7 @@ export function CurrentUser(
 ) {
   const {
     authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
-    localEncryptionKeyId, offices, org, orgId, pseudonym, recruitCount,
+    localEncryptionKeyId, offices, org, pseudonym, recruitCount,
   } = currentUserData;
 
   const currentUserBase = CurrentUserBase({
@@ -109,7 +109,6 @@ export function CurrentUser(
     e2eEncryptMany,
     logOut,
     org,
-    orgId,
     update,
     user,
     ...user(),

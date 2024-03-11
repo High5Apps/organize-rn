@@ -128,6 +128,5 @@ export default async function createCurrentUser({
     id: userId,
     localEncryptionKeyId,
     org,
-    orgId,
   };
 }

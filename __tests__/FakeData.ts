@@ -23,7 +23,6 @@ export const fakeCurrentUserData: CurrentUserData = {
   localEncryptionKeyId: 'fakeLocalEncryptionKeyId',
   offices: [],
   org: fakeOrg,
-  orgId: fakeOrg.id,
   pseudonym: 'Fearless Hawk',
   recruitCount: 0,
 };
@@ -36,7 +35,6 @@ export const fakeOtherCurrentUserData: CurrentUserData = {
   localEncryptionKeyId: 'otherFakeLocalEncryptionKeyId',
   offices: [],
   org: fakeOtherOrg,
-  orgId: fakeOtherOrg.id,
   pseudonym: 'Glorious Stingray',
   recruitCount: 0,
 };
