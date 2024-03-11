@@ -1,15 +1,15 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
-  CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
-  useLearnMoreOfficeModal,
+  CandidateList, LearnMoreButtonRow, ScreenBackground, TimeRemainingFooter,
+  useBallot, useLearnMoreOfficeModal,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Candidate, getTimeRemaining, useBallotPreviews, useVoteUpdater,
+  Candidate, useBallotPreviews, useVoteUpdater,
   votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
 } from '../../model';
 
@@ -38,16 +38,10 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    timeRemaining: {
-      color: colors.labelSecondary,
-      marginBottom: spacing.m,
-      marginHorizontal: spacing.m,
-      textAlign: 'center',
-    },
-    timeRemainingNotElection: {
+    timeRemainingElection: {
       // Not needed for elections because LearnMoreButtonRow already has
       // built-in margin
-      marginTop: spacing.m,
+      marginTop: 0,
     },
   });
 
@@ -56,9 +50,6 @@ const useStyles = () => {
 
 export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
-
-  const [now, setNow] = useState<Date>(new Date());
-  const updateTime = () => setNow(new Date());
 
   const {
     ballot, RequestProgress,
@@ -120,23 +111,17 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         {isElection && (
           <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
         )}
-        <Text
-          style={[
-            styles.text,
-            styles.timeRemaining,
-            !isElection && styles.timeRemainingNotElection,
-          ]}
-          onPress={updateTime}
-        >
-          {getTimeRemaining(ballotPreview.votingEndsAt, {
-            formatter: votingTimeRemainingFormatter,
+        <TimeRemainingFooter
+          endTime={ballotPreview.votingEndsAt}
+          style={isElection && styles.timeRemainingElection}
+          timeRemainingOptions={{
             expiredFormatter: votingTimeRemainingExpiredFormatter,
-            now,
-          })}
-        </Text>
+            formatter: votingTimeRemainingFormatter,
+          }}
+        />
       </>
     );
-  }, [ballotPreview, now]);
+  }, [ballotPreview]);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
@@ -150,7 +135,6 @@ export default function BallotScreen({ route }: BallotScreenProps) {
 
       Alert.alert(errorMessage);
     }
-    updateTime();
   }, [onNewCandidateSelection]);
 
   return (

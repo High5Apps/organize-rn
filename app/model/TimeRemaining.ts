@@ -3,7 +3,7 @@ import {
   SECONDS_PER_MINUTE, SECONDS_PER_WEEK,
 } from './MessageAge';
 
-type Options = {
+export type TimeRemainingOptions = {
   expiredFormatter?: (timeRemaining: string) => string;
   formatter?: (timeRemaining: string) => string;
   now?: Date;
@@ -14,7 +14,7 @@ const defaultFormatter = (timeRemaining: string) => (`${timeRemaining} left`);
 export default function getTimeRemaining(expiration: Date, {
   expiredFormatter: maybeExpiredFormatter, formatter: maybeFormatter,
   now: maybeNow,
-}: Options = {}) {
+}: TimeRemainingOptions = {}) {
   const formatter = maybeFormatter ?? defaultFormatter;
   const expiredFormatter = maybeExpiredFormatter ?? formatter;
   const now = maybeNow ?? new Date();

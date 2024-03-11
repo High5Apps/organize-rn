@@ -1,4 +1,7 @@
 import type { AESEncryptedData } from './keys';
+import type { TimeRemainingOptions } from './TimeRemaining';
+
+export type { TimeRemainingOptions };
 
 const OFFICE_CATEGORIES = [
   'founder',
