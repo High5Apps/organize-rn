@@ -4,7 +4,7 @@ import type { NominationScreenProps } from '../../navigation';
 import { OfficeCategory, getOffice, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 import {
-  ButtonRow, PrimaryButton, ScreenBackground, SecondaryButton,
+  ButtonRow, NominationList, PrimaryButton, ScreenBackground, SecondaryButton,
   useLearnMoreOfficeModal,
 } from '../../components';
 
@@ -67,6 +67,10 @@ export default function NominationsScreen({
 
   return (
     <ScreenBackground>
+      <NominationList
+        ballotId={ballotId}
+        contentContainerStyle={styles.contentContainerStyle}
+      />
       <LearnMoreOfficeModal />
       <ButtonRow style={styles.buttonRow}>
         <SecondaryButton

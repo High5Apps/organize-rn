@@ -1,0 +1,64 @@
+import React, { useCallback, useMemo } from 'react';
+import {
+  ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
+} from 'react-native';
+import { Nomination, isDefined, useNominations } from '../../model';
+import { useBallot, usePullToRefresh } from '../hooks';
+import NominationRow from './NominationRow';
+import { ItemSeparator, renderSectionHeader } from '../views';
+
+type NominationSection = {
+  title: string;
+  data: Nomination[];
+};
+
+type Props = {
+  ballotId: string;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+};
+
+export default function NominationList({
+  ballotId, contentContainerStyle,
+}: Props) {
+  const { ballot, updateBallot } = useBallot(ballotId);
+  const {
+    acceptedNominations, declinedNominations, pendingNominations,
+  } = useNominations(ballot);
+
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<Nomination>) => (
+    <NominationRow item={item} />
+  ), []);
+
+  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
+    onRefresh: updateBallot,
+    refreshOnMount: true,
+  });
+
+  const sections: NominationSection[] = useMemo(() => (
+    [
+      { title: 'Accepted', data: acceptedNominations },
+      { title: 'Pending', data: pendingNominations },
+      { title: 'Declined', data: declinedNominations },
+    ]
+      .map((section) => (section.data.length > 0 ? section : undefined))
+      .filter(isDefined)
+  ), [acceptedNominations, declinedNominations, pendingNominations]);
+
+  return (
+    <SectionList
+      contentContainerStyle={contentContainerStyle}
+      ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={ListHeaderComponent}
+      renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
+      refreshControl={refreshControl}
+      refreshing={refreshing}
+      sections={sections}
+      stickySectionHeadersEnabled
+    />
+  );
+}
+
+NominationList.defaultProps = {
+  contentContainerStyle: {},
+};
