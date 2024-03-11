@@ -1,38 +1,26 @@
 import React, {
-  useCallback, useEffect, useLayoutEffect, useMemo, useState,
+  useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import {
-  IconButton, NotableUserList, OrgGraph, ScreenBackground, SectionHeader,
+  NotableUserList, OrgGraph, ScreenBackground, SectionHeader, useHeaderButton,
 } from '../../components';
-import type {
-  OrgScreenProps, SettingsScreenNavigationProp,
-} from '../../navigation';
+import type { OrgScreenProps } from '../../navigation';
 import {
   useCurrentUser, useOrg, useSelectedUser, useUsers, useVisGraphData,
 } from '../../model';
 
 const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
-function SettingsButton() {
-  const navigation: SettingsScreenNavigationProp = useNavigation();
-  return (
-    <IconButton
-      iconName="settings"
-      onPress={() => navigation.navigate('Settings')}
-    />
-  );
-}
-
 export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [graphError, setGraphError] = useState('');
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [graphRendered, setGraphRendered] = useState(false);
 
-  useLayoutEffect(() => {
-    const headerRight = () => <SettingsButton />;
-    navigation.setOptions({ headerRight });
-  }, [navigation]);
+  useHeaderButton({
+    iconName: 'settings',
+    navigation,
+    onPress: useCallback(() => navigation.navigate('Settings'), [navigation]),
+  });
 
   const { currentUser } = useCurrentUser();
   const {
