@@ -3,11 +3,13 @@ import {
   ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
 } from 'react-native';
 import {
-  Nomination, getOffice, isDefined, useNominations,
+  Nomination, getOffice, isDefined, nominationsTimeRemainingExpiredFormatter,
+  nominationsTimeRemainingFormatter, useNominations,
 } from '../../model';
 import { useBallot, usePullToRefresh } from '../hooks';
 import NominationRow from './NominationRow';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
+import TimeRemainingFooter from './TimeRemainingFooter';
 
 type NominationSection = {
   title: string;
@@ -41,6 +43,19 @@ export default function NominationList({
     );
   }, [ballot?.office]);
 
+  const ListFooterComponent = useMemo(() => {
+    if (!ballot?.nominationsEndAt) { return null; }
+    return (
+      <TimeRemainingFooter
+        endTime={ballot.nominationsEndAt}
+        timeRemainingOptions={{
+          expiredFormatter: nominationsTimeRemainingExpiredFormatter,
+          formatter: nominationsTimeRemainingFormatter,
+        }}
+      />
+    );
+  }, [ballot?.nominationsEndAt]);
+
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: updateBallot,
     refreshOnMount: true,
@@ -61,6 +76,7 @@ export default function NominationList({
       contentContainerStyle={contentContainerStyle}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ListEmptyComponent}
+      ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}

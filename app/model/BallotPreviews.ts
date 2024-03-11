@@ -143,6 +143,8 @@ export const nominationsTimeRemainingFormatter = (timeRemaining: string) => (
   `${timeRemaining} until nominations end`
 );
 
+export const nominationsTimeRemainingExpiredFormatter = () => 'Nominations ended';
+
 export const votingTimeRemainingFormatter = (timeRemaining: string) => (
   `${timeRemaining} until voting ends`
 );
