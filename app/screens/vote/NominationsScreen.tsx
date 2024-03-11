@@ -1,10 +1,10 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import type { NominationScreenProps } from '../../navigation';
 import { OfficeCategory, getOffice, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 import {
-  ButtonRow, NominationList, PrimaryButton, ScreenBackground, SecondaryButton,
+  NominationList, PrimaryButton, ScreenBackground, useHeaderButton,
   useLearnMoreOfficeModal,
 } from '../../components';
 
@@ -27,16 +27,11 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     button: {
-      flex: 0,
+      bottom: buttonMargin,
+      end: buttonMargin,
       height: sizes.buttonHeight,
       paddingHorizontal: buttonMargin,
-    },
-    buttonRow: {
-      bottom: 0,
-      left: 0,
-      paddingHorizontal: spacing.m,
       position: 'absolute',
-      right: 0,
     },
     contentContainerStyle: {
       paddingBottom: buttonBoundingBoxHeight,
@@ -64,6 +59,11 @@ export default function NominationsScreen({
   const {
     LearnMoreOfficeModal, setModalVisible,
   } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+  useHeaderButton({
+    iconName: 'info-outline',
+    navigation,
+    onPress: useCallback(() => setModalVisible(true), []),
+  });
 
   return (
     <ScreenBackground>
@@ -72,20 +72,12 @@ export default function NominationsScreen({
         contentContainerStyle={styles.contentContainerStyle}
       />
       <LearnMoreOfficeModal />
-      <ButtonRow style={styles.buttonRow}>
-        <SecondaryButton
-          iconName="info-outline"
-          label="Learn more"
-          onPress={() => setModalVisible(true)}
-          style={styles.button}
-        />
-        <PrimaryButton
-          iconName="record-voice-over"
-          label="Nominate"
-          onPress={() => navigation.navigate('NewNomination', { ballotId })}
-          style={styles.button}
-        />
-      </ButtonRow>
+      <PrimaryButton
+        iconName="record-voice-over"
+        label="Nominate"
+        onPress={() => navigation.navigate('NewNomination', { ballotId })}
+        style={styles.button}
+      />
     </ScreenBackground>
   );
 }
