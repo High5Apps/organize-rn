@@ -52,15 +52,17 @@ export default function BallotScreen({ route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
   const {
-    ballot, RequestProgress,
-  } = useBallot(ballotId, { fetchOnMount: true });
+    ballot, cacheBallot, RequestProgress,
+  } = useBallot(ballotId, {
+    shouldFetchOnMount: (cachedBallot) => !cachedBallot?.candidates,
+  });
 
   const {
     onNewCandidateSelection,
     selectedCandidateIds,
     waitingForDeselectedCandidateIds,
     waitingForSelectedCandidateIds,
-  } = useVoteUpdater({ ballot });
+  } = useVoteUpdater({ ballot, cacheBallot });
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);

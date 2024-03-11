@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Ballot, Candidate } from './types';
 import useCurrentUser from './CurrentUser';
 import { createVote } from '../networking';
@@ -6,6 +6,7 @@ import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 type Props = {
   ballot?: Ballot;
+  cacheBallot: (ballot: Ballot) => void;
 };
 
 function quickDifference<T>(a: T[], b: T[]): T[] {
@@ -13,10 +14,8 @@ function quickDifference<T>(a: T[], b: T[]): T[] {
   return [...a].filter((value) => !setB.has(value));
 }
 
-export default function useVoteUpdater({ ballot }: Props) {
-  const [
-    selectedCandidateIds, setSelectedCandidateIds,
-  ] = useState<string[] | undefined>();
+export default function useVoteUpdater({ ballot, cacheBallot }: Props) {
+  const selectedCandidateIds = useMemo(() => ballot?.myVote, [ballot?.myVote]);
   const [
     waitingForSelectedCandidateIds, setWaitingForSelectedCandidateIds,
   ] = useState<string[]>([]);
@@ -25,12 +24,6 @@ export default function useVoteUpdater({ ballot }: Props) {
   ] = useState<string[]>([]);
 
   const { currentUser } = useCurrentUser();
-
-  useEffect(() => {
-    if (ballot !== undefined) {
-      setSelectedCandidateIds(ballot.myVote);
-    }
-  }, [ballot?.myVote]);
 
   const onNewCandidateSelection = useCallback(async ({
     id: candidateId,
@@ -96,7 +89,9 @@ export default function useVoteUpdater({ ballot }: Props) {
       throw new Error(errorMessage);
     }
 
-    setSelectedCandidateIds(updatedSelectedCandidateIds);
+    const updatedBallot = { ...ballot };
+    updatedBallot.myVote = updatedSelectedCandidateIds;
+    cacheBallot(updatedBallot);
   }, [ballot, selectedCandidateIds]);
 
   return {

@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
 import { Ballot, GENERIC_ERROR_MESSAGE, useCurrentUser } from '../../model';
 import { fetchBallot } from '../../networking';
+import { useBallotContext } from '../../context';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -18,11 +19,16 @@ const useStyles = () => {
 };
 
 type Options = {
-  fetchOnMount?: boolean;
+  shouldFetchOnMount?: (cachedBallot?: Ballot) => boolean;
 };
 
 export default function useBallot(ballotId: string, options: Options = {}) {
-  const [ballot, setBallot] = useState<Ballot | undefined>();
+  const { cacheBallot, getCachedBallot } = useBallotContext();
+
+  const ballot = useMemo(
+    () => getCachedBallot(ballotId),
+    [ballotId, getCachedBallot],
+  );
 
   const { currentUser } = useCurrentUser();
 
@@ -54,18 +60,17 @@ export default function useBallot(ballotId: string, options: Options = {}) {
         message: `${errorMessage}\nTap here to try again`,
         onPress: updateBallot,
       });
-      return;
+    } else if (fetchedBallot) {
+      cacheBallot(fetchedBallot);
+      setLoading(false);
     }
-
-    setBallot(fetchedBallot);
-    setLoading(false);
   }, [ballotId, currentUser]);
 
   useEffect(() => {
-    if (options?.fetchOnMount) {
+    if (options?.shouldFetchOnMount?.(ballot)) {
       updateBallot().catch(console.error);
     }
-  }, [options.fetchOnMount, updateBallot]);
+  }, [ballot, options.shouldFetchOnMount, updateBallot]);
 
   const { styles } = useStyles();
 
@@ -74,5 +79,7 @@ export default function useBallot(ballotId: string, options: Options = {}) {
     [UnstyledRequestProgress],
   );
 
-  return { ballot, RequestProgress, updateBallot };
+  return {
+    ballot, cacheBallot, getCachedBallot, RequestProgress, updateBallot,
+  };
 }

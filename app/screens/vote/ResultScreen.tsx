@@ -40,7 +40,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
   const {
     ballot, RequestProgress,
-  } = useBallot(ballotId, { fetchOnMount: true });
+  } = useBallot(ballotId, {
+    shouldFetchOnMount: (cachedBallot) => !cachedBallot?.results,
+  });
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
