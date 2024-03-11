@@ -68,7 +68,6 @@ export type CurrentUserBaseData = {
 export type CurrentUserData = CurrentUserBaseData & User & {
   org: Org;
   orgId: string;
-  pseudonym: string;
 };
 
 export function isCurrentUserData(object: unknown): object is CurrentUserData {
