@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
-import { ConfirmationAlert, Nomination } from '../../model';
+import {
+  ConfirmationAlert, Nomination, NonPendingNomination,
+} from '../../model';
 import { HighlightedRowContainer } from '../views';
 import DecisionButtonsRow from './DecisionButtonsRow';
 
@@ -28,10 +30,6 @@ const useStyles = () => {
   });
 
   return { colors, styles };
-};
-
-export type NonPendingNomination = Nomination & {
-  accepted: boolean;
 };
 
 type Props = {

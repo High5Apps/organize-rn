@@ -215,6 +215,10 @@ export type Nomination = {
   nominee: NominationUser;
 };
 
+export type NonPendingNomination = Nomination & {
+  accepted: boolean;
+};
+
 export type Result = {
   candidate: Candidate;
   rank: number;

@@ -1,19 +1,15 @@
 import React, { useCallback, useMemo } from 'react';
 import {
-  Alert, ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
+  ListRenderItemInfo, SectionList, StyleProp, ViewStyle,
 } from 'react-native';
 import {
-  GENERIC_ERROR_MESSAGE, Nomination, getOffice, isDefined,
-  nominationsTimeRemainingExpiredFormatter, nominationsTimeRemainingFormatter,
-  useCurrentUser, useNominations,
+  Nomination, getOffice, isDefined, nominationsTimeRemainingExpiredFormatter,
+  nominationsTimeRemainingFormatter, useCurrentUser, useNominations,
 } from '../../model';
 import { useBallot, usePullToRefresh } from '../hooks';
-import NominationRow, { NonPendingNomination } from './NominationRow';
+import NominationRow from './NominationRow';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import TimeRemainingFooter from './TimeRemainingFooter';
-import { updateNomination } from '../../networking';
-
-const ERROR_ALERT_TITLE = 'Failed to accept or decline nomination. Please try again.';
 
 type NominationSection = {
   title: string;
@@ -30,53 +26,19 @@ export default function NominationList({
 }: Props) {
   const { ballot, cacheBallot, updateBallot } = useBallot(ballotId);
   const {
-    acceptedNominations, declinedNominations, pendingNominations,
-  } = useNominations(ballot);
+    acceptedNominations, acceptOrDeclineNomination, declinedNominations,
+    pendingNominations,
+  } = useNominations(ballot, cacheBallot);
   const { currentUser } = useCurrentUser();
   if (!currentUser) { throw new Error('Expected current user'); }
-
-  const onNominationUpdated = useCallback(
-    async (updatedNomination: NonPendingNomination) => {
-      if (!ballot) { return; }
-
-      // Optimistically cache the updatedNomination on the ballot
-      cacheBallot({
-        ...ballot,
-        nominations: ballot.nominations?.map((n) => (
-          n.id === updatedNomination.id ? updatedNomination : n
-        )),
-      });
-
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-
-      let errorMessage: string | undefined;
-      try {
-        ({ errorMessage } = await updateNomination({
-          accepted: updatedNomination.accepted,
-          jwt,
-          id: updatedNomination.id,
-        }));
-      } catch (error) {
-        errorMessage = GENERIC_ERROR_MESSAGE;
-      }
-
-      if (errorMessage) {
-        // On error, revert the ballot back to what it was before the
-        // optimistic caching
-        cacheBallot(ballot);
-        Alert.alert(ERROR_ALERT_TITLE, errorMessage);
-      }
-    },
-    [ballot, cacheBallot, currentUser],
-  );
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Nomination>) => (
     <NominationRow
       currentUserId={currentUser.id}
       item={item}
-      onNominationUpdated={onNominationUpdated}
+      onNominationUpdated={acceptOrDeclineNomination}
     />
-  ), [currentUser.id, onNominationUpdated]);
+  ), [currentUser.id, acceptOrDeclineNomination]);
 
   const ListEmptyComponent = useMemo(() => {
     if (!ballot?.office) { return null; }
