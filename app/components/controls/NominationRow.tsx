@@ -10,8 +10,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.fill,
-      paddingHorizontal: spacing.m,
-      paddingVertical: spacing.s,
+      padding: spacing.s,
     },
     subtitle: {
       color: colors.labelSecondary,
