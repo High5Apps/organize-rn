@@ -8,6 +8,7 @@ export { default as CommentRow } from './CommentRow';
 export {
   default as DateTimeSelector, startOfNextHourIn,
 } from './DateTimeSelector';
+export { default as DecisionButtonsRow } from './DecisionButtonsRow';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as useHeaderButton } from './HeaderButton';

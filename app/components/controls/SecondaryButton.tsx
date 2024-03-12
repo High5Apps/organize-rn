@@ -39,7 +39,7 @@ const useStyles = () => {
 
 type Props = {
   disabled?: boolean;
-  iconName: string;
+  iconName?: string;
   label: string;
   onPress?: (() => Promise<void>) | (() => void);
   reversed?: boolean;
@@ -64,7 +64,7 @@ export default function SecondaryButton({
         style,
       ]}
     >
-      <Icon name={iconName} style={styles.icon} />
+      {iconName && <Icon name={iconName} style={styles.icon} />}
       <Text style={styles.text}>
         {label}
       </Text>
@@ -74,6 +74,7 @@ export default function SecondaryButton({
 
 SecondaryButton.defaultProps = {
   disabled: false,
+  iconName: undefined,
   onPress: () => {},
   reversed: false,
   style: {},

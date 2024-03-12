@@ -40,7 +40,7 @@ const useStyles = () => {
 };
 
 type Props = {
-  iconName: string;
+  iconName?: string;
   onPress?: (() => Promise<void>) | (() => void);
   style?: StyleProp<ViewStyle>;
   label: string;
@@ -62,7 +62,7 @@ export default function PrimaryButton({
         style,
       ]}
     >
-      <Icon name={iconName} style={styles.icon} />
+      {iconName && <Icon name={iconName} style={styles.icon} />}
       <Text style={styles.text}>
         {label}
       </Text>
@@ -71,6 +71,7 @@ export default function PrimaryButton({
 }
 
 PrimaryButton.defaultProps = {
+  iconName: undefined,
   onPress: () => {},
   style: {},
 };
