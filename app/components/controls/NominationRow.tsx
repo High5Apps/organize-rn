@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
-import { Nomination } from '../../model';
+import { ConfirmationAlert, Nomination } from '../../model';
 import { HighlightedRowContainer } from '../views';
+import DecisionButtonsRow from './DecisionButtonsRow';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -10,6 +11,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.fill,
+      flex: 1,
       padding: spacing.s,
     },
     subtitle: {
@@ -28,12 +30,30 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-type Props = {
-  item: Nomination;
+export type NonPendingNomination = Nomination & {
+  accepted: boolean;
 };
 
-export default function NominationRow({ item: { nominator, nominee } }: Props) {
+type Props = {
+  currentUserId: string;
+  item: Nomination;
+  onNominationUpdated: (updatedNomination: NonPendingNomination) => void,
+};
+
+export default function NominationRow({
+  currentUserId, item: nomination, onNominationUpdated,
+}: Props) {
+  const { accepted, nominator, nominee } = nomination;
   const { styles } = useStyles();
+  const showDecisionButtonRow = currentUserId === nominee.id
+    && accepted === null;
+
+  const wrappedOnNominationUpdated = useMemo(
+    () => (shouldAccept: boolean) => onNominationUpdated({
+      ...nomination, accepted: shouldAccept,
+    }),
+    [nomination, onNominationUpdated],
+  );
 
   return (
     <HighlightedRowContainer userIds={[nominator.id, nominee.id]}>
@@ -42,6 +62,18 @@ export default function NominationRow({ item: { nominator, nominee } }: Props) {
         <Text style={styles.subtitle}>
           {`Nominated by ${nominator.pseudonym}`}
         </Text>
+        {showDecisionButtonRow && (
+          <DecisionButtonsRow
+            onAccept={() => wrappedOnNominationUpdated(true)}
+            onDecline={(
+              ConfirmationAlert({
+                destructiveAction: 'Decline',
+                destructiveActionInTitle: 'decline your nomination',
+                onConfirm: () => wrappedOnNominationUpdated(false),
+              }).show
+            )}
+          />
+        )}
       </View>
     </HighlightedRowContainer>
   );
