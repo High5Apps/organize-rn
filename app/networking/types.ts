@@ -378,6 +378,19 @@ export function isCreateNominationResponse(object: unknown): object is CreateNom
   return response?.id?.length > 0;
 }
 
+export type UpdateNominationResponse = {
+  nomination: {
+    accepted: boolean | null;
+    id: string;
+  };
+};
+
+export function isUpdateNominationResponse(object: unknown): object is UpdateNominationResponse {
+  const response = (object as UpdateNominationResponse);
+  return response?.nomination?.accepted !== undefined
+    && response.nomination.id?.length > 0;
+}
+
 type OfficeIndexOffice = {
   open: boolean;
   type: OfficeCategory;
