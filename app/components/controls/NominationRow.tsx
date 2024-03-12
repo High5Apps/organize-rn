@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
 import { Nomination } from '../../model';
+import { HighlightedRowContainer } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -32,19 +33,17 @@ type Props = {
   item: Nomination;
 };
 
-export default function NominationRow({ item }: Props) {
-  const {
-    nominator: { pseudonym: nominatorPseudonym },
-    nominee: { pseudonym: nomineePseudonym },
-  } = item;
+export default function NominationRow({ item: { nominator, nominee } }: Props) {
   const { styles } = useStyles();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{nomineePseudonym}</Text>
-      <Text style={styles.subtitle}>
-        {`Nominated by ${nominatorPseudonym}`}
-      </Text>
-    </View>
+    <HighlightedRowContainer userIds={[nominator.id, nominee.id]}>
+      <View style={styles.container}>
+        <Text style={styles.title}>{nominee.pseudonym}</Text>
+        <Text style={styles.subtitle}>
+          {`Nominated by ${nominator.pseudonym}`}
+        </Text>
+      </View>
+    </HighlightedRowContainer>
   );
 }
