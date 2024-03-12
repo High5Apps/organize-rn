@@ -1,5 +1,6 @@
+import isEqual from 'react-fast-compare';
 import { fromJson } from '../model';
-import { post } from './API';
+import { patch, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { nominationURI, nominationsURI } from './Routes';
 import {
@@ -47,23 +48,24 @@ export async function createNomination({
 
 type UpdateProps = {
   accepted: boolean;
-  nominationId: string;
+  id: string;
 };
 
 type UpdateReturn = {
   errorMessage: string;
   nomination?: never;
-} | UpdateNominationResponse & {
+} | (UpdateNominationResponse & {
   errorMessage?: never;
-};
+});
 
 export async function updateNomination({
-  accepted, jwt, nominationId,
+  jwt, ...updatedAttributes
 }: UpdateProps & Authorization): Promise<UpdateReturn> {
-  const response = await post({
+  const { accepted, id } = updatedAttributes;
+  const response = await patch({
     bodyObject: { nomination: { accepted } },
     jwt,
-    uri: nominationURI(nominationId),
+    uri: nominationURI(id),
   });
   const text = await response.text();
   const json = fromJson(text, {
@@ -77,6 +79,10 @@ export async function updateNomination({
 
   if (!isUpdateNominationResponse(json)) {
     throw new Error('Failed to parse nomination from response');
+  }
+
+  if (!isEqual(json.nomination, updatedAttributes)) {
+    throw new Error('Failed to updated all nomination attributes');
   }
 
   return json;
