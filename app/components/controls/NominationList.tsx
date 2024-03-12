@@ -63,9 +63,9 @@ export default function NominationList({
 
   const sections: NominationSection[] = useMemo(() => (
     [
-      { title: 'Accepted', data: acceptedNominations },
-      { title: 'Pending', data: pendingNominations },
-      { title: 'Declined', data: declinedNominations },
+      { title: 'Accepted by nominee', data: acceptedNominations },
+      { title: 'Sent to nominee', data: pendingNominations },
+      { title: 'Declined by nominee', data: declinedNominations },
     ]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
