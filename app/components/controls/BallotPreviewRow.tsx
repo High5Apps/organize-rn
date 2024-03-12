@@ -92,7 +92,7 @@ export default function BallotRow({ item, onPress }: Props) {
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <HighlightedRowContainer style={styles.container} userId={userId}>
+      <HighlightedRowContainer style={styles.container} userIds={[userId]}>
         <Icon name={ballotTypeMap[category].iconName} style={styles.icon} />
         <View style={styles.innerContainer}>
           <Text style={[styles.text, styles.title]}>{question}</Text>

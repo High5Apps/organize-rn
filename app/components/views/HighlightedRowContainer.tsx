@@ -29,17 +29,17 @@ const useStyles = () => {
 };
 
 type Props = {
-  userId: string;
+  userIds: string[];
   style?: StyleProp<ViewStyle>;
 };
 
 export default function HighlightedRowContainer({
-  children, userId, style,
+  children, userIds, style,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
   const { currentUser } = useCurrentUser();
-  const highlighted = userId === currentUser?.id;
+  const highlighted = currentUser && userIds.includes(currentUser?.id);
 
   return (
     <View

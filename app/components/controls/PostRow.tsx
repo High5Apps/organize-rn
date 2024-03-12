@@ -88,7 +88,7 @@ function PostRow({
     >
       <HighlightedRowContainer
         style={styles.highlightedRowContainer}
-        userId={userId}
+        userIds={[userId]}
       >
         <UpvoteControl
           errorItemFriendlyDifferentiator={title}

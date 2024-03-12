@@ -105,7 +105,7 @@ function CommentRow({
         styles.highlightedRowContainer,
         { marginStart },
       ])}
-      userId={userId}
+      userIds={[userId]}
     >
       <UpvoteControl
         commentId={id}
