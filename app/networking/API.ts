@@ -37,29 +37,26 @@ type GetProps = HeaderProps & {
   uri: string;
 };
 
-export async function get({ jwt, uri, sharerJwt }: GetProps) {
-  const response = await fetch(uri, {
-    method: 'GET',
-    headers: headers({ jwt, sharerJwt }),
-  });
-  return response;
-}
+export const get = async ({ jwt, uri, sharerJwt }: GetProps) => fetch(uri, {
+  method: 'GET',
+  headers: headers({ jwt, sharerJwt }),
+});
 
 type PostProps = HeaderProps & {
   bodyObject?: any;
   uri: string;
 };
 
-export async function post({
+const postOrPatch = async (method: 'POST' | 'PATCH', {
   bodyObject, jwt, sharerJwt, uri,
-}: PostProps) {
-  const response = await fetch(uri, {
-    method: 'POST',
-    headers: headers({ jwt, sharerJwt }),
-    body: JSON.stringify(bodyObject),
-  });
-  return response;
-}
+}: PostProps) => fetch(uri, {
+  method,
+  headers: headers({ jwt, sharerJwt }),
+  body: JSON.stringify(bodyObject),
+});
+
+export const post = async (props: PostProps) => postOrPatch('POST', props);
+export const patch = async (props: PostProps) => postOrPatch('PATCH', props);
 
 export function fromBackendEncryptedMessage(
   backendEncryptedMessage: BackendEncryptedMessage,
