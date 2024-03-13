@@ -230,7 +230,7 @@ export type BallotIndexBallot = {
   nominationsEndAt: null;
   office: null;
 } | {
-  category: Extract<BallotCategory, 'election'>;
+  category: 'election';
   nominationsEndAt: Date;
   office: OfficeCategory;
 });
@@ -315,7 +315,12 @@ function isBallotResult(object: unknown): object is BallotResult {
 type BallotResponse = {
   ballot: BallotIndexBallot & {
     maxCandidateIdsPerVote: number;
-  };
+  } & ({
+    category: Exclude<BallotCategory, 'election'>;
+  } | {
+    category: 'election';
+    termEndsAt: Date;
+  });
   candidates: BallotCandidate[];
   myVote: string[];
   nominations?: Nomination[];
@@ -326,6 +331,8 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
   const response = (object as BallotResponse);
   return isBallotIndexBallot(response.ballot)
     && response.ballot.maxCandidateIdsPerVote !== undefined
+    && ((response.ballot.category !== 'election')
+      || isDate(response.ballot.termEndsAt))
     && Array.isArray(response?.candidates)
     && response.candidates.every(isBallotCandidate)
     && Array.isArray(response.myVote)

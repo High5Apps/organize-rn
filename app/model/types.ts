@@ -191,7 +191,7 @@ export type BallotPreview = {
   nominationsEndAt: null;
   office: null;
 } | {
-  category: Extract<BallotCategory, 'election'>;
+  category: 'election';
   nominationsEndAt: Date;
   office: OfficeCategory;
 });
@@ -231,4 +231,9 @@ export type Ballot = BallotPreview & {
   myVote: string[];
   nominations?: Nomination[];
   results?: Result[];
-};
+} & ({
+  category: Exclude<BallotCategory, 'election'>;
+} | {
+  category: 'election';
+  termEndsAt: Date;
+});
