@@ -5,8 +5,7 @@ import {
 import TextButton from './TextButton';
 import useTheme from '../../Theme';
 import DateTimePickerModal from './DateTimePickerModal';
-
-const LOCALE = 'en-US';
+import { formatDate } from '../../model';
 
 const useStyles = () => {
   const { colors, font } = useTheme();
@@ -28,17 +27,6 @@ const useStyles = () => {
   return { styles };
 };
 
-const formatDateTime = (d: Date) => (
-  d.toLocaleString(LOCALE, {
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    month: 'short',
-    weekday: 'short',
-    year: 'numeric',
-  })
-);
-
 type Props = {
   dateTime: Date;
   setDateTime: Dispatch<SetStateAction<Date>>
@@ -58,7 +46,7 @@ export default function DateTimeSelector({
         onPress={() => setPickerVisible(!pickerVisible)}
         style={styles.textButtonOverrides}
       >
-        {formatDateTime(dateTime)}
+        {formatDate(dateTime, 'full')}
       </TextButton>
       <DateTimePickerModal
         dateTime={dateTime}
