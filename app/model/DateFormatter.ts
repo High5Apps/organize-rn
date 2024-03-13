@@ -1,6 +1,6 @@
 const LOCALE = 'en-US';
 
-type DateFormat = 'full' | 'dateOnlyNumericFullYear';
+type DateFormat = 'full' | 'dateOnlyShort';
 
 export default function formatDate(date: Date, format: DateFormat) {
   let options: Intl.DateTimeFormatOptions;
@@ -13,12 +13,8 @@ export default function formatDate(date: Date, format: DateFormat) {
       weekday: 'short',
       year: 'numeric',
     };
-  } else if (format === 'dateOnlyNumericFullYear') {
-    options = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    };
+  } else if (format === 'dateOnlyShort') {
+    options = { dateStyle: 'short' };
   } else {
     throw new Error('Unrecognized date format');
   }
