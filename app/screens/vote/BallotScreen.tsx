@@ -9,7 +9,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Candidate, useBallotPreviews, useVoteUpdater,
+  Candidate, formatDate, useBallotPreviews, useVoteUpdater,
   votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
 } from '../../model';
 
@@ -92,6 +92,13 @@ export default function BallotScreen({ route }: BallotScreenProps) {
           {ballot.maxCandidateIdsPerVote > 1 && (
             <Text style={[styles.text, styles.details]}>
               {`Select up to ${ballot.maxCandidateIdsPerVote}`}
+            </Text>
+          )}
+          {ballot.category === 'election' && (
+            <Text style={[styles.text, styles.details]}>
+              {`Term starts on ${
+                formatDate(ballot.votingEndsAt, 'dateOnlyNumericFullYear')
+              }`}
             </Text>
           )}
           <Text style={[styles.text, styles.details]}>
