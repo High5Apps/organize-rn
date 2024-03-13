@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/require-default-props */
+import React, { useMemo, useState } from 'react';
 import {
   StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
@@ -22,27 +23,29 @@ const useStyles = () => {
 };
 
 type Props = {
-  endTime: Date;
-  timeRemainingOptions?: TimeRemainingOptions;
+  endTime?: Date | null;
   style?: StyleProp<ViewStyle>;
+  timeRemainingOptions?: TimeRemainingOptions;
 };
 
-export default function TimeRemainingFooter({
-  endTime, style, timeRemainingOptions,
-}: Props) {
+export default function useTimeRemainingFooter() {
   const [now, setNow] = useState<Date>(new Date());
-  const updateTime = () => setNow(new Date());
+  const refreshTimeRemaining = () => setNow(new Date());
 
   const { styles } = useStyles();
 
-  return (
-    <Text style={[styles.timeRemaining, style]} onPress={updateTime}>
-      {getTimeRemaining(endTime, { ...timeRemainingOptions, now })}
-    </Text>
-  );
+  const TimeRemainingFooter = useMemo(() => ({
+    endTime, style, timeRemainingOptions,
+  }: Props) => {
+    if (!endTime) { return null; }
+    return (
+      <Text
+        style={[styles.timeRemaining, style]}
+        onPress={refreshTimeRemaining}
+      >
+        {getTimeRemaining(endTime, { ...timeRemainingOptions, now })}
+      </Text>
+    );
+  }, [now]);
+  return { TimeRemainingFooter, refreshTimeRemaining };
 }
-
-TimeRemainingFooter.defaultProps = {
-  timeRemainingOptions: {},
-  style: {},
-};

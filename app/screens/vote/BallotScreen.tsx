@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
-  CandidateList, LearnMoreButtonRow, ScreenBackground, TimeRemainingFooter,
-  useBallot, useLearnMoreOfficeModal,
+  CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
+  useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
@@ -106,6 +106,8 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     </View>
   ), [ballot, ballotPreview, styles]);
 
+  const { TimeRemainingFooter } = useTimeRemainingFooter();
+
   const ListFooterComponent = useMemo(() => {
     const isElection = ballotPreview.category === 'election';
     return (
@@ -123,7 +125,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         />
       </>
     );
-  }, [ballotPreview]);
+  }, [ballotPreview, TimeRemainingFooter]);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {

@@ -9,7 +9,7 @@ import {
 import { useBallot, usePullToRefresh } from '../hooks';
 import NominationRow from './NominationRow';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
-import TimeRemainingFooter from './TimeRemainingFooter';
+import useTimeRemainingFooter from './TimeRemainingFooter';
 
 type NominationSection = {
   title: string;
@@ -50,21 +50,22 @@ export default function NominationList({
     );
   }, [ballot?.office]);
 
-  const ListFooterComponent = useMemo(() => {
-    if (!ballot?.nominationsEndAt) { return null; }
-    return (
-      <TimeRemainingFooter
-        endTime={ballot.nominationsEndAt}
-        timeRemainingOptions={{
-          expiredFormatter: nominationsTimeRemainingExpiredFormatter,
-          formatter: nominationsTimeRemainingFormatter,
-        }}
-      />
-    );
-  }, [ballot?.nominationsEndAt]);
+  const { TimeRemainingFooter, refreshTimeRemaining } = useTimeRemainingFooter();
+  const ListFooterComponent = useMemo(() => (
+    <TimeRemainingFooter
+      endTime={ballot?.nominationsEndAt}
+      timeRemainingOptions={{
+        expiredFormatter: nominationsTimeRemainingExpiredFormatter,
+        formatter: nominationsTimeRemainingFormatter,
+      }}
+    />
+  ), [ballot?.nominationsEndAt, TimeRemainingFooter]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
-    onRefresh: updateBallot,
+    onRefresh: async () => {
+      await updateBallot();
+      refreshTimeRemaining();
+    },
     refreshOnMount: true,
   });
 
