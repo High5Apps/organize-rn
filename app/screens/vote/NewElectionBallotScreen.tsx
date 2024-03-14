@@ -65,7 +65,8 @@ export default function NewElectionBallotScreen({
     nominationsEnd, setNominationsEnd,
   ] = useState(startOfNextHourIn({ days: 7 }));
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 14 }));
-  const [termEnd, setTermEnd] = useState(startOfNextHourIn({ days: 14 + 365 }));
+  const [termEnd, setTermEnd] = useState(startOfNextHourIn({ days: 21 + 365 }));
+  const [termStart, setTermStart] = useState(startOfNextHourIn({ days: 21 }));
 
   const { currentUser } = useCurrentUser();
 
@@ -113,6 +114,7 @@ export default function NewElectionBallotScreen({
         office: officeCategory,
         question,
         termEndsAt: termEnd,
+        termStartsAt: termStart,
         nominationsEndAt: nominationsEnd,
         votingEndsAt: votingEnd,
       }));
@@ -183,6 +185,12 @@ export default function NewElectionBallotScreen({
         <DateTimeSelector
           dateTime={votingEnd}
           setDateTime={setVotingEnd}
+          style={styles.dateTimeSelector}
+        />
+        <HeaderText>Term Starts On</HeaderText>
+        <DateTimeSelector
+          dateTime={termStart}
+          setDateTime={setTermStart}
           style={styles.dateTimeSelector}
         />
         <HeaderText>Term Ends On</HeaderText>

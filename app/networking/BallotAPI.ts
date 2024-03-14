@@ -22,6 +22,7 @@ type Props = {
   question: string;
   nominationsEndAt?: Date;
   termEndsAt?: Date;
+  termStartsAt?: Date;
   votingEndsAt: Date;
 };
 
@@ -35,7 +36,7 @@ type Return = {
 
 export async function createBallot({
   candidateTitles, category, e2eEncrypt, e2eEncryptMany, jwt, maxSelections,
-  office, question, nominationsEndAt, termEndsAt, votingEndsAt,
+  office, question, nominationsEndAt, termEndsAt, termStartsAt, votingEndsAt,
 }: Props & Authorization): Promise<Return> {
   const [encryptedCandidateTitles, encryptedQuestion] = await Promise.all([
     candidateTitles ? encryptMany(candidateTitles, e2eEncryptMany) : [],
@@ -51,6 +52,7 @@ export async function createBallot({
         office,
         nominations_end_at: nominationsEndAt?.toISOString(),
         term_ends_at: termEndsAt?.toISOString(),
+        term_starts_at: termStartsAt?.toISOString(),
         voting_ends_at: votingEndsAt.toISOString(),
       },
       candidates: encryptedCandidateTitles.map((t) => ({ encrypted_title: t })),
