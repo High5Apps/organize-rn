@@ -320,6 +320,7 @@ type BallotResponse = {
   } | {
     category: 'election';
     termEndsAt: Date;
+    termStartsAt: Date;
   });
   candidates: BallotCandidate[];
   myVote: string[];
@@ -332,7 +333,8 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
   return isBallotIndexBallot(response.ballot)
     && response.ballot.maxCandidateIdsPerVote !== undefined
     && ((response.ballot.category !== 'election')
-      || isDate(response.ballot.termEndsAt))
+      || (isDate(response.ballot.termEndsAt)
+        && isDate(response.ballot.termStartsAt)))
     && Array.isArray(response?.candidates)
     && response.candidates.every(isBallotCandidate)
     && Array.isArray(response.myVote)

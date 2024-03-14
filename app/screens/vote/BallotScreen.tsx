@@ -97,7 +97,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
           {ballot.category === 'election' && (
             <Text style={[styles.text, styles.details]}>
               {`Term is from ${
-                formatDate(ballot.votingEndsAt, 'dateOnlyShort')
+                formatDate(ballot.termStartsAt, 'dateOnlyShort')
               } to ${
                 formatDate(ballot.termEndsAt, 'dateOnlyShort')
               }`}

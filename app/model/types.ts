@@ -236,4 +236,5 @@ export type Ballot = BallotPreview & {
 } | {
   category: 'election';
   termEndsAt: Date;
+  termStartsAt: Date;
 });
