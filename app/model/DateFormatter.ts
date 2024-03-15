@@ -14,7 +14,11 @@ export default function formatDate(date: Date, format: DateFormat) {
       year: 'numeric',
     };
   } else if (format === 'dateOnlyShort') {
-    options = { dateStyle: 'short' };
+    options = {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    };
   } else {
     throw new Error('Unrecognized date format');
   }
