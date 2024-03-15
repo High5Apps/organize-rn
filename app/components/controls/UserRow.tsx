@@ -91,11 +91,6 @@ const useStyles = () => {
     },
     rowTitleText: {
       color: colors.label,
-
-      // Prevents a rare issue where the a blank second line can appear when the
-      // first line's text is exactly as wide as the container
-      flex: 0,
-
       flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
