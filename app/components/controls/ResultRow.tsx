@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { Result } from '../../model';
+import { ConfirmationAlert, Result } from '../../model';
+import DecisionButtonsRow from './DecisionButtonsRow';
 
 const useStyles = () => {
   const {
@@ -121,15 +122,18 @@ function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
 }
 
 type Props = IconNameProps & {
+  currentUserId: string;
   item: Result;
+  onTermAccepted: (accepted: boolean) => void;
   termStartsAt?: Date;
 };
 
 export default function ResultRow({
-  item, multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
-  singleSelectionWinner, termStartsAt,
+  currentUserId, item, multiSelectionWinnerRank, onTermAccepted,
+  singleSelectionLoser, singleSelectionTied, singleSelectionWinner,
+  termStartsAt,
 }: Props) {
-  const { acceptedOffice, candidate: { title } } = item;
+  const { acceptedOffice, candidate } = item;
   const isAWinner = (multiSelectionWinnerRank !== undefined)
     || !!singleSelectionWinner;
 
@@ -142,17 +146,49 @@ export default function ResultRow({
     singleSelectionWinner,
   }, isAWinner);
 
+  const SecondRow = useMemo(() => {
+    const shouldShowDecisionButtonRow = isAWinner
+      && candidate.userId === currentUserId
+      && acceptedOffice === undefined;
+    const shouldShowAcceptance = isAWinner && !!termStartsAt;
+
+    if (shouldShowDecisionButtonRow) {
+      return (
+        <DecisionButtonsRow
+          acceptLabel="Accept office"
+          onAccept={() => onTermAccepted(true)}
+          onDecline={(
+            ConfirmationAlert({
+              destructiveAction: 'Decline',
+              destructiveActionInTitle: 'decline office',
+              onConfirm: () => onTermAccepted(false),
+            }).show
+          )}
+        />
+      );
+    }
+
+    if (shouldShowAcceptance) {
+      return (
+        <Text style={styles.subtitle}>
+          {getOfficeAcceptance(termStartsAt, acceptedOffice)}
+        </Text>
+      );
+    }
+
+    return null;
+  }, [
+    acceptedOffice, isAWinner, candidate.userId, currentUserId, onTermAccepted,
+    termStartsAt,
+  ]);
+
   return (
     <View style={styles.container}>
       <View style={styles.firstRow}>
         {IconComponent}
-        <Text style={styles.text}>{title}</Text>
+        <Text style={styles.text}>{candidate.title}</Text>
       </View>
-      {termStartsAt && isAWinner && (
-        <Text style={styles.subtitle}>
-          {getOfficeAcceptance(termStartsAt, acceptedOffice)}
-        </Text>
-      )}
+      {SecondRow}
     </View>
   );
 }

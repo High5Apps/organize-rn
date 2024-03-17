@@ -5,17 +5,19 @@ import ResultRow from './ResultRow';
 import { Result } from '../../model';
 
 type Props = {
+  currentUserId: string;
   ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
+  onTermAccepted: (accepted: boolean) => void;
   results?: Result[];
   termStartsAt?: Date;
 };
 
 export default function ResultList({
-  ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
-  maxWinners: maybeMaxWinners, results, termStartsAt,
+  currentUserId, ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
+  maxWinners: maybeMaxWinners, onTermAccepted, results, termStartsAt,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -31,17 +33,21 @@ export default function ResultList({
     const singleSelectionLoser = singleSelection && !isAWinner;
     return (
       <ResultRow
+        currentUserId={currentUserId}
         item={item}
         multiSelectionWinnerRank={
           (multiSelection && isAWinner) ? rank : undefined
         }
+        onTermAccepted={onTermAccepted}
         singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
         singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
         singleSelectionWinner={singleSelection && isAWinner}
         termStartsAt={termStartsAt}
       />
     );
-  }, [maxVoteCount, maxWinners, multiSelection, singleSelection]);
+  }, [
+    currentUserId, maxVoteCount, maxWinners, multiSelection, singleSelection,
+  ]);
 
   return (
     <FlatList

@@ -5,7 +5,7 @@ import {
   LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground, useBallot,
   useLearnMoreOfficeModal,
 } from '../../components';
-import { useBallotPreviews } from '../../model';
+import { useBallotPreviews, useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -62,6 +62,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     throw new Error('Expected ballotPreview to be defined');
   }
 
+  const { currentUser } = useCurrentUser();
+  if (!currentUser) { throw new Error('Expected current user'); }
+
   const { styles } = useStyles();
 
   const {
@@ -98,10 +101,12 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     <ScreenBackground>
       <LearnMoreOfficeModal />
       <ResultList
+        currentUserId={currentUser.id}
         ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
+        onTermAccepted={console.log}
         results={ballot?.results}
         termStartsAt={
           ballot?.category === 'election' ? ballot.termStartsAt : undefined
