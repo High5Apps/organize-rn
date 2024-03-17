@@ -10,6 +10,7 @@ export const ballotsURI = `${apiRoute}/ballots`;
 export const ballotURI = (ballotId: string) => `${ballotsURI}/${ballotId}`;
 export const candidatesURI = (ballotId: string) => `${ballotURI(ballotId)}/candidates`;
 export const nominationsURI = (ballotId: string) => `${ballotURI(ballotId)}/nominations`;
+export const termsURI = (ballotId: string) => `${ballotURI(ballotId)}/terms`;
 
 export const commentUpvotesURI = (commentId: string) => `${apiRoute}/comments/${commentId}/upvotes`;
 

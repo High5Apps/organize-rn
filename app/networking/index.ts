@@ -6,6 +6,7 @@ export { createNomination, updateNomination } from './NominationAPI';
 export { fetchOffices } from './OfficeAPI';
 export { createOrg, fetchOrg } from './OrgAPI';
 export { createPost, fetchPosts } from './PostAPI';
+export { createTerm } from './TermAPI';
 export { default as createOrUpdateUpvote } from './UpvoteAPI';
 export { createUser, fetchUsers, getUser } from './UserAPI';
 export { createVote } from './VoteAPI';
