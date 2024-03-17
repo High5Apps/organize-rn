@@ -200,6 +200,7 @@ export type { Model } from './ModelCache';
 
 export type Candidate = {
   id: string;
+  userId?: string;
   title: string;
 };
 
@@ -220,6 +221,7 @@ export type NonPendingNomination = Nomination & {
 };
 
 export type Result = {
+  acceptedOffice?: boolean;
   candidate: Candidate;
   rank: number;
   voteCount: number;

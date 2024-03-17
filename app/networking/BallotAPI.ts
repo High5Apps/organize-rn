@@ -202,23 +202,28 @@ export async function fetchBallot({
     }
 
     return {
-      id, title: title ?? '[Unknown title]',
+      id, title: title ?? '[Unknown title]', userId,
     };
   });
 
-  const resultsWithCandidates = json.results?.map(
-    ({ candidateId, ...rest }) => ({
-      candidate: candidates.find(({ id }) => id === candidateId)!,
+  const augmentedResults = json.results?.map(({ candidateId, ...rest }) => {
+    const candidate = candidates.find(({ id }) => id === candidateId)!;
+    const acceptedOffice = json.terms?.find(
+      ({ userId }) => userId === candidate.userId,
+    )?.accepted;
+    return ({
+      acceptedOffice,
+      candidate,
       ...rest,
-    }),
-  );
+    });
+  });
   const ballot: Ballot = {
     ...partialBallot,
     question,
     candidates,
     myVote: json.myVote,
     nominations: json.nominations,
-    results: resultsWithCandidates,
+    results: augmentedResults,
   };
 
   return { ballot };

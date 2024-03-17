@@ -285,6 +285,17 @@ function isBallotResult(object: unknown): object is BallotResult {
     && ballotResult.voteCount !== undefined;
 }
 
+type BallotTerm = {
+  accepted: boolean;
+  userId: string;
+};
+
+function isBallotTerm(object: unknown): object is BallotTerm {
+  const ballotTerm = (object as BallotTerm);
+  return ballotTerm.accepted !== undefined
+    && ballotTerm.userId.length > 0;
+}
+
 type BallotResponse = {
   ballot: BallotIndexBallot & {
     maxCandidateIdsPerVote: number;
@@ -299,6 +310,7 @@ type BallotResponse = {
   myVote: string[];
   nominations?: Nomination[];
   results?: BallotResult[];
+  terms?: BallotTerm[];
 };
 
 export function isBallotResponse(object: unknown): object is BallotResponse {
@@ -317,6 +329,9 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
     ))
     && (response.results === undefined || (
       Array.isArray(response.results) && response.results.every(isBallotResult)
+    ))
+    && (response.terms === undefined || (
+      Array.isArray(response.terms) && response.terms.every(isBallotTerm)
     ));
 }
 
