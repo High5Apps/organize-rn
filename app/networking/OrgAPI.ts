@@ -8,7 +8,7 @@ import {
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
 import {
-  Authorization, isCreateOrgResponse, isOrgResponse, UnpublishedOrg,
+  Authorization, isCreateModelResponse, isOrgResponse, UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {
@@ -51,7 +51,7 @@ export async function createOrg({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateOrgResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse Org from response');
   }
   return { id: json.id };

@@ -5,7 +5,7 @@ import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { usersURI, userUri } from './Routes';
 import {
-  Authorization, UserResponse, isCreateUserResponse, isUserIndexResponse,
+  Authorization, UserResponse, isCreateModelResponse, isUserIndexResponse,
   isUserResponse,
 } from './types';
 
@@ -41,7 +41,7 @@ export async function createUser({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateUserResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse User from response');
   }
   return { id: json.id };

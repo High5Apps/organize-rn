@@ -2,7 +2,7 @@ import { fromJson } from '../model';
 import { post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { votesURI } from './Routes';
-import { Authorization, isCreateVoteResponse } from './types';
+import { Authorization, isCreateModelResponse } from './types';
 
 type Props = {
   ballotId: string;
@@ -36,7 +36,7 @@ export async function createVote({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateVoteResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse vote ID from response');
   }
 

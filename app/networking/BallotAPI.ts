@@ -9,7 +9,7 @@ import {
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { ballotURI, ballotsURI } from './Routes';
 import {
-  Authorization, isBallotIndexResponse, isBallotResponse, isCreateBallotResponse,
+  Authorization, isBallotIndexResponse, isBallotResponse, isCreateModelResponse,
 } from './types';
 
 type Props = {
@@ -70,7 +70,7 @@ export async function createBallot({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateBallotResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse ballot ID from response');
   }
 

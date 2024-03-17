@@ -8,7 +8,7 @@ import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import {
   Authorization, CommentIndexComment, isCommentIndexResponse,
-  isCreateCommentResponse,
+  isCreateModelResponse,
 } from './types';
 
 type Props = {
@@ -52,7 +52,7 @@ export async function createComment({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateCommentResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse comment ID from response');
   }
 

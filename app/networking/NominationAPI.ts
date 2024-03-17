@@ -4,7 +4,7 @@ import { patch, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { nominationURI, nominationsURI } from './Routes';
 import {
-  Authorization, UpdateNominationResponse, isCreateNominationResponse,
+  Authorization, UpdateNominationResponse, isCreateModelResponse,
   isUpdateNominationResponse,
 } from './types';
 
@@ -39,7 +39,7 @@ export async function createNomination({
     return parseFirstErrorOrThrow(json);
   }
 
-  if (!isCreateNominationResponse(json)) {
+  if (!isCreateModelResponse(json)) {
     throw new Error('Failed to parse nomination ID from response');
   }
 

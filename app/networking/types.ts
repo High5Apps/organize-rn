@@ -3,25 +3,7 @@ import type {
   PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
-export type CreateOrgResponse = {
-  id: string;
-};
-
-export function isCreateOrgResponse(object: unknown): object is CreateOrgResponse {
-  const response = (object as CreateOrgResponse);
-  return response?.id.length > 0;
-}
-
 export type UnpublishedOrg = Omit<Org, 'id'>;
-
-export type CreateUserResponse = {
-  id: string;
-};
-
-export function isCreateUserResponse(object: unknown): object is CreateUserResponse {
-  const response = (object as CreateUserResponse);
-  return response?.id.length > 0;
-}
 
 export function isDate(object: unknown): object is Date {
   const date = (object as Date);
@@ -164,12 +146,12 @@ export function isPostIndexResponse(object: unknown): object is PostIndexRespons
     && isPaginationData(response?.meta);
 }
 
-type CreateCommentResponse = {
+type CreateModelResponse = {
   id: string;
 };
 
-export function isCreateCommentResponse(object: unknown): object is CreateCommentResponse {
-  const response = (object as CreateCommentResponse);
+export function isCreateModelResponse(object: unknown): object is CreateModelResponse {
+  const response = (object as CreateModelResponse);
   return response?.id?.length > 0;
 }
 
@@ -208,15 +190,6 @@ export function isCommentIndexResponse(object: unknown): object is CommentIndexR
   return response?.comments
     && Array.isArray(response.comments)
     && response.comments.every(isCommentIndexComment);
-}
-
-type CreateBallotResponse = {
-  id: string;
-};
-
-export function isCreateBallotResponse(object: unknown): object is CreateBallotResponse {
-  const response = (object as CreateBallotResponse);
-  return response?.id?.length > 0;
 }
 
 export type BallotIndexBallot = {
@@ -367,24 +340,6 @@ export function isCandidateIndexResponse(object: unknown): object is CandidateIn
   return response?.candidates
     && Array.isArray(response.candidates)
     && response.candidates.every(isCandidateIndexCandidate);
-}
-
-type CreateVoteResponse = {
-  id: string;
-};
-
-export function isCreateVoteResponse(object: unknown): object is CreateVoteResponse {
-  const response = (object as CreateVoteResponse);
-  return response?.id?.length > 0;
-}
-
-type CreateNominationResponse = {
-  id: string;
-};
-
-export function isCreateNominationResponse(object: unknown): object is CreateNominationResponse {
-  const response = (object as CreateNominationResponse);
-  return response?.id?.length > 0;
 }
 
 export type UpdateNominationResponse = {
