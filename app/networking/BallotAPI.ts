@@ -191,11 +191,20 @@ export async function fetchBallot({
     decryptMany(encryptedCandidateTitles, e2eDecryptMany),
   ]);
 
-  const candidates = json.candidates.map(
-    ({ id, pseudonym }, i) => ({
-      id, title: pseudonym ?? candidateTitles[i] ?? '[Unknown title]',
-    }),
-  );
+  const candidates = json.candidates.map(({ id, userId }, i) => {
+    let title: string | undefined;
+    if (userId) {
+      title = json.nominations?.find(
+        ({ nominee }) => nominee.id === userId,
+      )?.nominee.pseudonym;
+    } else {
+      title = candidateTitles[i];
+    }
+
+    return {
+      id, title: title ?? '[Unknown title]',
+    };
+  });
 
   const resultsWithCandidates = json.results?.map(
     ({ candidateId, ...rest }) => ({
