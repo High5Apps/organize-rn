@@ -30,11 +30,15 @@ const useStyles = () => {
 };
 
 type Props = {
+  acceptLabel?: string;
   onAccept: () => void;
   onDecline: () => void;
 };
 
-export default function DecisionButtonsRow({ onAccept, onDecline }: Props) {
+export default function DecisionButtonsRow({
+  acceptLabel: maybeAcceptLabel, onAccept, onDecline,
+}: Props) {
+  const acceptLabel = maybeAcceptLabel ?? 'Accept';
   const { styles } = useStyles();
   return (
     <View style={styles.container}>
@@ -43,7 +47,15 @@ export default function DecisionButtonsRow({ onAccept, onDecline }: Props) {
         onPress={onDecline}
         style={[styles.button, styles.buttonDecline]}
       />
-      <PrimaryButton label="Accept" onPress={onAccept} style={styles.button} />
+      <PrimaryButton
+        label={acceptLabel}
+        onPress={onAccept}
+        style={styles.button}
+      />
     </View>
   );
 }
+
+DecisionButtonsRow.defaultProps = {
+  acceptLabel: undefined,
+};
