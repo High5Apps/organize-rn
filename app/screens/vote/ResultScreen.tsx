@@ -41,7 +41,19 @@ export default function ResultScreen({ route }: ResultScreenProps) {
   const {
     ballot, RequestProgress,
   } = useBallot(ballotId, {
-    shouldFetchOnMount: (cachedBallot) => !cachedBallot?.results,
+    shouldFetchOnMount: (cachedBallot) => {
+      if (!cachedBallot?.results) {
+        return true;
+      }
+
+      // Allow updating office acceptance
+      if (cachedBallot.category === 'election'
+          && new Date().getTime() < cachedBallot.termStartsAt.getTime()) {
+        return true;
+      }
+
+      return false;
+    },
   });
 
   const { getCachedBallotPreview } = useBallotPreviews();
