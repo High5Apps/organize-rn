@@ -11,17 +11,23 @@ const useStyles = () => {
     colors, font, sizes, spacing,
   } = useTheme();
 
+  const firstRowColumnGap = spacing.m;
+  const iconFontSize = sizes.mediumIcon;
+  const subtitleMarginStart = firstRowColumnGap + iconFontSize;
+
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
       backgroundColor: colors.fill,
-      columnGap: spacing.m,
-      flexDirection: 'row',
       padding: spacing.m,
+    },
+    firstRow: {
+      alignItems: 'center',
+      columnGap: firstRowColumnGap,
+      flexDirection: 'row',
     },
     icon: {
       color: colors.primary,
-      fontSize: sizes.mediumIcon,
+      fontSize: iconFontSize,
     },
     iconDim: {
       opacity: 0.5,
@@ -35,6 +41,12 @@ const useStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
       ...StyleSheet.absoluteFillObject,
+    },
+    subtitle: {
+      color: colors.labelSecondary,
+      fontSize: font.sizes.subhead,
+      fontFamily: font.weights.regular,
+      marginStart: subtitleMarginStart,
     },
     text: {
       color: colors.label,
@@ -57,7 +69,7 @@ type IconNameProps = {
 function useIcon({
   multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
   singleSelectionWinner,
-}: IconNameProps) {
+}: IconNameProps, isAWinner: boolean) {
   const { styles } = useStyles();
 
   let iconName: string;
@@ -74,8 +86,6 @@ function useIcon({
     iconName = 'check-box-outline-blank';
   }
 
-  const isAWinner = (multiSelectionWinnerRank !== undefined)
-    || singleSelectionWinner;
   if (!isAWinner) {
     iconStyle = { ...iconStyle, ...styles.iconDim };
   }
@@ -94,15 +104,34 @@ function useIcon({
   ), [iconName, iconStyle, multiSelectionWinnerRank, styles]);
 }
 
+function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
+  if (acceptedOffice) {
+    return 'Accepted office';
+  }
+
+  if (acceptedOffice === false) {
+    return 'Declined office';
+  }
+
+  if (new Date().getTime() < termStartsAt?.getTime()) {
+    return "Hasn't accepted office yet";
+  }
+
+  return 'Missed deadline to accept office';
+}
+
 type Props = IconNameProps & {
   item: Result;
+  termStartsAt?: Date;
 };
 
 export default function ResultRow({
   item, multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
-  singleSelectionWinner,
+  singleSelectionWinner, termStartsAt,
 }: Props) {
-  const { candidate: { title } } = item;
+  const { acceptedOffice, candidate: { title } } = item;
+  const isAWinner = (multiSelectionWinnerRank !== undefined)
+    || !!singleSelectionWinner;
 
   const { styles } = useStyles();
 
@@ -111,12 +140,19 @@ export default function ResultRow({
     singleSelectionLoser,
     singleSelectionTied,
     singleSelectionWinner,
-  });
+  }, isAWinner);
 
   return (
     <View style={styles.container}>
-      {IconComponent}
-      <Text style={styles.text}>{title}</Text>
+      <View style={styles.firstRow}>
+        {IconComponent}
+        <Text style={styles.text}>{title}</Text>
+      </View>
+      {termStartsAt && isAWinner && (
+        <Text style={styles.subtitle}>
+          {getOfficeAcceptance(termStartsAt, acceptedOffice)}
+        </Text>
+      )}
     </View>
   );
 }
@@ -126,4 +162,5 @@ ResultRow.defaultProps = {
   singleSelectionLoser: undefined,
   singleSelectionTied: undefined,
   singleSelectionWinner: undefined,
+  termStartsAt: undefined,
 };

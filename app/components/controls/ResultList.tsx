@@ -10,11 +10,12 @@ type Props = {
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
   results?: Result[];
+  termStartsAt?: Date;
 };
 
 export default function ResultList({
   ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
-  maxWinners: maybeMaxWinners, results,
+  maxWinners: maybeMaxWinners, results, termStartsAt,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -37,6 +38,7 @@ export default function ResultList({
         singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
         singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
         singleSelectionWinner={singleSelection && isAWinner}
+        termStartsAt={termStartsAt}
       />
     );
   }, [maxVoteCount, maxWinners, multiSelection, singleSelection]);
@@ -59,4 +61,5 @@ ResultList.defaultProps = {
   ListHeaderComponent: undefined,
   maxWinners: undefined,
   results: undefined,
+  termStartsAt: undefined,
 };

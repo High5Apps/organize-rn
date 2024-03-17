@@ -91,6 +91,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
         results={ballot?.results}
+        termStartsAt={
+          ballot?.category === 'election' ? ballot.termStartsAt : undefined
+        }
       />
     </ScreenBackground>
   );
