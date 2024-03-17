@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View, ViewStyle,
+  StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
@@ -44,7 +44,7 @@ const useStyles = () => {
     },
   });
 
-  return { colors, styles };
+  return { styles };
 };
 
 type IconNameProps = {
@@ -104,7 +104,7 @@ export default function ResultRow({
 }: Props) {
   const { candidate: { title } } = item;
 
-  const { colors, styles } = useStyles();
+  const { styles } = useStyles();
 
   const IconComponent = useIcon({
     multiSelectionWinnerRank,
@@ -114,12 +114,10 @@ export default function ResultRow({
   });
 
   return (
-    <TouchableHighlight underlayColor={colors.label}>
-      <View style={styles.container}>
-        {IconComponent}
-        <Text style={styles.text}>{title}</Text>
-      </View>
-    </TouchableHighlight>
+    <View style={styles.container}>
+      {IconComponent}
+      <Text style={styles.text}>{title}</Text>
+    </View>
   );
 }
 
