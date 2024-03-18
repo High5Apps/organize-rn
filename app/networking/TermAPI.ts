@@ -23,7 +23,7 @@ export async function createTerm({
 }: Props & Authorization): Promise<Return> {
   const response = await post({
     bodyObject: {
-      ballot: { accepted },
+      term: { accepted },
     },
     jwt,
     uri: termsURI(ballotId),
