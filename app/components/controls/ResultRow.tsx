@@ -20,7 +20,8 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: spacing.s,
+      paddingHorizontal: spacing.s,
+      paddingVertical: spacing.m,
     },
     firstRow: {
       alignItems: 'center',
