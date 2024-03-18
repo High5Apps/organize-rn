@@ -10,14 +10,14 @@ type Props = {
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
-  onTermAccepted: (accepted: boolean) => void;
+  onResultUpdated: (result: Result) => void;
   results?: Result[];
   termStartsAt?: Date;
 };
 
 export default function ResultList({
   currentUserId, ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
-  maxWinners: maybeMaxWinners, onTermAccepted, results, termStartsAt,
+  maxWinners: maybeMaxWinners, onResultUpdated, results, termStartsAt,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -38,7 +38,7 @@ export default function ResultList({
         multiSelectionWinnerRank={
           (multiSelection && isAWinner) ? rank : undefined
         }
-        onTermAccepted={onTermAccepted}
+        onResultUpdated={onResultUpdated}
         singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
         singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
         singleSelectionWinner={singleSelection && isAWinner}

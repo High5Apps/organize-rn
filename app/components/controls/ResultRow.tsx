@@ -124,12 +124,12 @@ function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
 type Props = IconNameProps & {
   currentUserId: string;
   item: Result;
-  onTermAccepted: (accepted: boolean) => void;
+  onResultUpdated: (result: Result) => void;
   termStartsAt?: Date;
 };
 
 export default function ResultRow({
-  currentUserId, item, multiSelectionWinnerRank, onTermAccepted,
+  currentUserId, item, multiSelectionWinnerRank, onResultUpdated,
   singleSelectionLoser, singleSelectionTied, singleSelectionWinner,
   termStartsAt,
 }: Props) {
@@ -152,16 +152,21 @@ export default function ResultRow({
       && acceptedOffice === undefined;
     const shouldShowAcceptance = isAWinner && !!termStartsAt;
 
+    const onAccepted = (accepted: boolean) => onResultUpdated({
+      ...item,
+      acceptedOffice: accepted,
+    });
+
     if (shouldShowDecisionButtonRow) {
       return (
         <DecisionButtonsRow
           acceptLabel="Accept office"
-          onAccept={() => onTermAccepted(true)}
+          onAccept={() => onAccepted(true)}
           onDecline={(
             ConfirmationAlert({
               destructiveAction: 'Decline',
               destructiveActionInTitle: 'decline office',
-              onConfirm: () => onTermAccepted(false),
+              onConfirm: () => onAccepted(false),
             }).show
           )}
         />
@@ -178,8 +183,8 @@ export default function ResultRow({
 
     return null;
   }, [
-    acceptedOffice, isAWinner, candidate.userId, currentUserId, onTermAccepted,
-    termStartsAt,
+    acceptedOffice, isAWinner, candidate.userId, currentUserId, item,
+    onResultUpdated, termStartsAt,
   ]);
 
   return (

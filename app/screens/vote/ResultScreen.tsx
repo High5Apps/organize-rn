@@ -106,7 +106,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
-        onTermAccepted={console.log}
+        onResultUpdated={console.log}
         results={ballot?.results}
         termStartsAt={
           ballot?.category === 'election' ? ballot.termStartsAt : undefined
