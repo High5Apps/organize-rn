@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
-import { ConfirmationAlert, Result } from '../../model';
+import { ConfirmationAlert, Result, isDefined } from '../../model';
 import DecisionButtonsRow from './DecisionButtonsRow';
+import { HighlightedRowContainer } from '../views';
 
 const useStyles = () => {
   const {
@@ -18,8 +19,8 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.fill,
-      padding: spacing.m,
+      flex: 1,
+      padding: spacing.s,
     },
     firstRow: {
       alignItems: 'center',
@@ -188,13 +189,17 @@ export default function ResultRow({
   ]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.firstRow}>
-        {IconComponent}
-        <Text style={styles.text}>{candidate.title}</Text>
+    <HighlightedRowContainer
+      userIds={[item.candidate.userId].filter(isDefined)}
+    >
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
+          {IconComponent}
+          <Text style={styles.text}>{candidate.title}</Text>
+        </View>
+        {SecondRow}
       </View>
-      {SecondRow}
-    </View>
+    </HighlightedRowContainer>
   );
 }
 
