@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import type { ResultScreenProps } from '../../navigation';
 import {
-  LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground, useBallot,
-  useLearnMoreOfficeModal, useTimeRemainingFooter,
+  BallotDetails, LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground,
+  useBallot, useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import {
   GENERIC_ERROR_MESSAGE, Result, useBallotPreviews, useCurrentUser,
@@ -19,6 +19,9 @@ const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
+    ballotDetails: {
+      marginTop: spacing.xs,
+    },
     emptyResultsText: {
       paddingHorizontal: spacing.l,
     },
@@ -126,6 +129,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
       <Text style={[styles.text, styles.question]}>
         {ballotPreview.question}
       </Text>
+      {(ballot?.results ?? []).length > 0 && (
+        <BallotDetails ballot={ballot} style={styles.ballotDetails} />
+      )}
       <RequestProgress />
       <ResultGraph
         maxWinners={ballot?.maxCandidateIdsPerVote}
