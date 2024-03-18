@@ -4,12 +4,12 @@ import {
 } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
-  CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
+  BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
   useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Candidate, formatDate, useBallotPreviews, useVoteUpdater,
+  Candidate, useBallotPreviews, useVoteUpdater,
   votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
 } from '../../model';
 
@@ -17,10 +17,7 @@ const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
   const styles = StyleSheet.create({
-    details: {
-      color: colors.labelSecondary,
-    },
-    directions: {
+    ballotDetails: {
       marginTop: spacing.xs,
     },
     emptyResultsText: {
@@ -87,30 +84,9 @@ export default function BallotScreen({ route }: BallotScreenProps) {
       <Text style={[styles.text, styles.question]}>
         {ballotPreview.question}
       </Text>
-      { ballot?.candidates?.length ? (
-        <View style={styles.directions}>
-          {ballot.maxCandidateIdsPerVote > 1 && (
-            <Text style={[styles.text, styles.details]}>
-              {`Select up to ${ballot.maxCandidateIdsPerVote}`}
-            </Text>
-          )}
-          {ballot.category === 'election' && (
-            <Text style={[styles.text, styles.details]}>
-              {`Term is from ${
-                formatDate(ballot.termStartsAt, 'dateOnlyShort')
-              } to ${
-                formatDate(ballot.termEndsAt, 'dateOnlyShort')
-              }`}
-            </Text>
-          )}
-          <Text style={[styles.text, styles.details]}>
-            Responses will be anonymous
-          </Text>
-          <Text style={[styles.text, styles.details]}>
-            Change your mind until voting ends
-          </Text>
-        </View>
-      ) : null}
+      { ballot?.candidates?.length && (
+        <BallotDetails ballot={ballot} style={styles.ballotDetails} />
+      )}
       <RequestProgress />
     </View>
   ), [ballot, ballotPreview, styles]);
