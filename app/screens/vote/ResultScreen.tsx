@@ -1,12 +1,19 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import {
+  Alert, StyleSheet, Text, View,
+} from 'react-native';
 import type { ResultScreenProps } from '../../navigation';
 import {
   LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground, useBallot,
   useLearnMoreOfficeModal,
 } from '../../components';
-import { useBallotPreviews, useCurrentUser } from '../../model';
+import {
+  GENERIC_ERROR_MESSAGE, Result, useBallotPreviews, useCurrentUser,
+} from '../../model';
 import useTheme from '../../Theme';
+import { createTerm } from '../../networking';
+
+const ERROR_ALERT_TITLE = 'Failed to accept or decline office. Please try again.';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -39,7 +46,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
   const { params: { ballotId } } = route;
 
   const {
-    ballot, RequestProgress,
+    ballot, cacheBallot, RequestProgress,
   } = useBallot(ballotId, {
     shouldFetchOnMount: (cachedBallot) => {
       if (!cachedBallot?.results) {
@@ -70,6 +77,38 @@ export default function ResultScreen({ route }: ResultScreenProps) {
   const {
     LearnMoreOfficeModal, setModalVisible,
   } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+
+  const onResultUpdated = useCallback(async (updatedResult: Result) => {
+    if (!ballot || updatedResult.acceptedOffice === undefined) { return; }
+
+    // Optimistically cache the updated ballot. Note there's no need to update
+    // currentUser.offices because the term cannot have started yet.
+    cacheBallot({
+      ...ballot,
+      results: ballot.results?.map((result) => (
+        (result.candidate.id !== updatedResult.candidate.id)
+          ? result : updatedResult)),
+    });
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+    let errorMessage: string | undefined;
+    try {
+      ({ errorMessage } = await createTerm({
+        accepted: updatedResult.acceptedOffice, ballotId: ballot.id, jwt,
+      }));
+    } catch (error) {
+      errorMessage = GENERIC_ERROR_MESSAGE;
+    }
+
+    if (errorMessage) {
+      // On error, revert ballot back to what it was before the optimistic
+      // update
+      cacheBallot(ballot);
+
+      Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+    }
+  }, [ballot, cacheBallot, currentUser]);
 
   const ListEmptyComponent = useMemo(() => (
     <Text style={[styles.text, styles.emptyResultsText]}>
@@ -106,7 +145,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
-        onResultUpdated={console.log}
+        onResultUpdated={onResultUpdated}
         results={ballot?.results}
         termStartsAt={
           ballot?.category === 'election' ? ballot.termStartsAt : undefined
