@@ -70,7 +70,7 @@ export default function useBallot(ballotId: string, options: Options = {}) {
     if (options?.shouldFetchOnMount?.(ballot)) {
       updateBallot().catch(console.error);
     }
-  }, [ballot, updateBallot]);
+  }, []);
 
   const { styles } = useStyles();
 
