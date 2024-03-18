@@ -5,7 +5,7 @@ import {
 import type { ResultScreenProps } from '../../navigation';
 import {
   LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground, useBallot,
-  useLearnMoreOfficeModal,
+  useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import {
   GENERIC_ERROR_MESSAGE, Result, useBallotPreviews, useCurrentUser,
@@ -36,6 +36,11 @@ const useStyles = () => {
       flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
+    },
+    timeRemainingFooter: {
+      // Override default style because LearnMoreButtonRow already has built-in
+      // margin
+      marginTop: 0,
     },
   });
 
@@ -130,11 +135,33 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     </View>
   ), [ballotPreview, styles]);
 
-  const ListFooterComponent = useMemo(() => (
-    (ballot?.category === 'election')
-      ? <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
-      : undefined
-  ), [ballot]);
+  const { TimeRemainingFooter } = useTimeRemainingFooter();
+
+  const ListFooterComponent = useMemo(() => {
+    if (ballot?.category !== 'election' || ballot?.results?.length === 0) {
+      return undefined;
+    }
+
+    const { termStartsAt, termEndsAt } = ballot;
+    const termStarted = termStartsAt.getTime() <= new Date().getTime();
+    const endTime = termStarted ? termEndsAt : termStartsAt;
+    const expiredFormatter = () => (
+      `Term ${termStarted ? 'ended' : 'started'}`
+    );
+    const formatter = (timeRemaining: string) => (
+      `${timeRemaining} until term ${termStarted ? 'ends' : 'starts'}`
+    );
+    return (
+      <>
+        <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+        <TimeRemainingFooter
+          endTime={endTime}
+          style={styles.timeRemainingFooter}
+          timeRemainingOptions={{ expiredFormatter, formatter }}
+        />
+      </>
+    );
+  }, [ballot]);
 
   return (
     <ScreenBackground>
