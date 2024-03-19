@@ -17,7 +17,7 @@ export default function formatDate(date: Date, format: DateFormat) {
     options = {
       day: 'numeric',
       month: 'numeric',
-      year: 'numeric',
+      year: '2-digit',
     };
   } else {
     throw new Error('Unrecognized date format');
