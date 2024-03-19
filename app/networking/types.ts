@@ -335,28 +335,6 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
     ));
 }
 
-export type CandidateIndexCandidate = {
-  encryptedTitle: BackendEncryptedMessage;
-  id: string;
-};
-
-function isCandidateIndexCandidate(object: unknown): object is CandidateIndexCandidate {
-  const candidate = (object as CandidateIndexCandidate);
-  return candidate?.id?.length > 0
-    && isBackendEncryptedMessage(candidate.encryptedTitle);
-}
-
-type CandidateIndexResponse = {
-  candidates: CandidateIndexCandidate[];
-};
-
-export function isCandidateIndexResponse(object: unknown): object is CandidateIndexResponse {
-  const response = (object as CandidateIndexResponse);
-  return response?.candidates
-    && Array.isArray(response.candidates)
-    && response.candidates.every(isCandidateIndexCandidate);
-}
-
 export type UpdateNominationResponse = {
   nomination: {
     accepted: boolean | null;
