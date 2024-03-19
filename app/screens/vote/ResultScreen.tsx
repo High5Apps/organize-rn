@@ -185,6 +185,11 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
     </>
   ), [TimerRemainingCountdown]);
 
+  const onDiscussPressed = useCallback((postId: string) => (
+    navigation.navigate('DiscussStack', {
+      screen: 'Post', initial: false, params: { postId },
+    })), [navigation]);
+
   return (
     <ScreenBackground>
       <LearnMoreOfficeModal />
@@ -194,9 +199,7 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
-        onDiscussPressed={(postId) => navigation.navigate('DiscussStack', {
-          screen: 'Post', initial: false, params: { postId },
-        })}
+        onDiscussPressed={onDiscussPressed}
         onResultUpdated={onResultUpdated}
         results={ballot?.results}
         termStartsAt={

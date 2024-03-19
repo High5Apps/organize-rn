@@ -34,7 +34,10 @@ export default function ResultList({
       onResultUpdated={onResultUpdated}
       termStartsAt={termStartsAt}
     />
-  ), [currentUserId, maxVoteCount, maxWinners, onResultUpdated, termStartsAt]);
+  ), [
+    currentUserId, maxVoteCount, maxWinners, onDiscussPressed, onResultUpdated,
+    termStartsAt,
+  ]);
 
   return (
     <FlatList
