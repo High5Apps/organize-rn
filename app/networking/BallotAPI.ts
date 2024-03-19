@@ -207,7 +207,9 @@ export async function fetchBallot({
   });
 
   const results = json.results?.map(({ candidateId, ...rest }) => {
-    const candidate = candidates.find(({ id }) => id === candidateId)!;
+    const candidate = candidates.find(
+      ({ id }) => id === candidateId,
+    )!; // ! is safe because candidates contains all candidateIds in results
     const acceptedOffice = json.terms?.find(
       ({ userId }) => userId === candidate.userId,
     )?.accepted;
@@ -218,12 +220,22 @@ export async function fetchBallot({
       ...rest,
     });
   });
+
+  const nominations = json.nominations?.map((nomination) => {
+    if (!nomination.accepted) { return nomination; }
+
+    const { postId } = candidates.find(
+      ({ userId }) => userId === nomination.nominee.id,
+    )!; // ! is safe because all accepted nominations have a candidate
+    return { ...nomination, postId };
+  });
+
   const ballot: Ballot = {
     ...partialBallot,
     question,
     candidates,
     myVote: json.myVote,
-    nominations: json.nominations,
+    nominations,
     results,
   };
 

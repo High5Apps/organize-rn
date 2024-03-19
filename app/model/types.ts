@@ -215,6 +215,7 @@ export type Nomination = {
   id: string;
   nominator: NominationUser;
   nominee: NominationUser;
+  postId?: string | null;
 };
 
 export type NonPendingNomination = Nomination & {
