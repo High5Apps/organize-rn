@@ -84,7 +84,7 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
       <Text style={[styles.text, styles.question]}>
         {ballotPreview.question}
       </Text>
-      { ballot?.candidates?.length && (
+      {!!ballot?.candidates?.length && (
         <BallotDetails ballot={ballot} style={styles.ballotDetails} />
       )}
       <RequestProgress />
