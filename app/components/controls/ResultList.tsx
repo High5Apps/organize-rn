@@ -21,32 +21,17 @@ export default function ResultList({
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
-  const singleSelection = maxWinners === 1;
-  const multiSelection = maxWinners > 1;
 
-  const renderItem = useCallback(({
-    item,
-  }: ListRenderItemInfo<Result>) => {
-    const { isWinner, rank, voteCount } = item;
-    const receivedMaxVotes = voteCount === maxVoteCount;
-    const singleSelectionLoser = singleSelection && !isWinner;
-    return (
-      <ResultRow
-        currentUserId={currentUserId}
-        item={item}
-        multiSelectionWinnerRank={
-          (multiSelection && isWinner) ? rank : undefined
-        }
-        onResultUpdated={onResultUpdated}
-        singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
-        singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
-        singleSelectionWinner={singleSelection && isWinner}
-        termStartsAt={termStartsAt}
-      />
-    );
-  }, [
-    currentUserId, maxVoteCount, maxWinners, multiSelection, singleSelection,
-  ]);
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<Result>) => (
+    <ResultRow
+      currentUserId={currentUserId}
+      result={item}
+      maxVoteCount={maxVoteCount}
+      maxWinners={maxWinners}
+      onResultUpdated={onResultUpdated}
+      termStartsAt={termStartsAt}
+    />
+  ), [currentUserId, maxVoteCount, maxWinners, onResultUpdated, termStartsAt]);
 
   return (
     <FlatList

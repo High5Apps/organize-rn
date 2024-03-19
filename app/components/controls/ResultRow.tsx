@@ -62,17 +62,22 @@ const useStyles = () => {
   return { styles };
 };
 
-type IconNameProps = {
-  multiSelectionWinnerRank?: number;
-  singleSelectionLoser?: boolean;
-  singleSelectionTied?: boolean;
-  singleSelectionWinner?: boolean;
+type IconProps = {
+  maxVoteCount: number;
+  maxWinners: number;
+  result: Result;
 };
 
-function useIcon({
-  multiSelectionWinnerRank, singleSelectionLoser, singleSelectionTied,
-  singleSelectionWinner,
-}: IconNameProps, isAWinner: boolean) {
+function useIcon({ maxVoteCount, maxWinners, result }: IconProps) {
+  const { isWinner, rank, voteCount } = result;
+  const multiSelection = maxWinners > 1;
+  const multiSelectionWinnerRank = (multiSelection && isWinner)
+    ? rank : undefined;
+  const receivedMaxVotes = voteCount === maxVoteCount;
+  const singleSelectionLoser = !multiSelection && !isWinner;
+  const singleSelectionTied = singleSelectionLoser && receivedMaxVotes;
+  const singleSelectionWinner = !multiSelection && isWinner;
+
   const { styles } = useStyles();
 
   let iconName: string;
@@ -89,7 +94,7 @@ function useIcon({
     iconName = 'check-box-outline-blank';
   }
 
-  if (!isAWinner) {
+  if (!isWinner) {
     iconStyle = { ...iconStyle, ...styles.iconDim };
   }
 
@@ -123,39 +128,33 @@ function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
   return 'Missed deadline to accept office';
 }
 
-type Props = IconNameProps & {
+type Props = IconProps & {
   currentUserId: string;
-  item: Result;
   onResultUpdated: (result: Result) => void;
   termStartsAt?: Date;
 };
 
 export default function ResultRow({
-  currentUserId, item, multiSelectionWinnerRank, onResultUpdated,
-  singleSelectionLoser, singleSelectionTied, singleSelectionWinner,
+  currentUserId, maxVoteCount, maxWinners, onResultUpdated, result,
   termStartsAt,
 }: Props) {
-  const { acceptedOffice, candidate } = item;
-  const isAWinner = (multiSelectionWinnerRank !== undefined)
-    || !!singleSelectionWinner;
-
+  const {
+    candidate: { title: candidateTitle, userId: candidateUserId },
+  } = result;
   const { styles } = useStyles();
 
-  const IconComponent = useIcon({
-    multiSelectionWinnerRank,
-    singleSelectionLoser,
-    singleSelectionTied,
-    singleSelectionWinner,
-  }, isAWinner);
+  const IconComponent = useIcon({ maxVoteCount, maxWinners, result });
 
   const SecondRow = useMemo(() => {
-    const shouldShowDecisionButtonRow = isAWinner
+    const { acceptedOffice, candidate, isWinner } = result;
+
+    const shouldShowDecisionButtonRow = isWinner
       && candidate.userId === currentUserId
       && acceptedOffice === undefined;
-    const shouldShowAcceptance = isAWinner && !!termStartsAt;
+    const shouldShowAcceptance = isWinner && !!termStartsAt;
 
     const onAccepted = (accepted: boolean) => onResultUpdated({
-      ...item,
+      ...result,
       acceptedOffice: accepted,
     });
 
@@ -184,19 +183,14 @@ export default function ResultRow({
     }
 
     return null;
-  }, [
-    acceptedOffice, isAWinner, candidate.userId, currentUserId, item,
-    onResultUpdated, termStartsAt,
-  ]);
+  }, [currentUserId, result, onResultUpdated, termStartsAt]);
 
   return (
-    <HighlightedRowContainer
-      userIds={[item.candidate.userId].filter(isDefined)}
-    >
+    <HighlightedRowContainer userIds={[candidateUserId].filter(isDefined)}>
       <View style={styles.container}>
         <View style={styles.firstRow}>
           {IconComponent}
-          <Text style={styles.text}>{candidate.title}</Text>
+          <Text style={styles.text}>{candidateTitle}</Text>
         </View>
         {SecondRow}
       </View>
@@ -205,9 +199,5 @@ export default function ResultRow({
 }
 
 ResultRow.defaultProps = {
-  multiSelectionWinnerRank: undefined,
-  singleSelectionLoser: undefined,
-  singleSelectionTied: undefined,
-  singleSelectionWinner: undefined,
   termStartsAt: undefined,
 };
