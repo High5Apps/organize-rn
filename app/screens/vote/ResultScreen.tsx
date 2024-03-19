@@ -50,7 +50,7 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function ResultScreen({ route }: ResultScreenProps) {
+export default function ResultScreen({ navigation, route }: ResultScreenProps) {
   const { params: { ballotId } } = route;
 
   const {
@@ -194,6 +194,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
+        onDiscussPressed={(postId) => navigation.navigate('DiscussStack', {
+          screen: 'Post', initial: false, params: { postId },
+        })}
         onResultUpdated={onResultUpdated}
         results={ballot?.results}
         termStartsAt={

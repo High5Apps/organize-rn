@@ -10,6 +10,7 @@ type Props = {
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
+  onDiscussPressed: (postId: string) => void;
   onResultUpdated: (result: Result) => void;
   results?: Result[];
   termStartsAt?: Date;
@@ -17,7 +18,8 @@ type Props = {
 
 export default function ResultList({
   currentUserId, ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
-  maxWinners: maybeMaxWinners, onResultUpdated, results, termStartsAt,
+  maxWinners: maybeMaxWinners, onDiscussPressed, onResultUpdated, results,
+  termStartsAt,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
   const maxWinners = maybeMaxWinners ?? 0;
@@ -28,6 +30,7 @@ export default function ResultList({
       result={item}
       maxVoteCount={maxVoteCount}
       maxWinners={maxWinners}
+      onDiscussPressed={onDiscussPressed}
       onResultUpdated={onResultUpdated}
       termStartsAt={termStartsAt}
     />

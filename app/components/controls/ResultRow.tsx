@@ -7,6 +7,7 @@ import useTheme from '../../Theme';
 import { ConfirmationAlert, Result, isDefined } from '../../model';
 import DecisionButtonsRow from './DecisionButtonsRow';
 import { HighlightedRowContainer } from '../views';
+import TextButton from './TextButton';
 
 const useStyles = () => {
   const {
@@ -56,6 +57,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       flex: 1,
+    },
+    textButton: {
+      fontSize: font.sizes.body,
     },
   });
 
@@ -130,17 +134,16 @@ function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
 
 type Props = IconProps & {
   currentUserId: string;
+  onDiscussPressed: (postId: string) => void;
   onResultUpdated: (result: Result) => void;
   termStartsAt?: Date;
 };
 
 export default function ResultRow({
-  currentUserId, maxVoteCount, maxWinners, onResultUpdated, result,
-  termStartsAt,
+  currentUserId, maxVoteCount, maxWinners, onDiscussPressed, onResultUpdated,
+  result, termStartsAt,
 }: Props) {
-  const {
-    candidate: { title: candidateTitle, userId: candidateUserId },
-  } = result;
+  const { candidate: { postId, title, userId } } = result;
   const { styles } = useStyles();
 
   const IconComponent = useIcon({ maxVoteCount, maxWinners, result });
@@ -186,11 +189,19 @@ export default function ResultRow({
   }, [currentUserId, result, onResultUpdated, termStartsAt]);
 
   return (
-    <HighlightedRowContainer userIds={[candidateUserId].filter(isDefined)}>
+    <HighlightedRowContainer userIds={[userId].filter(isDefined)}>
       <View style={styles.container}>
         <View style={styles.firstRow}>
           {IconComponent}
-          <Text style={styles.text}>{candidateTitle}</Text>
+          <Text style={styles.text}>{title}</Text>
+          {postId && (
+            <TextButton
+              onPress={() => onDiscussPressed(postId)}
+              style={styles.textButton}
+            >
+              Discuss
+            </TextButton>
+          )}
         </View>
         {SecondRow}
       </View>
