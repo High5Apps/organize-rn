@@ -200,6 +200,7 @@ export type { Model } from './ModelCache';
 
 export type Candidate = {
   id: string;
+  postId?: string | null;
   userId?: string;
   title: string;
 };

@@ -238,10 +238,12 @@ export function isBallotIndexResponse(object: unknown): object is BallotIndexRes
 type BallotCandidate = {
   encryptedTitle: BackendEncryptedMessage;
   id: string;
+  postId?: never;
   userId?: never;
 } | {
   encryptedTitle?: never;
   id: string;
+  postId: string | null;
   userId: string;
 };
 
@@ -253,8 +255,13 @@ function isBallotCandidate(object: unknown): object is BallotCandidate {
   const hasUserId = ballotCandidate?.userId !== undefined;
   return ballotCandidate?.id?.length > 0
     && (
-      (hasEncryptedMessage && !hasUserId)
-        || (!hasEncryptedMessage && hasUserId)
+      (hasEncryptedMessage
+        && !hasUserId
+        && ballotCandidate.postId === undefined)
+      || (!hasEncryptedMessage
+        && hasUserId
+        && (ballotCandidate.postId === null
+          || ballotCandidate.postId?.length > 0))
     );
 }
 
