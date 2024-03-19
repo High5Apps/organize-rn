@@ -13,6 +13,7 @@ type Props = {
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxSelections?: number;
+  onDiscussPressed: (postId: string) => void;
   onRowPressed?: (candidate: Candidate) => void;
   selectedCandidateIds?: string[];
   waitingForDeselectedCandidateIds: string[];
@@ -21,8 +22,8 @@ type Props = {
 
 export default function CandidateList({
   candidates, contentContainerStyle, ListEmptyComponent, ListFooterComponent,
-  ListHeaderComponent, maxSelections: maybeMaxSelections, onRowPressed,
-  selectedCandidateIds, waitingForDeselectedCandidateIds,
+  ListHeaderComponent, maxSelections: maybeMaxSelections, onDiscussPressed,
+  onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
   waitingForSelectedCandidateIds,
 }: Props) {
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
@@ -50,13 +51,14 @@ export default function CandidateList({
         disabled={disabled}
         indicatesSelectionToggling={shouldToggleSelections}
         item={item}
+        onDiscussPressed={onDiscussPressed}
         onPress={onRowPressed}
         selected={selected}
         showDisabled={disabledDueToMaxSelections || waitingForChange}
       />
     );
   }, [
-    maybeMaxSelections, onRowPressed, selectedCandidateIds,
+    maybeMaxSelections, onDiscussPressed, onRowPressed, selectedCandidateIds,
     waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
   ]);
 

@@ -5,6 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Candidate } from '../../model';
 import useTheme from '../../Theme';
+import TextButton from './TextButton';
 
 const useStyles = () => {
   const {
@@ -55,15 +56,16 @@ function getIcon({
 type Props = IconNameProps & {
   disabled?: boolean;
   item: Candidate;
+  onDiscussPressed: (postId: string) => void;
   onPress?: (item: Candidate) => void;
   showDisabled?: boolean;
 };
 
 export default function CandidateRow({
-  disabled, indicatesSelectionToggling, item, onPress, selected,
-  showDisabled,
+  disabled, indicatesSelectionToggling, item, onDiscussPressed, onPress,
+  selected, showDisabled,
 }: Props) {
-  const { title } = item;
+  const { postId, title } = item;
 
   const iconName = getIcon({ indicatesSelectionToggling, selected });
 
@@ -81,6 +83,11 @@ export default function CandidateRow({
           style={[styles.icon, showDisabled && styles.disabled]}
         />
         <Text style={styles.text}>{title}</Text>
+        {postId && (
+          <TextButton onPress={() => onDiscussPressed(postId)}>
+            Discuss
+          </TextButton>
+        )}
       </View>
     </TouchableHighlight>
   );

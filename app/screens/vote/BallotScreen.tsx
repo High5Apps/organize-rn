@@ -45,7 +45,7 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function BallotScreen({ route }: BallotScreenProps) {
+export default function BallotScreen({ navigation, route }: BallotScreenProps) {
   const { params: { ballotId } } = route;
 
   const {
@@ -112,6 +112,11 @@ export default function BallotScreen({ route }: BallotScreenProps) {
     );
   }, [ballotPreview, TimeRemainingFooter]);
 
+  const onDiscussPressed = useCallback((postId: string) => (
+    navigation.navigate('DiscussStack', {
+      screen: 'Post', initial: false, params: { postId },
+    })), [navigation]);
+
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
       await onNewCandidateSelection(candidate);
@@ -135,6 +140,7 @@ export default function BallotScreen({ route }: BallotScreenProps) {
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxSelections={ballot?.maxCandidateIdsPerVote}
+        onDiscussPressed={onDiscussPressed}
         onRowPressed={onRowPressed}
         selectedCandidateIds={selectedCandidateIds}
         waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
