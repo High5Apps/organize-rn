@@ -6,7 +6,7 @@ import {
 } from '../../model';
 import { HighlightedRowContainer } from '../views';
 import DecisionButtonsRow from './DecisionButtonsRow';
-import TextButton from './TextButton';
+import { DiscussButtonType } from './DiscussButton';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -42,13 +42,13 @@ const useStyles = () => {
 
 type Props = {
   currentUserId: string;
+  DiscussButton: DiscussButtonType;
   item: Nomination;
-  onDiscussPressed: (postId: string) => void;
   onNominationUpdated: (updatedNomination: NonPendingNomination) => void,
 };
 
 export default function NominationRow({
-  currentUserId, item: nomination, onDiscussPressed, onNominationUpdated,
+  currentUserId, DiscussButton, item: nomination, onNominationUpdated,
 }: Props) {
   const {
     accepted, nominator, nominee, postId,
@@ -74,11 +74,7 @@ export default function NominationRow({
               {`Nominated by ${nominator.pseudonym}`}
             </Text>
           </View>
-          {postId && (
-            <TextButton onPress={() => onDiscussPressed(postId)}>
-              Discuss
-            </TextButton>
-          )}
+          <DiscussButton postId={postId} />
         </View>
         {showDecisionButtonRow && (
           <DecisionButtonsRow

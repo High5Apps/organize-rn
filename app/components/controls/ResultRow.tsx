@@ -7,7 +7,7 @@ import useTheme from '../../Theme';
 import { ConfirmationAlert, Result, isDefined } from '../../model';
 import DecisionButtonsRow from './DecisionButtonsRow';
 import { HighlightedRowContainer } from '../views';
-import TextButton from './TextButton';
+import { DiscussButtonType } from './DiscussButton';
 
 const useStyles = () => {
   const {
@@ -131,13 +131,13 @@ function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
 
 type Props = IconProps & {
   currentUserId: string;
-  onDiscussPressed: (postId: string) => void;
+  DiscussButton: DiscussButtonType;
   onResultUpdated: (result: Result) => void;
   termStartsAt?: Date;
 };
 
 export default function ResultRow({
-  currentUserId, maxVoteCount, maxWinners, onDiscussPressed, onResultUpdated,
+  currentUserId, DiscussButton, maxVoteCount, maxWinners, onResultUpdated,
   result, termStartsAt,
 }: Props) {
   const { candidate: { postId, title, userId } } = result;
@@ -191,11 +191,7 @@ export default function ResultRow({
         <View style={styles.firstRow}>
           {IconComponent}
           <Text style={styles.text}>{title}</Text>
-          {postId && (
-            <TextButton onPress={() => onDiscussPressed(postId)}>
-              Discuss
-            </TextButton>
-          )}
+          <DiscussButton postId={postId} />
         </View>
         {SecondRow}
       </View>

@@ -5,15 +5,16 @@ import {
 import { Candidate } from '../../model';
 import CandidateRow from './CandidateRow';
 import { ItemSeparator } from '../views';
+import type { DiscussButtonType } from './DiscussButton';
 
 type Props = {
   candidates: Candidate[] | null;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  DiscussButton: DiscussButtonType;
   ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxSelections?: number;
-  onDiscussPressed: (postId: string) => void;
   onRowPressed?: (candidate: Candidate) => void;
   selectedCandidateIds?: string[];
   waitingForDeselectedCandidateIds: string[];
@@ -21,8 +22,8 @@ type Props = {
 };
 
 export default function CandidateList({
-  candidates, contentContainerStyle, ListEmptyComponent, ListFooterComponent,
-  ListHeaderComponent, maxSelections: maybeMaxSelections, onDiscussPressed,
+  candidates, contentContainerStyle, DiscussButton, ListEmptyComponent,
+  ListFooterComponent, ListHeaderComponent, maxSelections: maybeMaxSelections,
   onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
   waitingForSelectedCandidateIds,
 }: Props) {
@@ -49,16 +50,16 @@ export default function CandidateList({
     return (
       <CandidateRow
         disabled={disabled}
+        DiscussButton={DiscussButton}
         indicatesSelectionToggling={shouldToggleSelections}
         item={item}
-        onDiscussPressed={onDiscussPressed}
         onPress={onRowPressed}
         selected={selected}
         showDisabled={disabledDueToMaxSelections || waitingForChange}
       />
     );
   }, [
-    maybeMaxSelections, onDiscussPressed, onRowPressed, selectedCandidateIds,
+    DiscussButton, maybeMaxSelections, onRowPressed, selectedCandidateIds,
     waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
   ]);
 

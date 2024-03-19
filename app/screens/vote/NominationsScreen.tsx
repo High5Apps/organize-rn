@@ -4,8 +4,8 @@ import type { NominationScreenProps } from '../../navigation';
 import { OfficeCategory, getOffice, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 import {
-  NominationList, PrimaryButton, ScreenBackground, useHeaderButton,
-  useLearnMoreOfficeModal,
+  NominationList, PrimaryButton, ScreenBackground, useDiscussButton,
+  useHeaderButton, useLearnMoreOfficeModal,
 } from '../../components';
 
 function useTitleUpdater(
@@ -65,17 +65,14 @@ export default function NominationsScreen({
     onPress: useCallback(() => setModalVisible(true), []),
   });
 
-  const onDiscussPressed = useCallback((postId: string) => (
-    navigation.navigate('DiscussStack', {
-      screen: 'Post', initial: false, params: { postId },
-    })), [navigation]);
+  const DiscussButton = useDiscussButton(navigation);
 
   return (
     <ScreenBackground>
       <NominationList
         ballotId={ballotId}
         contentContainerStyle={styles.contentContainerStyle}
-        onDiscussPressed={onDiscussPressed}
+        DiscussButton={DiscussButton}
       />
       <LearnMoreOfficeModal />
       <PrimaryButton

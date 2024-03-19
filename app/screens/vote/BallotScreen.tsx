@@ -5,7 +5,7 @@ import {
 import type { BallotScreenProps } from '../../navigation';
 import {
   BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
-  useLearnMoreOfficeModal, useTimeRemainingFooter,
+  useDiscussButton, useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
@@ -112,10 +112,7 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
     );
   }, [ballotPreview, TimeRemainingFooter]);
 
-  const onDiscussPressed = useCallback((postId: string) => (
-    navigation.navigate('DiscussStack', {
-      screen: 'Post', initial: false, params: { postId },
-    })), [navigation]);
+  const DiscussButton = useDiscussButton(navigation);
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
@@ -136,11 +133,11 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
       <LearnMoreOfficeModal />
       <CandidateList
         candidates={ballot?.candidates ?? null}
+        DiscussButton={DiscussButton}
         ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxSelections={ballot?.maxCandidateIdsPerVote}
-        onDiscussPressed={onDiscussPressed}
         onRowPressed={onRowPressed}
         selectedCandidateIds={selectedCandidateIds}
         waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}

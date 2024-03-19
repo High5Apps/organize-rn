@@ -5,7 +5,7 @@ import {
 import type { ResultScreenProps } from '../../navigation';
 import {
   BallotDetails, LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground,
-  useBallot, useLearnMoreOfficeModal, useTimeRemainingFooter,
+  useBallot, useDiscussButton, useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import {
   GENERIC_ERROR_MESSAGE, Result, useBallotPreviews, useCurrentUser,
@@ -185,21 +185,18 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
     </>
   ), [TimerRemainingCountdown]);
 
-  const onDiscussPressed = useCallback((postId: string) => (
-    navigation.navigate('DiscussStack', {
-      screen: 'Post', initial: false, params: { postId },
-    })), [navigation]);
+  const DiscussButton = useDiscussButton(navigation);
 
   return (
     <ScreenBackground>
       <LearnMoreOfficeModal />
       <ResultList
         currentUserId={currentUser.id}
+        DiscussButton={DiscussButton}
         ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxWinners={ballot?.maxCandidateIdsPerVote}
-        onDiscussPressed={onDiscussPressed}
         onResultUpdated={onResultUpdated}
         results={ballot?.results}
         termStartsAt={

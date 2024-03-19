@@ -3,22 +3,23 @@ import { FlatList, ListRenderItemInfo } from 'react-native';
 import { ItemSeparator } from '../views';
 import ResultRow from './ResultRow';
 import { Result } from '../../model';
+import { DiscussButtonType } from './DiscussButton';
 
 type Props = {
   currentUserId: string;
+  DiscussButton: DiscussButtonType;
   ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxWinners?: number;
-  onDiscussPressed: (postId: string) => void;
   onResultUpdated: (result: Result) => void;
   results?: Result[];
   termStartsAt?: Date;
 };
 
 export default function ResultList({
-  currentUserId, ListEmptyComponent, ListFooterComponent, ListHeaderComponent,
-  maxWinners: maybeMaxWinners, onDiscussPressed, onResultUpdated, results,
+  currentUserId, DiscussButton, ListEmptyComponent, ListFooterComponent,
+  ListHeaderComponent, maxWinners: maybeMaxWinners, onResultUpdated, results,
   termStartsAt,
 }: Props) {
   const maxVoteCount = results?.length ? results[0].voteCount : 0;
@@ -27,15 +28,15 @@ export default function ResultList({
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Result>) => (
     <ResultRow
       currentUserId={currentUserId}
-      result={item}
+      DiscussButton={DiscussButton}
       maxVoteCount={maxVoteCount}
       maxWinners={maxWinners}
-      onDiscussPressed={onDiscussPressed}
       onResultUpdated={onResultUpdated}
+      result={item}
       termStartsAt={termStartsAt}
     />
   ), [
-    currentUserId, maxVoteCount, maxWinners, onDiscussPressed, onResultUpdated,
+    currentUserId, DiscussButton, maxVoteCount, maxWinners, onResultUpdated,
     termStartsAt,
   ]);
 

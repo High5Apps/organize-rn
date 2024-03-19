@@ -9,6 +9,7 @@ export {
   default as DateTimeSelector, startOfNextHourIn,
 } from './DateTimeSelector';
 export { default as DecisionButtonsRow } from './DecisionButtonsRow';
+export { default as useDiscussButton } from './DiscussButton';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as useHeaderButton } from './HeaderButton';
