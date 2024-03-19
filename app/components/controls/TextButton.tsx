@@ -15,7 +15,7 @@ const useStyles = () => {
     text: {
       alignSelf: 'flex-start',
       color: colors.primary,
-      fontSize: font.sizes.subhead,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       minWidth: sizes.minimumTappableLength,
     },

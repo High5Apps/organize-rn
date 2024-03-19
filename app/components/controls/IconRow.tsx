@@ -31,9 +31,6 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       paddingHorizontal: spacing.m,
     },
-    textButton: {
-      fontSize: font.sizes.body,
-    },
   });
 
   return { colors, styles };
@@ -57,11 +54,7 @@ export default function IconRow({
 
     if (textButtonLabel === undefined) { return <DisclosureIcon />; }
 
-    return (
-      <TextButton onPress={onPress} style={styles.textButton}>
-        {textButtonLabel}
-      </TextButton>
-    );
+    return <TextButton onPress={onPress}>{textButtonLabel}</TextButton>;
   }, [onPress, textButtonLabel, styles]);
 
   return (

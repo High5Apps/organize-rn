@@ -8,7 +8,7 @@ import { ConfirmationAlert } from '../../model';
 const MAX_TITLE_LENGTH = 60;
 
 const useStyles = () => {
-  const { font, spacing } = useTheme();
+  const { spacing } = useTheme();
 
   const styles = StyleSheet.create({
     addChoiceButtonContainer: {
@@ -16,9 +16,6 @@ const useStyles = () => {
       marginStart: spacing.m,
       marginTop: spacing.m,
       marginBottom: spacing.s,
-    },
-    addChoiceButtonText: {
-      fontSize: font.sizes.body,
     },
   });
 
@@ -98,7 +95,6 @@ export default function NewCandidatesControl({
         containerStyle={styles.addChoiceButtonContainer}
         disabled={!candidates[candidates.length - 1]?.length}
         onPress={appendNewCandidate}
-        style={styles.addChoiceButtonText}
       >
         Add another choice
       </TextButton>

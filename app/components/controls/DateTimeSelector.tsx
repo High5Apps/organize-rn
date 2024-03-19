@@ -19,9 +19,6 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    textButtonOverrides: {
-      fontSize: font.sizes.body,
-    },
   });
 
   return { styles };
@@ -42,10 +39,7 @@ export default function DateTimeSelector({
 
   return (
     <View style={[styles.container, style]}>
-      <TextButton
-        onPress={() => setPickerVisible(!pickerVisible)}
-        style={styles.textButtonOverrides}
-      >
+      <TextButton onPress={() => setPickerVisible(!pickerVisible)}>
         {formatDate(dateTime, 'full')}
       </TextButton>
       <DateTimePickerModal

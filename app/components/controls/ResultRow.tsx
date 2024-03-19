@@ -58,9 +58,6 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       flex: 1,
     },
-    textButton: {
-      fontSize: font.sizes.body,
-    },
   });
 
   return { styles };
@@ -195,10 +192,7 @@ export default function ResultRow({
           {IconComponent}
           <Text style={styles.text}>{title}</Text>
           {postId && (
-            <TextButton
-              onPress={() => onDiscussPressed(postId)}
-              style={styles.textButton}
-            >
+            <TextButton onPress={() => onDiscussPressed(postId)}>
               Discuss
             </TextButton>
           )}
