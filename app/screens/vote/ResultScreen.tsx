@@ -152,7 +152,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
   const { TimeRemainingFooter } = useTimeRemainingFooter();
 
-  const ListFooterComponent = useMemo(() => {
+  const TimerRemainingCountdown = useMemo(() => {
     if (ballot?.category !== 'election' || ballot?.results?.length === 0) {
       return undefined;
     }
@@ -177,16 +177,20 @@ export default function ResultScreen({ route }: ResultScreenProps) {
       `${timeRemaining} until term ${termStarted ? 'ends' : 'starts'}`
     );
     return (
-      <>
-        <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
-        <TimeRemainingFooter
-          endTime={endTime}
-          style={styles.timeRemainingFooter}
-          timeRemainingOptions={{ expiredFormatter, formatter }}
-        />
-      </>
+      <TimeRemainingFooter
+        endTime={endTime}
+        style={styles.timeRemainingFooter}
+        timeRemainingOptions={{ expiredFormatter, formatter }}
+      />
     );
   }, [ballot]);
+
+  const ListFooterComponent = useMemo(() => (
+    <>
+      <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+      {TimerRemainingCountdown}
+    </>
+  ), [TimerRemainingCountdown]);
 
   return (
     <ScreenBackground>
