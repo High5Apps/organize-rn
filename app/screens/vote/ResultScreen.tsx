@@ -150,6 +150,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
 
     const { termStartsAt, termEndsAt } = ballot;
     const termStarted = termStartsAt.getTime() <= new Date().getTime();
+    const hasAcceptedTerm = ballot.results?.some((r) => r.acceptedOffice);
+    if (termStarted && !hasAcceptedTerm) { return undefined; }
+
     const endTime = termStarted ? termEndsAt : termStartsAt;
     const expiredFormatter = () => (
       `Term ${termStarted ? 'ended' : 'started'}`
