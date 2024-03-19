@@ -62,14 +62,11 @@ const useStyles = (resultCount: number) => {
 };
 
 type Props = {
-  maxWinners?: number;
   results?: Result[];
   style?: StyleProp<ViewStyle>;
 };
 
-export default function ResultGraph({
-  maxWinners, results, style,
-}: Props) {
+export default function ResultGraph({ results, style }: Props) {
   const resultCount = results?.length ?? 0;
   const { styles } = useStyles(resultCount);
 
@@ -96,12 +93,12 @@ export default function ResultGraph({
         ))}
       </View>
       <View style={styles.graphColumn}>
-        { results.map(({ candidate: { id }, rank, voteCount }) => (
+        { results.map(({ candidate: { id }, isWinner, voteCount }) => (
           <View key={id} style={[styles.row, { width: getWidth(voteCount) }]}>
             <View
               style={[
                 styles.bar,
-                (rank < (maxWinners ?? 0)) ? {} : styles.barLoser,
+                !isWinner && styles.barLoser,
               ]}
             />
             <Text style={[styles.text, styles.textInvisible]}>
@@ -125,7 +122,6 @@ export default function ResultGraph({
 }
 
 ResultGraph.defaultProps = {
-  maxWinners: undefined,
   results: undefined,
   style: {},
 };

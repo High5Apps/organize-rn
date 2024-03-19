@@ -214,6 +214,7 @@ export async function fetchBallot({
     return ({
       acceptedOffice,
       candidate,
+      isWinner: rest.rank < partialBallot.maxCandidateIdsPerVote,
       ...rest,
     });
   });

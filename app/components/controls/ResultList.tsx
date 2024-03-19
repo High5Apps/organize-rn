@@ -27,21 +27,20 @@ export default function ResultList({
   const renderItem = useCallback(({
     item,
   }: ListRenderItemInfo<Result>) => {
-    const { rank, voteCount } = item;
-    const isAWinner = item.rank < maxWinners;
+    const { isWinner, rank, voteCount } = item;
     const receivedMaxVotes = voteCount === maxVoteCount;
-    const singleSelectionLoser = singleSelection && !isAWinner;
+    const singleSelectionLoser = singleSelection && !isWinner;
     return (
       <ResultRow
         currentUserId={currentUserId}
         item={item}
         multiSelectionWinnerRank={
-          (multiSelection && isAWinner) ? rank : undefined
+          (multiSelection && isWinner) ? rank : undefined
         }
         onResultUpdated={onResultUpdated}
         singleSelectionLoser={singleSelectionLoser && !receivedMaxVotes}
         singleSelectionTied={singleSelectionLoser && receivedMaxVotes}
-        singleSelectionWinner={singleSelection && isAWinner}
+        singleSelectionWinner={singleSelection && isWinner}
         termStartsAt={termStartsAt}
       />
     );

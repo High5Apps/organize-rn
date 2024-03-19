@@ -223,6 +223,7 @@ export type NonPendingNomination = Nomination & {
 export type Result = {
   acceptedOffice?: boolean;
   candidate: Candidate;
+  isWinner: boolean;
   rank: number;
   voteCount: number;
 };

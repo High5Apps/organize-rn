@@ -66,11 +66,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         const beforeTermStart = (
           new Date().getTime() < cachedBallot.termStartsAt.getTime()
         );
-        const anyAcceptancesPending = cachedBallot.results.some((result) => {
-          const isWinner = result.rank < cachedBallot.maxCandidateIdsPerVote;
-          const isPending = result.acceptedOffice === undefined;
-          return isWinner && isPending;
-        });
+        const anyAcceptancesPending = cachedBallot.results.some((result) => (
+          result.isWinner && result.acceptedOffice === undefined
+        ));
         if (beforeTermStart && anyAcceptancesPending) {
           return true;
         }
@@ -142,11 +140,7 @@ export default function ResultScreen({ route }: ResultScreenProps) {
         <BallotDetails ballot={ballot} style={styles.ballotDetails} />
       )}
       <RequestProgress />
-      <ResultGraph
-        maxWinners={ballot?.maxCandidateIdsPerVote}
-        results={ballot?.results}
-        style={styles.graph}
-      />
+      <ResultGraph results={ballot?.results} style={styles.graph} />
     </View>
   ), [ballotPreview, styles]);
 
@@ -160,10 +154,9 @@ export default function ResultScreen({ route }: ResultScreenProps) {
     const { termStartsAt, termEndsAt } = ballot;
     const termStarted = termStartsAt.getTime() <= new Date().getTime();
 
-    const allWinningTermsDeclined = ballot.results?.every((result) => {
-      const isWinner = result.rank < ballot.maxCandidateIdsPerVote;
-      return !isWinner || result.acceptedOffice === false;
-    });
+    const allWinningTermsDeclined = ballot.results?.every((result) => (
+      !result.isWinner || result.acceptedOffice === false
+    ));
     if (!termStarted && allWinningTermsDeclined) { return undefined; }
 
     const anyTermAccepted = ballot.results?.some((r) => r.acceptedOffice);
