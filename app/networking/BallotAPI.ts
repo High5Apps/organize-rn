@@ -206,7 +206,7 @@ export async function fetchBallot({
     };
   });
 
-  const augmentedResults = json.results?.map(({ candidateId, ...rest }) => {
+  const results = json.results?.map(({ candidateId, ...rest }) => {
     const candidate = candidates.find(({ id }) => id === candidateId)!;
     const acceptedOffice = json.terms?.find(
       ({ userId }) => userId === candidate.userId,
@@ -224,7 +224,7 @@ export async function fetchBallot({
     candidates,
     myVote: json.myVote,
     nominations: json.nominations,
-    results: augmentedResults,
+    results,
   };
 
   return { ballot };
