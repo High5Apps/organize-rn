@@ -62,9 +62,18 @@ export default function ResultScreen({ route }: ResultScreenProps) {
       }
 
       // Allow updating office acceptance
-      if (cachedBallot.category === 'election'
-          && new Date().getTime() < cachedBallot.termStartsAt.getTime()) {
-        return true;
+      if (cachedBallot.category === 'election') {
+        const beforeTermStart = (
+          new Date().getTime() < cachedBallot.termStartsAt.getTime()
+        );
+        const anyAcceptancesPending = cachedBallot.results.some((result) => {
+          const isWinner = result.rank < cachedBallot.maxCandidateIdsPerVote;
+          const isPending = result.acceptedOffice === undefined;
+          return isWinner && isPending;
+        });
+        if (beforeTermStart && anyAcceptancesPending) {
+          return true;
+        }
       }
 
       return false;
