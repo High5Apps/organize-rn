@@ -65,11 +65,17 @@ export default function NominationsScreen({
     onPress: useCallback(() => setModalVisible(true), []),
   });
 
+  const onDiscussPressed = useCallback((postId: string) => (
+    navigation.navigate('DiscussStack', {
+      screen: 'Post', initial: false, params: { postId },
+    })), [navigation]);
+
   return (
     <ScreenBackground>
       <NominationList
         ballotId={ballotId}
         contentContainerStyle={styles.contentContainerStyle}
+        onDiscussPressed={onDiscussPressed}
       />
       <LearnMoreOfficeModal />
       <PrimaryButton

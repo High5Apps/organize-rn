@@ -19,10 +19,11 @@ type NominationSection = {
 type Props = {
   ballotId: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  onDiscussPressed: (postId: string) => void;
 };
 
 export default function NominationList({
-  ballotId, contentContainerStyle,
+  ballotId, contentContainerStyle, onDiscussPressed,
 }: Props) {
   const { ballot, cacheBallot, updateBallot } = useBallot(ballotId);
   const {
@@ -37,8 +38,9 @@ export default function NominationList({
       currentUserId={currentUser.id}
       item={item}
       onNominationUpdated={acceptOrDeclineNomination}
+      onDiscussPressed={onDiscussPressed}
     />
-  ), [currentUser.id, acceptOrDeclineNomination]);
+  ), [acceptOrDeclineNomination, currentUser.id, onDiscussPressed]);
 
   const ListEmptyComponent = useMemo(() => {
     if (!ballot?.office) { return null; }
