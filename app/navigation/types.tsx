@@ -56,10 +56,10 @@ export type WelcomeStackNavigationProp<T extends keyof WelcomeStackParamList> =
 export type NewOrgScreenNavigationProp = WelcomeStackNavigationProp<'NewOrg'>;
 
 export type OrgTabsParamList = {
-  ConnectStack: undefined;
-  DiscussStack: undefined;
-  VoteStack: undefined;
-  OrgStack: undefined;
+  ConnectStack: NavigatorScreenParams<ConnectStackParamList>;
+  DiscussStack: NavigatorScreenParams<DiscussStackParamList>;
+  VoteStack: NavigatorScreenParams<VoteStackParamList>;
+  OrgStack: NavigatorScreenParams<OrgStackParamList>;
 };
 
 export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
