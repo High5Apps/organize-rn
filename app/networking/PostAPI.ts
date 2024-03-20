@@ -1,15 +1,17 @@
 import type {
   E2EMultiDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
+  E2EDecryptor,
 } from '../model';
 import { fromJson } from '../model';
 import {
-  decryptMany, encrypt, get, post,
+  decrypt, decryptMany, encrypt, get, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import { postsURI } from './Routes';
+import { postURI, postsURI } from './Routes';
 import type { Authorization } from './types';
 import {
-  isBackendEncryptedMessage, isPostIndexResponse, isPostResponse,
+  isBackendEncryptedMessage, isFetchPostResponse, isPostIndexResponse,
+  isPostResponse,
 } from './types';
 
 type Props = {
@@ -60,6 +62,49 @@ export async function createPost({
   }
 
   return json;
+}
+
+type FetchPostProps = Authorization & {
+  id: string;
+  e2eDecrypt: E2EDecryptor;
+};
+
+type FetchPostReturn = {
+  post: Post;
+  errorMessage?: never;
+} | {
+  post?: never;
+  errorMessage: string;
+};
+
+export async function fetchPost({
+  id, e2eDecrypt, jwt,
+}: FetchPostProps): Promise<FetchPostReturn> {
+  const uri = postURI(id);
+  const response = await get({ jwt, uri });
+
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isFetchPostResponse(json)) {
+    throw new Error('Failed to parse Post from response');
+  }
+
+  const { post: { encryptedTitle, encryptedBody, ...rest } } = json;
+  const [title, body] = await Promise.all([
+    decrypt(encryptedTitle, e2eDecrypt),
+    isBackendEncryptedMessage(encryptedBody)
+      ? decrypt(encryptedBody, e2eDecrypt) : undefined,
+  ]);
+
+  return { post: { ...rest, body, title } };
 }
 
 type IndexProps = {

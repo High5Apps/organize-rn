@@ -146,6 +146,15 @@ export function isPostIndexResponse(object: unknown): object is PostIndexRespons
     && isPaginationData(response?.meta);
 }
 
+type FetchPostResponse = {
+  post: PostIndexPost;
+};
+
+export function isFetchPostResponse(object: unknown): object is FetchPostResponse {
+  const response = (object as FetchPostResponse);
+  return isPostIndexPost(response?.post);
+}
+
 type CreateModelResponse = {
   id: string;
 };
