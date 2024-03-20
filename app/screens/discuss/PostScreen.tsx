@@ -1,8 +1,10 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { CommentList, PrimaryButton, ScreenBackground } from '../../components';
+import {
+  CommentList, PrimaryButton, ScreenBackground, useRequestProgress,
+} from '../../components';
 import type { PostScreenProps } from '../../navigation';
-import { usePosts } from '../../model';
+import { GENERIC_ERROR_MESSAGE, usePost } from '../../model';
 import useTheme from '../../Theme';
 
 function toTitleCase(s: string) {
@@ -26,6 +28,9 @@ const useStyles = () => {
     listContainerStyle: {
       paddingBottom: buttonBoundingBoxHeight,
     },
+    requestProgress: {
+      margin: spacing.m,
+    },
   });
 
   return { styles };
@@ -34,8 +39,10 @@ const useStyles = () => {
 export default function PostScreen({ navigation, route }: PostScreenProps) {
   const { params: { insertedComments, postId } } = route;
 
-  const { cachePost, getCachedPost } = usePosts();
-  const post = getCachedPost(postId);
+  const { cachePost, post, refreshPost } = usePost({ id: postId });
+  const {
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
 
   const { styles } = useStyles();
 
@@ -47,6 +54,38 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     navigation.setOptions({ title: capitalizedCategory });
   }, [navigation, post]);
 
+  useEffect(
+    () => {
+      if (post) { return; }
+
+      async function refresh() {
+        setResult('none');
+        setLoading(true);
+
+        try {
+          await refreshPost();
+          setResult('success');
+        } catch (error) {
+          let errorMessage;
+          if (error instanceof Error) {
+            errorMessage = error.message;
+          } else {
+            errorMessage = GENERIC_ERROR_MESSAGE;
+          }
+
+          setResult('error', {
+            message: `${errorMessage}\nTap to try again`,
+            onPress: refresh,
+          });
+        }
+      }
+
+      refresh();
+    },
+    // This is needed in case the screen is reused with a different post
+    [post?.id],
+  );
+
   const navigateToNewCommentScreen = useCallback(() => {
     if (!post) {
       console.warn('Expected a post to be present when commenting');
@@ -57,7 +96,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   return (
     <ScreenBackground>
-      {post && (
+      {post ? (
         <CommentList
           containerStyle={styles.listContainerStyle}
           emptyListMessageOnPress={navigateToNewCommentScreen}
@@ -65,7 +104,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
           onPostChanged={cachePost}
           post={post}
         />
-      )}
+      ) : <RequestProgress style={styles.requestProgress} />}
       <PrimaryButton
         iconName="add"
         label="Comment"
