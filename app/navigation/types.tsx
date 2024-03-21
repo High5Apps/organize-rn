@@ -155,12 +155,9 @@ export type BallotPreviewsScreenParams = {
   prependedBallotId: string;
 };
 
-export type NominationScreenParams = {
+export type NewCandidacyAnnouncementScreenParams = {
   ballotId: string;
-};
-
-export type ResultScreenParams = {
-  ballotId: string;
+  candidateId: string;
 };
 
 export type NewElectionBallotScreenParams = {
@@ -171,10 +168,19 @@ export type NewNominationScreenParams = {
   ballotId: string;
 };
 
+export type NominationScreenParams = {
+  ballotId: string;
+};
+
+export type ResultScreenParams = {
+  ballotId: string;
+};
+
 export type VoteStackParamList = {
   Ballot: BallotScreenParams;
   BallotPreviews: BallotPreviewsScreenParams | undefined;
   BallotType: undefined;
+  NewCandidacyAnnouncement: NewCandidacyAnnouncementScreenParams;
   NewElectionBallot: NewElectionBallotScreenParams;
   NewMultipleChoiceBallot: undefined;
   NewNomination: NewNominationScreenParams;
@@ -193,6 +199,7 @@ export type VoteStackScreenProps<T extends keyof VoteStackParamList> =
 export type BallotScreenProps = VoteStackScreenProps<'Ballot'>;
 export type BallotPreviewsScreenProps = VoteStackScreenProps<'BallotPreviews'>;
 export type BallotTypeScreenProps = VoteStackScreenProps<'BallotType'>;
+export type NewCandidacyAnnouncementScreenProps = VoteStackScreenProps<'NewCandidacyAnnouncement'>;
 export type NewElectionBallotScreenProps = VoteStackScreenProps<'NewElectionBallot'>;
 export type NewMultipleChoiceBallotScreenProps = VoteStackScreenProps<'NewMultipleChoiceBallot'>;
 export type NewNominationScreenProps = VoteStackScreenProps<'NewNomination'>;
