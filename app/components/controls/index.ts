@@ -20,6 +20,7 @@ export { default as useLearnMoreOfficeModal } from './LearnMoreOfficeModal';
 export { default as MultilineTextInput } from './MultilineTextInput';
 export { default as NewCandidatesControl } from './NewCandidatesControl';
 export { default as NewConnectionControl } from './NewConnectionControl';
+export { default as NewPostScreenBase } from './NewPostScreenBase';
 export { default as NominationList } from './NominationList';
 export { default as NotableUserList } from './NotableUserList';
 export { default as OfficeList } from './OfficeList';
