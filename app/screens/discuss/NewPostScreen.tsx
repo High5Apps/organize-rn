@@ -35,9 +35,7 @@ function getNextScreenName(category?: PostCategory): DisccussTabName {
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
-  const {
-    candidateId, category: maybeCategory, title: maybeTitle,
-  } = route.params ?? {};
+  const { category: maybeCategory } = route.params ?? {};
   usePageTitleUpdater(navigation, maybeCategory);
 
   const onPostCreated = useCallback((post: Post) => {
@@ -48,9 +46,7 @@ export default function NewPostScreen({
 
   return (
     <NewPostScreenBase
-      candidateId={candidateId}
       initialCategory={maybeCategory}
-      initialPostTitle={maybeTitle}
       onPostCreated={onPostCreated}
     />
   );
