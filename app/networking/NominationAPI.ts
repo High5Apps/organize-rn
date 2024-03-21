@@ -53,10 +53,11 @@ type UpdateProps = {
 
 type UpdateReturn = {
   errorMessage: string;
-  nomination?: never;
-} | (UpdateNominationResponse & {
+  response?: never;
+} | {
   errorMessage?: never;
-});
+  response: UpdateNominationResponse;
+};
 
 export async function updateNomination({
   jwt, ...updatedAttributes
@@ -85,5 +86,5 @@ export async function updateNomination({
     throw new Error('Failed to updated all nomination attributes');
   }
 
-  return json;
+  return { response: json };
 }

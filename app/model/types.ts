@@ -212,10 +212,10 @@ export type NominationUser = {
 
 export type Nomination = {
   accepted: boolean | null;
+  candidate?: Candidate;
   id: string;
   nominator: NominationUser;
   nominee: NominationUser;
-  postId?: string | null;
 };
 
 export type NonPendingNomination = Nomination & {

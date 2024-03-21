@@ -352,6 +352,9 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
 }
 
 export type UpdateNominationResponse = {
+  candidate: {
+    id: string | null;
+  };
   nomination: {
     accepted: boolean | null;
     id: string;
@@ -360,7 +363,9 @@ export type UpdateNominationResponse = {
 
 export function isUpdateNominationResponse(object: unknown): object is UpdateNominationResponse {
   const response = (object as UpdateNominationResponse);
-  return response?.nomination?.accepted !== undefined
+  return response?.candidate
+    && (response.candidate.id === null || response.candidate.id?.length > 0)
+    && [null, true, false].includes(response.nomination?.accepted)
     && response.nomination.id?.length > 0;
 }
 

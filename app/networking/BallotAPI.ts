@@ -224,10 +224,10 @@ export async function fetchBallot({
   const nominations = json.nominations?.map((nomination) => {
     if (!nomination.accepted) { return nomination; }
 
-    const { postId } = candidates.find(
+    const candidate = candidates.find(
       ({ userId }) => userId === nomination.nominee.id,
     )!; // ! is safe because all accepted nominations have a candidate
-    return { ...nomination, postId };
+    return { ...nomination, candidate };
   });
 
   const ballot: Ballot = {

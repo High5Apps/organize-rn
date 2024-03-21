@@ -51,7 +51,7 @@ export default function NominationRow({
   currentUserId, DiscussButton, item: nomination, onNominationUpdated,
 }: Props) {
   const {
-    accepted, nominator, nominee, postId,
+    accepted, candidate, nominator, nominee,
   } = nomination;
   const { styles } = useStyles();
   const showDecisionButtonRow = currentUserId === nominee.id
@@ -74,7 +74,7 @@ export default function NominationRow({
               {`Nominated by ${nominator.pseudonym}`}
             </Text>
           </View>
-          <DiscussButton postId={postId} />
+          <DiscussButton postId={candidate?.postId} />
         </View>
         {showDecisionButtonRow && (
           <DecisionButtonsRow

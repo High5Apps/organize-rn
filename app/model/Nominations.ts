@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import {
   Ballot, Nomination, NonPendingNomination, isDefined,
 } from './types';
-import { updateNomination } from '../networking';
+import { UpdateNominationResponse, updateNomination } from '../networking';
 import useCurrentUser from './CurrentUser';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 
@@ -103,8 +103,9 @@ export default function useNominations(
       const jwt = await currentUser.createAuthToken({ scope: '*' });
 
       let errorMessage: string | undefined;
+      let response: UpdateNominationResponse | undefined;
       try {
-        ({ errorMessage } = await updateNomination({
+        ({ errorMessage, response } = await updateNomination({
           accepted: updatedNomination.accepted,
           jwt,
           id: updatedNomination.id,
@@ -118,6 +119,23 @@ export default function useNominations(
         // optimistic caching
         cacheBallot(ballot);
         Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+      } else if (response?.candidate.id) {
+        // Cache the newly created candidate on the nomination
+        cacheBallot({
+          ...ballot,
+          nominations: reorderNominations({
+            currentUserId: currentUser.id,
+            nominations: ballot.nominations,
+            replacing: {
+              ...updatedNomination,
+              candidate: {
+                id: response.candidate.id,
+                userId: currentUser.id,
+                title: currentUser.pseudonym,
+              },
+            },
+          }),
+        });
       }
     },
     [ballot, cacheBallot, currentUser],
