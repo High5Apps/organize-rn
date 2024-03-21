@@ -14,6 +14,7 @@ export default function DiscussGrievancesScreen({
       prependedPostId={prependedPostId}
       navigation={navigation}
       primaryButtonLabel="Grievance"
+      screenName={route.name}
       sort="top"
     />
   );

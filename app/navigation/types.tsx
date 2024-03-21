@@ -95,14 +95,8 @@ export type NewCommentScreenParams = {
   postId: string;
 };
 
-export type InternalRoute = {
-  key: string,
-  name: string,
-};
-
 export type NewPostScreenParams = {
   category?: PostCategory;
-  discussTabRoutes: InternalRoute[];
 };
 
 export type NewReplyScreenParams = {

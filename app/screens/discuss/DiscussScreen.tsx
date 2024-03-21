@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { useNavigationState } from '@react-navigation/native';
 import {
   ListEmptyMessage, PostList, PrimaryButton, ScreenBackground,
+  useCorrespondingDiscussTabUpdater,
 } from '../../components';
 import useTheme from '../../Theme';
 import type {
-  DiscussTabsParamList, DiscussTabsScreenProps, InternalRoute,
+  DiscussTabsParamList, DiscussTabsScreenProps,
 } from '../../navigation';
 import { Post, PostCategory, PostSort } from '../../model';
 
@@ -32,35 +32,23 @@ const useStyles = () => {
   return { styles };
 };
 
-function useDiscussTabRoutes() {
-  const [routes, setRoutes] = useState<InternalRoute[]>([]);
-
-  useNavigationState((state) => {
-    const { routes: currentRoutes } = state;
-    if (currentRoutes !== routes) {
-      setRoutes(currentRoutes);
-    }
-  });
-
-  return routes;
-}
-
 type Props<T extends keyof DiscussTabsParamList> = {
   category?: PostCategory;
   emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
   prependedPostId?: string;
   primaryButtonLabel: string;
+  screenName: keyof DiscussTabsParamList;
   sort: PostSort;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
   category, emptyListMessage, prependedPostId, navigation, primaryButtonLabel,
-  sort,
+  screenName, sort,
 }: Props<T>) {
   const { styles } = useStyles();
 
-  const discussTabRoutes = useDiscussTabRoutes();
+  useCorrespondingDiscussTabUpdater(screenName, navigation, prependedPostId);
 
   const onItemPress = useCallback(
     ({ id }: Post) => navigation.navigate('Post', { postId: id }),
@@ -84,10 +72,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       <PrimaryButton
         iconName="add"
         label={primaryButtonLabel}
-        onPress={() => navigation.navigate('NewPost', {
-          category,
-          discussTabRoutes,
-        })}
+        onPress={() => navigation.navigate('NewPost', { category })}
         style={styles.button}
       />
     </ScreenBackground>

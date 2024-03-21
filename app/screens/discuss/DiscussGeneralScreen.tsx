@@ -14,6 +14,7 @@ export default function DiscussGeneralScreen({
       prependedPostId={prependedPostId}
       navigation={navigation}
       primaryButtonLabel="Discussion"
+      screenName={route.name}
       sort="hot"
     />
   );
