@@ -96,6 +96,7 @@ export type NewCommentScreenParams = {
 };
 
 export type NewPostScreenParams = {
+  candidateId?: string;
   category?: PostCategory;
   title?: string;
 };

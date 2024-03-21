@@ -95,7 +95,9 @@ function getNextScreenName(category?: PostCategory): DisccussTabName {
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
-  const { category: maybeCategory, title: maybeTitle } = route.params ?? {};
+  const {
+    candidateId, category: maybeCategory, title: maybeTitle,
+  } = route.params ?? {};
   const initialPostCategory = maybeCategory ?? 'general';
 
   const { styles } = useStyles();
@@ -145,6 +147,7 @@ export default function NewPostScreen({
 
       const { errorMessage, createdAt, id } = await createPost({
         body: maybeStrippedBody,
+        candidateId,
         category: postCategory,
         e2eEncrypt,
         jwt,
