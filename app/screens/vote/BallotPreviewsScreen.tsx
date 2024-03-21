@@ -31,7 +31,7 @@ const useStyles = () => {
 export default function VoteScreen({
   navigation, route,
 }: BallotPreviewsScreenProps) {
-  const prependedBallotIds = route.params?.prependedBallotIds;
+  const prependedBallotId = route.params?.prependedBallotId;
   const { styles } = useStyles();
   return (
     <ScreenBackground>
@@ -49,7 +49,7 @@ export default function VoteScreen({
           }
           navigation.navigate(screenName, { ballotId: id });
         }}
-        prependedBallotIds={prependedBallotIds}
+        prependedBallotId={prependedBallotId}
       />
       <PrimaryButton
         iconName="add"

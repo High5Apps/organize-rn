@@ -185,7 +185,7 @@ export default function NewPostScreen({
       };
       cachePost(post);
 
-      const params = { prependedPostIds: [id] };
+      const params = { prependedPostId: id };
 
       screenKeysToUpdate.forEach((key) => navigation.dispatch({
         ...CommonActions.setParams(params),

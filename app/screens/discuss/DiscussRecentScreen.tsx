@@ -5,12 +5,12 @@ import type { DiscussRecentScreenProps } from '../../navigation';
 export default function DiscussRecentScreen({
   navigation, route,
 }: DiscussRecentScreenProps) {
-  const prependedPostIds = route.params?.prependedPostIds;
+  const prependedPostId = route.params?.prependedPostId;
 
   return (
     <DiscussScreen <'Recent'>
       emptyListMessage={"All of your Org's **newly created discussions** will show up here.\n\nTap the button below to get started!"}
-      prependedPostIds={prependedPostIds}
+      prependedPostId={prependedPostId}
       navigation={navigation}
       primaryButtonLabel="Discussion"
       sort="new"

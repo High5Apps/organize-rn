@@ -13,14 +13,14 @@ import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 type Props = {
   category?: PostCategory;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  prependedPostIds?: string[];
+  prependedPostId?: string;
   ListEmptyComponent: ReactElement;
   onItemPress?: (item: Post) => void;
   sort: PostSort;
 };
 
 export default function PostList({
-  category, contentContainerStyle, prependedPostIds: maybePrependedPostIds,
+  category, contentContainerStyle, prependedPostId: maybePrependedPostId,
   ListEmptyComponent, onItemPress, sort,
 }: Props) {
   const listRef = useRef<FlatList<Post>>(null);
@@ -38,7 +38,7 @@ export default function PostList({
     allModels: data, resetPrependedModels: resetPrependedPosts,
   } = usePrependedModels<Post>({
     getCachedModel: getCachedPost,
-    maybePrependedModelIds: maybePrependedPostIds,
+    maybePrependedModelId: maybePrependedPostId,
     models: posts,
     onNewPrependedModel: scrollToTop,
     ready,
@@ -87,6 +87,6 @@ export default function PostList({
 PostList.defaultProps = {
   category: undefined,
   contentContainerStyle: {},
-  prependedPostIds: undefined,
+  prependedPostId: undefined,
   onItemPress: () => {},
 };

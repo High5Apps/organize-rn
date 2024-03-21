@@ -137,7 +137,7 @@ export default function NewMultipleChoiceBallotScreen({
     cacheBallotPreview(ballotPreview);
 
     navigation.navigate('BallotPreviews', {
-      prependedBallotIds: [ballotPreview.id],
+      prependedBallotId: ballotPreview.id,
     });
   };
 

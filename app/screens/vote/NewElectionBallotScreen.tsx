@@ -143,7 +143,7 @@ export default function NewElectionBallotScreen({
     cacheBallotPreview(ballotPreview);
 
     navigation.navigate('BallotPreviews', {
-      prependedBallotIds: [ballotPreview.id],
+      prependedBallotId: ballotPreview.id,
     });
   };
 

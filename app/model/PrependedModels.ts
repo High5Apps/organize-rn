@@ -3,27 +3,27 @@ import { Model, isDefined } from './types';
 
 type Props<T extends Model> = {
   getCachedModel: (id: string) => T | undefined;
-  maybePrependedModelIds?: string[];
+  maybePrependedModelId?: string;
   models: T[];
   onNewPrependedModel?: () => void;
   ready: boolean;
 };
 
 export default function usePrependedModels<T extends Model>({
-  getCachedModel, maybePrependedModelIds, models, onNewPrependedModel, ready,
+  getCachedModel, maybePrependedModelId, models, onNewPrependedModel, ready,
 }: Props<T>) {
   const [allModels, setAllModels] = useState<T[]>(models);
   const [prependedModelIds, setPrependedModelIds] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!ready || !maybePrependedModelIds?.length) { return; }
-    const newlyPrependedModelIds = maybePrependedModelIds;
+    if (!ready || !maybePrependedModelId) { return; }
+    const newlyPrependedModelId = maybePrependedModelId;
 
-    // Prepend new models to already prepended new models
+    // Prepend new model to previously prepended models
     // This is needed for the situation where the user creates multiple models
     // without pulling-to-refresh.
-    setPrependedModelIds((ids) => [...newlyPrependedModelIds, ...ids]);
-  }, [maybePrependedModelIds, ready]);
+    setPrependedModelIds((ids) => [newlyPrependedModelId, ...ids]);
+  }, [maybePrependedModelId, ready]);
 
   useEffect(() => {
     const prependedModels = (prependedModelIds ?? [])
@@ -35,10 +35,10 @@ export default function usePrependedModels<T extends Model>({
   }, [models, getCachedModel, prependedModelIds]);
 
   useEffect(() => {
-    if (maybePrependedModelIds?.length) {
+    if (maybePrependedModelId) {
       onNewPrependedModel?.();
     }
-  }, [maybePrependedModelIds]);
+  }, [maybePrependedModelId]);
 
   function resetPrependedModels() {
     setPrependedModelIds([]);

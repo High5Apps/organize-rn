@@ -118,7 +118,7 @@ export default function NewYesNoBallotScreen({
     cacheBallotPreview(ballotPreview);
 
     navigation.navigate('BallotPreviews', {
-      prependedBallotIds: [ballotPreview.id],
+      prependedBallotId: ballotPreview.id,
     });
   };
 

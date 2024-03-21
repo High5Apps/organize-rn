@@ -20,12 +20,12 @@ type BallotPreviewSection = {
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   onItemPress?: (item: BallotPreview) => void;
-  prependedBallotIds?: string[];
+  prependedBallotId?: string;
 };
 
 export default function BallotPreviewList({
   contentContainerStyle, onItemPress,
-  prependedBallotIds: maybePrependedBallotIds,
+  prependedBallotId: maybePrependedBallotId,
 }: Props) {
   const listRef = useRef<SectionList<BallotPreview, BallotPreviewSection>>(null);
   useScrollToTop(listRef);
@@ -45,7 +45,7 @@ export default function BallotPreviewList({
     resetPrependedModels: resetPrependedBallotPreviews,
   } = usePrependedModels<BallotPreview>({
     getCachedModel: getCachedBallotPreview,
-    maybePrependedModelIds: maybePrependedBallotIds,
+    maybePrependedModelId: maybePrependedBallotId,
     models: activeBallotPreviews,
     onNewPrependedModel: scrollToTop,
     ready,
@@ -113,5 +113,5 @@ export default function BallotPreviewList({
 BallotPreviewList.defaultProps = {
   contentContainerStyle: {},
   onItemPress: () => {},
-  prependedBallotIds: undefined,
+  prependedBallotId: undefined,
 };

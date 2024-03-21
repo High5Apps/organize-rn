@@ -49,13 +49,13 @@ type Props<T extends keyof DiscussTabsParamList> = {
   category?: PostCategory;
   emptyListMessage: string;
   navigation: DiscussTabsScreenProps<T>['navigation'];
-  prependedPostIds?: string[];
+  prependedPostId?: string;
   primaryButtonLabel: string;
   sort: PostSort;
 };
 
 export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
-  category, emptyListMessage, prependedPostIds, navigation, primaryButtonLabel,
+  category, emptyListMessage, prependedPostId, navigation, primaryButtonLabel,
   sort,
 }: Props<T>) {
   const { styles } = useStyles();
@@ -76,7 +76,7 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
       <PostList
         category={category}
         contentContainerStyle={styles.contentContainerStyle}
-        prependedPostIds={prependedPostIds}
+        prependedPostId={prependedPostId}
         ListEmptyComponent={ListEmptyComponent}
         onItemPress={onItemPress}
         sort={sort}
@@ -96,5 +96,5 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
 
 DiscussScreen.defaultProps = {
   category: undefined,
-  prependedPostIds: undefined,
+  prependedPostId: undefined,
 };
