@@ -97,6 +97,7 @@ export type NewCommentScreenParams = {
 
 export type NewPostScreenParams = {
   category?: PostCategory;
+  title?: string;
 };
 
 export type NewReplyScreenParams = {

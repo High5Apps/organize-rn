@@ -1,4 +1,6 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useLayoutEffect, useRef, useState,
+} from 'react';
 import {
   Keyboard, ScrollView, StyleSheet, TextInput, View,
 } from 'react-native';
@@ -50,7 +52,20 @@ const useStyles = () => {
   return { styles };
 };
 
-function useTitleUpdater(
+function usePostTitle(titleParam?: string) {
+  const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
+
+  // If title param was included, override the cached title
+  useEffect(() => {
+    if (titleParam) {
+      setTitle(titleParam);
+    }
+  }, []);
+
+  return [title, setTitle] as const;
+}
+
+function usePageTitleUpdater(
   navigation: NewPostScreenProps['navigation'],
   maybeCategory?: PostCategory,
 ) {
@@ -80,17 +95,17 @@ function getNextScreenName(category?: PostCategory): DisccussTabName {
 export default function NewPostScreen({
   navigation, route,
 }: NewPostScreenProps) {
-  const { category: maybeCategory } = route.params ?? {};
+  const { category: maybeCategory, title: maybeTitle } = route.params ?? {};
   const initialPostCategory = maybeCategory ?? 'general';
 
   const { styles } = useStyles();
-  useTitleUpdater(navigation, maybeCategory);
+  usePageTitleUpdater(navigation, maybeCategory);
 
   const [
     postCategory, setPostCategory,
   ] = useState<PostCategory>(initialPostCategory);
   const [body, setBody] = useCachedValue<string>(CACHE_KEY_BODY);
-  const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
+  const [title, setTitle] = usePostTitle(maybeTitle);
 
   const {
     RequestProgress, setLoading, setResult,
