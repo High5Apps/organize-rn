@@ -1,3 +1,4 @@
+export { default as useAnnounceButton } from './AnnounceButton';
 export { default as BallotPreviewList } from './BallotPreviewList';
 export { default as BallotTypeList } from './BallotTypeList';
 export { default as ButtonRow } from './ButtonRow';

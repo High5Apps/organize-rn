@@ -4,8 +4,8 @@ import type { NominationScreenProps } from '../../navigation';
 import { OfficeCategory, getOffice, useBallotPreviews } from '../../model';
 import useTheme from '../../Theme';
 import {
-  NominationList, PrimaryButton, ScreenBackground, useDiscussButton,
-  useHeaderButton, useLearnMoreOfficeModal,
+  NominationList, PrimaryButton, ScreenBackground, useAnnounceButton,
+  useDiscussButton, useHeaderButton, useLearnMoreOfficeModal,
 } from '../../components';
 
 function useTitleUpdater(
@@ -66,10 +66,12 @@ export default function NominationsScreen({
   });
 
   const DiscussButton = useDiscussButton(navigation);
+  const AnnounceButton = useAnnounceButton(navigation, ballotId);
 
   return (
     <ScreenBackground>
       <NominationList
+        AnnounceButton={AnnounceButton}
         ballotId={ballotId}
         contentContainerStyle={styles.contentContainerStyle}
         DiscussButton={DiscussButton}

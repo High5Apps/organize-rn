@@ -7,6 +7,7 @@ import {
 import { HighlightedRowContainer } from '../views';
 import DecisionButtonsRow from './DecisionButtonsRow';
 import { DiscussButtonType } from './DiscussButton';
+import { AnnounceButtonType } from './AnnounceButton';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -41,6 +42,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  AnnounceButton: AnnounceButtonType;
   currentUserId: string;
   DiscussButton: DiscussButtonType;
   item: Nomination;
@@ -48,7 +50,8 @@ type Props = {
 };
 
 export default function NominationRow({
-  currentUserId, DiscussButton, item: nomination, onNominationUpdated,
+  AnnounceButton, currentUserId, DiscussButton, item: nomination,
+  onNominationUpdated,
 }: Props) {
   const {
     accepted, candidate, nominator, nominee,
@@ -75,6 +78,10 @@ export default function NominationRow({
             </Text>
           </View>
           <DiscussButton postId={candidate?.postId} />
+          <AnnounceButton
+            currentUserId={currentUserId}
+            nomination={nomination}
+          />
         </View>
         {showDecisionButtonRow && (
           <DecisionButtonsRow

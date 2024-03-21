@@ -11,6 +11,7 @@ import NominationRow from './NominationRow';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import useTimeRemainingFooter from './TimeRemainingFooter';
 import { DiscussButtonType } from './DiscussButton';
+import { AnnounceButtonType } from './AnnounceButton';
 
 type NominationSection = {
   title: string;
@@ -18,13 +19,14 @@ type NominationSection = {
 };
 
 type Props = {
+  AnnounceButton: AnnounceButtonType;
   ballotId: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
   DiscussButton: DiscussButtonType;
 };
 
 export default function NominationList({
-  ballotId, contentContainerStyle, DiscussButton,
+  AnnounceButton, ballotId, contentContainerStyle, DiscussButton,
 }: Props) {
   const { ballot, cacheBallot, updateBallot } = useBallot(ballotId);
   const {
@@ -36,12 +38,15 @@ export default function NominationList({
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Nomination>) => (
     <NominationRow
+      AnnounceButton={AnnounceButton}
       currentUserId={currentUser.id}
       DiscussButton={DiscussButton}
       item={item}
       onNominationUpdated={acceptOrDeclineNomination}
     />
-  ), [acceptOrDeclineNomination, currentUser.id, DiscussButton]);
+  ), [
+    acceptOrDeclineNomination, AnnounceButton, currentUser.id, DiscussButton,
+  ]);
 
   const ListEmptyComponent = useMemo(() => {
     if (!ballot?.office) { return null; }
