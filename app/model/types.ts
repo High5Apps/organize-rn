@@ -116,7 +116,8 @@ export type VoteState = -1 | 0 | 1;
 
 export type Post = {
   body?: string;
-  category: PostCategory,
+  candidateId?: string | null;
+  category: PostCategory;
   createdAt: Date;
   id: string;
   myVote: VoteState;

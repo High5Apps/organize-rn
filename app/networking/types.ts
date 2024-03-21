@@ -104,7 +104,8 @@ export function isPostResponse(object: unknown): object is PostResponse {
 }
 
 export type PostIndexPost = {
-  category: PostCategory,
+  category: PostCategory;
+  candidateId: string | null;
   createdAt: Date;
   encryptedBody?: BackendEncryptedMessage;
   encryptedTitle: BackendEncryptedMessage;
@@ -118,6 +119,7 @@ export type PostIndexPost = {
 function isPostIndexPost(object: unknown): object is PostIndexPost {
   const post = (object as PostIndexPost);
   return post?.id?.length > 0
+    && (post.candidateId === null || post.candidateId?.length > 0)
     && post.category?.length > 0
     && post.pseudonym?.length > 0
     && isBackendEncryptedMessage(post.encryptedTitle)

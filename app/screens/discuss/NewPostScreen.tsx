@@ -164,6 +164,7 @@ export default function NewPostScreen({
 
       const post: Post = {
         body: maybeStrippedBody,
+        candidateId,
         createdAt,
         category: postCategory,
         id,

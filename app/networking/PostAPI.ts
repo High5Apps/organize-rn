@@ -16,7 +16,7 @@ import {
 
 type Props = {
   body?: string;
-  candidateId?: string;
+  candidateId?: string | null;
   category: PostCategory;
   e2eEncrypt: E2EEncryptor;
   title: string;
