@@ -51,7 +51,23 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
   const {
     ballot, cacheBallot, RequestProgress,
   } = useBallot(ballotId, {
-    shouldFetchOnMount: (cachedBallot) => !cachedBallot?.candidates,
+    shouldFetchOnMount: (cachedBallot) => {
+      if (!cachedBallot?.candidates) { return true; }
+
+      const { category } = cachedBallot;
+      if (category === 'yes_no' || category === 'multiple_choice') {
+        return false;
+      }
+
+      if (category === 'election') {
+        const { nominationsEndAt, refreshedAt } = cachedBallot;
+        if (nominationsEndAt.getTime() <= (refreshedAt?.getTime() ?? 0)) {
+          return false;
+        }
+      }
+
+      return true;
+    },
   });
 
   const {
