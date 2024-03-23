@@ -149,9 +149,7 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
   const { TimeRemainingFooter } = useTimeRemainingFooter();
 
   const TimerRemainingCountdown = useMemo(() => {
-    if (ballot?.category !== 'election' || ballot?.results?.length === 0) {
-      return undefined;
-    }
+    if (ballot?.category !== 'election') { return undefined; }
 
     const { termStartsAt, termEndsAt } = ballot;
     const termStarted = termStartsAt.getTime() <= new Date().getTime();
@@ -180,12 +178,15 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
     );
   }, [ballot]);
 
-  const ListFooterComponent = useMemo(() => (
-    <>
-      <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
-      {TimerRemainingCountdown}
-    </>
-  ), [TimerRemainingCountdown]);
+  const ListFooterComponent = useMemo(() => {
+    if (!ballot?.results?.length) { return undefined; }
+    return (
+      <>
+        <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+        {TimerRemainingCountdown}
+      </>
+    );
+  }, [ballot?.results?.length, TimerRemainingCountdown]);
 
   const DiscussButton = useDiscussButton(navigation);
 
