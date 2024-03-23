@@ -57,24 +57,26 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
     ballot, cacheBallot, RequestProgress,
   } = useBallot(ballotId, {
     shouldFetchOnMount: (cachedBallot) => {
-      if (!cachedBallot?.results) {
-        return true;
+      if (!cachedBallot?.results) { return true; }
+
+      const { category } = cachedBallot;
+      if (category === 'yes_no' || category === 'multiple_choice') {
+        return false;
       }
 
-      // Allow updating office acceptance
-      if (cachedBallot.category === 'election') {
-        const beforeTermStart = (
-          new Date().getTime() < cachedBallot.termStartsAt.getTime()
-        );
+      if (category === 'election') {
+        const { refreshedAt, termStartsAt } = cachedBallot;
+        if (termStartsAt.getTime() <= (refreshedAt?.getTime() ?? 0)) {
+          return false;
+        }
+
         const anyAcceptancesPending = cachedBallot.results.some((result) => (
           result.isWinner && result.acceptedOffice === undefined
         ));
-        if (beforeTermStart && anyAcceptancesPending) {
-          return true;
-        }
+        if (!anyAcceptancesPending) { return false; }
       }
 
-      return false;
+      return true;
     },
   });
 
