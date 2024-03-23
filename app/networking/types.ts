@@ -327,6 +327,7 @@ type BallotResponse = {
   candidates: BallotCandidate[];
   myVote: string[];
   nominations?: Nomination[];
+  refreshedAt: Date;
   results?: BallotResult[];
   terms?: BallotTerm[];
 };
@@ -345,6 +346,7 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
       Array.isArray(response.nominations)
         && response.nominations.every(isBallotNomination)
     ))
+    && isDate(response.refreshedAt)
     && (response.results === undefined || (
       Array.isArray(response.results) && response.results.every(isBallotResult)
     ))

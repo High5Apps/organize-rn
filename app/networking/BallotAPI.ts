@@ -236,6 +236,7 @@ export async function fetchBallot({
     candidates,
     myVote: json.myVote,
     nominations,
+    refreshedAt: json.refreshedAt,
     results,
   };
 

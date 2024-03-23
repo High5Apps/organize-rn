@@ -236,6 +236,7 @@ export type Ballot = BallotPreview & {
   maxCandidateIdsPerVote: number;
   myVote: string[];
   nominations?: Nomination[];
+  refreshedAt?: Date;
   results?: Result[];
 } & ({
   category: Exclude<BallotCategory, 'election'>;
