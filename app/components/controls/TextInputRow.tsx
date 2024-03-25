@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useRef } from 'react';
 import {
-  StyleSheet, TextInput, TextInputProps, View,
+  StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
 import IconButton from './IconButton';
@@ -42,6 +42,7 @@ const useStyles = () => {
 };
 
 type Props = TextInputProps & {
+  containerStyle?: StyleProp<ViewStyle>;
   focused?: boolean;
   iconEndDisabled?: boolean;
   iconEndName?: string;
@@ -50,7 +51,8 @@ type Props = TextInputProps & {
 
 export default function TextInputRow(props: Props) {
   const {
-    focused, iconEndDisabled, iconEndName, iconEndOnPress, style,
+    containerStyle, focused, iconEndDisabled, iconEndName, iconEndOnPress,
+    style,
   } = props;
 
   const ref = useRef<TextInput>(null);
@@ -71,7 +73,7 @@ export default function TextInputRow(props: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <TextInput
         {...defaultProps}
         {...props}
@@ -92,6 +94,7 @@ export default function TextInputRow(props: Props) {
 }
 
 TextInputRow.defaultProps = {
+  containerStyle: undefined,
   focused: undefined,
   iconEndDisabled: false,
   iconEndName: undefined,
