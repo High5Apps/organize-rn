@@ -22,7 +22,7 @@ type Props = {
 
 export default function SearchBar({ onDebouncedQueryChanged }: Props) {
   const [value, setValue] = useState<string | undefined>();
-  const [debouncedQuery] = useDebounce(value, 750);
+  const [debouncedQuery] = useDebounce(value, 500);
 
   useEffect(() => {
     if (debouncedQuery !== undefined) {
