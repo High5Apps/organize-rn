@@ -22,7 +22,22 @@ export default function DiscussStack() {
       <Stack.Screen
         name="NewPost"
         component={NewPostScreen}
-        options={{ title: '' }}
+        options={({ route }) => {
+          const maybeCategory = route.params.category;
+
+          let title: string;
+          if (maybeCategory === 'demands') {
+            title = 'New Demand';
+          } else if (maybeCategory === 'general') {
+            title = 'New General Discussion';
+          } else if (maybeCategory === 'grievances') {
+            title = 'New Grievance';
+          } else {
+            title = 'New Discussion';
+          }
+
+          return { title };
+        }}
       />
       <Stack.Screen
         name="Post"
