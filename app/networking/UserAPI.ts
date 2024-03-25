@@ -92,6 +92,7 @@ type IndexProps = {
   filter?: UserFilter;
   joinedAtOrBefore: Date;
   page: number;
+  query?: string;
   sort: UserSort;
 };
 
@@ -106,7 +107,7 @@ type IndexReturn = {
 };
 
 export async function fetchUsers({
-  filter, joinedAtOrBefore, jwt, page, sort,
+  filter, joinedAtOrBefore, jwt, page, query, sort,
 }: IndexProps & Authorization): Promise<IndexReturn> {
   const uri = new URL(usersURI);
 
@@ -116,6 +117,10 @@ export async function fetchUsers({
 
   if (filter !== undefined) {
     uri.searchParams.set('filter', filter);
+  }
+
+  if (query?.length) {
+    uri.searchParams.set('query', query);
   }
 
   const response = await get({ jwt, uri: uri.href });

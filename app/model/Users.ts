@@ -11,10 +11,11 @@ const firstPageIndex = 1;
 
 type Props = {
   filter?: UserFilter;
+  query?: string;
   sort: UserSort;
 };
 
-export default function useUsers({ filter, sort }: Props) {
+export default function useUsers({ filter, query, sort }: Props) {
   const { cacheUser, cacheUsers, getCachedUser } = useUserContext();
   const {
     ids: userIds, models: users, setIds: setUserIds,
@@ -36,7 +37,7 @@ export default function useUsers({ filter, sort }: Props) {
     const {
       errorMessage, paginationData, users: fetchedUsers,
     } = await fetchUsers({
-      filter, joinedAtOrBefore: now, jwt, page: firstPageIndex, sort,
+      filter, joinedAtOrBefore: now, jwt, page: firstPageIndex, query, sort,
     });
 
     if (errorMessage !== undefined) {
@@ -63,7 +64,7 @@ export default function useUsers({ filter, sort }: Props) {
     const {
       errorMessage, paginationData, users: fetchedUsers,
     } = await fetchUsers({
-      filter, joinedAtOrBefore, jwt, page: nextPageNumber, sort,
+      filter, joinedAtOrBefore, jwt, page: nextPageNumber, query, sort,
     });
 
     if (errorMessage !== undefined) {
