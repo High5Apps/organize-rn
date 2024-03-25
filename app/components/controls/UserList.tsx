@@ -1,4 +1,6 @@
-import React, { ReactElement, useCallback, useMemo } from 'react';
+import React, {
+  ReactElement, useCallback, useEffect, useMemo,
+} from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
   User, useCurrentUser, useUsers,
@@ -8,20 +10,28 @@ import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import UserRow from './UserRow';
 
 type Props = {
+  debouncedQuery?: string;
   ListFooterComponent?: ReactElement;
   onItemPress?: (item: User) => void;
   onlyShowUserId?: string;
 };
 
 export default function UserList({
-  ListFooterComponent, onItemPress, onlyShowUserId,
+  debouncedQuery, ListFooterComponent, onItemPress, onlyShowUserId,
 }: Props) {
   const {
-    fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, users,
-  } = useUsers({ sort: 'service' });
+    fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, ready, users,
+  } = useUsers({ sort: 'service', query: debouncedQuery });
   const onlyShowUser = useMemo(() => (
     onlyShowUserId ? users.find((u) => u.id === onlyShowUserId) : undefined
   ), [onlyShowUserId]);
+
+  useEffect(() => {
+    // query !== undefined allows for refetching when clear button is pressed
+    if (ready && debouncedQuery !== undefined) {
+      fetchFirstPageOfUsers();
+    }
+  }, [debouncedQuery, ready]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
@@ -77,6 +87,7 @@ export default function UserList({
 }
 
 UserList.defaultProps = {
+  debouncedQuery: undefined,
   ListFooterComponent: undefined,
   onItemPress: () => null,
   onlyShowUserId: undefined,

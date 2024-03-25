@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ScreenBackground, UserList, useBallot, useRequestProgress,
+  ScreenBackground, SearchBar, UserList, useBallot, useRequestProgress,
 } from '../../components';
 import type { NewNominationScreenProps } from '../../navigation';
 import { createNomination } from '../../networking';
@@ -28,6 +28,7 @@ export default function NewNominationScreen({
   const { ballotId } = route.params;
 
   const [filteredUserId, setFilteredUserId] = useState<string>();
+  const [debouncedQuery, setDebouncedQuery] = useState<string | undefined>();
 
   const { currentUser } = useCurrentUser();
   const { cacheBallot, ballot } = useBallot(ballotId);
@@ -100,7 +101,9 @@ export default function NewNominationScreen({
 
   return (
     <ScreenBackground>
+      <SearchBar onDebouncedQueryChanged={setDebouncedQuery} />
       <UserList
+        debouncedQuery={debouncedQuery}
         ListFooterComponent={<RequestProgress style={styles.requestProgress} />}
         onItemPress={onItemPress}
         onlyShowUserId={filteredUserId}
