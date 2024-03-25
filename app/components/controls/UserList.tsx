@@ -5,9 +5,11 @@ import { FlatList, ListRenderItem } from 'react-native';
 import {
   User, useCurrentUser, useUsers,
 } from '../../model';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import UserRow from './UserRow';
+
+const LIST_EMPTY_MESSAGE = 'Nobody matched your search. Type a little more or check your spelling.';
 
 type Props = {
   debouncedQuery?: string;
@@ -32,6 +34,10 @@ export default function UserList({
       fetchFirstPageOfUsers();
     }
   }, [debouncedQuery, ready]);
+
+  const ListEmptyComponent = useCallback(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+  ), []);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
@@ -75,6 +81,7 @@ export default function UserList({
     <FlatList
       data={onlyShowUser !== undefined ? [onlyShowUser] : users}
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={debouncedQuery ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={!onlyShowUserId
         ? InfiniteScrollListFooterComponent : ListFooterComponent}
