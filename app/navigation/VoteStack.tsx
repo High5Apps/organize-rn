@@ -52,7 +52,10 @@ export default function VoteStack() {
       <Stack.Screen
         component={NewNominationScreen}
         name="NewNomination"
-        options={{ title: 'Nominate a Candidate' }}
+        options={{
+          headerShadowVisible: false,
+          title: 'Nominate a Candidate',
+        }}
       />
       <Stack.Screen
         component={NominationsScreen}
