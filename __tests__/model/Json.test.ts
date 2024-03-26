@@ -1,4 +1,20 @@
-import { fromJson, snakeToCamel } from '../../app/model/Json';
+import {
+  camelToSnake, fromJson, snakeToCamel, toJson,
+} from '../../app/model/Json';
+
+describe('camelToSnake', () => {
+  it('converts single words', () => {
+    expect(camelToSnake('hello')).toBe('hello');
+  });
+
+  it('converts two words', () => {
+    expect(camelToSnake('helloWorld')).toBe('hello_world');
+  });
+
+  it('converts multiple words', () => {
+    expect(camelToSnake('helloMyNameIs')).toBe('hello_my_name_is');
+  });
+});
 
 describe('snakeToCamel', () => {
   it('converts single words', () => {
@@ -39,6 +55,39 @@ describe('fromJson', () => {
       fourFiveSix: ['seven'],
       eightNine: {
         tenEleven: '2023-11-14T22:13:20.000Z',
+        twelve: 12,
+      },
+    });
+  });
+});
+
+const object = fromJson(json, {
+  convertSnakeToCamel: true,
+  convertIso8601ToDate: true,
+});
+
+describe('toJson', () => {
+  it('is the same as JSON.stringify when no options are enabled', () => {
+    expect(toJson(object)).toEqual(JSON.stringify(object));
+  });
+
+  it('converts Dates to ISO8601 strings', () => {
+    expect(fromJson(toJson(object))).toEqual({
+      oneTwo: 'three',
+      fourFiveSix: ['seven'],
+      eightNine: {
+        tenEleven: '2023-11-14T22:13:20.000Z',
+        twelve: 12,
+      },
+    });
+  });
+
+  it('converts camelCase keys to snake_case keys when option enabled', () => {
+    expect(fromJson(toJson(object, { convertCamelToSnake: true }))).toEqual({
+      one_two: 'three',
+      four_five_six: ['seven'],
+      eight_nine: {
+        ten_eleven: '2023-11-14T22:13:20.000Z',
         twelve: 12,
       },
     });

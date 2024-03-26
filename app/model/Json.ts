@@ -1,23 +1,20 @@
 const ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
-function replacer(_: string, value: any) {
-  return (value instanceof Date) ? value.toISOString() : value;
-}
-
-export function toJson(value: any, space?: number) {
-  return JSON.stringify(value, replacer, space);
+// https://stackoverflow.com/a/54246501/2421313
+export function camelToSnake(s: string): string {
+  return s.replace(/[A-Z]/g, (character) => `_${character.toLowerCase()}`);
 }
 
 export function snakeToCamel(s: string): string {
   return s.replace(/([_][a-z])/gi, (c) => c.toUpperCase().replace(/[_]/g, ''));
 }
 
-type Options = {
-  convertIso8601ToDate?: boolean;
+type FromOptions = {
   convertSnakeToCamel?: boolean;
+  convertIso8601ToDate?: boolean;
 };
 
-export function fromJson(text: string, options: Options = {}): any {
+export function fromJson(text: string, options: FromOptions = {}): any {
   const { convertIso8601ToDate, convertSnakeToCamel } = options;
   return JSON.parse(text, function reviver(key: string, value: any) {
     let newValue = value;
@@ -41,4 +38,42 @@ export function fromJson(text: string, options: Options = {}): any {
 
     return newValue;
   });
+}
+
+// https://stackoverflow.com/a/75927783/2421313
+// https://stackoverflow.com/a/72245429/2421313
+function transformKeys(
+  item: unknown,
+  transform: (s: string) => string,
+): unknown {
+  if (Array.isArray(item)) {
+    return item.map((el: unknown) => transformKeys(el, transform));
+  }
+  if (typeof item === 'function' || item !== Object(item) || item instanceof Date) {
+    return item;
+  }
+  return Object.fromEntries(
+    Object.entries(item as Record<string, unknown>).map(
+      ([key, value]: [string, unknown]) => [
+        transform(key),
+        transformKeys(value, transform),
+      ],
+    ),
+  );
+}
+
+type ToOptions = {
+  convertCamelToSnake?: boolean;
+  space?: number;
+};
+
+export function toJson(input: any, options: ToOptions = {}) {
+  const { convertCamelToSnake, space } = options;
+
+  const object = convertCamelToSnake
+    ? transformKeys(input, camelToSnake) : input;
+
+  return JSON.stringify(object, (_: string, value: any) => (
+    (value instanceof Date) ? value.toISOString() : value
+  ), space);
 }

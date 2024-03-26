@@ -29,7 +29,7 @@ export async function getStoredCurrentUserData(): Promise<CurrentUserData | null
   if (!storedCurrentUserData) { return null; }
 
   if (!isCurrentUserData(storedCurrentUserData)) {
-    const json = toJson(storedCurrentUserData, 2);
+    const json = toJson(storedCurrentUserData, { space: 2 });
     console.warn(`Stored user data is invalid: ${json}`);
     return null;
   }
@@ -41,7 +41,7 @@ export async function storeCurrentUserData(
   initialCurrentUserData: CurrentUserData | null,
 ) {
   if (initialCurrentUserData && !isCurrentUserData(initialCurrentUserData)) {
-    const json = toJson(initialCurrentUserData, 2);
+    const json = toJson(initialCurrentUserData, { space: 2 });
     console.warn(`Attempted to store invalid current user data: ${json}`);
     return;
   }
