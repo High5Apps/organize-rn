@@ -52,7 +52,7 @@ const postOrPatch = async (method: 'POST' | 'PATCH', {
 }: PostProps) => fetch(uri, {
   method,
   headers: headers({ jwt, sharerJwt }),
-  body: toJson(bodyObject),
+  body: toJson(bodyObject, { convertCamelToSnake: true }),
 });
 
 export const post = async (props: PostProps) => postOrPatch('POST', props);

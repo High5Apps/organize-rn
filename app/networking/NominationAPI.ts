@@ -25,7 +25,7 @@ export async function createNomination({
   ballotId, jwt, nomineeId,
 }: CreateProps & Authorization): Promise<CreateReturn> {
   const response = await post({
-    bodyObject: { nomination: { nominee_id: nomineeId } },
+    bodyObject: { nomination: { nomineeId } },
     jwt,
     uri: nominationsURI(ballotId),
   });

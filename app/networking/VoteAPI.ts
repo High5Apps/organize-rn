@@ -22,7 +22,7 @@ export async function createVote({
   ballotId, candidateIds, jwt,
 }: Props & Authorization): Promise<Return> {
   const response = await post({
-    bodyObject: { vote: { candidate_ids: candidateIds } },
+    bodyObject: { vote: { candidateIds } },
     jwt,
     uri: votesURI(ballotId),
   });
