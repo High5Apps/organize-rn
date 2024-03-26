@@ -1,6 +1,6 @@
 import {
   E2EMultiDecryptor, E2EEncryptor, E2EDecryptor, AESEncryptedData,
-  E2EMultiEncryptor,
+  E2EMultiEncryptor, toJson,
 } from '../model';
 import type { BackendEncryptedMessage } from './types';
 
@@ -52,7 +52,7 @@ const postOrPatch = async (method: 'POST' | 'PATCH', {
 }: PostProps) => fetch(uri, {
   method,
   headers: headers({ jwt, sharerJwt }),
-  body: JSON.stringify(bodyObject),
+  body: toJson(bodyObject),
 });
 
 export const post = async (props: PostProps) => postOrPatch('POST', props);
