@@ -97,7 +97,12 @@ function CommentRow({
   );
   const BodyView = compactView ? (
     <View style={styles.scrollViewContainer}>
-      <ScrollView persistentScrollbar>{BodyText}</ScrollView>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        persistentScrollbar
+      >
+        {BodyText}
+      </ScrollView>
     </View>
   ) : BodyText;
 
