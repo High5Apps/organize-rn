@@ -10,6 +10,7 @@ export { default as ErrorMessage } from './ErrorMessage';
 export { default as FadeInView } from './FadeInView';
 export { default as HeaderText } from './HeaderText';
 export { default as HighlightedRowContainer } from './HighlightedRowContainer';
+export { default as HyperlinkDetector } from './HyperlinkDetector';
 export { default as IconPrompt } from './IconPrompt';
 export { default as ItemSeparator } from './ItemSeparator';
 export { default as KeyboardAvoidingScreenBackground } from './KeyboardAvoidingScreenBackground';

@@ -8,7 +8,7 @@ import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
-import { HighlightedRowContainer } from '../views';
+import { HighlightedRowContainer, HyperlinkDetector } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -85,13 +85,15 @@ function CommentRow({
 
   // persistentScrollbar only works on Android
   const BodyText = (
-    <Text
-      selectable={enableBodyTextSelection}
-      selectionColor={colors.primary}
-      style={styles.title}
-    >
-      {body}
-    </Text>
+    <HyperlinkDetector>
+      <Text
+        selectable={enableBodyTextSelection}
+        selectionColor={colors.primary}
+        style={styles.title}
+      >
+        {body}
+      </Text>
+    </HyperlinkDetector>
   );
   const BodyView = compactView ? (
     <View style={styles.scrollViewContainer}>

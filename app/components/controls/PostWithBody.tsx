@@ -5,6 +5,7 @@ import {
 import { Post } from '../../model';
 import PostRow from './PostRow';
 import useTheme from '../../Theme';
+import { HyperlinkDetector } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -39,7 +40,11 @@ export default function PostWithBody({ onLayout, onPostChanged, post }: Props) {
   return (
     <View onLayout={onLayout}>
       <PostRow disabled item={post} onPostChanged={onPostChanged} />
-      {body && <Text style={styles.body}>{body}</Text>}
+      {body && (
+        <HyperlinkDetector>
+          <Text style={styles.body}>{body}</Text>
+        </HyperlinkDetector>
+      )}
     </View>
   );
 }
