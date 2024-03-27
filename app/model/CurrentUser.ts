@@ -2,6 +2,7 @@ import {
   Dispatch, SetStateAction, useEffect, useMemo,
 } from 'react';
 import isEqual from 'react-fast-compare';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
 import CurrentUserBase from './CurrentUserBase';
 import { useCurrentUserDataContext, useUserContext } from '../context';
@@ -82,6 +83,7 @@ export function CurrentUser(
     await deleteKeys();
     storeCurrentUserData(null);
     setCurrentUserData(null);
+    AsyncStorage.clear();
   };
 
   async function update() {
