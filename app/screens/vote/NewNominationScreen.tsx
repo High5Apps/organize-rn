@@ -101,7 +101,10 @@ export default function NewNominationScreen({
 
   return (
     <ScreenBackground>
-      <SearchBar onDebouncedQueryChanged={setDebouncedQuery} />
+      <SearchBar
+        disabled={!!filteredUserId}
+        onDebouncedQueryChanged={setDebouncedQuery}
+      />
       <UserList
         debouncedQuery={debouncedQuery}
         ListFooterComponent={<RequestProgress style={styles.requestProgress} />}

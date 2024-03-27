@@ -17,10 +17,13 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   onDebouncedQueryChanged?: ((text: string) => void) | undefined;
 };
 
-export default function SearchBar({ onDebouncedQueryChanged }: Props) {
+export default function SearchBar({
+  disabled, onDebouncedQueryChanged,
+}: Props) {
   const [value, setValue] = useState<string | undefined>();
   const [debouncedQuery] = useDebounce(value, 500);
 
@@ -35,7 +38,8 @@ export default function SearchBar({ onDebouncedQueryChanged }: Props) {
     <TextInputRow
       autoFocus={false}
       containerStyle={styles.textInputContainer}
-      iconEndDisabled={(value?.length ?? 0) === 0}
+      editable={!disabled}
+      iconEndDisabled={((value?.length ?? 0) === 0) || disabled}
       iconEndName="close"
       iconEndOnPress={() => setValue('')}
       onChangeText={setValue}
@@ -47,5 +51,6 @@ export default function SearchBar({ onDebouncedQueryChanged }: Props) {
 }
 
 SearchBar.defaultProps = {
+  disabled: false,
   onDebouncedQueryChanged: () => null,
 };

@@ -20,6 +20,9 @@ const useStyles = () => {
       position: 'absolute',
       start: spacing.m,
     },
+    bottomBorderDisabled: {
+      backgroundColor: colors.labelSecondary,
+    },
     container: {
       backgroundColor: colors.fill,
       flexDirection: 'row',
@@ -36,6 +39,9 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       fontSize: font.sizes.body,
     },
+    textInputDisabled: {
+      color: colors.labelSecondary,
+    },
   });
 
   return { colors, styles };
@@ -51,9 +57,12 @@ type Props = TextInputProps & {
 
 export default function TextInputRow(props: Props) {
   const {
-    containerStyle, focused, iconEndDisabled, iconEndName, iconEndOnPress,
-    style,
+    containerStyle, editable, focused, iconEndDisabled, iconEndName,
+    iconEndOnPress, style,
   } = props;
+
+  // Can't use !editable because editable defaults to true when undefined
+  const disabled = (editable === false);
 
   const ref = useRef<TextInput>(null);
 
@@ -78,7 +87,7 @@ export default function TextInputRow(props: Props) {
         {...defaultProps}
         {...props}
         ref={ref}
-        style={[styles.textInput, style]}
+        style={[styles.textInput, disabled && styles.textInputDisabled, style]}
       />
       {iconEndName && (
         <IconButton
@@ -88,7 +97,9 @@ export default function TextInputRow(props: Props) {
           style={styles.icon}
         />
       )}
-      <View style={styles.bottomBorder} />
+      <View
+        style={[styles.bottomBorder, disabled && styles.bottomBorderDisabled]}
+      />
     </View>
   );
 }
