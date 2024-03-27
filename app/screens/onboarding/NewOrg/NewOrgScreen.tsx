@@ -76,7 +76,10 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         setVisible={setModalVisible}
         visible={modalVisible}
       />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardShouldPersistTaps="handled"
+      >
         <Text style={styles.title}>
           {title}
         </Text>
