@@ -98,6 +98,7 @@ export default function UserList({
     <FlatList
       data={onlyShowUser !== undefined ? [onlyShowUser] : users}
       ItemSeparatorComponent={ItemSeparator}
+      keyboardShouldPersistTaps="handled"
       ListEmptyComponent={debouncedQuery ? ListEmptyComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={!onlyShowUserId
