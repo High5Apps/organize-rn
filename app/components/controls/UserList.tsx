@@ -11,6 +11,22 @@ import UserRow from './UserRow';
 
 const LIST_EMPTY_MESSAGE = 'Nobody matched your search. Type a little more or check your spelling.';
 
+type DebouncedQueryFetcherProps = {
+  debouncedQuery?: string;
+  disabled?: boolean;
+  fetch: () => void;
+};
+
+function useDebouncedQueryFetcher({
+  debouncedQuery, disabled, fetch,
+}: DebouncedQueryFetcherProps) {
+  useEffect(() => {
+    if (!disabled) {
+      fetch();
+    }
+  }, [debouncedQuery, disabled]);
+}
+
 type Props = {
   debouncedQuery?: string;
   ListFooterComponent?: ReactElement;
@@ -28,12 +44,13 @@ export default function UserList({
     onlyShowUserId ? users.find((u) => u.id === onlyShowUserId) : undefined
   ), [onlyShowUserId]);
 
-  useEffect(() => {
-    // query !== undefined allows for refetching when clear button is pressed
-    if (ready && debouncedQuery !== undefined) {
-      fetchFirstPageOfUsers();
-    }
-  }, [debouncedQuery, ready]);
+  useDebouncedQueryFetcher({
+    debouncedQuery,
+    // Checking against undefined allows for refetching when the clear button is
+    // pressed, which causes debouncedQuery to equal ''
+    disabled: !ready || debouncedQuery === undefined || !!onlyShowUser,
+    fetch: fetchFirstPageOfUsers,
+  });
 
   const ListEmptyComponent = useCallback(() => (
     <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
