@@ -191,7 +191,8 @@ export async function fetchBallot({
     decryptMany(encryptedCandidateTitles, e2eDecryptMany),
   ]);
 
-  const candidates = json.candidates.map(({ id, postId, userId }, i) => {
+  const candidates = json.candidates.map((candidate, i) => {
+    const { userId } = candidate;
     let title: string | undefined;
     if (userId) {
       title = json.nominations?.find(
@@ -202,7 +203,7 @@ export async function fetchBallot({
     }
 
     return {
-      id, postId, title: title ?? '[Unknown title]', userId,
+      ...candidate, title: title ?? '[Unknown title]',
     };
   });
 

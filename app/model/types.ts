@@ -1,7 +1,39 @@
+import type {
+  BackendEncryptedMessage, BallotCandidate, BallotIndexBallot,
+  CommentIndexComment, OrgResponse, PostIndexPost,
+} from '../networking';
 import type { AESEncryptedData } from './keys';
 import type { TimeRemainingOptions } from './TimeRemaining';
 
 export type { TimeRemainingOptions };
+
+type EncryptedPrefix = 'encrypted';
+
+type DecryptableKey<S extends string> = (
+  S extends `${EncryptedPrefix}${string}` ? S : never
+);
+
+type DecryptKey<S extends string> = (
+  S extends `${EncryptedPrefix}${infer T}` ? Uncapitalize<T> : S
+);
+
+type Decrypt<T> = T extends ReadonlyArray<any> ? T : (
+  T extends Array<infer Item> ? Decrypt<Item>[] : (
+    T extends object ? {
+      [K in keyof T as DecryptKey<K & string>]: (
+        K extends DecryptableKey<K & string> ? (
+          T[K] extends BackendEncryptedMessage ? string : (
+            T[K] extends (BackendEncryptedMessage | undefined)
+              ? (string | undefined) : never
+          )
+        ) : (T[K] extends Date ? Date : Decrypt<T[K]>)
+      )
+    } : T
+  )
+);
+
+type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+type Optional<T, K extends keyof T> = Omit<T, K> & Pick<Partial<T>, K>;
 
 const OFFICE_CATEGORIES = [
   'founder',
@@ -43,11 +75,7 @@ export type OrgGraph = {
   connections: [string, string][];
 };
 
-export type Org = {
-  id: string;
-  name: string;
-  memberDefinition: string;
-};
+export type Org = Decrypt<Omit<OrgResponse, 'graph'>>;
 
 export function isOrg(object: unknown): object is Org {
   const org = (object as Org);
@@ -114,34 +142,14 @@ export type { PostCategory };
 
 export type VoteState = -1 | 0 | 1;
 
-export type Post = {
-  body?: string;
-  candidateId?: string | null;
-  category: PostCategory;
-  createdAt: Date;
-  id: string;
-  myVote: VoteState;
-  pseudonym: string;
-  score: number;
-  title: string;
-  userId: string;
-};
+export type Post = Optional<Decrypt<PostIndexPost>, 'candidateId'>;
 
 export type PaginationData = {
   currentPage: number;
   nextPage: number | null;
 };
 
-export type Comment = {
-  body: string;
-  createdAt: Date;
-  depth: number;
-  id: string;
-  myVote: VoteState;
-  pseudonym: string;
-  score: number;
-  userId: string;
-};
+export type Comment = Decrypt<Omit<CommentIndexComment, 'replies'>>;
 
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;
@@ -181,30 +189,11 @@ export type BallotTypeInfo = {
 
 export type BallotSort = 'active' | 'inactive';
 
-export type BallotPreview = {
-  category: BallotCategory;
-  id: string;
-  question: string;
-  userId: string;
-  votingEndsAt: Date;
-} & ({
-  category: Exclude<BallotCategory, 'election'>;
-  nominationsEndAt: null;
-  office: null;
-} | {
-  category: 'election';
-  nominationsEndAt: Date;
-  office: OfficeCategory;
-});
+export type BallotPreview = Decrypt<BallotIndexBallot>;
 
 export type { Model } from './ModelCache';
 
-export type Candidate = {
-  id: string;
-  postId?: string | null;
-  userId?: string;
-  title: string;
-};
+export type Candidate = Require<Decrypt<BallotCandidate>, 'title'>;
 
 export type NominationUser = {
   id: string;

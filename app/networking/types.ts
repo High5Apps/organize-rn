@@ -246,7 +246,7 @@ export function isBallotIndexResponse(object: unknown): object is BallotIndexRes
     && (!response?.meta || isPaginationData(response?.meta));
 }
 
-type BallotCandidate = {
+export type BallotCandidate = {
   encryptedTitle: BackendEncryptedMessage;
   id: string;
   postId?: never;
