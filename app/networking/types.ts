@@ -54,7 +54,7 @@ export type PreviewConnectionResponse = {
 };
 
 export type ConnectionPreview = {
-  org: Omit<Org, 'graph'>;
+  org: Org;
   user: {
     pseudonym: string;
   };
