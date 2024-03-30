@@ -1,10 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Share, StyleSheet, Text } from 'react-native';
 import {
   ButtonRow, LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
+  SecondaryButton,
 } from '../../components';
 import type { ConnectScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
+
+const SHARE_MESSAGE = `To join the Org:
+1. Get the Organize app at getorganize.app/store
+2. Meet up with me in person to scan my membership code`;
 
 const useStyles = () => {
   const {
@@ -19,7 +24,7 @@ const useStyles = () => {
       marginHorizontal: spacing.s,
     },
     buttonRow: {
-      flexDirection: 'row-reverse',
+      justifyContent: 'space-between',
     },
     prompt: {
       color: colors.label,
@@ -48,10 +53,16 @@ export default function ConnectScreen({ navigation }: ConnectScreenProps) {
         </Text>
       </LockingScrollView>
       <ButtonRow elevated={false} style={styles.buttonRow}>
-        <PrimaryButton
+        <SecondaryButton
           iconName="qr-code-scanner"
           label="Scan"
           onPress={() => navigation.navigate('NewConnection')}
+          style={styles.button}
+        />
+        <PrimaryButton
+          iconName="share"
+          label="Share the app"
+          onPress={() => Share.share({ message: SHARE_MESSAGE })}
           style={styles.button}
         />
       </ButtonRow>
