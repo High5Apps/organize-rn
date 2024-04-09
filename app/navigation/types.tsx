@@ -60,6 +60,7 @@ export type OrgTabsParamList = {
   DiscussStack: NavigatorScreenParams<DiscussStackParamList>;
   VoteStack: NavigatorScreenParams<VoteStackParamList>;
   OrgStack: NavigatorScreenParams<OrgStackParamList>;
+  LeadStack: NavigatorScreenParams<LeadStackParamList>;
 };
 
 export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
@@ -228,6 +229,18 @@ export type OrgStackNavigationProp<T extends keyof OrgStackParamList> =
 export type SettingsScreenNavigationProp = (
   OrgStackNavigationProp<'Settings'>
 );
+
+export type LeadStackParamList = {
+  Lead: undefined;
+};
+
+export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<LeadStackParamList, T>,
+    OrgTabsScreenProps<keyof OrgTabsParamList>
+  >;
+
+  export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc
