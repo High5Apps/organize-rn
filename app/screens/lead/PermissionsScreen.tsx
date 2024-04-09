@@ -1,7 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
-import type { PermissionsScreenProps } from '../../navigation';
+import { PermissionItemList, ScreenBackground } from '../../components';
 
-export default function PermissionsScreen({ route }: PermissionsScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+export default function PermissionsScreen() {
+  return (
+    <ScreenBackground>
+      <PermissionItemList onPermissionItemPress={console.log} />
+    </ScreenBackground>
+  );
 }
