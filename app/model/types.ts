@@ -4,8 +4,9 @@ import type {
 } from '../networking';
 import type { AESEncryptedData } from './keys';
 import type { TimeRemainingOptions } from './TimeRemaining';
+import type { PermissionItem, PermissionScope } from './PermissionItems';
 
-export type { TimeRemainingOptions };
+export type { PermissionItem, PermissionScope, TimeRemainingOptions };
 
 type EncryptedPrefix = 'encrypted';
 

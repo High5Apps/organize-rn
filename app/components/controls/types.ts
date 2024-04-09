@@ -9,11 +9,3 @@ export type LeadItem = {
   iconName: string;
   title: string;
 };
-
-export type PermissionScope = 'editPermissions';
-
-export type PermissionItem = {
-  iconName: string;
-  scope: PermissionScope;
-  title: string;
-};

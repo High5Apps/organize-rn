@@ -2,13 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ItemSeparator } from '../views';
 import IconRow from './IconRow';
-import { PermissionItem } from './types';
-
-const data: PermissionItem[] = [{
-  iconName: 'lock-open',
-  scope: 'editPermissions',
-  title: 'Edit permissions',
-}];
+import { PermissionItem, permissionItems } from '../../model';
 
 type Props = {
   onPermissionItemPress: (permissionItem: PermissionItem) => void;
@@ -28,7 +22,7 @@ export default function LeadItemList({ onPermissionItemPress }: Props) {
 
   return (
     <FlatList
-      data={data}
+      data={permissionItems}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}
     />
