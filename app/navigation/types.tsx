@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import type { OfficeCategory, PostCategory } from '../model';
+import type { OfficeCategory, PermissionScope, PostCategory } from '../model';
 
 export type RootStackParamList = {
   WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
@@ -230,8 +230,13 @@ export type SettingsScreenNavigationProp = (
   OrgStackNavigationProp<'Settings'>
 );
 
+export type PermissionScreenParams = {
+  scope: PermissionScope;
+};
+
 export type LeadStackParamList = {
   Lead: undefined;
+  Permission: PermissionScreenParams;
   Permissions: undefined;
 };
 
@@ -242,6 +247,7 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
   >;
 
   export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
+  export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
   export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 
 // For more info, see
