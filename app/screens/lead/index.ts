@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
 export { default as LeadScreen } from './LeadScreen';
+export { default as PermissionsScreen } from './PermissionsScreen';

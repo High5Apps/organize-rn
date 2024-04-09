@@ -232,6 +232,7 @@ export type SettingsScreenNavigationProp = (
 
 export type LeadStackParamList = {
   Lead: undefined;
+  Permissions: undefined;
 };
 
 export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
@@ -241,6 +242,7 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
   >;
 
   export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
+  export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc

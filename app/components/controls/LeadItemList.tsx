@@ -5,7 +5,7 @@ import IconRow from './IconRow';
 import { LeadItem } from './types';
 
 const data: LeadItem[] = [{
-  destination: 'Lead', // TODO: Update to Permissions
+  destination: 'Permissions',
   iconName: 'lock-open',
   title: 'Permissions',
 }];
