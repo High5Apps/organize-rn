@@ -9,6 +9,7 @@ import DiscussStack from './DiscussStack';
 import VoteStack from './VoteStack';
 import OrgStack from './OrgStack';
 import LeadStack from './LeadStack';
+import { useCurrentUser } from '../model';
 
 const useStyles = () => {
   const { font, spacing } = useTheme();
@@ -27,6 +28,8 @@ const Tab = createBottomTabNavigator<OrgTabsParamList>();
 
 export default function OrgTabs() {
   const { styles } = useStyles();
+
+  const { currentUser } = useCurrentUser();
 
   return (
     <Tab.Navigator
@@ -68,14 +71,16 @@ export default function OrgTabs() {
           tabBarLabel: 'Org',
         }}
       />
-      <Tab.Screen
-        name="LeadStack"
-        component={LeadStack}
-        options={{
-          tabBarIcon: TabBarIcon('emoji-people'),
-          tabBarLabel: 'Lead',
-        }}
-      />
+      {currentUser?.offices && (
+        <Tab.Screen
+          name="LeadStack"
+          component={LeadStack}
+          options={{
+            tabBarIcon: TabBarIcon('emoji-people'),
+            tabBarLabel: 'Lead',
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 }
