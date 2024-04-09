@@ -15,6 +15,7 @@ export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as useHeaderButton } from './HeaderButton';
 export { default as IconButton } from './IconButton';
+export { default as LeadItemList } from './LeadItemList';
 export { default as LearnMoreButtonRow } from './LearnMoreButtonRow';
 export { default as LearnMoreModal } from './LearnMoreModal';
 export { default as useLearnMoreOfficeModal } from './LearnMoreOfficeModal';
