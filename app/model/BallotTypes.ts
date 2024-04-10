@@ -18,7 +18,7 @@ export const ballotTypes: BallotTypeInfo[] = [
     iconName: 'person',
     name: 'Election',
     newScreenName: 'NewElectionBallot',
-    subtypeSelectionScreenName: 'OfficeType',
+    subtypeSelectionScreenName: 'OfficeAvailability',
   },
 ];
 

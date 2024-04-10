@@ -26,7 +26,7 @@ export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NewPostScreenBase } from './NewPostScreenBase';
 export { default as NominationList } from './NominationList';
 export { default as NotableUserList } from './NotableUserList';
-export { default as OfficeList } from './OfficeList';
+export { default as OfficeAvailabilityList } from './OfficeAvailabilityList';
 export { default as OfficeRow } from './OfficeRow';
 export { default as OrgGraph } from './OrgGraph';
 export { default as PostCategorySelector } from './PostCategorySelector';

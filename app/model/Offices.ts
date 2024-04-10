@@ -31,7 +31,7 @@ export const getOffice = (
   type: category,
 });
 
-export default function useOffices() {
+export default function useOfficeAvailability() {
   const [filledOffices, setFilledOffices] = useState<Office[]>([]);
   const [openOffices, setOpenOffices] = useState<Office[]>([]);
   const [ready, setReady] = useState<boolean>(false);

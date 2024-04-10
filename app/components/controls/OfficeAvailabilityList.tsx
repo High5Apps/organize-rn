@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { ListRenderItemInfo, SectionList } from 'react-native';
-import { Office, isDefined, useOffices } from '../../model';
+import { Office, isDefined, useOfficeAvailability } from '../../model';
 import { usePullToRefresh } from '../hooks';
 import { ItemSeparator, ListEmptyMessage, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
@@ -16,8 +16,8 @@ type Props = {
   onPress: (item: Office) => void;
 };
 
-export default function OfficeList({ onPress }: Props) {
-  const { fetchOffices, openOffices, ready } = useOffices();
+export default function OfficeAvailabilityList({ onPress }: Props) {
+  const { fetchOffices, openOffices, ready } = useOfficeAvailability();
 
   const sections: OfficeSection[] = useMemo(() => (
     [{ title: 'Available', data: openOffices }]

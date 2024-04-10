@@ -177,7 +177,7 @@ export type BallotType = {
   name: string;
 };
 
-type NewBallotSubtypeSelectionScreen = 'OfficeType';
+type NewBallotSubtypeSelectionScreen = 'OfficeAvailability';
 type NewBallotScreen = 'NewYesOrNoBallot' | 'NewMultipleChoiceBallot' | 'NewElectionBallot';
 
 export type BallotTypeInfo = {

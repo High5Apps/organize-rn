@@ -185,7 +185,7 @@ export type VoteStackParamList = {
   NewNomination: NewNominationScreenParams;
   NewYesOrNoBallot: undefined;
   Nominations: NominationScreenParams;
-  OfficeType: undefined;
+  OfficeAvailability: undefined;
   Result: ResultScreenParams;
 };
 
@@ -204,7 +204,7 @@ export type NewMultipleChoiceBallotScreenProps = VoteStackScreenProps<'NewMultip
 export type NewNominationScreenProps = VoteStackScreenProps<'NewNomination'>;
 export type NewYesNoBallotScreenProps = VoteStackScreenProps<'NewYesOrNoBallot'>;
 export type NominationScreenProps = VoteStackScreenProps<'Nominations'>;
-export type OfficeTypeScreenProps = VoteStackScreenProps<'OfficeType'>;
+export type OfficeAvailabilityScreenProps = VoteStackScreenProps<'OfficeAvailability'>;
 export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 
 export type OrgStackParamList = {
