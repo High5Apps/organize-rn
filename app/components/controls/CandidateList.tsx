@@ -1,17 +1,35 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useMemo } from 'react';
 import {
-  FlatList, ListRenderItemInfo, StyleProp, ViewStyle,
+  FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import { Candidate } from '../../model';
 import CandidateRow from './CandidateRow';
 import { ItemSeparator } from '../views';
 import type { DiscussButtonType } from './DiscussButton';
+import useTheme from '../../Theme';
+
+const useStyles = () => {
+  const { colors, font, spacing } = useTheme();
+
+  const styles = StyleSheet.create({
+    listEmptyMessage: {
+      paddingHorizontal: spacing.l,
+    },
+    text: {
+      color: colors.label,
+      flexShrink: 1,
+      fontSize: font.sizes.body,
+      fontFamily: font.weights.regular,
+    },
+  });
+
+  return { styles };
+};
 
 type Props = {
   candidates: Candidate[] | null;
   contentContainerStyle?: StyleProp<ViewStyle>;
   DiscussButton: DiscussButtonType;
-  ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
   maxSelections?: number;
@@ -22,11 +40,13 @@ type Props = {
 };
 
 export default function CandidateList({
-  candidates, contentContainerStyle, DiscussButton, ListEmptyComponent,
-  ListFooterComponent, ListHeaderComponent, maxSelections: maybeMaxSelections,
-  onRowPressed, selectedCandidateIds, waitingForDeselectedCandidateIds,
+  candidates, contentContainerStyle, DiscussButton, ListFooterComponent,
+  ListHeaderComponent, maxSelections: maybeMaxSelections, onRowPressed,
+  selectedCandidateIds, waitingForDeselectedCandidateIds,
   waitingForSelectedCandidateIds,
 }: Props) {
+  const { styles } = useStyles();
+
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
     const previouslySelected = selectedCandidateIds?.includes(id);
@@ -63,11 +83,19 @@ export default function CandidateList({
     waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
   ]);
 
+  const ListEmptyComponent = useMemo(() => (
+    candidates === null ? null : (
+      <Text style={[styles.text, styles.listEmptyMessage]}>
+        No one accepted a nomination
+      </Text>
+    )
+  ), [candidates]);
+
   return (
     <FlatList
       contentContainerStyle={contentContainerStyle}
       data={candidates}
-      ListEmptyComponent={(candidates !== null) ? ListEmptyComponent : null}
+      ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={(candidates?.length) ? ListFooterComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       ItemSeparatorComponent={ItemSeparator}
@@ -78,7 +106,6 @@ export default function CandidateList({
 
 CandidateList.defaultProps = {
   contentContainerStyle: {},
-  ListEmptyComponent: undefined,
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
   maxSelections: undefined,

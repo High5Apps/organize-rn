@@ -20,9 +20,6 @@ const useStyles = () => {
     ballotDetails: {
       marginTop: spacing.xs,
     },
-    emptyResultsText: {
-      paddingHorizontal: spacing.l,
-    },
     header: {
       margin: spacing.m,
     },
@@ -89,12 +86,6 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
 
   const { styles } = useStyles();
 
-  const ListEmptyComponent = useMemo(() => (
-    <Text style={[styles.text, styles.emptyResultsText]}>
-      No one accepted a nomination
-    </Text>
-  ), []);
-
   const ListHeaderComponent = useMemo(() => (
     <View style={styles.header}>
       <Text style={[styles.text, styles.question]}>
@@ -150,7 +141,6 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
       <CandidateList
         candidates={ballot?.candidates ?? null}
         DiscussButton={DiscussButton}
-        ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         maxSelections={ballot?.maxCandidateIdsPerVote}
