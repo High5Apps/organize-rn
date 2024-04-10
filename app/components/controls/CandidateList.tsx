@@ -53,7 +53,7 @@ export default function CandidateList({
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
     try {
-      await onNewCandidateSelection(candidate);
+      await onNewCandidateSelection(candidate.id);
     } catch (error) {
       let errorMessage = 'Failed to update your vote. Please try again.';
 
