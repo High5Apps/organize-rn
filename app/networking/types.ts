@@ -406,3 +406,15 @@ export function isUserIndexResponse(object: unknown): object is UserIndexRespons
     && response.users.every(isUserResponse)
     && (!response?.meta || isPaginationData(response?.meta));
 }
+
+type PermissionResponse = {
+  permission: {
+    offices: OfficeCategory[];
+  };
+};
+
+export function isPermissionResponse(object: unknown): object is PermissionResponse {
+  const response = (object as PermissionResponse);
+  return Array.isArray(response?.permission?.offices)
+    && response.permission.offices.every((office) => office?.length > 0);
+}

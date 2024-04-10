@@ -1,4 +1,4 @@
-export type PermissionScope = 'editPermissions';
+import type { PermissionScope } from './types';
 
 export type PermissionItem = {
   iconName: string;

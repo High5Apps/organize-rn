@@ -1,6 +1,8 @@
 // To hit a local backend development server over USB, npm run tether:android
 // It is not currently easy to hit a local dev server over USB on iOS
 
+import { PermissionScope, camelToSnake } from '../model';
+
 const origin = __DEV__ ? 'http://localhost:8080' : 'https://getorganize.app';
 
 const version = 'v1';
@@ -23,6 +25,12 @@ export const officesURI = `${apiRoute}/offices`;
 
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;
+
+export const permissionsURI = `${apiRoute}/permissions`;
+export const permissionURI = (scope: PermissionScope) => {
+  const snakeScope = camelToSnake(scope);
+  return `${permissionsURI}/${snakeScope}`;
+};
 
 export const postsURI = `${apiRoute}/posts`;
 export const postURI = (postId: string) => `${apiRoute}/posts/${postId}`;

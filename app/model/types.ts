@@ -4,9 +4,9 @@ import type {
 } from '../networking';
 import type { AESEncryptedData } from './keys';
 import type { TimeRemainingOptions } from './TimeRemaining';
-import type { PermissionItem, PermissionScope } from './PermissionItems';
+import type { PermissionItem } from './PermissionItems';
 
-export type { PermissionItem, PermissionScope, TimeRemainingOptions };
+export type { PermissionItem, TimeRemainingOptions };
 
 type EncryptedPrefix = 'encrypted';
 
@@ -235,3 +235,14 @@ export type Ballot = BallotPreview & {
   termEndsAt: Date;
   termStartsAt: Date;
 });
+
+export type PermissionScope = 'editPermissions';
+
+export type PermissionData = {
+  offices: Office[];
+};
+
+export type Permission = {
+  scope: PermissionScope;
+  data: PermissionData;
+};
