@@ -2,7 +2,7 @@ import React, { ReactElement, useCallback, useMemo } from 'react';
 import {
   FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
-import { Candidate } from '../../model';
+import { Ballot, Candidate } from '../../model';
 import CandidateRow from './CandidateRow';
 import { ItemSeparator } from '../views';
 import type { DiscussButtonType } from './DiscussButton';
@@ -27,12 +27,11 @@ const useStyles = () => {
 };
 
 type Props = {
-  candidates: Candidate[] | null;
+  ballot?: Ballot;
   contentContainerStyle?: StyleProp<ViewStyle>;
   DiscussButton: DiscussButtonType;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
-  maxSelections?: number;
   onRowPressed?: (candidate: Candidate) => void;
   selectedCandidateIds?: string[];
   waitingForDeselectedCandidateIds: string[];
@@ -40,11 +39,13 @@ type Props = {
 };
 
 export default function CandidateList({
-  candidates, contentContainerStyle, DiscussButton, ListFooterComponent,
-  ListHeaderComponent, maxSelections: maybeMaxSelections, onRowPressed,
-  selectedCandidateIds, waitingForDeselectedCandidateIds,
-  waitingForSelectedCandidateIds,
+  ballot, contentContainerStyle, DiscussButton, ListFooterComponent,
+  ListHeaderComponent, onRowPressed, selectedCandidateIds,
+  waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
 }: Props) {
+  const {
+    candidates, maxCandidateIdsPerVote: maybeMaxSelections,
+  } = ballot ?? {};
   const { styles } = useStyles();
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
@@ -84,7 +85,7 @@ export default function CandidateList({
   ]);
 
   const ListEmptyComponent = useMemo(() => (
-    candidates === null ? null : (
+    candidates && (
       <Text style={[styles.text, styles.listEmptyMessage]}>
         No one accepted a nomination
       </Text>
@@ -105,10 +106,10 @@ export default function CandidateList({
 }
 
 CandidateList.defaultProps = {
+  ballot: undefined,
   contentContainerStyle: {},
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
-  maxSelections: undefined,
   onRowPressed: () => null,
   selectedCandidateIds: undefined,
 };

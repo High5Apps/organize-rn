@@ -139,11 +139,10 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
     <ScreenBackground>
       <LearnMoreOfficeModal />
       <CandidateList
-        candidates={ballot?.candidates ?? null}
+        ballot={ballot}
         DiscussButton={DiscussButton}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
-        maxSelections={ballot?.maxCandidateIdsPerVote}
         onRowPressed={onRowPressed}
         selectedCandidateIds={selectedCandidateIds}
         waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
