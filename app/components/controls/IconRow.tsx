@@ -31,12 +31,16 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       paddingHorizontal: spacing.m,
     },
+    touchableHighlight: {
+      flex: 1,
+    },
   });
 
   return { colors, styles };
 };
 
 type Props = {
+  hideDisclosureIcon?: boolean;
   iconName: string;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
@@ -45,21 +49,29 @@ type Props = {
 };
 
 export default function IconRow({
-  iconName, onPress, textButtonLabel, style, title,
+  hideDisclosureIcon, iconName, onPress, textButtonLabel, style, title,
 }: Props) {
   const { colors, styles } = useStyles();
 
   const Accessory = useMemo(() => {
     if (onPress === undefined) { return null; }
 
-    if (textButtonLabel === undefined) { return <DisclosureIcon />; }
+    if (textButtonLabel !== undefined) {
+      return <TextButton onPress={onPress}>{textButtonLabel}</TextButton>;
+    }
 
-    return <TextButton onPress={onPress}>{textButtonLabel}</TextButton>;
+    if (!hideDisclosureIcon && (textButtonLabel === undefined)) {
+      return <DisclosureIcon />;
+    }
+
+    return null;
   }, [onPress, textButtonLabel, styles]);
 
   return (
     <TouchableHighlight
+      disabled={!onPress}
       onPress={textButtonLabel ? undefined : onPress}
+      style={styles.touchableHighlight}
       underlayColor={colors.label}
     >
       <View style={[styles.container, style]}>
@@ -72,6 +84,7 @@ export default function IconRow({
 }
 
 IconRow.defaultProps = {
+  hideDisclosureIcon: false,
   onPress: undefined,
   style: {},
   textButtonLabel: undefined,
