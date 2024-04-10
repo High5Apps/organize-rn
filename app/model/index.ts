@@ -24,6 +24,7 @@ export { default as useNominations } from './Nominations';
 export { default as useOfficeAvailability, getOffice } from './Offices';
 export { default as OFFICE_DUTIES } from './OfficeDuties';
 export { default as getCircleColors } from './OrgScreenCircleColors';
+export { default as usePermission } from './Permission';
 export { default as permissionItems } from './PermissionItems';
 export { default as usePersistentValue } from './PersistentValue';
 export { default as usePost } from './Post';
