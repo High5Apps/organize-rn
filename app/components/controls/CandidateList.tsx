@@ -1,8 +1,8 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import {
-  FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text, ViewStyle,
+  Alert, FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
-import { Ballot, Candidate } from '../../model';
+import { Ballot, Candidate, useVoteUpdater } from '../../model';
 import CandidateRow from './CandidateRow';
 import { ItemSeparator } from '../views';
 import type { DiscussButtonType } from './DiscussButton';
@@ -28,25 +28,42 @@ const useStyles = () => {
 
 type Props = {
   ballot?: Ballot;
+  cacheBallot: (ballot: Ballot) => void;
   contentContainerStyle?: StyleProp<ViewStyle>;
   DiscussButton: DiscussButtonType;
   ListFooterComponent?: ReactElement;
   ListHeaderComponent?: ReactElement;
-  onRowPressed?: (candidate: Candidate) => void;
-  selectedCandidateIds?: string[];
-  waitingForDeselectedCandidateIds: string[];
-  waitingForSelectedCandidateIds: string[];
 };
 
 export default function CandidateList({
-  ballot, contentContainerStyle, DiscussButton, ListFooterComponent,
-  ListHeaderComponent, onRowPressed, selectedCandidateIds,
-  waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
+  ballot, cacheBallot, contentContainerStyle, DiscussButton,
+  ListFooterComponent, ListHeaderComponent,
 }: Props) {
   const {
     candidates, maxCandidateIdsPerVote: maybeMaxSelections,
   } = ballot ?? {};
   const { styles } = useStyles();
+
+  const {
+    onNewCandidateSelection,
+    selectedCandidateIds,
+    waitingForDeselectedCandidateIds,
+    waitingForSelectedCandidateIds,
+  } = useVoteUpdater({ ballot, cacheBallot });
+
+  const onRowPressed = useCallback(async (candidate: Candidate) => {
+    try {
+      await onNewCandidateSelection(candidate);
+    } catch (error) {
+      let errorMessage = 'Failed to update your vote. Please try again.';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      Alert.alert(errorMessage);
+    }
+  }, [onNewCandidateSelection]);
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
@@ -110,6 +127,4 @@ CandidateList.defaultProps = {
   contentContainerStyle: {},
   ListFooterComponent: undefined,
   ListHeaderComponent: undefined,
-  onRowPressed: () => null,
-  selectedCandidateIds: undefined,
 };

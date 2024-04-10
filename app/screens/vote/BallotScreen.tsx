@@ -1,7 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import {
-  Alert, StyleSheet, Text, View,
-} from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
   BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
@@ -9,7 +7,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Candidate, useBallotPreviews, useVoteUpdater,
+  useBallotPreviews,
   votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
 } from '../../model';
 
@@ -67,13 +65,6 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
     },
   });
 
-  const {
-    onNewCandidateSelection,
-    selectedCandidateIds,
-    waitingForDeselectedCandidateIds,
-    waitingForSelectedCandidateIds,
-  } = useVoteUpdater({ ballot, cacheBallot });
-
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
   if (!ballotPreview) {
@@ -121,32 +112,15 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
 
   const DiscussButton = useDiscussButton(navigation);
 
-  const onRowPressed = useCallback(async (candidate: Candidate) => {
-    try {
-      await onNewCandidateSelection(candidate);
-    } catch (error) {
-      let errorMessage = 'Failed to update your vote. Please try again.';
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      Alert.alert(errorMessage);
-    }
-  }, [onNewCandidateSelection]);
-
   return (
     <ScreenBackground>
       <LearnMoreOfficeModal />
       <CandidateList
         ballot={ballot}
+        cacheBallot={cacheBallot}
         DiscussButton={DiscussButton}
         ListFooterComponent={ListFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
-        onRowPressed={onRowPressed}
-        selectedCandidateIds={selectedCandidateIds}
-        waitingForDeselectedCandidateIds={waitingForDeselectedCandidateIds}
-        waitingForSelectedCandidateIds={waitingForSelectedCandidateIds}
       />
     </ScreenBackground>
   );
