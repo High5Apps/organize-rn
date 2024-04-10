@@ -1,7 +1,13 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
 import type { PermissionScreenProps } from '../../navigation';
+import { OfficePermissionList, ScreenBackground } from '../../components';
 
 export default function PermissionScreen({ route }: PermissionScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+  const { scope } = route.params;
+
+  return (
+    <ScreenBackground>
+      <OfficePermissionList scope={scope} />
+    </ScreenBackground>
+  );
 }
