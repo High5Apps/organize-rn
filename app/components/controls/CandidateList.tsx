@@ -26,6 +26,11 @@ const useStyles = () => {
   return { styles };
 };
 
+const onSyncSelectionError = (errorMessage: string) => {
+  console.error(errorMessage);
+  Alert.alert('Failed to update your vote. Please try again.');
+};
+
 type Props = {
   ballot?: Ballot;
   cacheBallot: (ballot: Ballot) => void;
@@ -44,23 +49,9 @@ export default function CandidateList({
   } = ballot ?? {};
   const { styles } = useStyles();
 
-  const {
-    getSelectionInfo, onNewCandidateSelection,
-  } = useVoteUpdater({ ballot, cacheBallot });
-
-  const onRowPressed = useCallback(async (candidate: Candidate) => {
-    try {
-      await onNewCandidateSelection(candidate.id);
-    } catch (error) {
-      let errorMessage = 'Failed to update your vote. Please try again.';
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      Alert.alert(errorMessage);
-    }
-  }, [onNewCandidateSelection]);
+  const { getSelectionInfo, onRowPressed } = useVoteUpdater({
+    ballot, cacheBallot, onSyncSelectionError,
+  });
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
@@ -73,7 +64,7 @@ export default function CandidateList({
         DiscussButton={DiscussButton}
         indicatesSelectionToggling={shouldToggleSelections}
         item={item}
-        onPress={onRowPressed}
+        onPress={(candidate) => onRowPressed(candidate.id)}
         selected={selected}
         showDisabled={showDisabled}
       />

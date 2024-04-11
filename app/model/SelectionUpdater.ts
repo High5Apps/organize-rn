@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
+import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 type Props = {
   initialSelection?: string[];
   maxSelections?: number;
   onSyncSelection: (selection: string[]) => Promise<void>;
+  onSyncSelectionError: (errorMessage: string) => void;
   options?: string[];
 };
 
@@ -14,7 +16,7 @@ function quickDifference<T>(a: T[], b: T[]): T[] {
 
 export default function useSelectionUpdater({
   initialSelection, maxSelections: maybeMaxSelections, onSyncSelection,
-  options: maybeOptions,
+  onSyncSelectionError, options: maybeOptions,
 }: Props) {
   const maxSelections = maybeMaxSelections ?? 0;
   const options = maybeOptions ?? [];
@@ -62,13 +64,20 @@ export default function useSelectionUpdater({
 
     try {
       await onSyncSelection(updatedSelections);
-    } catch {
-      console.error('Uncaught error in onSyncSelection');
+    } catch (error) {
+      let errorMessage = GENERIC_ERROR_MESSAGE;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      onSyncSelectionError(errorMessage);
     }
 
     setWaitingForSelections([]);
     setWaitingForDeselections([]);
-  }, [onSyncSelection, selections, shouldToggleSelections]);
+  }, [
+    onSyncSelection, onSyncSelectionError, selections, shouldToggleSelections,
+  ]);
 
   const getSelectionInfo = useCallback((selection: string) => {
     const previouslySelected = selections?.includes(selection);
@@ -93,5 +102,17 @@ export default function useSelectionUpdater({
     };
   }, [selections, waitingForDeselections, waitingForSelections]);
 
-  return { getSelectionInfo, onNewSelection };
+  const onRowPressed = useCallback(async (selection: string) => {
+    try {
+      await onNewSelection(selection);
+    } catch (error) {
+      console.error('Uncaught error in onNewSelection');
+
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }, [onNewSelection]);
+
+  return { getSelectionInfo, onRowPressed };
 }

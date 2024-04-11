@@ -8,9 +8,12 @@ import useSelectionUpdater from './SelectionUpdater';
 type Props = {
   ballot?: Ballot;
   cacheBallot: (ballot: Ballot) => void;
+  onSyncSelectionError: (errorMessage: string) => void;
 };
 
-export default function useVoteUpdater({ ballot, cacheBallot }: Props) {
+export default function useVoteUpdater({
+  ballot, cacheBallot, onSyncSelectionError,
+}: Props) {
   const { currentUser } = useCurrentUser();
 
   const onSyncSelection = useCallback(async (candidateIds: string[]) => {
@@ -40,13 +43,14 @@ export default function useVoteUpdater({ ballot, cacheBallot }: Props) {
   }, [ballot, cacheBallot, currentUser]);
 
   const {
-    getSelectionInfo, onNewSelection: onNewCandidateSelection,
+    getSelectionInfo, onRowPressed,
   } = useSelectionUpdater({
     initialSelection: ballot?.myVote,
     maxSelections: ballot?.maxCandidateIdsPerVote,
     onSyncSelection,
+    onSyncSelectionError,
     options: ballot?.candidates.map(({ id }) => id),
   });
 
-  return { getSelectionInfo, onNewCandidateSelection };
+  return { getSelectionInfo, onRowPressed };
 }
