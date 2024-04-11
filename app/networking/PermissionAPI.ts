@@ -1,7 +1,7 @@
 import {
-  Permission, PermissionScope, fromJson, getOffice,
+  OfficeCategory, Permission, PermissionScope, fromJson, getOffice,
 } from '../model';
-import { get } from './API';
+import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { permissionURI } from './Routes';
 import { Authorization, isPermissionResponse } from './types';
@@ -42,4 +42,34 @@ export async function fetchPermission({
   const offices = officeCategories.map((category) => getOffice(category));
 
   return { permission: { data: { offices }, scope } };
+}
+
+type CreateProps = {
+  offices: OfficeCategory[];
+  scope: PermissionScope;
+} & Authorization;
+
+type CreateReturn = {
+  errorMessage?: string;
+};
+
+export async function createPermission({
+  jwt, offices, scope,
+}: CreateProps & Authorization): Promise<CreateReturn> {
+  const response = await post({
+    bodyObject: { permission: { offices } },
+    jwt,
+    uri: permissionURI(scope),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
 }
