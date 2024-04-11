@@ -13,8 +13,12 @@ function quickDifference<T>(a: T[], b: T[]): T[] {
 }
 
 export default function useSelectionUpdater({
-  initialSelection, maxSelections, onSyncSelection, options,
+  initialSelection, maxSelections: maybeMaxSelections, onSyncSelection,
+  options: maybeOptions,
 }: Props) {
+  const maxSelections = maybeMaxSelections ?? 0;
+  const options = maybeOptions ?? [];
+
   const selections = useMemo(() => initialSelection, [initialSelection]);
   const [
     waitingForDeselections, setWaitingForDeselections,
@@ -23,14 +27,12 @@ export default function useSelectionUpdater({
     waitingForSelections, setWaitingForSelections,
   ] = useState<string[]>([]);
 
+  // Toggle selections when multiple selections are allowed or when there's
+  // only a single option to choose from
+  const shouldToggleSelections = (maxSelections > 1)
+    || (options.length === 1);
+
   const onNewSelection = useCallback(async (selection: string) => {
-    if (!options || !maxSelections) { return; }
-
-    // Toggle selections when multiple selections are allowed or when there's
-    // only a single option to choose from
-    const shouldToggleSelections = (maxSelections > 1)
-      || (options.length === 1);
-
     let updatedSelections: string[];
 
     if (shouldToggleSelections) {
@@ -66,12 +68,30 @@ export default function useSelectionUpdater({
 
     setWaitingForSelections([]);
     setWaitingForDeselections([]);
-  }, [maxSelections, onSyncSelection, options, selections]);
+  }, [onSyncSelection, selections, shouldToggleSelections]);
 
-  return {
-    onNewSelection,
-    selections,
-    waitingForDeselections,
-    waitingForSelections,
-  };
+  const getSelectionInfo = useCallback((selection: string) => {
+    const previouslySelected = selections?.includes(selection);
+    const waitingToSelect = waitingForSelections.includes(selection);
+    const waitingToDeselect = waitingForDeselections.includes(selection);
+    const waitingForChange = waitingToSelect || waitingToDeselect;
+    const selected = waitingForChange ? (waitingToSelect || !waitingToDeselect)
+      : previouslySelected;
+    const disabledDueToWaiting = waitingForSelections.length > 0
+      || waitingForDeselections.length > 0;
+    const multipleSelectionsAllowed = maxSelections > 1;
+    const selectionCount = (selections?.length ?? 0)
+      + (waitingForSelections?.length ?? 0);
+    const disabledDueToMaxSelections = multipleSelectionsAllowed
+      && (selectionCount >= maxSelections)
+      && !selected;
+    const disabled = disabledDueToWaiting || disabledDueToMaxSelections;
+    const showDisabled = disabledDueToMaxSelections || waitingForChange;
+
+    return {
+      disabled, selected, shouldToggleSelections, showDisabled,
+    };
+  }, [selections, waitingForDeselections, waitingForSelections]);
+
+  return { getSelectionInfo, onNewSelection };
 }

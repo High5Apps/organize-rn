@@ -45,10 +45,7 @@ export default function CandidateList({
   const { styles } = useStyles();
 
   const {
-    onNewCandidateSelection,
-    selectedCandidateIds,
-    waitingForDeselectedCandidateIds,
-    waitingForSelectedCandidateIds,
+    getSelectionInfo, onNewCandidateSelection,
   } = useVoteUpdater({ ballot, cacheBallot });
 
   const onRowPressed = useCallback(async (candidate: Candidate) => {
@@ -67,24 +64,9 @@ export default function CandidateList({
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Candidate>) => {
     const { id } = item;
-    const previouslySelected = selectedCandidateIds?.includes(id);
-    const waitingToSelect = waitingForSelectedCandidateIds.includes(id);
-    const waitingToDeselect = waitingForDeselectedCandidateIds.includes(id);
-    const waitingForChange = waitingToSelect || waitingToDeselect;
-    const selected = waitingForChange ? (waitingToSelect || !waitingToDeselect)
-      : previouslySelected;
-    const disabledDueToWaiting = waitingForSelectedCandidateIds.length > 0
-      || waitingForDeselectedCandidateIds.length > 0;
-    const maxSelections = maybeMaxSelections ?? 0;
-    const shouldToggleSelections = (maxSelections > 1)
-      || (candidates?.length === 1);
-    const multipleSelectionsAllowed = maxSelections > 1;
-    const selectionCount = (selectedCandidateIds?.length ?? 0)
-      + (waitingForSelectedCandidateIds?.length ?? 0);
-    const disabledDueToMaxSelections = multipleSelectionsAllowed
-      && (selectionCount >= maxSelections)
-      && !selected;
-    const disabled = disabledDueToWaiting || disabledDueToMaxSelections;
+    const {
+      disabled, selected, shouldToggleSelections, showDisabled,
+    } = getSelectionInfo(id);
     return (
       <CandidateRow
         disabled={disabled}
@@ -93,12 +75,11 @@ export default function CandidateList({
         item={item}
         onPress={onRowPressed}
         selected={selected}
-        showDisabled={disabledDueToMaxSelections || waitingForChange}
+        showDisabled={showDisabled}
       />
     );
   }, [
-    DiscussButton, maybeMaxSelections, onRowPressed, selectedCandidateIds,
-    waitingForDeselectedCandidateIds, waitingForSelectedCandidateIds,
+    DiscussButton, getSelectionInfo, maybeMaxSelections, onRowPressed,
   ]);
 
   const ListEmptyComponent = useMemo(() => (

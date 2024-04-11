@@ -40,10 +40,7 @@ export default function useVoteUpdater({ ballot, cacheBallot }: Props) {
   }, [ballot, cacheBallot, currentUser]);
 
   const {
-    onNewSelection: onNewCandidateSelection,
-    selections: selectedCandidateIds,
-    waitingForDeselections: waitingForDeselectedCandidateIds,
-    waitingForSelections: waitingForSelectedCandidateIds,
+    getSelectionInfo, onNewSelection: onNewCandidateSelection,
   } = useSelectionUpdater({
     initialSelection: ballot?.myVote,
     maxSelections: ballot?.maxCandidateIdsPerVote,
@@ -51,10 +48,5 @@ export default function useVoteUpdater({ ballot, cacheBallot }: Props) {
     options: ballot?.candidates.map(({ id }) => id),
   });
 
-  return {
-    onNewCandidateSelection,
-    selectedCandidateIds,
-    waitingForDeselectedCandidateIds,
-    waitingForSelectedCandidateIds,
-  };
+  return { getSelectionInfo, onNewCandidateSelection };
 }
