@@ -40,6 +40,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   hideDisclosureIcon?: boolean;
   iconName: string;
   onPress?: () => void;
@@ -49,7 +50,8 @@ type Props = {
 };
 
 export default function IconRow({
-  hideDisclosureIcon, iconName, onPress, textButtonLabel, style, title,
+  disabled, hideDisclosureIcon, iconName, onPress, textButtonLabel, style,
+  title,
 }: Props) {
   const { colors, styles } = useStyles();
 
@@ -69,7 +71,7 @@ export default function IconRow({
 
   return (
     <TouchableHighlight
-      disabled={!onPress}
+      disabled={disabled || !onPress}
       onPress={textButtonLabel ? undefined : onPress}
       style={styles.touchableHighlight}
       underlayColor={colors.label}
@@ -84,6 +86,7 @@ export default function IconRow({
 }
 
 IconRow.defaultProps = {
+  disabled: undefined,
   hideDisclosureIcon: false,
   onPress: undefined,
   style: {},

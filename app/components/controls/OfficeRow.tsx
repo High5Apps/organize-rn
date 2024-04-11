@@ -22,6 +22,9 @@ const useStyles = () => {
       flex: 1,
       flexDirection: 'row',
     },
+    disabled: {
+      opacity: 0.5,
+    },
     icon: {
       color: colors.primary,
       fontSize: sizes.mediumIcon,
@@ -33,20 +36,24 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   item: Office;
   onPress?: () => void;
   selected?: boolean;
+  showCheckBoxDisabled?: boolean;
   style?: StyleProp<ViewStyle>;
   textButtonLabel?: string;
 };
 
 export default function OfficeRow({
-  item: { iconName, title }, onPress, selected, style, textButtonLabel,
+  disabled, item: { iconName, title }, onPress, selected, showCheckBoxDisabled,
+  style, textButtonLabel,
 }: Props) {
   const { colors, styles } = useStyles();
   const hasCheckBox = selected !== undefined;
   return (
     <TouchableHighlight
+      disabled={disabled}
       onPress={hasCheckBox ? onPress : undefined}
       underlayColor={colors.label}
     >
@@ -54,7 +61,7 @@ export default function OfficeRow({
         {hasCheckBox && (
           <Icon
             name={selected ? 'check-box' : 'check-box-outline-blank'}
-            style={styles.icon}
+            style={[styles.icon, showCheckBoxDisabled && styles.disabled]}
           />
         )}
         <IconRow
@@ -71,8 +78,10 @@ export default function OfficeRow({
 }
 
 OfficeRow.defaultProps = {
+  disabled: undefined,
   onPress: undefined,
   selected: undefined,
+  showCheckBoxDisabled: undefined,
   style: {},
   textButtonLabel: undefined,
 };
