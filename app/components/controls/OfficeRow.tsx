@@ -11,6 +11,11 @@ const useStyles = () => {
   const { colors, spacing, sizes } = useTheme();
 
   const styles = StyleSheet.create({
+    checkBoxHighlightFix: {
+      // This fixes an Android issue where the OfficeRow tap highlight only
+      // showed up on the checkbox part of the row
+      backgroundColor: '',
+    },
     container: {
       alignItems: 'center',
       backgroundColor: colors.fill,
@@ -56,7 +61,7 @@ export default function OfficeRow({
           hideDisclosureIcon={hasCheckBox}
           iconName={iconName}
           onPress={hasCheckBox ? undefined : onPress}
-          style={style}
+          style={[hasCheckBox && styles.checkBoxHighlightFix, style]}
           textButtonLabel={textButtonLabel}
           title={title}
         />
