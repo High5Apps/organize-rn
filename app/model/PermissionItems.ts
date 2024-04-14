@@ -6,10 +6,17 @@ export type PermissionItem = {
   title: string;
 };
 
-const permissionItems: PermissionItem[] = [{
-  iconName: 'lock-open',
-  scope: 'editPermissions',
-  title: 'Edit permissions',
-}];
+const permissionItems: PermissionItem[] = [
+  {
+    iconName: 'how-to-reg',
+    scope: 'createElections',
+    title: 'Create elections',
+  },
+  {
+    iconName: 'lock-open',
+    scope: 'editPermissions',
+    title: 'Edit permissions',
+  },
+];
 
 export default permissionItems;

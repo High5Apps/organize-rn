@@ -236,7 +236,7 @@ export type Ballot = BallotPreview & {
   termStartsAt: Date;
 });
 
-export type PermissionScope = 'editPermissions';
+export type PermissionScope = 'createElections' | 'editPermissions';
 
 export type PermissionData = {
   offices: Office[];
