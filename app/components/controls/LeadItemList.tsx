@@ -1,20 +1,57 @@
-import React, { useCallback } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, ListEmptyMessage } from '../views';
 import IconRow from './IconRow';
 import { LeadItem } from './types';
+import { useMyPermissions } from '../../model';
+import { usePullToRefresh } from '../hooks';
 
-const data: LeadItem[] = [{
-  destination: 'Permissions',
-  iconName: 'lock-open',
-  title: 'Permissions',
-}];
+const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these tools. You can request permissions from the president or another authorized officer.";
+
+function useLeadItems() {
+  const [leadItems, setLeadItems] = useState<LeadItem[]>([]);
+
+  const { can, ready, refreshMyPermissions } = useMyPermissions({
+    scopes: ['editPermissions'],
+  });
+
+  useEffect(() => {
+    if (!ready) { return; }
+
+    const items: LeadItem[] = [];
+
+    if (can('editPermissions')) {
+      items.push({
+        destination: 'Permissions',
+        iconName: 'lock-open',
+        title: 'Permissions',
+      });
+    }
+
+    setLeadItems(items);
+  }, [can, ready]);
+
+  return { leadItems, ready, refreshMyPermissions };
+}
 
 type Props = {
   onLeadItemPress: (leadItem: LeadItem) => void;
 };
 
 export default function LeadItemList({ onLeadItemPress }: Props) {
+  const { leadItems, ready, refreshMyPermissions } = useLeadItems();
+
+  const ListEmptyComponent = useMemo(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+  ), []);
+
+  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
+    onRefresh: refreshMyPermissions,
+    refreshOnMount: true,
+  });
+
   const renderItem: ListRenderItem<LeadItem> = useCallback(({ item }) => {
     const { iconName, title } = item;
     return (
@@ -28,8 +65,12 @@ export default function LeadItemList({ onLeadItemPress }: Props) {
 
   return (
     <FlatList
-      data={data}
+      data={leadItems}
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
+      ListHeaderComponent={ListHeaderComponent}
       ItemSeparatorComponent={ItemSeparator}
+      refreshControl={refreshControl}
+      refreshing={refreshing}
       renderItem={renderItem}
     />
   );
