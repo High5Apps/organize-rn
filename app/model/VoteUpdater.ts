@@ -45,11 +45,11 @@ export default function useVoteUpdater({
   const {
     getSelectionInfo, onRowPressed,
   } = useSelectionUpdater({
+    choices: ballot?.candidates.map(({ id }) => id),
     initialSelection: ballot?.myVote,
     maxSelections: ballot?.maxCandidateIdsPerVote,
     onSyncSelection,
     onSyncSelectionError,
-    options: ballot?.candidates.map(({ id }) => id),
   });
 
   return { getSelectionInfo, onRowPressed };

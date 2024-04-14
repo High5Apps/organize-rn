@@ -4,7 +4,7 @@ import useSelectionUpdater from './SelectionUpdater';
 import { OFFICE_CATEGORIES, OfficeCategory, Permission } from './types';
 
 // This is needed because OFFICE_CATEGORIES is readonly
-const options = [...OFFICE_CATEGORIES];
+const choices = [...OFFICE_CATEGORIES];
 
 type Props = {
   onSyncSelectionError: (errorMessage: string) => void;
@@ -29,11 +29,11 @@ export default function usePermissionUpdater({
   const {
     getSelectionInfo, onRowPressed,
   } = useSelectionUpdater({
+    choices,
     initialSelection,
     maxSelections: OFFICE_CATEGORIES.length,
     onSyncSelection,
     onSyncSelectionError,
-    options,
   });
 
   return { getSelectionInfo, onRowPressed };

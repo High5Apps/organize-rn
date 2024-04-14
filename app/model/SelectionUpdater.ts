@@ -2,11 +2,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 type Props = {
+  choices?: string[];
   initialSelection?: string[];
   maxSelections?: number;
   onSyncSelection: (selection: string[]) => Promise<void>;
   onSyncSelectionError: (errorMessage: string) => void;
-  options?: string[];
 };
 
 function quickDifference<T>(a: T[], b: T[]): T[] {
@@ -15,11 +15,11 @@ function quickDifference<T>(a: T[], b: T[]): T[] {
 }
 
 export default function useSelectionUpdater({
-  initialSelection, maxSelections: maybeMaxSelections, onSyncSelection,
-  onSyncSelectionError, options: maybeOptions,
+  choices: maybeChoices, initialSelection, maxSelections: maybeMaxSelections,
+  onSyncSelection, onSyncSelectionError,
 }: Props) {
   const maxSelections = maybeMaxSelections ?? 0;
-  const options = maybeOptions ?? [];
+  const choices = maybeChoices ?? [];
 
   const selections = useMemo(() => initialSelection, [initialSelection]);
   const [
@@ -30,9 +30,8 @@ export default function useSelectionUpdater({
   ] = useState<string[]>([]);
 
   // Toggle selections when multiple selections are allowed or when there's
-  // only a single option to choose from
-  const shouldToggleSelections = (maxSelections > 1)
-    || (options.length === 1);
+  // only a single choice to choose from
+  const shouldToggleSelections = (maxSelections > 1) || (choices.length === 1);
 
   const onNewSelection = useCallback(async (selection: string) => {
     let updatedSelections: string[];
