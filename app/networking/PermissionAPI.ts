@@ -1,10 +1,14 @@
 import {
-  OfficeCategory, Permission, PermissionScope, fromJson, getOffice,
+  OfficeCategory, Permission, PermissionScope, camelToSnake, fromJson, getOffice,
+  snakeToCamel,
 } from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import { permissionURI } from './Routes';
-import { Authorization, isPermissionResponse } from './types';
+import { myPermissionsURI, permissionURI } from './Routes';
+import {
+  Authorization, MyPermissionsResponse, isMyPermissionsResponse,
+  isPermissionResponse,
+} from './types';
 
 type Props = {
   scope: PermissionScope;
@@ -18,7 +22,6 @@ type Return = {
   errorMessage: string;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export async function fetchPermission({
   scope, jwt,
 }: Props): Promise<Return> {
@@ -72,4 +75,53 @@ export async function createPermission({
   }
 
   return {};
+}
+
+type MyPermissionsProps = {
+  scopes?: PermissionScope[];
+} & Authorization;
+
+type MyPermissionsReturn = {
+  response: MyPermissionsResponse;
+  errorMessage?: never;
+} | {
+  response?: never;
+  errorMessage: string;
+};
+
+export async function fetchMyPermissions({
+  scopes, jwt,
+}: MyPermissionsProps): Promise<MyPermissionsReturn> {
+  const uri = new URL(myPermissionsURI);
+
+  if (scopes !== undefined) {
+    scopes.forEach((scope) => {
+      const snakeScope = camelToSnake(scope);
+      uri.searchParams.append('scopes[]', snakeScope);
+    });
+  }
+
+  const response = await get({ uri: uri.href, jwt });
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isMyPermissionsResponse(json)) {
+    throw new Error('Failed to parse Permission from response');
+  }
+
+  // Need to convert scopes to camel case, because fromJson only converts keys,
+  // not values
+  const camelPermissions = json.myPermissions.map(({ scope, ...rest }) => ({
+    scope: snakeToCamel(scope) as PermissionScope,
+    ...rest,
+  }));
+
+  return { response: { myPermissions: camelPermissions } };
 }

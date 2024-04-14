@@ -246,3 +246,8 @@ export type Permission = {
   scope: PermissionScope;
   data: PermissionData;
 };
+
+export type MyPermission = {
+  permitted: boolean;
+  scope: PermissionScope;
+};

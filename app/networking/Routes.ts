@@ -31,6 +31,7 @@ export const permissionURI = (scope: PermissionScope) => {
   const snakeScope = camelToSnake(scope);
   return `${permissionsURI}/${snakeScope}`;
 };
+export const myPermissionsURI = `${apiRoute}/my_permissions`;
 
 export const postsURI = `${apiRoute}/posts`;
 export const postURI = (postId: string) => `${apiRoute}/posts/${postId}`;

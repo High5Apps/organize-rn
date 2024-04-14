@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, Nomination, NominationUser, OfficeCategory, Org, OrgGraph,
-  PaginationData, PostCategory, User, VoteState,
+  BallotCategory, MyPermission, Nomination, NominationUser, OfficeCategory, Org,
+  OrgGraph, PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
@@ -417,4 +417,20 @@ export function isPermissionResponse(object: unknown): object is PermissionRespo
   const response = (object as PermissionResponse);
   return Array.isArray(response?.permission?.offices)
     && response.permission.offices.every((office) => office?.length > 0);
+}
+
+export type MyPermissionsResponse = {
+  myPermissions: MyPermission[];
+};
+
+export function isMyPermission(object: unknown): object is MyPermission {
+  const myPermission = (object as MyPermission);
+  return [true, false].includes(myPermission?.permitted)
+    && myPermission?.scope?.length > 0;
+}
+
+export function isMyPermissionsResponse(object: unknown): object is MyPermissionsResponse {
+  const response = (object as MyPermissionsResponse);
+  return Array.isArray(response?.myPermissions)
+    && response.myPermissions.every(isMyPermission);
 }
