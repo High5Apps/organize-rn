@@ -8,7 +8,7 @@ type Props = {
   onPermissionItemPress: (permissionItem: PermissionItem) => void;
 };
 
-export default function LeadItemList({ onPermissionItemPress }: Props) {
+export default function PermissionItemList({ onPermissionItemPress }: Props) {
   const renderItem: ListRenderItem<PermissionItem> = useCallback(({ item }) => {
     const { iconName, title } = item;
     return (
