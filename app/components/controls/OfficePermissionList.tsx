@@ -3,8 +3,9 @@ import {
   Alert, ListRenderItemInfo, SectionList, StyleSheet,
 } from 'react-native';
 import {
-  GENERIC_ERROR_MESSAGE, OFFICE_CATEGORIES, Office, PermissionScope, getOffice,
-  usePermission, usePermissionUpdater,
+  ConfirmationAlert, GENERIC_ERROR_MESSAGE, OFFICE_CATEGORIES, Office,
+  OfficeCategory, PermissionScope, getOffice, useCurrentUser, usePermission,
+  usePermissionUpdater,
 } from '../../model';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
@@ -41,6 +42,7 @@ export default function OfficePermissionList({ scope }: Props) {
   const {
     permission, refreshPermission, updatePermission,
   } = usePermission({ scope });
+  const { currentUser } = useCurrentUser();
 
   const { styles } = useStyles();
 
@@ -84,6 +86,26 @@ export default function OfficePermissionList({ scope }: Props) {
     onSyncSelectionError, permission, updatePermission,
   });
 
+  const wrappedOnRowPress = useCallback((officeCategory: OfficeCategory) => {
+    if (!currentUser) { return; }
+
+    const { selected } = getSelectionInfo(officeCategory);
+
+    const { offices } = currentUser;
+    const officeCategories = offices.map((office) => office.type);
+
+    if (selected && officeCategories.includes(officeCategory)) {
+      ConfirmationAlert({
+        destructiveAction: 'Remove',
+        destructiveActionInTitle: 'remove this permission from yourself',
+        onConfirm: () => onRowPressed(officeCategory),
+        subtitle: null,
+      }).show();
+    } else {
+      onRowPressed(officeCategory);
+    }
+  }, [currentUser, getSelectionInfo, onRowPressed]);
+
   const renderItem = useCallback(
     ({ item: office }: ListRenderItemInfo<Office>) => {
       const {
@@ -93,7 +115,7 @@ export default function OfficePermissionList({ scope }: Props) {
         <OfficeRow
           disabled={disabled}
           item={office}
-          onPress={() => onRowPressed(office.type)}
+          onPress={() => wrappedOnRowPress(office.type)}
           selected={selected}
           showCheckBoxDisabled={showDisabled}
         />
