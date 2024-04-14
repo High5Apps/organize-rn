@@ -21,6 +21,7 @@ export {
 } from './Json';
 export { default as JWT } from './JWT';
 export { default as getMessageAge } from './MessageAge';
+export { default as useMyPermissions } from './MyPermissions';
 export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as useNominations } from './Nominations';
 export { default as useOfficeAvailability, getOffice } from './Offices';
