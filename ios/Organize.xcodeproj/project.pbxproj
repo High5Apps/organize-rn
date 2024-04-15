@@ -41,7 +41,7 @@
 		C264D8CA29CC93EC0066583C /* GenericPasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */; };
 		C264D8CC29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
 		C264D8CD29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
-		C26FABCB27DD746B00C93AB4 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */; };
+		C2D7839F2BCD3F5A0033793D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */; };
 		C2FB820729EFFB78006822B3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2FB820629EFFB78006822B3 /* AppDelegate.mm */; };
 		C2FB820829EFFB78006822B3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2FB820629EFFB78006822B3 /* AppDelegate.mm */; };
 		D6DE628DE78C492FBCDBC14F /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFDE8F599D04435FA9F3B931 /* OpenSans-SemiBold.ttf */; };
@@ -99,7 +99,7 @@
 		C264D8C529CC931A0066583C /* KeyStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStoreError.swift; sourceTree = "<group>"; };
 		C264D8C829CC93EC0066583C /* GenericPasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPasswordStore.swift; sourceTree = "<group>"; };
 		C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPasswordConvertible.swift; sourceTree = "<group>"; };
-		C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		C2FB820629EFFB78006822B3 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Organize/AppDelegate.mm; sourceTree = "<group>"; };
 		D41068D39BC44F64AA8B6587 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		DFDE8F599D04435FA9F3B931 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -154,10 +154,10 @@
 				C2FB820629EFFB78006822B3 /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */,
+				C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				C26FABCA27DD746B00C93AB4 /* MaterialIcons.ttf */,
 				C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */,
 				C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */,
 				C21359CE2AE7DF780063529B /* AESModule.m */,
@@ -345,13 +345,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				C26FABCB27DD746B00C93AB4 /* MaterialIcons.ttf in Resources */,
 				FBF47228F6454CE484DBD405 /* OpenSans-Bold.ttf in Resources */,
 				3B4EEF6C41774FCDAAA783A6 /* OpenSans-BoldItalic.ttf in Resources */,
 				F6CECCA8454F4688A3B8B01E /* OpenSans-ExtraBold.ttf in Resources */,
 				700E13D2FFAF4BC0925F54DA /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				03E8C6E0D4434BBD803F8C57 /* OpenSans-Italic.ttf in Resources */,
 				5EB0DEA6818842528A434746 /* OpenSans-Light.ttf in Resources */,
+				C2D7839F2BCD3F5A0033793D /* MaterialIcons.ttf in Resources */,
 				30AC3D6C4D7B43BAA43476CC /* OpenSans-LightItalic.ttf in Resources */,
 				F48D4B478EEF4A779726BA80 /* OpenSans-Medium.ttf in Resources */,
 				DBD6DCA9038F4AC782D8BC51 /* OpenSans-MediumItalic.ttf in Resources */,
