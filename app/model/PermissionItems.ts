@@ -13,6 +13,11 @@ const permissionItems: PermissionItem[] = [
     title: 'Create elections',
   },
   {
+    iconName: 'edit-document',
+    scope: 'editOrg',
+    title: 'Edit Org',
+  },
+  {
     iconName: 'lock-open',
     scope: 'editPermissions',
     title: 'Edit permissions',
