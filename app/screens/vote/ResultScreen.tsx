@@ -182,7 +182,9 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
     if (!ballot?.results?.length) { return undefined; }
     return (
       <>
-        <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+        {ballot?.category === 'election' && (
+          <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
+        )}
         {TimeRemainingCountdown}
       </>
     );
