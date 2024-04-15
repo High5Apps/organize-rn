@@ -97,9 +97,9 @@ export default function OfficePermissionList({ scope }: Props) {
     if (selected && officeCategories.includes(officeCategory)) {
       ConfirmationAlert({
         destructiveAction: 'Remove',
-        destructiveActionInTitle: 'remove this permission from yourself',
+        destructiveActionInTitle: 'remove this permission',
         onConfirm: () => onRowPressed(officeCategory),
-        subtitle: null,
+        subtitle: "If you remove this permission from yourself, you won't be able to do it anymore.",
       }).show();
     } else {
       onRowPressed(officeCategory);
