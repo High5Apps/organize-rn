@@ -4,7 +4,7 @@ import type { QRCodeValue } from '../../model';
 export type SetQRValue = Dispatch<SetStateAction<QRCodeValue | null>>;
 
 export type LeadItem = {
-  destination: 'Permissions';
+  destination: 'EditOrg' | 'Permissions';
   iconName: string;
   title: string;
 };

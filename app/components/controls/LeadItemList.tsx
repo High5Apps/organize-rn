@@ -14,13 +14,21 @@ function useLeadItems() {
   const [leadItems, setLeadItems] = useState<LeadItem[]>([]);
 
   const { can, ready, refreshMyPermissions } = useMyPermissions({
-    scopes: ['editPermissions'],
+    scopes: ['editOrg', 'editPermissions'],
   });
 
   useEffect(() => {
     if (!ready) { return; }
 
     const items: LeadItem[] = [];
+
+    if (can('editOrg')) {
+      items.push({
+        destination: 'EditOrg',
+        iconName: 'edit-document',
+        title: 'Edit Org',
+      });
+    }
 
     if (can('editPermissions')) {
       items.push({
