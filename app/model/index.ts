@@ -4,7 +4,7 @@ export {
   nominationsTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
   votingTimeRemainingExpiredFormatter,
 } from './BallotPreviews';
-export { ballotTypes, ballotTypeMap } from './BallotTypes';
+export { default as useBallotTypes, ballotTypeMap } from './BallotTypes';
 export { default as useCachedValue } from './CachedValue';
 export {
   default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,

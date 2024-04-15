@@ -1,6 +1,8 @@
+import { useEffect, useMemo } from 'react';
+import useMyPermissions from './MyPermissions';
 import { BallotCategory, BallotTypeInfo } from './types';
 
-export const ballotTypes: BallotTypeInfo[] = [
+const ballotTypes: BallotTypeInfo[] = [
   {
     category: 'yes_no',
     iconName: 'thumb-up',
@@ -30,3 +32,19 @@ export const ballotTypeMap = ballotTypes.reduce((
   accumulator,
   { category, ...rest },
 ) => ({ ...accumulator, [category]: rest }), {} as BallotTypeMap);
+
+export default function useBallotTypes() {
+  const { can, refreshMyPermissions } = useMyPermissions({
+    scopes: ['createElections'],
+  });
+
+  useEffect(() => {
+    refreshMyPermissions().catch(console.error);
+  }, []);
+
+  const permittedBallotTypes = useMemo(() => ballotTypes.filter(
+    ({ category }) => category !== 'election' || (can('createElections')),
+  ), [can]);
+
+  return { ballotTypes: permittedBallotTypes };
+}

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import BallotTypeRow from './BallotTypeRow';
-import { BallotType, ballotTypes } from '../../model';
+import { BallotType, useBallotTypes } from '../../model';
 import { ItemSeparator } from '../views';
 
 type Props = {
@@ -11,6 +11,8 @@ type Props = {
 export default function BallotTypeList({
   onBallotTypeRowPress,
 }: Props) {
+  const { ballotTypes } = useBallotTypes();
+
   const renderItem: ListRenderItem<BallotType> = useCallback(({ item }) => (
     <BallotTypeRow
       ballotType={item}
