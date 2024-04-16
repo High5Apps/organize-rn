@@ -7,6 +7,7 @@ import { BallotPreviewContextProvider } from './BallotPreviewContext';
 import { UserContextProvider } from './UserContext';
 import { CachedValueContextProvider } from './CachedValueContext';
 import { BallotContextProvider } from './BallotContext';
+import { MyPermissionContextProvider } from './MyPermissionContext';
 
 export default function Context({ children }: PropsWithChildren<{}>) {
   return (
@@ -16,11 +17,13 @@ export default function Context({ children }: PropsWithChildren<{}>) {
           <BallotPreviewContextProvider>
             <UserContextProvider>
               <BallotContextProvider>
-                <CachedValueContextProvider>
-                  <SafeAreaProvider>
-                    {children}
-                  </SafeAreaProvider>
-                </CachedValueContextProvider>
+                <MyPermissionContextProvider>
+                  <CachedValueContextProvider>
+                    <SafeAreaProvider>
+                      {children}
+                    </SafeAreaProvider>
+                  </CachedValueContextProvider>
+                </MyPermissionContextProvider>
               </BallotContextProvider>
             </UserContextProvider>
           </BallotPreviewContextProvider>

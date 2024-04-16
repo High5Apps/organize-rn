@@ -2,10 +2,11 @@ import Context from './Context';
 
 export default Context;
 
-export { useBallotPreviewContext } from './BallotPreviewContext';
 export { useBallotContext } from './BallotContext';
+export { useBallotPreviewContext } from './BallotPreviewContext';
 export { useCachedValueContext } from './CachedValueContext';
 export { useCommentContext } from './CommentContext';
-export { usePostContext } from './PostContext';
 export { useCurrentUserDataContext } from './CurrentUserDataContext';
+export { useMyPermissionContext } from './MyPermissionContext';
+export { usePostContext } from './PostContext';
 export { useUserContext } from './UserContext';
