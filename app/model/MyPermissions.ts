@@ -1,14 +1,23 @@
-import { useCallback, useState } from 'react';
-import { MyPermission, PermissionScope } from './types';
+import { useCallback, useMemo, useState } from 'react';
+import { PermissionScope, isDefined } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchMyPermissions } from '../networking';
+import { useMyPermissionContext } from '../context';
 
 type Props = {
   scopes: PermissionScope[];
 };
 
 export default function useMyPermissions({ scopes }: Props) {
-  const [myPermissions, setMyPermissions] = useState<MyPermission[]>();
+  const {
+    cacheMyPermissions, getCachedMyPermission,
+  } = useMyPermissionContext();
+
+  const myPermissions = useMemo(
+    () => scopes.map(getCachedMyPermission).filter(isDefined),
+    [getCachedMyPermission],
+  );
+
   const [ready, setReady] = useState(false);
 
   const { currentUser } = useCurrentUser();
@@ -27,12 +36,12 @@ export default function useMyPermissions({ scopes }: Props) {
       throw new Error(errorMessage);
     }
 
-    setMyPermissions(response.myPermissions);
+    cacheMyPermissions(response.myPermissions);
     setReady(true);
   }, [currentUser]);
 
   const can = useCallback((scope: PermissionScope): boolean => (
-    myPermissions?.find(
+    myPermissions.find(
       (myPermission) => myPermission.scope === scope,
     )?.permitted ?? false
   ), [myPermissions]);
