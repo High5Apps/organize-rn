@@ -27,7 +27,7 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready: officersReady,
   } = useUsers({ filter: 'officer', sort: 'office' });
   const {
-    hasMultipleNodes, orgGraph, updateOrg,
+    hasMultipleNodes, orgGraph, refreshOrg,
   } = useOrg();
   const { selectedUser, setSelectedUserId } = useSelectedUser(orgGraph);
   const { options, visGraphData } = useVisGraphData({
@@ -39,12 +39,12 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     await Promise.all([
       currentUser?.update().catch(console.error),
       fetchOfficers().catch(console.error),
-      updateOrg().catch((e) => {
+      refreshOrg().catch((e) => {
         console.error(e);
         setGraphError(GRAPH_LOAD_ERROR_MESSAGE);
       }),
     ]);
-  }, [fetchOfficers, updateOrg]);
+  }, [fetchOfficers, refreshOrg]);
 
   useEffect(() => { onRefresh(); }, []);
 

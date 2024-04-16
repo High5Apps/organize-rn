@@ -10,7 +10,7 @@ export default function useOrg() {
 
   const { currentUser, setCurrentUser } = useCurrentUser();
 
-  async function updateOrg() {
+  async function refreshOrg() {
     if (!currentUser) { throw new Error('Expected currentUser to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -37,6 +37,6 @@ export default function useOrg() {
   const hasMultipleNodes = nodeCount > 1;
 
   return {
-    org, orgGraph, hasMultipleNodes, updateOrg,
+    org, orgGraph, hasMultipleNodes, refreshOrg,
   };
 }
