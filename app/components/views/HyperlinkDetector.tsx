@@ -1,5 +1,5 @@
-import React, { JSXElementConstructor, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { JSXElementConstructor, ReactElement, useCallback } from 'react';
+import { Linking, StyleSheet } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
 import useTheme from '../../Theme';
 
@@ -21,8 +21,11 @@ type Props = {
 
 export default function HyperlinkDetector({ children }: Props) {
   const { styles } = useStyles();
+
+  const onPress = useCallback((url: string) => Linking.openURL(url), []);
+
   return (
-    <Hyperlink linkDefault linkStyle={styles.link}>
+    <Hyperlink onPress={onPress} linkStyle={styles.link}>
       {children}
     </Hyperlink>
   );
