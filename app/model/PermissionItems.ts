@@ -15,7 +15,7 @@ const permissionItems: PermissionItem[] = [
   {
     iconName: 'edit-document',
     scope: 'editOrg',
-    title: 'Edit Org',
+    title: 'Edit Org info',
   },
   {
     iconName: 'lock-open',

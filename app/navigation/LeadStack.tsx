@@ -28,7 +28,11 @@ export default function LeadStack() {
           const permissionItem = permissionItems.find(
             (item) => item.scope === scope,
           );
-          const title = `Who can ${permissionItem?.title.toLocaleLowerCase()}?`;
+          const itemTitle = permissionItem?.title ?? 'do this';
+          const lowerCaseTitle = (
+            `${itemTitle[0].toLocaleLowerCase()}${itemTitle.slice(1)}`
+          );
+          const title = `Who can ${lowerCaseTitle}?`;
           return { title };
         }}
       />
