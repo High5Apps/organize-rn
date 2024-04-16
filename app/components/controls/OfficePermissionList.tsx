@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Alert, ListRenderItemInfo, SectionList, StyleSheet,
 } from 'react-native';
@@ -9,7 +9,7 @@ import {
 } from '../../model';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
-import { useRequestProgress } from '../hooks';
+import { usePullToRefresh, useRequestProgress } from '../hooks';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -78,9 +78,10 @@ export default function OfficePermissionList({ scope }: Props) {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchPermission();
-  }, []);
+  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
+    onRefresh: fetchPermission,
+    refreshOnMount: true,
+  });
 
   const { getSelectionInfo, onRowPressed } = usePermissionUpdater({
     onSyncSelectionError, permission, updatePermission,
@@ -128,6 +129,9 @@ export default function OfficePermissionList({ scope }: Props) {
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={RequestProgress}
+      ListHeaderComponent={ListHeaderComponent}
+      refreshControl={refreshControl}
+      refreshing={refreshing}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       sections={sections}
