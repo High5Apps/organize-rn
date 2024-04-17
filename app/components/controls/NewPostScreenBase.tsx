@@ -79,7 +79,7 @@ export default function NewPostScreenBase({
   const [title, setTitle] = usePostTitle(initialPostTitle);
 
   const {
-    RequestProgress, setLoading, setResult,
+    loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { cachePost } = usePosts();
@@ -158,6 +158,7 @@ export default function NewPostScreenBase({
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView}>
         {!initialCategory && (
           <PostCategorySelector
+            disabled={loading}
             onSelectionChanged={setPostCategory}
             selection={postCategory}
           />
@@ -167,6 +168,7 @@ export default function NewPostScreenBase({
             // Prevents dismissing the keyboard when hitting next on Android
             // before entering any input
             blurOnSubmit={false}
+            editable={!loading}
             enablesReturnKeyAutomatically // iOS only
             maxLength={MAX_TITLE_LENGTH}
             onChangeText={setTitle}
@@ -180,6 +182,7 @@ export default function NewPostScreenBase({
             value={title}
           />
           <MultilineTextInput
+            editable={!loading}
             maxLength={MAX_BODY_LENGTH}
             onChangeText={setBody}
             onEndEditing={({ nativeEvent: { text } }) => setBody(text)}

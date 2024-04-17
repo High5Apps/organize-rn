@@ -21,17 +21,19 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   onSelectionChanged?: ((selection: PostCategory) => void);
   selection?: PostCategory;
 };
 
 export default function PostCategorySelector({
-  onSelectionChanged, selection,
+  disabled, onSelectionChanged, selection,
 }: Props) {
   const { styles } = useStyles();
 
   return (
     <SegmentedControl
+      enabled={!disabled}
       onChange={(event) => {
         const { nativeEvent: { selectedSegmentIndex } } = event;
         onSelectionChanged?.(POST_CATEGORIES[selectedSegmentIndex]);
@@ -45,6 +47,7 @@ export default function PostCategorySelector({
 }
 
 PostCategorySelector.defaultProps = {
+  disabled: false,
   onSelectionChanged: () => {},
   selection: 'general',
 };
