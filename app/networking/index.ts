@@ -4,7 +4,7 @@ export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createNomination, updateNomination } from './NominationAPI';
 export { fetchOffices } from './OfficeAPI';
-export { createOrg, fetchOrg } from './OrgAPI';
+export { createOrg, fetchOrg, updateOrg } from './OrgAPI';
 export {
   createPermission, fetchPermission, fetchMyPermissions,
 } from './PermissionAPI';

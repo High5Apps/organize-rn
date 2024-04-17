@@ -3,7 +3,7 @@ import type {
 } from '../model';
 import { fromJson } from '../model';
 import {
-  decrypt, encrypt, get, post,
+  decrypt, encrypt, get, patch, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { orgURI, orgsURI } from './Routes';
@@ -100,4 +100,45 @@ export async function fetchOrg({
   } = { ...json, name, memberDefinition };
 
   return { org, orgGraph };
+}
+
+export type UpdateProps = {
+  e2eEncrypt: E2EEncryptor;
+  memberDefinition?: string;
+  name?: string;
+};
+
+type UpdateReturn = {
+  errorMessage?: string;
+};
+
+export async function updateOrg({
+  e2eEncrypt, jwt, memberDefinition, name,
+}: UpdateProps & Authorization): Promise<UpdateReturn> {
+  if (!name && !memberDefinition) {
+    console.warn('Neither name nor memberDefinition props were present');
+    return {};
+  }
+
+  const [encryptedMemberDefinition, encryptedName] = await Promise.all([
+    memberDefinition ? encrypt(memberDefinition, e2eEncrypt) : undefined,
+    name ? encrypt(name, e2eEncrypt) : undefined,
+  ]);
+
+  const response = await patch({
+    bodyObject: { org: { encryptedMemberDefinition, encryptedName } },
+    jwt,
+    uri: orgURI,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
 }
