@@ -25,6 +25,7 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   max?: number;
   min?: number;
   setValue: Dispatch<SetStateAction<number>>
@@ -33,7 +34,7 @@ type Props = {
 };
 
 export default function StepperControl({
-  max, min, setValue, style, value,
+  disabled, max, min, setValue, style, value,
 }: Props) {
   const { styles } = useStyles();
 
@@ -51,12 +52,12 @@ export default function StepperControl({
     <View style={[styles.container, style]}>
       <Text style={styles.text}>{value}</Text>
       <CircleButton
-        disabled={(max !== undefined) && (value >= max)}
+        disabled={disabled || ((max !== undefined) && (value >= max))}
         iconName="add"
         onPress={() => setValue((v) => v + 1)}
       />
       <CircleButton
-        disabled={(min !== undefined) && (value <= min)}
+        disabled={disabled || ((min !== undefined) && (value <= min))}
         iconName="remove"
         onPress={() => setValue((v) => v - 1)}
       />
@@ -65,6 +66,7 @@ export default function StepperControl({
 }
 
 StepperControl.defaultProps = {
+  disabled: false,
   max: undefined,
   min: undefined,
   style: {},

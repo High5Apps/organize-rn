@@ -67,7 +67,7 @@ export default function NewMultipleChoiceBallotScreen({
   const { styles } = useStyles();
 
   const {
-    RequestProgress, setLoading, setResult,
+    loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { cacheBallotPreview } = useBallotPreviews();
@@ -151,6 +151,7 @@ export default function NewMultipleChoiceBallotScreen({
         <HeaderText>Question</HeaderText>
         <MultilineTextInput
           blurOnSubmit
+          editable={!loading}
           enablesReturnKeyAutomatically
           maxLength={MAX_QUESTION_LENGTH}
           onChangeText={setQuestion}
@@ -162,10 +163,12 @@ export default function NewMultipleChoiceBallotScreen({
         <HeaderText>Choices</HeaderText>
         <NewCandidatesControl
           candidates={candidates}
+          disabled={loading}
           setCandidates={setCandidates}
         />
         <HeaderText>Max Selections</HeaderText>
         <StepperControl
+          disabled={loading}
           max={Math.max(1, candidates.filter((c) => c.length).length)}
           min={1}
           setValue={setMaxSelections}
@@ -175,6 +178,7 @@ export default function NewMultipleChoiceBallotScreen({
         <HeaderText>Voting Ends On</HeaderText>
         <DateTimeSelector
           dateTime={votingEnd}
+          disabled={loading}
           setDateTime={setVotingEnd}
           style={styles.dateTimeSelector}
         />

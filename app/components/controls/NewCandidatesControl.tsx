@@ -24,11 +24,12 @@ const useStyles = () => {
 
 type Props = {
   candidates: string[];
+  disabled?: boolean;
   setCandidates: (candidates: string[]) => void;
 };
 
 export default function NewCandidatesControl({
-  candidates, setCandidates,
+  candidates, disabled, setCandidates,
 }: Props) {
   const [
     focusedInputIndex, setFocusedInputIndex,
@@ -43,8 +44,9 @@ export default function NewCandidatesControl({
         <TextInputRow
           autoFocus={false}
           blurOnSubmit={false}
+          editable={!disabled}
           focused={focusedInputIndex === i}
-          iconEndDisabled={candidates.length === 1}
+          iconEndDisabled={disabled || candidates.length === 1}
           iconEndName="close"
           iconEndOnPress={() => {
             const removeCandidate = () => setCandidates([
@@ -93,7 +95,7 @@ export default function NewCandidatesControl({
       ))}
       <TextButton
         containerStyle={styles.addChoiceButtonContainer}
-        disabled={!candidates[candidates.length - 1]?.length}
+        disabled={disabled || !candidates[candidates.length - 1]?.length}
         onPress={appendNewCandidate}
       >
         Add another choice
@@ -101,3 +103,7 @@ export default function NewCandidatesControl({
     </View>
   );
 }
+
+NewCandidatesControl.defaultProps = {
+  disabled: false,
+};
