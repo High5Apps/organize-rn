@@ -2,7 +2,7 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
-  ScrollView, StyleSheet, TextInput, View,
+  Keyboard, ScrollView, StyleSheet, TextInput, View,
 } from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
@@ -46,7 +46,7 @@ function useOrgInfo({
   const [memberDefinition, setMemberDefinition] = useState('');
   const [name, setName] = useState('');
 
-  const { org, refreshOrg } = useOrg();
+  const { org, refreshOrg, updateOrg } = useOrg();
   const refresh = async () => {
     setLoading(true);
     setResult('none');
@@ -67,6 +67,23 @@ function useOrgInfo({
     setLoading(false);
   };
 
+  const updateOrgInfo = async () => {
+    setLoading(true);
+    setResult('none');
+    Keyboard.dismiss();
+
+    try {
+      await updateOrg({ memberDefinition, name });
+      setResult('success', { message: 'Successfully updated Org info' });
+    } catch (error) {
+      let errorMessage = GENERIC_ERROR_MESSAGE;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setResult('error', { message: errorMessage });
+    }
+  };
+
   useEffect(() => { refresh().catch(console.error); }, []);
 
   useEffect(() => {
@@ -77,14 +94,16 @@ function useOrgInfo({
   }, [org]);
 
   return {
-    memberDefinition, name, org, setMemberDefinition, setName,
+    memberDefinition, name, org, setMemberDefinition, setName, updateOrgInfo,
   };
 }
 
 export default function EditOrgScreen() {
-  const { RequestProgress, setLoading, setResult } = useRequestProgress();
   const {
-    memberDefinition, name, org, setMemberDefinition, setName,
+    loading, RequestProgress, setLoading, setResult,
+  } = useRequestProgress();
+  const {
+    memberDefinition, name, org, setMemberDefinition, setName, updateOrgInfo,
   } = useOrgInfo({ setLoading, setResult });
 
   const ref = useRef<TextInput>(null);
@@ -108,6 +127,7 @@ export default function EditOrgScreen() {
               <HeaderText>Org name</HeaderText>
               <TextInputRow
                 blurOnSubmit={false}
+                editable={!loading}
                 enablesReturnKeyAutomatically
                 maxLength={nameStep.maxLength}
                 onChangeText={setName}
@@ -121,6 +141,7 @@ export default function EditOrgScreen() {
               <HeaderText>Org memeber definition</HeaderText>
               <MultilineTextInput
                 blurOnSubmit
+                editable={!loading}
                 enablesReturnKeyAutomatically
                 maxLength={memberDefinitionStep.maxLength}
                 onChangeText={setMemberDefinition}
@@ -134,7 +155,7 @@ export default function EditOrgScreen() {
             <PrimaryButton
               iconName="publish"
               label="Publish"
-              onPress={() => console.log('press')}
+              onPress={updateOrgInfo}
               style={styles.button}
             />
           </>
