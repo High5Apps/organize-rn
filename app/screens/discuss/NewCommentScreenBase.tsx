@@ -69,7 +69,7 @@ export default function NewCommentScreenBase({
 
   const { styles } = useStyles();
   const {
-    RequestProgress, setLoading, setResult,
+    loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const { cacheComment, getCachedComment } = useComments();
 
@@ -132,6 +132,7 @@ export default function NewCommentScreenBase({
         {HeaderComponent}
         <MultilineTextInput
           autoFocus
+          editable={!loading}
           maxLength={MAX_COMMENT_LENGTH}
           onChangeText={setBody}
           placeholder="What do you think?"
