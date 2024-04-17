@@ -58,7 +58,7 @@ export default function NewYesNoBallotScreen({
   const { styles } = useStyles();
 
   const {
-    RequestProgress, setLoading, setResult,
+    loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { cacheBallotPreview } = useBallotPreviews();
@@ -132,6 +132,7 @@ export default function NewYesNoBallotScreen({
         <HeaderText>Question</HeaderText>
         <MultilineTextInput
           blurOnSubmit
+          editable={!loading}
           enablesReturnKeyAutomatically
           maxLength={MAX_QUESTION_LENGTH}
           onChangeText={setQuestion}
@@ -143,6 +144,7 @@ export default function NewYesNoBallotScreen({
         <HeaderText>Voting Ends On</HeaderText>
         <DateTimeSelector
           dateTime={votingEnd}
+          disabled={loading}
           setDateTime={setVotingEnd}
           style={styles.dateTimeSelector}
         />
