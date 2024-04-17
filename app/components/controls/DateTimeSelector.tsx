@@ -26,12 +26,13 @@ const useStyles = () => {
 
 type Props = {
   dateTime: Date;
+  disabled?: boolean;
   setDateTime: Dispatch<SetStateAction<Date>>
   style?: StyleProp<ViewStyle>;
 };
 
 export default function DateTimeSelector({
-  dateTime, setDateTime, style,
+  dateTime, disabled, setDateTime, style,
 }: Props) {
   const [pickerVisible, setPickerVisible] = useState(false);
 
@@ -39,7 +40,10 @@ export default function DateTimeSelector({
 
   return (
     <View style={[styles.container, style]}>
-      <TextButton onPress={() => setPickerVisible(!pickerVisible)}>
+      <TextButton
+        disabled={disabled}
+        onPress={() => setPickerVisible(!pickerVisible)}
+      >
         {formatDate(dateTime, 'full')}
       </TextButton>
       <DateTimePickerModal
@@ -53,6 +57,7 @@ export default function DateTimeSelector({
 }
 
 DateTimeSelector.defaultProps = {
+  disabled: false,
   style: {},
 };
 
