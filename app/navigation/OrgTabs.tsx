@@ -71,7 +71,7 @@ export default function OrgTabs() {
           tabBarLabel: 'Org',
         }}
       />
-      {currentUser?.offices && (
+      {(currentUser?.offices?.length ?? 0) > 0 && (
         <Tab.Screen
           name="LeadStack"
           component={LeadStack}
