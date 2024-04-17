@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-  StyleProp, StyleSheet, Text, View, ViewStyle,
+  DimensionValue, StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
 import { Result, getShortenedTitles } from '../../model';
@@ -78,7 +78,7 @@ export default function ResultGraph({ results, style }: Props) {
   if (!results || resultCount === 0) { return null; }
 
   const maxVoteCount = results[0].voteCount;
-  function getWidth(voteCount: number) {
+  function getWidth(voteCount: number): DimensionValue {
     const percent = (maxVoteCount === 0) ? 0 : 100 * (voteCount / maxVoteCount);
     return `${percent}%`;
   }
