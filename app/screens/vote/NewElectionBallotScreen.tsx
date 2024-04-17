@@ -77,7 +77,7 @@ export default function NewElectionBallotScreen({
   } = useLearnMoreOfficeModal({ officeCategory });
 
   const {
-    RequestProgress, setLoading, setResult,
+    loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { cacheBallotPreview } = useBallotPreviews();
@@ -168,6 +168,7 @@ export default function NewElectionBallotScreen({
           <>
             <HeaderText>Max Winners</HeaderText>
             <StepperControl
+              disabled={loading}
               min={1}
               setValue={setMaxSelections}
               style={styles.stepperControl}
@@ -178,24 +179,28 @@ export default function NewElectionBallotScreen({
         <HeaderText>Nominations End On</HeaderText>
         <DateTimeSelector
           dateTime={nominationsEnd}
+          disabled={loading}
           setDateTime={setNominationsEnd}
           style={styles.dateTimeSelector}
         />
         <HeaderText>Voting Ends On</HeaderText>
         <DateTimeSelector
           dateTime={votingEnd}
+          disabled={loading}
           setDateTime={setVotingEnd}
           style={styles.dateTimeSelector}
         />
         <HeaderText>Term Starts On</HeaderText>
         <DateTimeSelector
           dateTime={termStart}
+          disabled={loading}
           setDateTime={setTermStart}
           style={styles.dateTimeSelector}
         />
         <HeaderText>Term Ends On</HeaderText>
         <DateTimeSelector
           dateTime={termEnd}
+          disabled={loading}
           setDateTime={setTermEnd}
           style={styles.dateTimeSelector}
         />
