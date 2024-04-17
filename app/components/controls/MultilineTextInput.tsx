@@ -27,13 +27,20 @@ const useStyles = () => {
 
       textAlignVertical: 'top',
     },
+    textInputDisabled: {
+      borderColor: colors.labelSecondary,
+      color: colors.labelSecondary,
+    },
   });
 
   return { colors, styles };
 };
 
 function MultilineTextInput(props: TextInputProps, ref: ForwardedRef<TextInput>) {
-  const { style } = props;
+  const { editable, style } = props;
+
+  // Can't use !editable because editable defaults to true when undefined
+  const disabled = (editable === false);
 
   const { colors, styles } = useStyles();
 
@@ -49,7 +56,7 @@ function MultilineTextInput(props: TextInputProps, ref: ForwardedRef<TextInput>)
       {...props}
       multiline
       ref={ref}
-      style={[styles.textInput, style]}
+      style={[styles.textInput, disabled && styles.textInputDisabled, style]}
     />
   );
 }
