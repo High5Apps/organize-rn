@@ -4,19 +4,20 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import IconButton from './IconButton';
 
 type Props = {
+  hidden?: boolean;
   iconName: string;
   navigation: NativeStackNavigationProp<any>;
   onPress: () => void;
 };
 
 export default function useHeaderButton({
-  iconName, navigation, onPress,
+  hidden, iconName, navigation, onPress,
 }: Props) {
-  const headerRight = useCallback(() => (
+  const headerRight = useCallback(() => (hidden ? undefined : (
     <IconButton iconName={iconName} onPress={onPress} />
-  ), [iconName, onPress]);
+  )), [hidden, iconName, onPress]);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerRight });
-  }, [navigation.setOptions]);
+  }, [headerRight, navigation.setOptions]);
 }

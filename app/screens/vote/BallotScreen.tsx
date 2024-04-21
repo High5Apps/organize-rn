@@ -3,12 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
   BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
-  useDiscussButton, useLearnMoreOfficeModal, useTimeRemainingFooter,
+  useDiscussButton, useHeaderButton, useLearnMoreOfficeModal,
+  useTimeRemainingFooter,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  useBallotPreviews,
-  votingTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
+  useBallotPreviews, useFlaggedItem, votingTimeRemainingExpiredFormatter,
+  votingTimeRemainingFormatter,
 } from '../../model';
 
 const useStyles = () => {
@@ -74,6 +75,14 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
   const {
     LearnMoreOfficeModal, setModalVisible,
   } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+
+  const { confirmThenCreateFlaggedItem } = useFlaggedItem({ ballotId });
+  useHeaderButton({
+    hidden: !['multiple_choice', 'yes_no'].includes(ballotPreview.category),
+    iconName: 'flag',
+    navigation,
+    onPress: confirmThenCreateFlaggedItem,
+  });
 
   const { styles } = useStyles();
 
