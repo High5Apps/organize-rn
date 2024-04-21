@@ -83,7 +83,6 @@ function CommentRow({
     navigation.navigate('NewReply', { commentId: id, postId });
   }, [id, navigation]);
 
-  // persistentScrollbar only works on Android
   const BodyText = (
     <HyperlinkDetector>
       <Text
@@ -99,7 +98,7 @@ function CommentRow({
     <View style={styles.scrollViewContainer}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        persistentScrollbar
+        persistentScrollbar // persistentScrollbar only works on Android
       >
         {BodyText}
       </ScrollView>
