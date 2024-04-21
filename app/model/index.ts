@@ -15,6 +15,7 @@ export { default as formatDate } from './DateFormatter';
 export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
+export { default as useFlaggedItem } from './FlaggedItem';
 export { default as useOrg } from './Org';
 export {
   fromJson, toJson, camelToSnake, snakeToCamel,
