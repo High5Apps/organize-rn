@@ -8,10 +8,13 @@ import { GENERIC_ERROR_MESSAGE } from './Errors';
 type Props = {
   ballotId?: string;
   commentId?: string;
+  onSuccess?: () => void;
   postId?: string;
 };
 
-export default function useFlaggedItem({ ballotId, commentId, postId }: Props) {
+export default function useFlaggedItem({
+  ballotId, commentId, onSuccess, postId,
+}: Props) {
   const { currentUser } = useCurrentUser();
 
   const confirmThenCreateFlaggedItem = useCallback(() => {
@@ -51,10 +54,12 @@ export default function useFlaggedItem({ ballotId, commentId, postId }: Props) {
             `Failed to flag ${itemName}`,
             errorMessage,
           );
+        } else {
+          onSuccess?.();
         }
       },
     }).show();
-  }, [ballotId, commentId, currentUser, postId]);
+  }, [ballotId, commentId, currentUser, onSuccess, postId]);
 
   return { confirmThenCreateFlaggedItem };
 }

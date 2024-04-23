@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  CommentList, PrimaryButton, ScreenBackground, useHeaderButton,
+  CommentList, PrimaryButton, ScreenBackground, useFlagHeaderButton,
   useRequestProgress,
 } from '../../components';
 import type { PostScreenProps } from '../../navigation';
-import { GENERIC_ERROR_MESSAGE, useFlaggedItem, usePost } from '../../model';
+import { GENERIC_ERROR_MESSAGE, usePost } from '../../model';
 import useTheme from '../../Theme';
 
 function toTitleCase(s: string) {
@@ -45,12 +45,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
-  const { confirmThenCreateFlaggedItem } = useFlaggedItem({ postId });
-  useHeaderButton({
-    iconName: 'flag',
-    navigation,
-    onPress: confirmThenCreateFlaggedItem,
-  });
+  useFlagHeaderButton({ navigation, postId });
 
   const { styles } = useStyles();
 
