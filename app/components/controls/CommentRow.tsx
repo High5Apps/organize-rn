@@ -4,13 +4,12 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
-import {
-  Comment, MAX_COMMENT_DEPTH, getMessageAge, useFlaggedItem,
-} from '../../model';
+import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
 import { HighlightedRowContainer, HyperlinkDetector } from '../views';
+import FlagTextButton from './FlagTextButton';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -85,8 +84,6 @@ function CommentRow({
     navigation.navigate('NewReply', { commentId: id, postId });
   }, [id, navigation]);
 
-  const { confirmThenCreateFlaggedItem } = useFlaggedItem({ commentId: id });
-
   const BodyText = (
     <HyperlinkDetector>
       <Text
@@ -138,7 +135,7 @@ function CommentRow({
             {!disableReply && (
               <TextButton onPress={onReplyPress}>Reply</TextButton>
             )}
-            <TextButton onPress={confirmThenCreateFlaggedItem}>Flag</TextButton>
+            <FlagTextButton commentId={id} />
           </View>
         )}
       </View>
