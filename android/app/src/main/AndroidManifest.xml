@@ -25,11 +25,6 @@
           <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
 
-        <!-- Required for react-native-vision-camera QR code scanning -->
-        <meta-data
-          android:name="com.google.mlkit.vision.DEPENDENCIES"
-          android:value="barcode" />
-
         <!-- Required for deep links -->
         <intent-filter>
           <action android:name="android.intent.action.VIEW" />
