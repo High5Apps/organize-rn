@@ -36,7 +36,7 @@ export default function OrgTabs() {
       screenOptions={{
         headerShown: false,
         tabBarLabelStyle: styles.tabBarIconLabel,
-        tabBarHideOnKeyboard: false,
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen
