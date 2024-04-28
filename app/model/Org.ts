@@ -34,7 +34,10 @@ export default function useOrg() {
 
     if (!isEqual(org, fetchedOrg)) {
       setOrg(fetchedOrg);
-      setCurrentUser({ ...currentUser, org: fetchedOrg });
+      setCurrentUser((previousCurrentUser) => {
+        if (previousCurrentUser === null) { return null; }
+        return { ...previousCurrentUser, org: fetchedOrg };
+      });
     }
   }, [currentUser, org, orgGraph]);
 
