@@ -29,7 +29,6 @@ export default function useFlaggedItem({
 
     ConfirmationAlert({
       destructiveAction: 'Flag',
-      destructiveActionInTitle: `flag this ${itemName}`,
       onConfirm: async () => {
         if (!currentUser) { throw new Error('Expected current user'); }
         const { createAuthToken } = currentUser;
@@ -58,6 +57,7 @@ export default function useFlaggedItem({
           onSuccess?.();
         }
       },
+      title: `Flag this ${itemName} as inappropriate?`,
     }).show();
   }, [ballotId, commentId, currentUser, onSuccess, postId]);
 

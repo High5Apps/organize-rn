@@ -6,13 +6,15 @@ type Props = {
   destructiveButtonStyle?: 'default' | 'destructive';
   onConfirm: () => void;
   subtitle?: string | null;
+  title?: string;
 };
 
 export default function ConfirmationAlert({
   destructiveAction, destructiveActionInTitle, destructiveButtonStyle,
-  onConfirm, subtitle: maybeSubtitle,
+  onConfirm, subtitle: maybeSubtitle, title: maybeTitle,
 }: Props) {
   const actionInTitle = destructiveActionInTitle || destructiveAction;
+  const title = maybeTitle ?? `Are you sure you want to ${actionInTitle}?`;
 
   let subtitle: string | undefined;
   if (maybeSubtitle === undefined) {
@@ -26,7 +28,7 @@ export default function ConfirmationAlert({
   return {
     show: () => {
       Alert.alert(
-        `Are you sure you want to ${actionInTitle}?`,
+        title,
         subtitle,
         [
           { text: 'Cancel', style: 'cancel' },
