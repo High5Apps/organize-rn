@@ -5,7 +5,7 @@ import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScr
 import {
   EditOrgScreen, LeadScreen, PermissionScreen, PermissionsScreen,
 } from '../screens';
-import { permissionItems } from '../model';
+import { toAction } from '../model';
 
 const Stack = createNativeStackNavigator<LeadStackParamList>();
 
@@ -25,14 +25,8 @@ export default function LeadStack() {
         component={PermissionScreen}
         options={({ route }) => {
           const { scope } = route.params;
-          const permissionItem = permissionItems.find(
-            (item) => item.scope === scope,
-          );
-          const itemTitle = permissionItem?.title ?? 'do this';
-          const lowerCaseTitle = (
-            `${itemTitle[0].toLocaleLowerCase()}${itemTitle.slice(1)}`
-          );
-          const title = `Who can ${lowerCaseTitle}?`;
+          const scopeAction = toAction(scope);
+          const title = `Who can ${scopeAction}?`;
           return { title };
         }}
       />

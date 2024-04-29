@@ -25,3 +25,11 @@ const permissionItems: PermissionItem[] = [
 ];
 
 export default permissionItems;
+
+export function toAction(scope?: PermissionScope): string {
+  const permissionItem = permissionItems.find(
+    (item) => item.scope === scope,
+  );
+  const itemTitle = permissionItem?.title ?? 'do this';
+  return `${itemTitle[0].toLocaleLowerCase()}${itemTitle.slice(1)}`;
+}
