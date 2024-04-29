@@ -1,6 +1,4 @@
-import {
-  Dispatch, SetStateAction, useEffect, useMemo,
-} from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storeCurrentUserData } from './CurrentUserDataStorage';
@@ -15,6 +13,7 @@ import { getUser } from '../networking';
 export function CurrentUser(
   currentUserData: CurrentUserData,
   setCurrentUserData: Dispatch<SetStateAction<CurrentUserData | null>>,
+  cacheUser: (user: User) => void,
 ) {
   const {
     authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
@@ -94,6 +93,8 @@ export function CurrentUser(
       throw new Error(errorMessage);
     }
 
+    cacheUser(fetchedUser);
+
     if (!isEqual(user(), fetchedUser)) {
       setCurrentUserData((previousCurrentUserData) => {
         if (previousCurrentUserData === null) { return null; }
@@ -125,14 +126,7 @@ export default function useCurrentUser() {
 
   const currentUser = useMemo(() => {
     if (!currentUserData) { return null; }
-    return CurrentUser(currentUserData, setCurrentUserData);
-  }, [currentUserData]);
-
-  useEffect(() => {
-    const user = currentUser?.user();
-    if (user) {
-      cacheUser(user);
-    }
+    return CurrentUser(currentUserData, setCurrentUserData, cacheUser);
   }, [currentUserData]);
 
   return { currentUser, setCurrentUser: setCurrentUserData };

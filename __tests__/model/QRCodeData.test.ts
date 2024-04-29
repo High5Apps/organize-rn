@@ -19,16 +19,14 @@ mockCurrentUser.mockReturnValue({
   createAuthToken: mockCreateAuthToken,
   decryptGroupKey: mockDecryptGroupKey,
 });
+const currentUser = CurrentUser(fakeCurrentUserData, () => null, () => null);
+const formatter = QRCodeDataFormatter({ currentTime, currentUser });
 
 const consoleWarnSpy = jest.spyOn(global.console, 'warn').mockImplementation();
-
 describe('toString', () => {
   let formattedString: string;
 
   beforeEach(async () => {
-    const formatter = QRCodeDataFormatter({
-      currentTime, currentUser: CurrentUser(fakeCurrentUserData, () => null),
-    });
     formattedString = await formatter.toString();
   });
 
@@ -71,9 +69,6 @@ describe('parse', () => {
 
   beforeAll(async () => {
     consoleWarnSpy.mockClear();
-    const formatter = QRCodeDataFormatter({
-      currentTime, currentUser: CurrentUser(fakeCurrentUserData, () => null),
-    });
     formattedString = await formatter.toString();
     value = QRCodeDataParser({ input: formattedString }).parse()!;
     expect(consoleWarnSpy).not.toBeCalled();

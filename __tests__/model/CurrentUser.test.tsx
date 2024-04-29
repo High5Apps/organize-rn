@@ -16,6 +16,7 @@ jest.mock('../../app/model/CurrentUserDataStorage');
 const mockStoreCurrentUserData = storeCurrentUserData as jest.Mock;
 
 const mockSetCurrentUserData = jest.fn();
+const mockCacheUser = jest.fn();
 
 describe('useCurrentUser', () => {
   describe('logOut', () => {
@@ -23,6 +24,7 @@ describe('useCurrentUser', () => {
       const mockCurrentUser = CurrentUser(
         fakeCurrentUserData,
         mockSetCurrentUserData,
+        mockCacheUser,
       );
       await mockCurrentUser.logOut();
     });
