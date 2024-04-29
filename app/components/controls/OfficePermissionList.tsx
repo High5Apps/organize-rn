@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import {
   ConfirmationAlert, GENERIC_ERROR_MESSAGE, OFFICE_CATEGORIES, Office,
-  OfficeCategory, PermissionScope, getOffice, useCurrentUser, usePermission,
-  usePermissionUpdater,
+  OfficeCategory, PermissionScope, getOffice, toAction, useCurrentUser,
+  usePermission, usePermissionUpdater,
 } from '../../model';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
@@ -96,11 +96,12 @@ export default function OfficePermissionList({ scope }: Props) {
     const officeCategories = offices.map((office) => office.type);
 
     if (selected && officeCategories.includes(officeCategory)) {
+      const scopeAction = toAction(scope);
       ConfirmationAlert({
         destructiveAction: 'Remove',
         destructiveActionInTitle: 'remove this permission',
         onConfirm: () => onRowPressed(officeCategory),
-        subtitle: "If you remove this permission from yourself, you won't be able to do it anymore.",
+        subtitle: `If you remove this permission from yourself, you won't be able to ${scopeAction} anymore.`,
       }).show();
     } else {
       onRowPressed(officeCategory);
