@@ -22,6 +22,11 @@ const permissionItems: PermissionItem[] = [
     scope: 'editPermissions',
     title: 'Edit permissions',
   },
+  {
+    iconName: 'gavel',
+    scope: 'moderate',
+    title: 'Moderate',
+  },
 ];
 
 export default permissionItems;
