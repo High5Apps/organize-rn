@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LeadStackParamList } from './types';
-import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
+import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import {
   EditOrgScreen, LeadScreen, ModerationScreen, PermissionScreen,
   PermissionsScreen,
@@ -11,7 +11,7 @@ import { toAction } from '../model';
 const Stack = createNativeStackNavigator<LeadStackParamList>();
 
 export default function LeadStack() {
-  const screenOptions = useDefaultStackNavigatorScreenOptions();
+  const screenOptions = useDefaultStackNavigatorOptions();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>

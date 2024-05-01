@@ -5,13 +5,13 @@ import {
 } from '../screens';
 import type { WelcomeStackParamList } from './types';
 import { SafeAreaPadding, StatusBar } from '../components';
-import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
+import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import useTheme from '../Theme';
 
 const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStack() {
-  const defaultOptions = useDefaultStackNavigatorScreenOptions();
+  const defaultOptions = useDefaultStackNavigatorOptions();
   const { colors } = useTheme();
   const screenOptions = {
     ...defaultOptions,

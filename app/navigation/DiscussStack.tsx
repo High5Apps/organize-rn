@@ -4,13 +4,13 @@ import {
   NewCommentScreen, NewPostScreen, NewReplyScreen, PostScreen,
 } from '../screens';
 import { DiscussStackParamList } from './types';
-import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
+import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import DiscussTabs from './DiscussTabs';
 
 const Stack = createNativeStackNavigator<DiscussStackParamList>();
 
 export default function DiscussStack() {
-  const screenOptions = useDefaultStackNavigatorScreenOptions();
+  const screenOptions = useDefaultStackNavigatorOptions();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>

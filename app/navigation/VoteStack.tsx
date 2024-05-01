@@ -7,12 +7,12 @@ import {
   NewCandidacyAnnouncementScreen,
 } from '../screens';
 import { VoteStackParamList } from './types';
-import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
+import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 
 const Stack = createNativeStackNavigator<VoteStackParamList>();
 
 export default function VoteStack() {
-  const screenOptions = useDefaultStackNavigatorScreenOptions();
+  const screenOptions = useDefaultStackNavigatorOptions();
 
   return (
     <Stack.Navigator
