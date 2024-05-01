@@ -10,6 +10,7 @@ export type LeadItem = {
 };
 
 export type ModerationItem = {
+  destination: 'FlaggedItemTabs';
   iconName: string;
   title: string;
 };

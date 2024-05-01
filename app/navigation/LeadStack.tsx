@@ -7,6 +7,7 @@ import {
   PermissionsScreen,
 } from '../screens';
 import { toAction } from '../model';
+import FlaggedItemTabs from './FlaggedItemTabs';
 
 const Stack = createNativeStackNavigator<LeadStackParamList>();
 
@@ -20,6 +21,11 @@ export default function LeadStack() {
         name="EditOrg"
         component={EditOrgScreen}
         options={{ title: 'Edit Org' }}
+      />
+      <Stack.Screen
+        name="FlaggedItemTabs"
+        component={FlaggedItemTabs}
+        options={{ headerShadowVisible: false, title: 'Flagged Content' }}
       />
       <Stack.Screen name="Moderation" component={ModerationScreen} />
       <Stack.Screen

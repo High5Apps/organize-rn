@@ -236,6 +236,7 @@ export type PermissionScreenParams = {
 
 export type LeadStackParamList = {
   EditOrg: undefined;
+  FlaggedItemTabs: undefined | NavigatorScreenParams<FlaggedItemTabsParamList>;
   Lead: undefined;
   Moderation: undefined;
   Permission: PermissionScreenParams;
@@ -253,6 +254,20 @@ export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
 export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
 export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
 export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
+
+export type FlaggedItemTabsParamList = {
+  FlaggedHandled: undefined;
+  FlaggedPending: undefined;
+};
+
+export type FlaggedItemTabsScreenProps<T extends keyof FlaggedItemTabsParamList> =
+  CompositeScreenProps<
+    MaterialTopTabScreenProps<FlaggedItemTabsParamList, T>,
+    LeadStackScreenProps<keyof LeadStackParamList>
+  >;
+
+export type FlaggedHandledScreenProps = FlaggedItemTabsScreenProps<'FlaggedHandled'>;
+export type FlaggedPendingScreenProps = FlaggedItemTabsScreenProps<'FlaggedPending'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc
