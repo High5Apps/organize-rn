@@ -14,7 +14,7 @@ function useLeadItems() {
   const [leadItems, setLeadItems] = useState<LeadItem[]>([]);
 
   const { can, ready, refreshMyPermissions } = useMyPermissions({
-    scopes: ['editOrg', 'editPermissions'],
+    scopes: ['editOrg', 'editPermissions', 'moderate'],
   });
 
   useEffect(() => {
@@ -35,6 +35,14 @@ function useLeadItems() {
         destination: 'Permissions',
         iconName: 'lock-open',
         title: 'Permissions',
+      });
+    }
+
+    if (can('moderate')) {
+      items.push({
+        destination: 'Moderation',
+        iconName: 'gavel',
+        title: 'Moderation',
       });
     }
 

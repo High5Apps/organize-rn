@@ -237,6 +237,7 @@ export type PermissionScreenParams = {
 export type LeadStackParamList = {
   EditOrg: undefined;
   Lead: undefined;
+  Moderation: undefined;
   Permission: PermissionScreenParams;
   Permissions: undefined;
 };
@@ -249,6 +250,7 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
 
   export type EditOrgScreenProps = LeadStackScreenProps<'EditOrg'>;
   export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
+  export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
   export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
   export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 

@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LeadStackParamList } from './types';
 import useDefaultStackNavigatorScreenOptions from './useDefaultStackNavigatorScreenOptions';
 import {
-  EditOrgScreen, LeadScreen, PermissionScreen, PermissionsScreen,
+  EditOrgScreen, LeadScreen, ModerationScreen, PermissionScreen,
+  PermissionsScreen,
 } from '../screens';
 import { toAction } from '../model';
 
@@ -20,6 +21,7 @@ export default function LeadStack() {
         component={EditOrgScreen}
         options={{ title: 'Edit Org' }}
       />
+      <Stack.Screen name="Moderation" component={ModerationScreen} />
       <Stack.Screen
         name="Permission"
         component={PermissionScreen}
