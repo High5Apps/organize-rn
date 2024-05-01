@@ -1,50 +1,18 @@
 import React from 'react';
 import {
-  MaterialTopTabNavigationOptions, createMaterialTopTabNavigator,
+  createMaterialTopTabNavigator,
 } from '@react-navigation/material-top-tabs';
 import {
   DiscussDemandsScreen, DiscussGeneralScreen, DiscussGrievancesScreen,
   DiscussRecentScreen,
 } from '../screens';
-import useTheme from '../Theme';
 import { DiscussTabsParamList } from './types';
-
-const useScreenOptions = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
-
-  const screenPaddingStart = spacing.m;
-  const screenOptions: MaterialTopTabNavigationOptions = {
-    lazy: true,
-    tabBarActiveTintColor: colors.primary,
-    tabBarGap: spacing.s,
-    tabBarInactiveTintColor: colors.labelSecondary,
-    tabBarIndicatorContainerStyle: {
-      marginLeft: screenPaddingStart,
-    },
-    tabBarItemStyle: {
-      paddingHorizontal: 0,
-      width: 'auto',
-    },
-    tabBarLabelStyle: {
-      fontFamily: font.weights.semiBold,
-    },
-    tabBarScrollEnabled: true,
-    tabBarStyle: {
-      paddingLeft: screenPaddingStart,
-      borderBottomWidth: sizes.separator,
-      borderBottomColor: colors.separator,
-    },
-  };
-
-  return screenOptions;
-};
+import useDefaultTopTabOptions from './DefaultTopTabOptions';
 
 const Tab = createMaterialTopTabNavigator<DiscussTabsParamList>();
 
 export default function DiscussTabs() {
-  const screenOptions = useScreenOptions();
+  const screenOptions = useDefaultTopTabOptions();
 
   return (
     <Tab.Navigator screenOptions={screenOptions}>
