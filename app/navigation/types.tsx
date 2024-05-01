@@ -248,11 +248,11 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
     OrgTabsScreenProps<keyof OrgTabsParamList>
   >;
 
-  export type EditOrgScreenProps = LeadStackScreenProps<'EditOrg'>;
-  export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
-  export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
-  export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
-  export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
+export type EditOrgScreenProps = LeadStackScreenProps<'EditOrg'>;
+export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
+export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
+export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
+export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc
