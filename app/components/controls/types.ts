@@ -8,3 +8,8 @@ export type LeadItem = {
   iconName: string;
   title: string;
 };
+
+export type ModerationItem = {
+  iconName: string;
+  title: string;
+};

@@ -18,6 +18,7 @@ export { default as IconButton } from './IconButton';
 export { default as LeadItemList } from './LeadItemList';
 export { default as LearnMoreButtonRow } from './LearnMoreButtonRow';
 export { default as LearnMoreModal } from './LearnMoreModal';
+export { default as ModerationItemList } from './ModerationItemList';
 export { default as PermissionItemList } from './PermissionItemList';
 export { default as useLearnMoreOfficeModal } from './LearnMoreOfficeModal';
 export { default as MultilineTextInput } from './MultilineTextInput';

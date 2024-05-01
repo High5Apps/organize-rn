@@ -1,7 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
-import type { ModerationScreenProps } from '../../navigation';
+import { ModerationItemList, ScreenBackground } from '../../components';
 
-export default function ModerationScreen({ route }: ModerationScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+export default function ModerationScreen() {
+  return (
+    <ScreenBackground>
+      <ModerationItemList onModerationItemPress={console.log} />
+    </ScreenBackground>
+  );
 }
