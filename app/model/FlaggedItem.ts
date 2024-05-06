@@ -4,6 +4,7 @@ import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlaggedItem } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { FlaggedItemCategory } from './types';
 
 type Props = {
   ballotId?: string;
@@ -63,3 +64,13 @@ export default function useFlaggedItem({
 
   return { confirmThenCreateFlaggedItem };
 }
+
+const flaggedItemCategoryIconMap: { [key in FlaggedItemCategory]: string } = {
+  ballot: 'check-box',
+  comment: 'forum',
+  post: 'chat-bubble',
+};
+
+export const getFlaggedItemIcon = (category: FlaggedItemCategory) => (
+  flaggedItemCategoryIconMap[category] ?? 'article'
+);
