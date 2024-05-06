@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { FlaggedItem, useFlaggedItems } from '../../model';
 import { ItemSeparator } from '../views';
-import { usePullToRefresh } from '../hooks';
+import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import FlaggedItemRow from './FlaggedItemRow';
 
 type Props = {
@@ -11,12 +11,28 @@ type Props = {
 
 export default function FlaggedItemList({ onItemPress }: Props) {
   const {
-    fetchFirstPageOfFlaggedItems, flaggedItems,
+    fetchedLastPage, fetchFirstPageOfFlaggedItems, fetchNextPageOfFlaggedItems,
+    flaggedItems,
   } = useFlaggedItems({ sort: 'top' });
 
-  const { ListHeaderComponent, refreshControl } = usePullToRefresh({
-    onRefresh: fetchFirstPageOfFlaggedItems,
+  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
+    onRefresh: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      clearNextPageError();
+
+      await fetchFirstPageOfFlaggedItems();
+    },
     refreshOnMount: true,
+  });
+
+  const {
+    clearError: clearNextPageError,
+    ListFooterComponent,
+    onEndReached,
+    onEndReachedThreshold,
+  } = useInfiniteScroll({
+    getDisabled: () => (!flaggedItems.length || refreshing || fetchedLastPage),
+    onLoadNextPage: fetchNextPageOfFlaggedItems,
   });
 
   const renderItem: ListRenderItem<FlaggedItem> = useCallback(
@@ -28,7 +44,10 @@ export default function FlaggedItemList({ onItemPress }: Props) {
     <FlatList
       data={flaggedItems}
       ItemSeparatorComponent={ItemSeparator}
+      ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       keyboardShouldPersistTaps="handled"
       refreshControl={refreshControl}
       renderItem={renderItem}
