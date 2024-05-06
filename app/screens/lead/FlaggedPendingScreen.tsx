@@ -1,9 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
-import type { FlaggedPendingScreenProps } from '../../navigation';
+import { FlaggedItemList, ScreenBackground } from '../../components';
 
-export default function FlaggedPendingScreen({
-  route,
-}: FlaggedPendingScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+export default function FlaggedPendingScreen() {
+  return (
+    <ScreenBackground>
+      <FlaggedItemList onItemPress={console.log} />
+    </ScreenBackground>
+  );
 }
