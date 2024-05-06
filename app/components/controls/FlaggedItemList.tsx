@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { FlaggedItem, useFlaggedItems } from '../../model';
-import { ItemSeparator } from '../views';
+import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import FlaggedItemRow from './FlaggedItemRow';
+
+const LIST_EMPTY_MESSAGE = "Good news- Org members haven't flagged anything as **inappropriate** yet!\n\nAll flagged content will appear here, so that **moderators can decide** if it should be **blocked or allowed**.\n\nHowever, Org members can still choose to see blocked content in the **Transparency Log**.";
 
 type Props = {
   onItemPress?: (item: FlaggedItem) => void;
@@ -12,7 +14,7 @@ type Props = {
 export default function FlaggedItemList({ onItemPress }: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfFlaggedItems, fetchNextPageOfFlaggedItems,
-    flaggedItems,
+    flaggedItems, ready,
   } = useFlaggedItems({ sort: 'top' });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
@@ -35,6 +37,10 @@ export default function FlaggedItemList({ onItemPress }: Props) {
     onLoadNextPage: fetchNextPageOfFlaggedItems,
   });
 
+  const ListEmptyComponent = useCallback(() => (
+    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+  ), []);
+
   const renderItem: ListRenderItem<FlaggedItem> = useCallback(
     ({ item }) => <FlaggedItemRow item={item} onPress={onItemPress} />,
     [onItemPress],
@@ -44,6 +50,7 @@ export default function FlaggedItemList({ onItemPress }: Props) {
     <FlatList
       data={flaggedItems}
       ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
       onEndReached={onEndReached}
