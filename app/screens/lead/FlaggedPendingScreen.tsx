@@ -9,7 +9,11 @@ export default function FlaggedPendingScreen({
   const onItemPress = useCallback((flaggedItem: FlaggedItem) => {
     const { category, id } = flaggedItem;
 
-    if (category === 'post') {
+    if (category === 'ballot') {
+      navigation.navigate('VoteStack', {
+        screen: 'Ballot', initial: false, params: { ballotId: id },
+      });
+    } else if (category === 'post') {
       navigation.navigate('DiscussStack', {
         screen: 'Post', initial: false, params: { postId: id },
       });
