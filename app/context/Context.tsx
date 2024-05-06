@@ -8,6 +8,7 @@ import { UserContextProvider } from './UserContext';
 import { CachedValueContextProvider } from './CachedValueContext';
 import { BallotContextProvider } from './BallotContext';
 import { MyPermissionContextProvider } from './MyPermissionContext';
+import { FlaggedItemContextProvider } from './FlaggedItemContext';
 
 export default function Context({ children }: PropsWithChildren<{}>) {
   return (
@@ -18,11 +19,13 @@ export default function Context({ children }: PropsWithChildren<{}>) {
             <UserContextProvider>
               <BallotContextProvider>
                 <MyPermissionContextProvider>
-                  <CachedValueContextProvider>
-                    <SafeAreaProvider>
-                      {children}
-                    </SafeAreaProvider>
-                  </CachedValueContextProvider>
+                  <FlaggedItemContextProvider>
+                    <CachedValueContextProvider>
+                      <SafeAreaProvider>
+                        {children}
+                      </SafeAreaProvider>
+                    </CachedValueContextProvider>
+                  </FlaggedItemContextProvider>
                 </MyPermissionContextProvider>
               </BallotContextProvider>
             </UserContextProvider>
