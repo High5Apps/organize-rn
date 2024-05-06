@@ -68,41 +68,43 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
-  if (!ballotPreview) {
-    throw new Error('Expected ballotPreview to be defined');
-  }
+  const ballotOrBallotPreview = ballot ?? ballotPreview;
 
   const {
     LearnMoreOfficeModal, setModalVisible,
-  } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
+  } = useLearnMoreOfficeModal({
+    officeCategory: ballotOrBallotPreview?.office ?? null,
+  });
 
   useFlagHeaderButton({ ballotId, navigation });
 
   const { styles } = useStyles();
 
   const ListHeaderComponent = useMemo(() => (
-    <View style={styles.header}>
-      <Text style={[styles.text, styles.question]}>
-        {ballotPreview.question}
-      </Text>
+    <View style={ballotOrBallotPreview && styles.header}>
+      {ballotOrBallotPreview && (
+        <Text style={[styles.text, styles.question]}>
+          {ballotOrBallotPreview.question}
+        </Text>
+      )}
       {!!ballot?.candidates?.length && (
         <BallotDetails ballot={ballot} style={styles.ballotDetails} />
       )}
       <RequestProgress />
     </View>
-  ), [ballot, ballotPreview, styles]);
+  ), [ballot, ballotOrBallotPreview, styles]);
 
   const { TimeRemainingFooter } = useTimeRemainingFooter();
 
   const ListFooterComponent = useMemo(() => {
-    const isElection = ballotPreview.category === 'election';
+    const isElection = ballotOrBallotPreview?.category === 'election';
     return (
       <>
         {isElection && (
           <LearnMoreButtonRow onPress={() => setModalVisible(true)} />
         )}
         <TimeRemainingFooter
-          endTime={ballotPreview.votingEndsAt}
+          endTime={ballotOrBallotPreview?.votingEndsAt}
           style={isElection && styles.timeRemainingElection}
           timeRemainingOptions={{
             expiredFormatter: votingTimeRemainingExpiredFormatter,
@@ -111,7 +113,7 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
         />
       </>
     );
-  }, [ballotPreview, TimeRemainingFooter]);
+  }, [ballot, ballotOrBallotPreview, TimeRemainingFooter]);
 
   const DiscussButton = useDiscussButton(navigation);
 
