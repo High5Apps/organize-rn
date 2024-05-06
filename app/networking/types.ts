@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, MyPermission, Nomination, NominationUser, OfficeCategory, Org,
-  OrgGraph, PaginationData, PostCategory, User, VoteState,
+  BallotCategory, FlaggedItemCategory, MyPermission, Nomination, NominationUser,
+  OfficeCategory, Org, OrgGraph, PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
@@ -433,4 +433,36 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
   const response = (object as MyPermissionsResponse);
   return Array.isArray(response?.myPermissions)
     && response.myPermissions.every(isMyPermission);
+}
+
+export type FlaggedItemResponse = {
+  category: FlaggedItemCategory;
+  flagCount: number;
+  id: string;
+  pseudonym: string;
+  encryptedTitle: BackendEncryptedMessage;
+  userId: string;
+};
+
+export function isFlaggedItemResponse(object: unknown): object is FlaggedItemResponse {
+  const response = (object as FlaggedItemResponse);
+  return response?.category?.length > 0
+    && response.flagCount > 0
+    && response.id?.length > 0
+    && response.pseudonym?.length > 0
+    && isBackendEncryptedMessage(response.encryptedTitle)
+    && response.userId?.length > 0;
+}
+
+type FlaggedItemsIndexResponse = {
+  flaggedItems: FlaggedItemResponse[];
+  meta?: PaginationData;
+};
+
+export function isFlaggedItemsIndexResponse(object: unknown): object is FlaggedItemsIndexResponse {
+  const response = (object as FlaggedItemsIndexResponse);
+  return response?.flaggedItems
+    && Array.isArray(response.flaggedItems)
+    && response.flaggedItems.every(isFlaggedItemResponse)
+    && isPaginationData(response?.meta);
 }

@@ -1,6 +1,6 @@
 import type {
   BackendEncryptedMessage, BallotCandidate, BallotIndexBallot,
-  CommentIndexComment, OrgResponse, PostIndexPost,
+  CommentIndexComment, FlaggedItemResponse, OrgResponse, PostIndexPost,
 } from '../networking';
 import type { AESEncryptedData } from './keys';
 import type { TimeRemainingOptions } from './TimeRemaining';
@@ -252,3 +252,6 @@ export type MyPermission = {
   permitted: boolean;
   scope: PermissionScope;
 };
+
+export type FlaggedItemCategory = 'ballot' | 'comment' | 'post';
+export type FlaggedItem = Decrypt<FlaggedItemResponse>;
