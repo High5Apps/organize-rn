@@ -5,12 +5,13 @@ import { useHeaderButton } from '../controls';
 
 type Props = {
   ballotId?: string;
+  hidden?: boolean;
   navigation: NativeStackNavigationProp<any>;
   postId?: string;
 };
 
 export default function useFlagHeaderButton({
-  ballotId, navigation, postId,
+  ballotId, hidden, navigation, postId,
 }: Props) {
   const [flagIconName, setFlagIconName] = useState<'flag' | 'check'>('flag');
   const [disabled, setDisabled] = useState(false);
@@ -31,6 +32,7 @@ export default function useFlagHeaderButton({
 
   useHeaderButton({
     disabled,
+    hidden,
     iconName: flagIconName,
     navigation,
     onPress: confirmThenCreateFlaggedItem,

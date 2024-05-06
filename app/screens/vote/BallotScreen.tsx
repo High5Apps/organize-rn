@@ -76,7 +76,11 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
     officeCategory: ballotOrBallotPreview?.office ?? null,
   });
 
-  useFlagHeaderButton({ ballotId, navigation });
+  useFlagHeaderButton({
+    ballotId,
+    hidden: ballotOrBallotPreview?.category === 'election',
+    navigation,
+  });
 
   const { styles } = useStyles();
 
