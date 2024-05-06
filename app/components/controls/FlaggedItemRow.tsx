@@ -97,7 +97,7 @@ export default function FlaggedItemRow({ item, onPress }: Props) {
         <View style={styles.rowSubtitle}>
           <Icon name="flag" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{flagCount}</Text>
-          <Icon name="person-add" style={styles.rowIcon} />
+          <Icon name="edit-square" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{pseudonym}</Text>
         </View>
       </View>
