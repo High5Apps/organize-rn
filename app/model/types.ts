@@ -254,4 +254,5 @@ export type MyPermission = {
 };
 
 export type FlaggedItemCategory = 'ballot' | 'comment' | 'post';
+export type FlaggedItemSort = 'top';
 export type FlaggedItem = Decrypt<FlaggedItemResponse>;
