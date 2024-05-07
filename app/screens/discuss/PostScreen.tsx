@@ -45,7 +45,11 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
-  useFlagHeaderButton({ navigation, postId });
+  useFlagHeaderButton({
+    hidden: !!post?.candidateId,
+    navigation,
+    postId,
+  });
 
   const { styles } = useStyles();
 
