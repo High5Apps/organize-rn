@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useFlaggedItem } from '../../model';
+import { useFlag } from '../../model';
 import { useHeaderButton } from '../controls';
 
 type Props = {
@@ -26,15 +26,13 @@ export default function useFlagHeaderButton({
     }, 4000);
   }, []);
 
-  const { confirmThenCreateFlaggedItem } = useFlaggedItem({
-    ballotId, onSuccess, postId,
-  });
+  const { confirmThenCreateFlag } = useFlag({ ballotId, onSuccess, postId });
 
   useHeaderButton({
     disabled,
     hidden,
     iconName: flagIconName,
     navigation,
-    onPress: confirmThenCreateFlaggedItem,
+    onPress: confirmThenCreateFlag,
   });
 }

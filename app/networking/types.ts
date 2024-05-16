@@ -1,5 +1,5 @@
 import type {
-  BallotCategory, FlaggedItemCategory, MyPermission, Nomination, NominationUser,
+  BallotCategory, FlagCategory, MyPermission, Nomination, NominationUser,
   OfficeCategory, Org, OrgGraph, PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
@@ -435,8 +435,8 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
     && response.myPermissions.every(isMyPermission);
 }
 
-export type FlaggedItemResponse = {
-  category: FlaggedItemCategory;
+export type FlagResponse = {
+  category: FlagCategory;
   flagCount: number;
   id: string;
   pseudonym: string;
@@ -444,8 +444,8 @@ export type FlaggedItemResponse = {
   userId: string;
 };
 
-export function isFlaggedItemResponse(object: unknown): object is FlaggedItemResponse {
-  const response = (object as FlaggedItemResponse);
+export function isFlagResponse(object: unknown): object is FlagResponse {
+  const response = (object as FlagResponse);
   return response?.category?.length > 0
     && response.flagCount > 0
     && response.id?.length > 0
@@ -454,15 +454,15 @@ export function isFlaggedItemResponse(object: unknown): object is FlaggedItemRes
     && response.userId?.length > 0;
 }
 
-type FlaggedItemsIndexResponse = {
-  flags: FlaggedItemResponse[];
+type FlagsIndexResponse = {
+  flags: FlagResponse[];
   meta?: PaginationData;
 };
 
-export function isFlaggedItemsIndexResponse(object: unknown): object is FlaggedItemsIndexResponse {
-  const response = (object as FlaggedItemsIndexResponse);
+export function isFlagsIndexResponse(object: unknown): object is FlagsIndexResponse {
+  const response = (object as FlagsIndexResponse);
   return response?.flags
     && Array.isArray(response.flags)
-    && response.flags.every(isFlaggedItemResponse)
+    && response.flags.every(isFlagResponse)
     && isPaginationData(response?.meta);
 }

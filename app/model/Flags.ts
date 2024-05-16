@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
-import { FlaggedItem, FlaggedItemSort } from './types';
-import { fetchFlaggedItems } from '../networking';
-import { useFlaggedItemContext } from '../context';
+import { Flag, FlagSort } from './types';
+import { fetchFlags } from '../networking';
+import { useFlagContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 
@@ -10,20 +10,18 @@ import useModels from './Models';
 const firstPageIndex = 1;
 
 type Props = {
-  sort: FlaggedItemSort;
+  sort: FlagSort;
 };
 
 type FetchPageReturn = {
   hasNextPage: boolean;
 };
 
-export default function useFlaggedItems({ sort }: Props) {
+export default function useFlags({ sort }: Props) {
+  const { cacheFlag, cacheFlags, getCachedFlag } = useFlagContext();
   const {
-    cacheFlaggedItem, cacheFlaggedItems, getCachedFlaggedItem,
-  } = useFlaggedItemContext();
-  const {
-    ids: flaggedItemIds, models: flaggedItems, setIds: setFlaggedItemIds,
-  } = useModels<FlaggedItem>({ getCachedModel: getCachedFlaggedItem });
+    ids: flagsIds, models: flags, setIds: setFlagIds,
+  } = useModels<Flag>({ getCachedModel: getCachedFlag });
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [createdAtOrBefore, setCreatedAtOrBefore] = useState<Date>(new Date());
@@ -31,7 +29,7 @@ export default function useFlaggedItems({ sort }: Props) {
 
   const { currentUser } = useCurrentUser();
 
-  async function fetchFirstPageOfFlaggedItems(): Promise<FetchPageReturn> {
+  async function fetchFirstPageOfFlags(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
@@ -40,8 +38,8 @@ export default function useFlaggedItems({ sort }: Props) {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const {
-      errorMessage, paginationData, flaggedItems: fetchedFlaggedItems,
-    } = await fetchFlaggedItems({
+      errorMessage, paginationData, flags: fetchedFlags,
+    } = await fetchFlags({
       createdAtOrBefore: now,
       e2eDecryptMany,
       page: firstPageIndex,
@@ -53,9 +51,9 @@ export default function useFlaggedItems({ sort }: Props) {
       throw new Error(errorMessage);
     }
 
-    cacheFlaggedItems(fetchedFlaggedItems);
+    cacheFlags(fetchedFlags);
     setNextPageNumber(firstPageIndex + 1);
-    setFlaggedItemIds(getIdsFrom(fetchedFlaggedItems));
+    setFlagIds(getIdsFrom(fetchedFlags));
     const hasNextPage = paginationData?.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
     setReady(true);
@@ -63,15 +61,15 @@ export default function useFlaggedItems({ sort }: Props) {
     return { hasNextPage };
   }
 
-  async function fetchNextPageOfFlaggedItems(): Promise<FetchPageReturn> {
+  async function fetchNextPageOfFlags(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
 
     const {
-      errorMessage, paginationData, flaggedItems: fetchedFlaggedItems,
-    } = await fetchFlaggedItems({
+      errorMessage, paginationData, flags: fetchedFlags,
+    } = await fetchFlags({
       createdAtOrBefore,
       e2eDecryptMany,
       jwt,
@@ -88,22 +86,22 @@ export default function useFlaggedItems({ sort }: Props) {
 
     const result = { hasNextPage };
 
-    if (!fetchedFlaggedItems?.length) { return result; }
+    if (!fetchedFlags?.length) { return result; }
 
-    cacheFlaggedItems(fetchedFlaggedItems);
+    cacheFlags(fetchedFlags);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setFlaggedItemIds([...flaggedItemIds, ...getIdsFrom(fetchedFlaggedItems)]);
+    setFlagIds([...flagsIds, ...getIdsFrom(fetchedFlags)]);
 
     return result;
   }
 
   return {
-    cacheFlaggedItem,
+    cacheFlag,
     fetchedLastPage,
-    fetchFirstPageOfFlaggedItems,
-    fetchNextPageOfFlaggedItems,
-    getCachedFlaggedItem,
-    flaggedItems,
+    fetchFirstPageOfFlags,
+    fetchNextPageOfFlags,
+    getCachedFlag,
+    flags,
     ready,
   };
 }

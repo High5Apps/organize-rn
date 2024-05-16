@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { FlaggedItemList, ScreenBackground } from '../../components';
+import { FlagList, ScreenBackground } from '../../components';
 import type { FlaggedPendingScreenProps } from '../../navigation';
-import { FlaggedItem } from '../../model';
+import { Flag } from '../../model';
 
 export default function FlaggedPendingScreen({
   navigation,
 }: FlaggedPendingScreenProps) {
-  const onItemPress = useCallback((flaggedItem: FlaggedItem) => {
-    const { category, id } = flaggedItem;
+  const onItemPress = useCallback((flag: Flag) => {
+    const { category, id } = flag;
 
     if (category === 'Ballot') {
       navigation.navigate('VoteStack', {
@@ -18,13 +18,13 @@ export default function FlaggedPendingScreen({
         screen: 'Post', initial: false, params: { postId: id },
       });
     } else {
-      console.log({ flaggedItem });
+      console.log({ flag });
     }
   }, [navigation]);
 
   return (
     <ScreenBackground>
-      <FlaggedItemList onItemPress={onItemPress} />
+      <FlagList onItemPress={onItemPress} />
     </ScreenBackground>
   );
 }

@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
-import { createFlaggedItem } from '../networking';
+import { createFlag } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
-import { FlaggedItemCategory } from './types';
+import { FlagCategory } from './types';
 
 type Props = {
   ballotId?: string;
@@ -13,12 +13,12 @@ type Props = {
   postId?: string;
 };
 
-export default function useFlaggedItem({
+export default function useFlag({
   ballotId, commentId, onSuccess, postId,
 }: Props) {
   const { currentUser } = useCurrentUser();
 
-  const confirmThenCreateFlaggedItem = useCallback(() => {
+  const confirmThenCreateFlag = useCallback(() => {
     let itemName = 'content';
     if (ballotId !== undefined) {
       itemName = 'ballot';
@@ -38,7 +38,7 @@ export default function useFlaggedItem({
 
         let errorMessage: string | undefined;
         try {
-          ({ errorMessage } = await createFlaggedItem({
+          ({ errorMessage } = await createFlag({
             ballotId, commentId, jwt, postId,
           }));
         } catch (error) {
@@ -62,15 +62,15 @@ export default function useFlaggedItem({
     }).show();
   }, [ballotId, commentId, currentUser, onSuccess, postId]);
 
-  return { confirmThenCreateFlaggedItem };
+  return { confirmThenCreateFlag };
 }
 
-const flaggedItemCategoryIconMap: { [key in FlaggedItemCategory]: string } = {
+const flagCategoryIconMap: { [key in FlagCategory]: string } = {
   Ballot: 'check-box',
   Comment: 'forum',
   Post: 'chat-bubble',
 };
 
-export const getFlaggedItemIcon = (category: FlaggedItemCategory) => (
-  flaggedItemCategoryIconMap[category] ?? 'article'
+export const getFlagIcon = (category: FlagCategory) => (
+  flagCategoryIconMap[category] ?? 'article'
 );

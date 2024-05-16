@@ -17,7 +17,7 @@ export const termsURI = (ballotId: string) => `${ballotURI(ballotId)}/terms`;
 export const connectionsURI = `${apiRoute}/connections`;
 export const connectionPreviewURI = `${apiRoute}/connection_preview`;
 
-export const flaggedItemsURI = `${apiRoute}/flags`;
+export const flagsURI = `${apiRoute}/flags`;
 export const flagReportsURI = `${apiRoute}/flag_reports`;
 
 export const nominationURI = (nominationId: string) => `${apiRoute}/nominations/${nominationId}`;

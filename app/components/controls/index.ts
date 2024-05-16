@@ -11,7 +11,7 @@ export {
 } from './DateTimeSelector';
 export { default as DecisionButtonsRow } from './DecisionButtonsRow';
 export { default as useDiscussButton } from './DiscussButton';
-export { default as FlaggedItemList } from './FlaggedItemList';
+export { default as FlagList } from './FlagList';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';
 export { default as useHeaderButton } from './HeaderButton';

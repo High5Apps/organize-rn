@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useFlaggedItem } from '../../model';
+import { useFlag } from '../../model';
 import TextButton from './TextButton';
 
 type Props = {
@@ -20,12 +20,10 @@ export default function FlagTextButton({ commentId }: Props) {
     }, 4000);
   }, []);
 
-  const { confirmThenCreateFlaggedItem } = useFlaggedItem({
-    commentId, onSuccess,
-  });
+  const { confirmThenCreateFlag } = useFlag({ commentId, onSuccess });
 
   return (
-    <TextButton disabled={disabled} onPress={confirmThenCreateFlaggedItem}>
+    <TextButton disabled={disabled} onPress={confirmThenCreateFlag}>
       {label}
     </TextButton>
   );
