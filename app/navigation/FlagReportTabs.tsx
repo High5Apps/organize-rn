@@ -2,7 +2,7 @@ import React from 'react';
 import {
   createMaterialTopTabNavigator,
 } from '@react-navigation/material-top-tabs';
-import { FlaggedHandledScreen, FlagReportsPendingScreen } from '../screens';
+import { FlagReportsHandledScreen, FlagReportsPendingScreen } from '../screens';
 import { FlagReportTabsParamList } from './types';
 import useDefaultTopTabOptions from './DefaultTopTabOptions';
 
@@ -19,8 +19,8 @@ export default function FlagReportTabs() {
         options={{ title: 'Pending' }}
       />
       <Tab.Screen
-        component={FlaggedHandledScreen}
-        name="FlaggedHandled"
+        component={FlagReportsHandledScreen}
+        name="FlagReportsHandled"
         options={{ title: 'Handled' }}
       />
     </Tab.Navigator>

@@ -256,7 +256,7 @@ export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
 export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 
 export type FlagReportTabsParamList = {
-  FlaggedHandled: undefined;
+  FlagReportsHandled: undefined;
   FlagReportsPending: undefined;
 };
 
@@ -266,7 +266,7 @@ export type FlagReportTabsScreenProps<T extends keyof FlagReportTabsParamList> =
     LeadStackScreenProps<keyof LeadStackParamList>
   >;
 
-export type FlaggedHandledScreenProps = FlagReportTabsScreenProps<'FlaggedHandled'>;
+export type FlagReportsHandledScreenProps = FlagReportTabsScreenProps<'FlagReportsHandled'>;
 export type FlagReportsPendingScreenProps = FlagReportTabsScreenProps<'FlagReportsPending'>;
 
 // For more info, see
