@@ -70,7 +70,7 @@ type Props = {
 };
 
 export default function FlagReportRow({ item, onPress }: Props) {
-  const { category, flagCount, pseudonym } = item;
+  const { category, creator, flagCount } = item;
 
   const title = useMemo(
     () => truncateText({ maxLength: MAX_TITLE_LENGTH, text: item.title })
@@ -99,7 +99,7 @@ export default function FlagReportRow({ item, onPress }: Props) {
           <Icon name="flag" style={styles.rowIcon} />
           <Text style={styles.rowSubtitleText}>{flagCount}</Text>
           <Icon name="edit-square" style={styles.rowIcon} />
-          <Text style={styles.rowSubtitleText}>{pseudonym}</Text>
+          <Text style={styles.rowSubtitleText}>{creator.pseudonym}</Text>
         </View>
       </View>
     </TouchableHighlight>

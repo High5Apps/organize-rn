@@ -435,23 +435,46 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
     && response.myPermissions.every(isMyPermission);
 }
 
+export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
+export type ModerationEvent = {
+  action: ModerationEventAction;
+  createdAt: Date;
+  moderator: {
+    id: string;
+    pseudonym: string;
+  };
+};
+export function isModerationEventResponse(object: unknown): object is ModerationEvent {
+  const response = (object as ModerationEvent);
+  return response?.action?.length > 0
+    && isDate(response.createdAt)
+    && response.moderator?.id?.length > 0
+    && response.moderator.pseudonym?.length > 0;
+}
+
 export type FlagReportResponse = {
   category: FlaggableType;
+  creator: {
+    id: string;
+    pseudonym: string;
+  };
+  encryptedTitle: BackendEncryptedMessage;
   flagCount: number;
   id: string;
-  pseudonym: string;
-  encryptedTitle: BackendEncryptedMessage;
-  userId: string;
+  moderationEvent?: ModerationEvent;
 };
 
 export function isFlagReportResponse(object: unknown): object is FlagReportResponse {
   const response = (object as FlagReportResponse);
-  return response?.category?.length > 0
+  return response.category?.length > 0
+    && response?.creator?.id.length > 0
+    && response.creator.pseudonym?.length > 0
+    && isBackendEncryptedMessage(response.encryptedTitle)
     && response.flagCount > 0
     && response.id?.length > 0
-    && response.pseudonym?.length > 0
-    && isBackendEncryptedMessage(response.encryptedTitle)
-    && response.userId?.length > 0;
+    && (!response?.moderationEvent
+      || isModerationEventResponse(response.moderationEvent)
+    );
 }
 
 type FlagReportsIndexResponse = {
