@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { FlagReportList, ScreenBackground } from '../../components';
-import type { FlaggedPendingScreenProps } from '../../navigation';
+import type { FlagReportsPendingScreenProps } from '../../navigation';
 import { FlagReport } from '../../model';
 
-export default function FlaggedPendingScreen({
+export default function FlagReportsPendingScreen({
   navigation,
-}: FlaggedPendingScreenProps) {
+}: FlagReportsPendingScreenProps) {
   const onItemPress = useCallback((flag: FlagReport) => {
     const { category, id } = flag;
 

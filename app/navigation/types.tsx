@@ -257,7 +257,7 @@ export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
 
 export type FlagReportTabsParamList = {
   FlaggedHandled: undefined;
-  FlaggedPending: undefined;
+  FlagReportsPending: undefined;
 };
 
 export type FlagReportTabsScreenProps<T extends keyof FlagReportTabsParamList> =
@@ -267,7 +267,7 @@ export type FlagReportTabsScreenProps<T extends keyof FlagReportTabsParamList> =
   >;
 
 export type FlaggedHandledScreenProps = FlagReportTabsScreenProps<'FlaggedHandled'>;
-export type FlaggedPendingScreenProps = FlagReportTabsScreenProps<'FlaggedPending'>;
+export type FlagReportsPendingScreenProps = FlagReportTabsScreenProps<'FlagReportsPending'>;
 
 // For more info, see
 // https://reactnavigation.org/docs/typescript/#specifying-default-types-for-usenavigation-link-ref-etc
