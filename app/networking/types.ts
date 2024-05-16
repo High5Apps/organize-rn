@@ -455,14 +455,14 @@ export function isFlaggedItemResponse(object: unknown): object is FlaggedItemRes
 }
 
 type FlaggedItemsIndexResponse = {
-  flaggedItems: FlaggedItemResponse[];
+  flags: FlaggedItemResponse[];
   meta?: PaginationData;
 };
 
 export function isFlaggedItemsIndexResponse(object: unknown): object is FlaggedItemsIndexResponse {
   const response = (object as FlaggedItemsIndexResponse);
-  return response?.flaggedItems
-    && Array.isArray(response.flaggedItems)
-    && response.flaggedItems.every(isFlaggedItemResponse)
+  return response?.flags
+    && Array.isArray(response.flags)
+    && response.flags.every(isFlaggedItemResponse)
     && isPaginationData(response?.meta);
 }

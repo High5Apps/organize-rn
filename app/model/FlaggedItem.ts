@@ -66,9 +66,9 @@ export default function useFlaggedItem({
 }
 
 const flaggedItemCategoryIconMap: { [key in FlaggedItemCategory]: string } = {
-  ballot: 'check-box',
-  comment: 'forum',
-  post: 'chat-bubble',
+  Ballot: 'check-box',
+  Comment: 'forum',
+  Post: 'chat-bubble',
 };
 
 export const getFlaggedItemIcon = (category: FlaggedItemCategory) => (

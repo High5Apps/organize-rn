@@ -253,6 +253,6 @@ export type MyPermission = {
   scope: PermissionScope;
 };
 
-export type FlaggedItemCategory = 'ballot' | 'comment' | 'post';
+export type FlaggedItemCategory = 'Ballot' | 'Comment' | 'Post';
 export type FlaggedItemSort = 'top';
 export type FlaggedItem = Decrypt<FlaggedItemResponse>;

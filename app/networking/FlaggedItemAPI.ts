@@ -1,10 +1,10 @@
 import {
-  E2EMultiDecryptor, FlaggedItem, FlaggedItemSort, PaginationData, fromJson,
-  isDefined,
+  E2EMultiDecryptor, FlaggedItem, FlaggedItemCategory, FlaggedItemSort,
+  PaginationData, fromJson, isDefined,
 } from '../model';
 import { decryptMany, get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import { flaggedItemsURI } from './Routes';
+import { flagReportsURI, flaggedItemsURI } from './Routes';
 import { Authorization, isFlaggedItemsIndexResponse } from './types';
 
 type Props = {
@@ -26,7 +26,7 @@ export async function createFlaggedItem({
 
   const flaggableId = ballotId || commentId || postId;
 
-  let flaggableType: String;
+  let flaggableType: FlaggedItemCategory;
   if (ballotId !== undefined) {
     flaggableType = 'Ballot';
   } else if (commentId !== undefined) {
@@ -73,7 +73,7 @@ type IndexReturn = {
 export async function fetchFlaggedItems({
   createdAtOrBefore, e2eDecryptMany, jwt, page, sort,
 }: IndexProps): Promise<IndexReturn> {
-  const uri = new URL(flaggedItemsURI);
+  const uri = new URL(flagReportsURI);
 
   uri.searchParams.set(
     'created_at_or_before',
@@ -98,9 +98,9 @@ export async function fetchFlaggedItems({
     throw new Error('Failed to parse flagged items from response');
   }
 
-  const { flaggedItems: fetchedFlaggedItems, meta: paginationData } = json;
+  const { flags: fetchedFlaggedItems, meta: paginationData } = json;
   const encryptedTitles = fetchedFlaggedItems.map(
-    (flaggedItem) => flaggedItem.encryptedTitle,
+    (flag) => flag.encryptedTitle,
   );
   const titles = await decryptMany(encryptedTitles, e2eDecryptMany);
   const flaggedItems = fetchedFlaggedItems.map(
