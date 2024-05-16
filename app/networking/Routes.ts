@@ -11,14 +11,13 @@ const apiRoute = `${origin}/api/${version}`;
 export const ballotsURI = `${apiRoute}/ballots`;
 export const ballotURI = (ballotId: string) => `${ballotsURI}/${ballotId}`;
 export const candidatesURI = (ballotId: string) => `${ballotURI(ballotId)}/candidates`;
-export const flaggedBallotURI = (ballotId: string) => `${ballotURI(ballotId)}/flagged_items`;
 export const nominationsURI = (ballotId: string) => `${ballotURI(ballotId)}/nominations`;
 export const termsURI = (ballotId: string) => `${ballotURI(ballotId)}/terms`;
 
 export const connectionsURI = `${apiRoute}/connections`;
 export const connectionPreviewURI = `${apiRoute}/connection_preview`;
 
-export const flaggedItemsURI = `${apiRoute}/flagged_items`;
+export const flaggedItemsURI = `${apiRoute}/flags`;
 
 export const nominationURI = (nominationId: string) => `${apiRoute}/nominations/${nominationId}`;
 
@@ -37,12 +36,10 @@ export const myPermissionsURI = `${apiRoute}/my_permissions`;
 export const postsURI = `${apiRoute}/posts`;
 export const postURI = (postId: string) => `${apiRoute}/posts/${postId}`;
 export const postUpvotesURI = (postId: string) => `${postURI(postId)}/upvotes`;
-export const flaggedPostURI = (postId: string) => `${postURI(postId)}/flagged_items`;
 
 export const commentsURI = (postId: string) => `${postURI(postId)}/comments`;
 const commentURI = (commentId: string) => `${apiRoute}/comments/${commentId}`;
 export const commentUpvotesURI = (commentId: string) => `${commentURI(commentId)}/upvotes`;
-export const flaggedCommentURI = (commentId: string) => `${commentURI(commentId)}/flagged_items`;
 export const repliesURI = (commentId: string) => `${commentURI(commentId)}/comments`;
 
 export const usersURI = `${apiRoute}/users`;

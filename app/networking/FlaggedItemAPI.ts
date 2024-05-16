@@ -4,9 +4,7 @@ import {
 } from '../model';
 import { decryptMany, get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import {
-  flaggedBallotURI, flaggedCommentURI, flaggedItemsURI, flaggedPostURI,
-} from './Routes';
+import { flaggedItemsURI } from './Routes';
 import { Authorization, isFlaggedItemsIndexResponse } from './types';
 
 type Props = {
@@ -26,18 +24,23 @@ export async function createFlaggedItem({
     throw new Error('createFlaggedItem expected exactly one item ID');
   }
 
-  let uri;
+  const flaggableId = ballotId || commentId || postId;
+
+  let flaggableType: String;
   if (ballotId !== undefined) {
-    uri = flaggedBallotURI(ballotId);
+    flaggableType = 'Ballot';
   } else if (commentId !== undefined) {
-    uri = flaggedCommentURI(commentId);
+    flaggableType = 'Comment';
   } else if (postId !== undefined) {
-    uri = flaggedPostURI(postId);
+    flaggableType = 'Post';
   } else {
     throw new Error('createFlaggedItem expected exactly one item ID');
   }
+  const uri = flaggedItemsURI;
 
-  const response = await post({ jwt, uri });
+  const response = await post({
+    bodyObject: { flaggableId, flaggableType }, jwt, uri,
+  });
   if (!response.ok) {
     const text = await response.text();
     const json = fromJson(text, {
