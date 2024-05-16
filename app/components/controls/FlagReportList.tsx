@@ -1,27 +1,28 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { Flag, useFlags } from '../../model';
+import { FlagReport, useFlagReports } from '../../model';
 import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
-import FlagRow from './FlagRow';
+import FlagReportRow from './FlagReportRow';
 
 const LIST_EMPTY_MESSAGE = "Good news- Org members haven't flagged anything as **inappropriate** yet!\n\nAll flagged content will appear here, so that **moderators can decide** if it should be **blocked or allowed**.\n\nHowever, Org members can still choose to see blocked content in the **Transparency Log**.";
 
 type Props = {
-  onItemPress?: (item: Flag) => void;
+  onItemPress?: (item: FlagReport) => void;
 };
 
-export default function FlagList({ onItemPress }: Props) {
+export default function FlagReportList({ onItemPress }: Props) {
   const {
-    fetchedLastPage, fetchFirstPageOfFlags, fetchNextPageOfFlags, flags, ready,
-  } = useFlags({ sort: 'top' });
+    fetchedLastPage, fetchFirstPageOfFlagReports, fetchNextPageOfFlagReports,
+    flagReports, ready,
+  } = useFlagReports({ sort: 'top' });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       clearNextPageError();
 
-      await fetchFirstPageOfFlags();
+      await fetchFirstPageOfFlagReports();
     },
     refreshOnMount: true,
   });
@@ -32,22 +33,22 @@ export default function FlagList({ onItemPress }: Props) {
     onEndReached,
     onEndReachedThreshold,
   } = useInfiniteScroll({
-    getDisabled: () => (!flags.length || refreshing || fetchedLastPage),
-    onLoadNextPage: fetchNextPageOfFlags,
+    getDisabled: () => (!flagReports.length || refreshing || fetchedLastPage),
+    onLoadNextPage: fetchNextPageOfFlagReports,
   });
 
   const ListEmptyComponent = useCallback(() => (
     <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
   ), []);
 
-  const renderItem: ListRenderItem<Flag> = useCallback(
-    ({ item }) => <FlagRow item={item} onPress={onItemPress} />,
+  const renderItem: ListRenderItem<FlagReport> = useCallback(
+    ({ item }) => <FlagReportRow item={item} onPress={onItemPress} />,
     [onItemPress],
   );
 
   return (
     <FlatList
-      data={flags}
+      data={flagReports}
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ListFooterComponent}
@@ -61,6 +62,6 @@ export default function FlagList({ onItemPress }: Props) {
   );
 }
 
-FlagList.defaultProps = {
+FlagReportList.defaultProps = {
   onItemPress: undefined,
 };

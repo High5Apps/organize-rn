@@ -16,7 +16,7 @@ export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
 export { default as useFlag, getFlagIcon } from './Flag';
-export { default as useFlags } from './Flags';
+export { default as useFlagReports } from './FlagReports';
 export { default as useOrg } from './Org';
 export {
   fromJson, toJson, camelToSnake, snakeToCamel,

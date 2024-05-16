@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Flag, getFlagIcon, truncateText } from '../../model';
+import { FlagReport, getFlagIcon, truncateText } from '../../model';
 import useTheme from '../../Theme';
 import { DisclosureIcon } from '../views';
 
@@ -65,11 +65,11 @@ const useStyles = () => {
 };
 
 type Props = {
-  item: Flag;
-  onPress?: (item: Flag) => void;
+  item: FlagReport;
+  onPress?: (item: FlagReport) => void;
 };
 
-export default function FlagRow({ item, onPress }: Props) {
+export default function FlagReportRow({ item, onPress }: Props) {
   const { category, flagCount, pseudonym } = item;
 
   const title = useMemo(
@@ -106,6 +106,6 @@ export default function FlagRow({ item, onPress }: Props) {
   );
 }
 
-FlagRow.defaultProps = {
+FlagReportRow.defaultProps = {
   onPress: () => null,
 };

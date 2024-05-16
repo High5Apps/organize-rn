@@ -10,7 +10,7 @@ export type LeadItem = {
 };
 
 export type ModerationItem = {
-  destination: 'FlagTabs';
+  destination: 'FlagReportTabs';
   iconName: string;
   title: string;
 };

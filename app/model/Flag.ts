@@ -4,7 +4,7 @@ import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlag } from '../networking';
 import { GENERIC_ERROR_MESSAGE } from './Errors';
-import { FlagCategory } from './types';
+import { FlaggableType } from './types';
 
 type Props = {
   ballotId?: string;
@@ -65,12 +65,12 @@ export default function useFlag({
   return { confirmThenCreateFlag };
 }
 
-const flagCategoryIconMap: { [key in FlagCategory]: string } = {
+const flaggableTypeIconMap: { [key in FlaggableType]: string } = {
   Ballot: 'check-box',
   Comment: 'forum',
   Post: 'chat-bubble',
 };
 
-export const getFlagIcon = (category: FlagCategory) => (
-  flagCategoryIconMap[category] ?? 'article'
+export const getFlagIcon = (category: FlaggableType) => (
+  flaggableTypeIconMap[category] ?? 'article'
 );

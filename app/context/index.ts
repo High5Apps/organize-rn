@@ -7,7 +7,7 @@ export { useBallotPreviewContext } from './BallotPreviewContext';
 export { useCachedValueContext } from './CachedValueContext';
 export { useCommentContext } from './CommentContext';
 export { useCurrentUserDataContext } from './CurrentUserDataContext';
-export { useFlagContext } from './FlagContext';
+export { useFlagReportContext } from './FlagReportContext';
 export { useMyPermissionContext } from './MyPermissionContext';
 export { usePostContext } from './PostContext';
 export { useUserContext } from './UserContext';

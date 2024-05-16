@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
-import { Flag, FlagSort } from './types';
-import { fetchFlags } from '../networking';
-import { useFlagContext } from '../context';
+import { FlagReport, FlagReportSort } from './types';
+import { fetchFlagReports } from '../networking';
+import { useFlagReportContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 
@@ -10,18 +10,20 @@ import useModels from './Models';
 const firstPageIndex = 1;
 
 type Props = {
-  sort: FlagSort;
+  sort: FlagReportSort;
 };
 
 type FetchPageReturn = {
   hasNextPage: boolean;
 };
 
-export default function useFlags({ sort }: Props) {
-  const { cacheFlag, cacheFlags, getCachedFlag } = useFlagContext();
+export default function useFlagReports({ sort }: Props) {
   const {
-    ids: flagsIds, models: flags, setIds: setFlagIds,
-  } = useModels<Flag>({ getCachedModel: getCachedFlag });
+    cacheFlagReport, cacheFlagReports, getCachedFlagReport,
+  } = useFlagReportContext();
+  const {
+    ids: flagReportIds, models: flagReports, setIds: setFlagReportIds,
+  } = useModels<FlagReport>({ getCachedModel: getCachedFlagReport });
   const [ready, setReady] = useState<boolean>(false);
   const [fetchedLastPage, setFetchedLastPage] = useState<boolean>(false);
   const [createdAtOrBefore, setCreatedAtOrBefore] = useState<Date>(new Date());
@@ -29,7 +31,7 @@ export default function useFlags({ sort }: Props) {
 
   const { currentUser } = useCurrentUser();
 
-  async function fetchFirstPageOfFlags(): Promise<FetchPageReturn> {
+  async function fetchFirstPageOfFlagReports(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const now = new Date();
@@ -38,8 +40,8 @@ export default function useFlags({ sort }: Props) {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const {
-      errorMessage, paginationData, flags: fetchedFlags,
-    } = await fetchFlags({
+      errorMessage, paginationData, flags: fetchedFlagReports,
+    } = await fetchFlagReports({
       createdAtOrBefore: now,
       e2eDecryptMany,
       page: firstPageIndex,
@@ -51,9 +53,9 @@ export default function useFlags({ sort }: Props) {
       throw new Error(errorMessage);
     }
 
-    cacheFlags(fetchedFlags);
+    cacheFlagReports(fetchedFlagReports);
     setNextPageNumber(firstPageIndex + 1);
-    setFlagIds(getIdsFrom(fetchedFlags));
+    setFlagReportIds(getIdsFrom(fetchedFlagReports));
     const hasNextPage = paginationData?.nextPage !== null;
     setFetchedLastPage(!hasNextPage);
     setReady(true);
@@ -61,15 +63,15 @@ export default function useFlags({ sort }: Props) {
     return { hasNextPage };
   }
 
-  async function fetchNextPageOfFlags(): Promise<FetchPageReturn> {
+  async function fetchNextPageOfFlagReports(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
 
     const {
-      errorMessage, paginationData, flags: fetchedFlags,
-    } = await fetchFlags({
+      errorMessage, paginationData, flags: fetchedFlagReports,
+    } = await fetchFlagReports({
       createdAtOrBefore,
       e2eDecryptMany,
       jwt,
@@ -86,22 +88,22 @@ export default function useFlags({ sort }: Props) {
 
     const result = { hasNextPage };
 
-    if (!fetchedFlags?.length) { return result; }
+    if (!fetchedFlagReports?.length) { return result; }
 
-    cacheFlags(fetchedFlags);
+    cacheFlagReports(fetchedFlagReports);
     setNextPageNumber((pageNumber) => pageNumber + 1);
-    setFlagIds([...flagsIds, ...getIdsFrom(fetchedFlags)]);
+    setFlagReportIds([...flagReportIds, ...getIdsFrom(fetchedFlagReports)]);
 
     return result;
   }
 
   return {
-    cacheFlag,
+    cacheFlagReport,
     fetchedLastPage,
-    fetchFirstPageOfFlags,
-    fetchNextPageOfFlags,
-    getCachedFlag,
-    flags,
+    fetchFirstPageOfFlagReports,
+    fetchNextPageOfFlagReports,
+    getCachedFlagReport,
+    flagReports,
     ready,
   };
 }

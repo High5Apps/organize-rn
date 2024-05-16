@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { FlagList, ScreenBackground } from '../../components';
+import { FlagReportList, ScreenBackground } from '../../components';
 import type { FlaggedPendingScreenProps } from '../../navigation';
-import { Flag } from '../../model';
+import { FlagReport } from '../../model';
 
 export default function FlaggedPendingScreen({
   navigation,
 }: FlaggedPendingScreenProps) {
-  const onItemPress = useCallback((flag: Flag) => {
+  const onItemPress = useCallback((flag: FlagReport) => {
     const { category, id } = flag;
 
     if (category === 'Ballot') {
@@ -24,7 +24,7 @@ export default function FlaggedPendingScreen({
 
   return (
     <ScreenBackground>
-      <FlagList onItemPress={onItemPress} />
+      <FlagReportList onItemPress={onItemPress} />
     </ScreenBackground>
   );
 }

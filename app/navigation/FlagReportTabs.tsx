@@ -3,12 +3,12 @@ import {
   createMaterialTopTabNavigator,
 } from '@react-navigation/material-top-tabs';
 import { FlaggedHandledScreen, FlaggedPendingScreen } from '../screens';
-import { FlagTabsParamList } from './types';
+import { FlagReportTabsParamList } from './types';
 import useDefaultTopTabOptions from './DefaultTopTabOptions';
 
-const Tab = createMaterialTopTabNavigator<FlagTabsParamList>();
+const Tab = createMaterialTopTabNavigator<FlagReportTabsParamList>();
 
-export default function FlagTabs() {
+export default function FlagReportTabs() {
   const screenOptions = useDefaultTopTabOptions();
 
   return (

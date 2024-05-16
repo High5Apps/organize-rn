@@ -6,7 +6,7 @@ import { ItemSeparator } from '../views';
 
 const MODERATION_ITEMS: ModerationItem[] = [
   {
-    destination: 'FlagTabs',
+    destination: 'FlagReportTabs',
     iconName: 'flag',
     title: 'Flagged Content',
   },
