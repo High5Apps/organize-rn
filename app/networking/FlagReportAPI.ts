@@ -16,11 +16,11 @@ type IndexProps = Authorization & {
 type IndexReturn = {
   errorMessage: string;
   paginationData?: never;
-  flags?: never;
+  flagReports?: never;
 } | {
   errorMessage?: never;
   paginationData?: PaginationData;
-  flags: FlagReport[];
+  flagReports: FlagReport[];
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -52,14 +52,14 @@ export async function fetchFlagReports({
     throw new Error('Failed to parse flagged items from response');
   }
 
-  const { flags: fetchedFlags, meta: paginationData } = json;
-  const encryptedTitles = fetchedFlags.map(
-    (flag) => flag.encryptedTitle,
+  const { flagReports: fetchedFlagReports, meta: paginationData } = json;
+  const encryptedTitles = fetchedFlagReports.map(
+    (flagReport) => flagReport.encryptedTitle,
   );
   const titles = await decryptMany(encryptedTitles, e2eDecryptMany);
-  const flags = fetchedFlags.map(
+  const flagReports = fetchedFlagReports.map(
     ({ encryptedTitle, ...fi }, i) => ({ ...fi, title: titles[i]! }),
   );
 
-  return { flags, paginationData };
+  return { flagReports, paginationData };
 }

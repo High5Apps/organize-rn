@@ -40,7 +40,7 @@ export default function useFlagReports({ sort }: Props) {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
     const {
-      errorMessage, paginationData, flags: fetchedFlagReports,
+      errorMessage, paginationData, flagReports: fetchedFlagReports,
     } = await fetchFlagReports({
       createdAtOrBefore: now,
       e2eDecryptMany,
@@ -70,7 +70,7 @@ export default function useFlagReports({ sort }: Props) {
     const { e2eDecryptMany } = currentUser;
 
     const {
-      errorMessage, paginationData, flags: fetchedFlagReports,
+      errorMessage, paginationData, flagReports: fetchedFlagReports,
     } = await fetchFlagReports({
       createdAtOrBefore,
       e2eDecryptMany,

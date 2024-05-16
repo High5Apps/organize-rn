@@ -455,14 +455,14 @@ export function isFlagReportResponse(object: unknown): object is FlagReportRespo
 }
 
 type FlagReportsIndexResponse = {
-  flags: FlagReportResponse[];
+  flagReports: FlagReportResponse[];
   meta?: PaginationData;
 };
 
 export function isFlagReportsIndexResponse(object: unknown): object is FlagReportsIndexResponse {
   const response = (object as FlagReportsIndexResponse);
-  return response?.flags
-    && Array.isArray(response.flags)
-    && response.flags.every(isFlagReportResponse)
+  return response?.flagReports
+    && Array.isArray(response.flagReports)
+    && response.flagReports.every(isFlagReportResponse)
     && isPaginationData(response?.meta);
 }
