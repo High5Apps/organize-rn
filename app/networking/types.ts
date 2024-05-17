@@ -452,26 +452,31 @@ export function isModerationEventResponse(object: unknown): object is Moderation
     && response.moderator.pseudonym?.length > 0;
 }
 
-export type FlagReportResponse = {
+export type Flaggable = {
   category: FlaggableType;
   creator: {
     id: string;
     pseudonym: string;
   };
   encryptedTitle: BackendEncryptedMessage;
-  flagCount: number;
   id: string;
+};
+
+export type FlagReportResponse = {
+  flaggable: Flaggable;
+  flagCount: number;
   moderationEvent?: ModerationEvent;
 };
 
 export function isFlagReportResponse(object: unknown): object is FlagReportResponse {
   const response = (object as FlagReportResponse);
-  return response.category?.length > 0
-    && response?.creator?.id.length > 0
-    && response.creator.pseudonym?.length > 0
-    && isBackendEncryptedMessage(response.encryptedTitle)
+  return response?.flaggable
+    && response.flaggable.category?.length > 0
+    && response.flaggable.creator?.id.length > 0
+    && response.flaggable.creator.pseudonym?.length > 0
+    && isBackendEncryptedMessage(response.flaggable.encryptedTitle)
+    && response.flaggable.id?.length > 0
     && response.flagCount > 0
-    && response.id?.length > 0
     && (!response?.moderationEvent
       || isModerationEventResponse(response.moderationEvent)
     );

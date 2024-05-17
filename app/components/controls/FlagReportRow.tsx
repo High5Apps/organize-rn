@@ -83,14 +83,14 @@ type Props = {
 
 export default function FlagReportRow({ item, onPress }: Props) {
   const {
-    category, creator, flagCount, moderationEvent,
+    flaggable, flagCount, moderationEvent,
   } = item;
 
   const title = useMemo(
-    () => truncateText({ maxLength: MAX_TITLE_LENGTH, text: item.title })
+    () => truncateText({ maxLength: MAX_TITLE_LENGTH, text: flaggable.title })
       // Replace whitespace with space to prevent newlines from affecting layout
       .replace(/\s/g, ' '),
-    [item.title],
+    [flaggable.title],
   );
 
   const { colors, styles } = useStyles();
@@ -104,7 +104,7 @@ export default function FlagReportRow({ item, onPress }: Props) {
         <View style={styles.containerTop}>
           <View style={styles.rowTitle}>
             <Icon
-              name={getFlagIcon(category)}
+              name={getFlagIcon(flaggable.category)}
               style={[styles.rowIcon, styles.rowIconPrimary]}
             />
             <Text style={styles.rowTitleText}>{title}</Text>
@@ -114,7 +114,7 @@ export default function FlagReportRow({ item, onPress }: Props) {
             <Icon name="flag" style={styles.rowIcon} />
             <Text style={styles.rowSubtitleText}>{flagCount}</Text>
             <Icon name="edit-square" style={styles.rowIcon} />
-            <Text style={styles.rowSubtitleText}>{creator.pseudonym}</Text>
+            <Text style={styles.rowSubtitleText}>{flaggable.creator.pseudonym}</Text>
           </View>
           <View style={styles.rowSubtitle}>
             <Icon name="gavel" style={styles.rowIcon} />

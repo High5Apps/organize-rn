@@ -254,5 +254,7 @@ export type MyPermission = {
 };
 
 export type FlaggableType = 'Ballot' | 'Comment' | 'Post';
-export type FlagReport = Decrypt<FlagReportResponse>;
+export type FlagReport = Decrypt<FlagReportResponse> & {
+  id: string;
+};
 export type FlagReportSort = 'top';

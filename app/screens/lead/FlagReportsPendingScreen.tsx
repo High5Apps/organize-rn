@@ -6,8 +6,8 @@ import { FlagReport } from '../../model';
 export default function FlagReportsPendingScreen({
   navigation,
 }: FlagReportsPendingScreenProps) {
-  const onItemPress = useCallback((flag: FlagReport) => {
-    const { category, id } = flag;
+  const onItemPress = useCallback((flagReport: FlagReport) => {
+    const { flaggable: { category }, id } = flagReport;
 
     if (category === 'Ballot') {
       navigation.navigate('VoteStack', {
@@ -18,7 +18,7 @@ export default function FlagReportsPendingScreen({
         screen: 'Post', initial: false, params: { postId: id },
       });
     } else {
-      console.log({ flag });
+      console.log({ flagReport });
     }
   }, [navigation]);
 

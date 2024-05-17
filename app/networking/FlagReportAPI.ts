@@ -53,12 +53,17 @@ export async function fetchFlagReports({
   }
 
   const { flagReports: fetchedFlagReports, meta: paginationData } = json;
-  const encryptedTitles = fetchedFlagReports.map(
-    (flagReport) => flagReport.encryptedTitle,
+  const flaggables = fetchedFlagReports.map(({ flaggable }) => flaggable);
+  const encryptedTitles = flaggables.map(
+    ({ encryptedTitle }) => encryptedTitle,
   );
+  const flaggableIds = flaggables.map(({ id }) => id);
   const titles = await decryptMany(encryptedTitles, e2eDecryptMany);
+
   const flagReports = fetchedFlagReports.map(
-    ({ encryptedTitle, ...fi }, i) => ({ ...fi, title: titles[i]! }),
+    ({ flaggable: { encryptedTitle, ...fl }, ...fr }, i) => (
+      { ...fr, id: flaggableIds[i], flaggable: { ...fl, title: titles[i]! } }
+    ),
   );
 
   return { flagReports, paginationData };
