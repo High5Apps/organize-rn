@@ -20,6 +20,8 @@ export const connectionPreviewURI = `${apiRoute}/connection_preview`;
 export const flagsURI = `${apiRoute}/flags`;
 export const flagReportsURI = `${apiRoute}/flag_reports`;
 
+export const moderationEventsURI = `${apiRoute}/moderation_events`;
+
 export const nominationURI = (nominationId: string) => `${apiRoute}/nominations/${nominationId}`;
 
 export const officesURI = `${apiRoute}/offices`;

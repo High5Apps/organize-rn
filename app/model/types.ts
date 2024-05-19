@@ -259,6 +259,7 @@ export type FlagReport = Decrypt<FlagReportResponse> & {
 };
 export type FlagReportSort = 'top';
 
+export type ModeratableType = FlaggableType | 'User';
 export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
 export type ModerationEvent = {
   action: ModerationEventAction;
