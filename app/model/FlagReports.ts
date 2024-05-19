@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { Alert } from 'react-native';
 import useCurrentUser from './CurrentUser';
 import { FlagReport, FlagReportSort } from './types';
-import { fetchFlagReports } from '../networking';
+import { createModerationEvent, fetchFlagReports } from '../networking';
 import { useFlagReportContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
+import { GENERIC_ERROR_MESSAGE } from './Errors';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
+
+const ERROR_ALERT_TITLE = 'Failed to create moderation event. Please try again';
 
 type Props = {
   sort: FlagReportSort;
@@ -97,6 +101,46 @@ export default function useFlagReports({ sort }: Props) {
     return result;
   }
 
+  async function onFlagReportChanged(
+    previousFlagReport: FlagReport,
+    flagReport: Required<FlagReport>,
+  ) {
+    if (!currentUser) { throw new Error('Expected current user to be set'); }
+
+    // Optimistically cache the flag report with the updated moderation event
+    cacheFlagReport(flagReport);
+
+    // Create backend moderation event
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+    let errorMessage: string | undefined;
+    let id: string | undefined;
+    try {
+      const { flaggable, moderationEvent } = flagReport;
+      ({ errorMessage, id } = await createModerationEvent({
+        action: moderationEvent.action,
+        jwt,
+        moderatableId: flaggable.id,
+        moderatableType: flaggable.category,
+      }));
+    } catch (error) {
+      errorMessage = GENERIC_ERROR_MESSAGE;
+    }
+
+    if (errorMessage) {
+      // On error, revert the flag report back to what it was before the
+      // optimistic caching
+      cacheFlagReport(previousFlagReport);
+      Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+    } else if (id) {
+      // On success, re-cache the flag report with the id from the backend to
+      // indicate that it is no longer in-flight
+      const updatedFlagReport = { ...flagReport };
+      updatedFlagReport.moderationEvent.id = id;
+      cacheFlagReport(updatedFlagReport);
+    }
+  }
+
   return {
     cacheFlagReport,
     fetchedLastPage,
@@ -104,6 +148,7 @@ export default function useFlagReports({ sort }: Props) {
     fetchNextPageOfFlagReports,
     getCachedFlagReport,
     flagReports,
+    onFlagReportChanged,
     ready,
   };
 }

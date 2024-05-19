@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { FlagReport, useFlagReports } from '../../model';
+import { FlagReport, useCurrentUser, useFlagReports } from '../../model';
 import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 import FlagReportRow from './FlagReportRow';
@@ -12,9 +12,12 @@ type Props = {
 };
 
 export default function FlagReportList({ onItemPress }: Props) {
+  const { currentUser } = useCurrentUser();
+  if (!currentUser) { throw new Error('Expected currentUser'); }
+
   const {
     fetchedLastPage, fetchFirstPageOfFlagReports, fetchNextPageOfFlagReports,
-    flagReports, ready,
+    flagReports, onFlagReportChanged, ready,
   } = useFlagReports({ sort: 'top' });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
@@ -42,7 +45,15 @@ export default function FlagReportList({ onItemPress }: Props) {
   ), []);
 
   const renderItem: ListRenderItem<FlagReport> = useCallback(
-    ({ item }) => <FlagReportRow item={item} onPress={onItemPress} />,
+    ({ item }) => (
+      <FlagReportRow
+        currentUserId={currentUser.id}
+        currentUserPseudonym={currentUser.pseudonym}
+        item={item}
+        onFlagReportChanged={onFlagReportChanged}
+        onPress={onItemPress}
+      />
+    ),
     [onItemPress],
   );
 

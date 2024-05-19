@@ -1,9 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FlagReport, getFlagIcon, truncateText } from '../../model';
+import {
+  FlagReport, ModerationEvent, ModerationEventAction, getFlagIcon,
+  getMessageAge, truncateText,
+} from '../../model';
 import useTheme from '../../Theme';
 import { DisclosureIcon } from '../views';
 import SecondaryButton from './SecondaryButton';
@@ -20,6 +23,9 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     button: {
       paddingHorizontal: spacing.s,
+    },
+    buttonHidden: {
+      opacity: 0,
     },
     buttonRow: {
       flexDirection: 'row',
@@ -76,15 +82,57 @@ const useStyles = () => {
   return { colors, styles };
 };
 
+function getModerationEventDependentValues(moderationEvent?: ModerationEvent) {
+  const wasPreviouslyAllowedOrBlocked = moderationEvent?.action === 'allow'
+    || moderationEvent?.action === 'block';
+
+  let eventActionMessage: string;
+  let eventActionIcon: string;
+  if (!wasPreviouslyAllowedOrBlocked) {
+    eventActionMessage = 'Pending';
+    eventActionIcon = 'gavel';
+  } else {
+    const wasAllowed = moderationEvent.action === 'allow';
+
+    eventActionIcon = wasAllowed ? 'check' : 'block';
+
+    const action = (wasAllowed) ? 'Allowed' : 'Blocked';
+    const { pseudonym } = moderationEvent.moderator;
+    const timeAgo = getMessageAge(moderationEvent.createdAt);
+    eventActionMessage = `${action} by ${pseudonym} ${timeAgo}`;
+  }
+
+  const isEventInFlight = !!moderationEvent && moderationEvent.id === undefined;
+
+  return {
+    eventActionIcon,
+    eventActionMessage,
+    isEventInFlight,
+    wasPreviouslyAllowedOrBlocked,
+  };
+}
+
 type Props = {
+  currentUserId: string;
+  currentUserPseudonym: string;
   item: FlagReport;
+  onFlagReportChanged: (
+    previousFlagReport: FlagReport,
+    flagReport: Required<FlagReport>,
+  ) => void,
   onPress?: (item: FlagReport) => void;
 };
 
-export default function FlagReportRow({ item, onPress }: Props) {
+export default function FlagReportRow({
+  currentUserId, currentUserPseudonym, item, onFlagReportChanged, onPress,
+}: Props) {
   const {
     flaggable, flagCount, moderationEvent,
   } = item;
+  const {
+    eventActionIcon, eventActionMessage, isEventInFlight,
+    wasPreviouslyAllowedOrBlocked,
+  } = getModerationEventDependentValues(moderationEvent);
 
   const title = useMemo(
     () => truncateText({ maxLength: MAX_TITLE_LENGTH, text: flaggable.title })
@@ -94,6 +142,32 @@ export default function FlagReportRow({ item, onPress }: Props) {
   );
 
   const { colors, styles } = useStyles();
+
+  const wrappedOnFlagReportChanged = useCallback(
+    (buttonAction: 'allow' | 'block' | 'undo') => {
+      let action: ModerationEventAction;
+      if (buttonAction === 'allow' || buttonAction === 'block') {
+        action = buttonAction;
+      } else if (item.moderationEvent?.action === 'allow') {
+        action = 'undo_allow';
+      } else {
+        action = 'undo_block';
+      }
+
+      onFlagReportChanged(item, {
+        ...item,
+        moderationEvent: {
+          action,
+          createdAt: new Date(),
+          moderator: {
+            id: currentUserId,
+            pseudonym: currentUserPseudonym,
+          },
+        },
+      });
+    },
+    [currentUserId, currentUserPseudonym, item],
+  );
 
   return (
     <TouchableHighlight
@@ -117,31 +191,34 @@ export default function FlagReportRow({ item, onPress }: Props) {
             <Text style={styles.rowSubtitleText}>{flaggable.creator.pseudonym}</Text>
           </View>
           <View style={styles.rowSubtitle}>
-            <Icon name="gavel" style={styles.rowIcon} />
-            <Text style={styles.rowSubtitleText}>Pending</Text>
+            <Icon name={eventActionIcon} style={styles.rowIcon} />
+            <Text style={styles.rowSubtitleText}>{eventActionMessage}</Text>
           </View>
         </View>
         <View style={styles.buttonRow}>
-          {moderationEvent ? (
+          {wasPreviouslyAllowedOrBlocked ? (
             <SecondaryButton
+              disabled={isEventInFlight}
               iconName="restart-alt"
               label="Undo"
-              onPress={() => console.log('undo')}
-              style={styles.button}
+              onPress={() => wrappedOnFlagReportChanged('undo')}
+              style={[styles.button, isEventInFlight && styles.buttonHidden]}
             />
           ) : (
             <>
               <SecondaryButton
+                disabled={isEventInFlight}
                 iconName="check"
                 label="Allow"
-                onPress={() => console.log('allow')}
-                style={styles.button}
+                onPress={() => wrappedOnFlagReportChanged('allow')}
+                style={[styles.button, isEventInFlight && styles.buttonHidden]}
               />
               <SecondaryButton
+                disabled={isEventInFlight}
                 iconName="block"
                 label="Block"
-                onPress={() => console.log('block')}
-                style={styles.button}
+                onPress={() => wrappedOnFlagReportChanged('block')}
+                style={[styles.button, isEventInFlight && styles.buttonHidden]}
               />
             </>
           )}
