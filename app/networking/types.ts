@@ -1,6 +1,7 @@
 import type {
-  BallotCategory, FlaggableType, MyPermission, Nomination, NominationUser,
-  OfficeCategory, Org, OrgGraph, PaginationData, PostCategory, User, VoteState,
+  BallotCategory, FlaggableType, ModerationEvent, MyPermission, Nomination,
+  NominationUser, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
+  User, VoteState,
 } from '../model';
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
@@ -435,15 +436,6 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
     && response.myPermissions.every(isMyPermission);
 }
 
-export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
-export type ModerationEvent = {
-  action: ModerationEventAction;
-  createdAt: Date;
-  moderator: {
-    id: string;
-    pseudonym: string;
-  };
-};
 export function isModerationEventResponse(object: unknown): object is ModerationEvent {
   const response = (object as ModerationEvent);
   return response?.action?.length > 0

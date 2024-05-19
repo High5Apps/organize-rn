@@ -258,3 +258,13 @@ export type FlagReport = Decrypt<FlagReportResponse> & {
   id: string;
 };
 export type FlagReportSort = 'top';
+
+export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
+export type ModerationEvent = {
+  action: ModerationEventAction;
+  createdAt: Date;
+  moderator: {
+    id: string;
+    pseudonym: string;
+  };
+};
