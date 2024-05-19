@@ -440,6 +440,8 @@ export function isModerationEventResponse(object: unknown): object is Moderation
   const response = (object as ModerationEvent);
   return response?.action?.length > 0
     && isDate(response.createdAt)
+    && response.id !== undefined // Require id from backend events, unlike local
+    && response.id.length > 0
     && response.moderator?.id?.length > 0
     && response.moderator.pseudonym?.length > 0;
 }

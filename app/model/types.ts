@@ -264,6 +264,7 @@ export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_blo
 export type ModerationEvent = {
   action: ModerationEventAction;
   createdAt: Date;
+  id?: string;
   moderator: {
     id: string;
     pseudonym: string;
