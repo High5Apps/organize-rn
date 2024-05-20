@@ -36,6 +36,7 @@ const useStyles = () => {
 
 type Props = {
   commentId?: string;
+  disabled?: boolean;
   errorItemFriendlyDifferentiator: string;
   onVoteChanged?: (vote: VoteState, score: number) => void;
   postId?: string;
@@ -44,8 +45,8 @@ type Props = {
 };
 
 export default function UpvoteControl({
-  commentId, errorItemFriendlyDifferentiator, onVoteChanged, postId, score,
-  voteState,
+  commentId, disabled, errorItemFriendlyDifferentiator, onVoteChanged, postId,
+  score, voteState,
 }: Props) {
   const { styles } = useStyles();
 
@@ -126,8 +127,8 @@ export default function UpvoteControl({
         buttonStyle={[styles.button, styles.buttonUp]}
         fill={waitingForUp ? (waitingForVoteSate === 1) : (voteState === 1)}
         onPress={() => onPress({ isUpvote: true })}
-        softDisabled={waitingForResponse}
-        waitingForResponse={waitingForUp}
+        showDisabled={waitingForUp || disabled}
+        softDisabled={waitingForResponse || disabled}
       />
       <Text style={styles.text}>{score}</Text>
       <UpvoteButton
@@ -135,8 +136,8 @@ export default function UpvoteControl({
         fill={waitingForDown ? (waitingForVoteSate === -1) : (voteState === -1)}
         flip
         onPress={() => onPress({ isUpvote: false })}
-        softDisabled={waitingForResponse}
-        waitingForResponse={waitingForDown}
+        showDisabled={waitingForDown || disabled}
+        softDisabled={waitingForResponse || disabled}
       />
     </View>
   );
@@ -144,6 +145,7 @@ export default function UpvoteControl({
 
 UpvoteControl.defaultProps = {
   commentId: undefined,
+  disabled: false,
   onVoteChanged: () => {},
   postId: undefined,
 };

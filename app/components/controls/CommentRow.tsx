@@ -124,6 +124,7 @@ function CommentRow({
     >
       <UpvoteControl
         commentId={id}
+        disabled={blocked}
         errorItemFriendlyDifferentiator={body}
         onVoteChanged={(updatedVote, updatedScore) => {
           onCommentChanged?.({
