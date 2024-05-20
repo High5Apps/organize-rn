@@ -44,6 +44,7 @@ const useStyles = () => {
       gap: spacing.s,
     },
     rowIcon: {
+      alignSelf: 'flex-start',
       color: colors.labelSecondary,
       fontSize: sizes.icon,
       marginEnd: spacing.xs,
