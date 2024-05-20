@@ -98,9 +98,8 @@ function getModerationEventDependentValues(moderationEvent?: ModerationEvent) {
     eventActionIcon = wasAllowed ? 'check' : 'block';
 
     const action = (wasAllowed) ? 'Allowed' : 'Blocked';
-    const { pseudonym } = moderationEvent.moderator;
     const timeAgo = getMessageAge(moderationEvent.createdAt);
-    eventActionMessage = `${action} by ${pseudonym} ${timeAgo}`;
+    eventActionMessage = `${action} ${timeAgo}`;
   }
 
   const isEventInFlight = !!moderationEvent && moderationEvent.id === undefined;
