@@ -4,19 +4,23 @@ import TextButton from './TextButton';
 
 type Props = {
   commentId?: string;
+  disabled?: boolean;
 };
 
-export default function FlagTextButton({ commentId }: Props) {
+export default function FlagTextButton({
+  commentId, disabled: maybeDisabled,
+}: Props) {
   const [label, setLabel] = useState<'Flag' | 'Flag ✓'>('Flag');
-  const [disabled, setDisabled] = useState(false);
+  const [temporarilyDisabled, setTemporarilyDisabled] = useState(false);
+  const disabled = !!maybeDisabled || temporarilyDisabled;
 
   const onSuccess = useCallback(() => {
     setLabel('Flag ✓');
-    setDisabled(true);
+    setTemporarilyDisabled(true);
 
     setTimeout(() => {
       setLabel('Flag');
-      setDisabled(false);
+      setTemporarilyDisabled(false);
     }, 4000);
   }, []);
 
@@ -31,4 +35,5 @@ export default function FlagTextButton({ commentId }: Props) {
 
 FlagTextButton.defaultProps = {
   commentId: undefined,
+  disabled: undefined,
 };

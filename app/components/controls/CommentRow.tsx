@@ -79,7 +79,7 @@ function CommentRow({
   const body = blocked ? BLOCKED_COMMENT_BODY : item.body;
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
-  const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
+  const hideReplyButton = depth >= (MAX_COMMENT_DEPTH - 1);
 
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
@@ -141,10 +141,12 @@ function CommentRow({
         <Text style={styles.subtitle}>{subtitle}</Text>
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
-            {!disableReply && (
-              <TextButton onPress={onReplyPress}>Reply</TextButton>
+            {!hideReplyButton && (
+              <TextButton disabled={blocked} onPress={onReplyPress}>
+                Reply
+              </TextButton>
             )}
-            <FlagTextButton commentId={id} />
+            <FlagTextButton commentId={id} disabled={blocked} />
           </View>
         )}
       </View>
