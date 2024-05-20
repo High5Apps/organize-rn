@@ -5,10 +5,8 @@ import {
 import { ArrowTriangle } from '../../../assets';
 import useTheme from '../../Theme';
 
-const DEFAULT_BUTTON_ACTIVE_OPACITY = 0.5;
-
 const useStyles = () => {
-  const { colors: { primary }, sizes } = useTheme();
+  const { colors: { primary }, opacity, sizes } = useTheme();
 
   const styles = StyleSheet.create({
     arrow: {
@@ -19,11 +17,11 @@ const useStyles = () => {
       alignItems: 'center',
     },
     waitingForResponse: {
-      opacity: DEFAULT_BUTTON_ACTIVE_OPACITY,
+      opacity: opacity.disabled,
     },
   });
 
-  return { primary, styles };
+  return { opacity, primary, styles };
 };
 
 type Props = {
@@ -38,13 +36,13 @@ type Props = {
 export default function UpvoteButton({
   buttonStyle, fill, flip, onPress, softDisabled, waitingForResponse,
 }: Props) {
-  const { primary, styles } = useStyles();
+  const { opacity, primary, styles } = useStyles();
 
   // It's not possible to use TouchableOpacity's disabled prop, because then
   // arrow clicks would bubble up to the next responder. This "soft disable"
   // requires the activeOpacity modification below, so that there's no change in
   // opacity when pressing while disabled.
-  const activeOpacity = softDisabled ? 1 : DEFAULT_BUTTON_ACTIVE_OPACITY;
+  const activeOpacity = softDisabled ? opacity.visible : opacity.disabled;
 
   return (
     <TouchableOpacity

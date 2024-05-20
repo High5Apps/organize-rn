@@ -6,7 +6,7 @@ import useTheme from '../../Theme';
 
 const useStyles = () => {
   const {
-    colors, isDarkMode, shadows, spacing,
+    colors, isDarkMode, opacity, shadows, spacing,
   } = useTheme();
 
   const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const useStyles = () => {
       ...shadows.elevation4,
     },
     pressed: {
-      opacity: isDarkMode ? 0.5 : 1,
+      opacity: isDarkMode ? opacity.hidden : opacity.visible,
       ...shadows.elevation1,
     },
   });

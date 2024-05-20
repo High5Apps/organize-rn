@@ -11,7 +11,7 @@ import { DiscussButtonType } from './DiscussButton';
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
 
   const firstRowColumnGap = spacing.m;
@@ -34,7 +34,7 @@ const useStyles = () => {
       fontSize: iconFontSize,
     },
     iconDim: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     rank: {
       color: colors.primary,

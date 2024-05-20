@@ -67,6 +67,11 @@ const lightTheme = {
     },
     weights,
   },
+  opacity: {
+    disabled: 0.5,
+    hidden: 0,
+    visible: 1,
+  },
   shadows: {
     elevation1: {
       elevation: 1, // Android only

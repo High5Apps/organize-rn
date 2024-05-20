@@ -7,7 +7,7 @@ import { Result, getShortenedTitles } from '../../model';
 
 const useStyles = (resultCount: number) => {
   const {
-    colors, font, spacing, sizes,
+    colors, font, opacity, spacing, sizes,
   } = useTheme();
 
   // For 2 results, use a spacing of 8. For 4 use 6. For 6 use 4. For 9+ use 1.
@@ -20,7 +20,7 @@ const useStyles = (resultCount: number) => {
       flex: 1,
     },
     barLoser: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     candidateTitle: {
       // This overrides styles.text

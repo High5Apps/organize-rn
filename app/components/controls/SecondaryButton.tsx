@@ -8,7 +8,7 @@ import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
   const styles = StyleSheet.create({
     icon: {
@@ -23,7 +23,7 @@ const useStyles = () => {
       alignItems: 'center',
     },
     pressed: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     reversed: {
       flexDirection: 'row-reverse',

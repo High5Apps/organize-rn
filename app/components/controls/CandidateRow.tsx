@@ -9,7 +9,7 @@ import type { DiscussButtonType } from './DiscussButton';
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
 
   const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ const useStyles = () => {
       padding: spacing.m,
     },
     disabled: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     icon: {
       color: colors.primary,

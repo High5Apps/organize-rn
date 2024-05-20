@@ -17,7 +17,7 @@ const MAX_TITLE_LENGTH = 140;
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
 
   const styles = StyleSheet.create({
@@ -25,7 +25,7 @@ const useStyles = () => {
       paddingHorizontal: spacing.s,
     },
     buttonHidden: {
-      opacity: 0,
+      opacity: opacity.hidden,
     },
     buttonRow: {
       flexDirection: 'row',

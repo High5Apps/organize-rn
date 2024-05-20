@@ -8,7 +8,9 @@ import IconRow from './IconRow';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const { colors, spacing, sizes } = useTheme();
+  const {
+    colors, opacity, spacing, sizes,
+  } = useTheme();
 
   const styles = StyleSheet.create({
     checkBoxHighlightFix: {
@@ -23,7 +25,7 @@ const useStyles = () => {
       flexDirection: 'row',
     },
     disabled: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     icon: {
       color: colors.primary,

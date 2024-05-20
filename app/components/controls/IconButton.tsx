@@ -4,14 +4,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
-  const { colors, sizes } = useTheme();
+  const { colors, opacity, sizes } = useTheme();
 
   const styles = StyleSheet.create({
     disabled: {
       color: colors.labelSecondary,
     },
     pressed: {
-      opacity: 0.5,
+      opacity: opacity.disabled,
     },
     icon: {
       color: colors.primary,

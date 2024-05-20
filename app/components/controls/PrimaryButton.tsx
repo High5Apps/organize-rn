@@ -8,7 +8,7 @@ import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
-    colors, font, isDarkMode, shadows, sizes, spacing,
+    colors, font, isDarkMode, opacity, shadows, sizes, spacing,
   } = useTheme();
 
   const styles = StyleSheet.create({
@@ -27,7 +27,7 @@ const useStyles = () => {
       ...shadows.elevation4,
     },
     pressed: {
-      opacity: isDarkMode ? 0.5 : 1,
+      opacity: isDarkMode ? opacity.disabled : opacity.visible,
       ...shadows.elevation1,
     },
     text: {
