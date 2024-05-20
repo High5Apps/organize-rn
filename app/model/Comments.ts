@@ -6,6 +6,7 @@ import { useCommentContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 
+export const BLOCKED_COMMENT_BODY = '[blocked]';
 export const MAX_COMMENT_DEPTH = 8;
 export const MAX_COMMENT_LENGTH = 10000;
 

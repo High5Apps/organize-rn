@@ -7,7 +7,8 @@ export {
 export { default as useBallotTypes, ballotTypeMap } from './BallotTypes';
 export { default as useCachedValue } from './CachedValue';
 export {
-  default as useComments, MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
+  default as useComments, BLOCKED_COMMENT_BODY, MAX_COMMENT_DEPTH,
+  MAX_COMMENT_LENGTH,
 } from './Comments';
 export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';

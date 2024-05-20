@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
-import { Comment, MAX_COMMENT_DEPTH, getMessageAge } from '../../model';
+import {
+  BLOCKED_COMMENT_BODY, Comment, MAX_COMMENT_DEPTH, getMessageAge,
+} from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
@@ -12,7 +14,9 @@ import { HighlightedRowContainer, HyperlinkDetector } from '../views';
 import FlagTextButton from './FlagTextButton';
 
 const useStyles = () => {
-  const { colors, font, spacing } = useTheme();
+  const {
+    colors, font, opacity, spacing,
+  } = useTheme();
 
   const { width: screenWidth } = useWindowDimensions();
 
@@ -47,6 +51,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
+    titleBlocked: {
+      opacity: opacity.disabled,
+    },
   });
 
   return { colors, nestedMarginStart, styles };
@@ -67,8 +74,9 @@ function CommentRow({
   item, onCommentChanged, postId,
 }: Props) {
   const {
-    body, createdAt, depth, id, myVote, pseudonym, score, userId,
+    blocked, createdAt, depth, id, myVote, pseudonym, score, userId,
   } = item;
+  const body = blocked ? BLOCKED_COMMENT_BODY : item.body;
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const disableReply = depth >= (MAX_COMMENT_DEPTH - 1);
@@ -89,7 +97,7 @@ function CommentRow({
       <Text
         selectable={enableBodyTextSelection}
         selectionColor={colors.primary}
-        style={styles.title}
+        style={[styles.title, blocked && styles.titleBlocked]}
       >
         {body}
       </Text>
