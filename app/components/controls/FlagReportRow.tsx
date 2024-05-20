@@ -25,7 +25,7 @@ const useStyles = () => {
       paddingHorizontal: spacing.s,
     },
     buttonHidden: {
-      opacity: opacity.hidden,
+      opacity: opacity.disabled,
     },
     buttonRow: {
       flexDirection: 'row',
