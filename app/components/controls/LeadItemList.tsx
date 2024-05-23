@@ -26,7 +26,7 @@ function useLeadItems() {
       items.push({
         destination: 'EditOrg',
         iconName: 'edit-document',
-        title: 'Edit Org',
+        title: 'Edit Org info',
       });
     }
 
