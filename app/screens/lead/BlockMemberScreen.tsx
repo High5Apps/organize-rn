@@ -89,6 +89,7 @@ export default function BlockMemberScreen({
         ListFooterComponent={<RequestProgress style={styles.requestProgress} />}
         onItemPress={onItemPress}
         onlyShowUserId={filteredUserId}
+        sort="low_service"
       />
     </ScreenBackground>
   );

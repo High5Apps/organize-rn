@@ -61,7 +61,7 @@ export type OfficeDuty = {
 };
 
 export type UserFilter = 'officer';
-export type UserSort = 'office' | 'service';
+export type UserSort = 'low_service' | 'office' | 'service';
 export type User = {
   connectionCount: number;
   id: string;

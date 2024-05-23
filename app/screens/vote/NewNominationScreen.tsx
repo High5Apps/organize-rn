@@ -110,6 +110,7 @@ export default function NewNominationScreen({
         ListFooterComponent={<RequestProgress style={styles.requestProgress} />}
         onItemPress={onItemPress}
         onlyShowUserId={filteredUserId}
+        sort="service"
       />
     </ScreenBackground>
   );

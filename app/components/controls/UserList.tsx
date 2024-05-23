@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import {
-  User, useCurrentUser, useUsers,
+  User, UserSort, useCurrentUser, useUsers,
 } from '../../model';
 import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
@@ -32,14 +32,15 @@ type Props = {
   ListFooterComponent?: ReactElement;
   onItemPress?: (item: User) => void;
   onlyShowUserId?: string;
+  sort: UserSort;
 };
 
 export default function UserList({
-  debouncedQuery, ListFooterComponent, onItemPress, onlyShowUserId,
+  debouncedQuery, ListFooterComponent, onItemPress, onlyShowUserId, sort,
 }: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, ready, users,
-  } = useUsers({ sort: 'service', query: debouncedQuery });
+  } = useUsers({ sort, query: debouncedQuery });
   const onlyShowUser = useMemo(() => (
     onlyShowUserId ? users.find((u) => u.id === onlyShowUserId) : undefined
   ), [onlyShowUserId]);
