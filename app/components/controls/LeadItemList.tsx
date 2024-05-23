@@ -30,19 +30,19 @@ function useLeadItems() {
       });
     }
 
-    if (can('editPermissions')) {
-      items.push({
-        destination: 'Permissions',
-        iconName: 'lock-open',
-        title: 'Permissions',
-      });
-    }
-
     if (can('blockMembers') || can('moderate')) {
       items.push({
         destination: 'Moderation',
         iconName: 'gavel',
         title: 'Moderation',
+      });
+    }
+
+    if (can('editPermissions')) {
+      items.push({
+        destination: 'Permissions',
+        iconName: 'lock-open',
+        title: 'Permissions',
       });
     }
 
