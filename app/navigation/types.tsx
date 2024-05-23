@@ -230,13 +230,17 @@ export type SettingsScreenNavigationProp = (
   OrgStackNavigationProp<'Settings'>
 );
 
+export type BlockedMembersScreenParams = {
+  prependedUserId: string;
+};
+
 export type PermissionScreenParams = {
   scope: PermissionScope;
 };
 
 export type LeadStackParamList = {
   BlockMember: undefined;
-  BlockedMembers: undefined;
+  BlockedMembers: undefined | BlockedMembersScreenParams;
   EditOrg: undefined;
   FlagReportTabs: undefined | NavigatorScreenParams<FlagReportTabsParamList>;
   Lead: undefined;
