@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LeadStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import {
-  BlockedMembersScreen, EditOrgScreen, LeadScreen, ModerationScreen,
-  PermissionScreen, PermissionsScreen,
+  BlockMemberScreen, BlockedMembersScreen, EditOrgScreen, LeadScreen,
+  ModerationScreen, PermissionScreen, PermissionsScreen,
 } from '../screens';
 import { toAction } from '../model';
 import FlagReportTabs from './FlagReportTabs';
@@ -17,6 +17,11 @@ export default function LeadStack() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="Lead" component={LeadScreen} />
+      <Stack.Screen
+        name="BlockMember"
+        component={BlockMemberScreen}
+        options={{ title: 'Block Member' }}
+      />
       <Stack.Screen
         name="BlockedMembers"
         component={BlockedMembersScreen}

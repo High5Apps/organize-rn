@@ -235,6 +235,7 @@ export type PermissionScreenParams = {
 };
 
 export type LeadStackParamList = {
+  BlockMember: undefined;
   BlockedMembers: undefined;
   EditOrg: undefined;
   FlagReportTabs: undefined | NavigatorScreenParams<FlagReportTabsParamList>;
@@ -250,6 +251,7 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
     OrgTabsScreenProps<keyof OrgTabsParamList>
   >;
 
+export type BlockMemberScreenProps = LeadStackScreenProps<'BlockMember'>;
 export type BlockedMembersScreenProps = LeadStackScreenProps<'BlockedMembers'>;
 export type EditOrgScreenProps = LeadStackScreenProps<'EditOrg'>;
 export type LeadScreenProps = LeadStackScreenProps<'Lead'>;

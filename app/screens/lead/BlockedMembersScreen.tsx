@@ -1,9 +1,44 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
+import { StyleSheet } from 'react-native';
 import type { BlockedMembersScreenProps } from '../../navigation';
+import { PrimaryButton, ScreenBackground } from '../../components';
+import useTheme from '../../Theme';
+
+const useStyles = () => {
+  const { sizes, spacing } = useTheme();
+
+  const buttonMargin = spacing.m;
+  const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
+
+  const styles = StyleSheet.create({
+    button: {
+      bottom: buttonMargin,
+      end: buttonMargin,
+      height: sizes.buttonHeight,
+      paddingHorizontal: buttonMargin,
+      position: 'absolute',
+    },
+    contentContainerStyle: {
+      paddingBottom: buttonBoundingBoxHeight,
+    },
+  });
+
+  return { styles };
+};
 
 export default function BlockedMembersScreen({
-  route,
+  navigation,
 }: BlockedMembersScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+  const { styles } = useStyles();
+
+  return (
+    <ScreenBackground>
+      <PrimaryButton
+        iconName="person-search"
+        label="Select member"
+        onPress={() => navigation.navigate('BlockMember')}
+        style={styles.button}
+      />
+    </ScreenBackground>
+  );
 }
