@@ -1,9 +1,14 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
 import type { FlagReportsHandledScreenProps } from '../../navigation';
+import FlagReportsScreen from './FlagReportsScreen';
 
 export default function FlagReportsHandledScreen({
-  route,
+  navigation,
 }: FlagReportsHandledScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+  return (
+    <FlagReportsScreen <'FlagReportsHandled'>
+      handled
+      navigation={navigation}
+    />
+  );
 }
