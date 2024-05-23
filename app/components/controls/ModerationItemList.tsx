@@ -19,7 +19,7 @@ export default function ModerationItemList({ onModerationItemPress }: Props) {
       items.push({
         destination: 'BlockedMembers',
         iconName: 'no-accounts',
-        title: 'Block members',
+        title: 'Blocked members',
       });
     }
 
