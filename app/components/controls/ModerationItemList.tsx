@@ -1,22 +1,39 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ModerationItem } from './types';
 import IconRow from './IconRow';
 import { ItemSeparator } from '../views';
-
-const MODERATION_ITEMS: ModerationItem[] = [
-  {
-    destination: 'FlagReportTabs',
-    iconName: 'flag',
-    title: 'Flagged Content',
-  },
-];
+import { useMyPermissions } from '../../model';
 
 type Props = {
-  onModerationItemPress: (leadItem: ModerationItem) => void;
+  onModerationItemPress: (moderationItem: ModerationItem) => void;
 };
 
 export default function ModerationItemList({ onModerationItemPress }: Props) {
+  const { can } = useMyPermissions({ scopes: ['blockMembers', 'moderate'] });
+
+  const moderationItems = useMemo(() => {
+    const items: ModerationItem[] = [];
+
+    if (can('blockMembers')) {
+      items.push({
+        destination: 'FlagReportTabs', // TODO: Update
+        iconName: 'no-accounts',
+        title: 'Block members',
+      });
+    }
+
+    if (can('moderate')) {
+      items.push({
+        destination: 'FlagReportTabs',
+        iconName: 'flag',
+        title: 'Flagged Content',
+      });
+    }
+
+    return items;
+  }, [can]);
+
   const renderItem: ListRenderItem<ModerationItem> = useCallback(({ item }) => {
     const { iconName, title } = item;
     return (
@@ -30,7 +47,7 @@ export default function ModerationItemList({ onModerationItemPress }: Props) {
 
   return (
     <FlatList
-      data={MODERATION_ITEMS}
+      data={moderationItems}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}
     />
