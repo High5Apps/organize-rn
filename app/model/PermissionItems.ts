@@ -8,6 +8,11 @@ export type PermissionItem = {
 
 const permissionItems: PermissionItem[] = [
   {
+    iconName: 'no-accounts',
+    scope: 'blockMembers',
+    title: 'Block members',
+  },
+  {
     iconName: 'how-to-reg',
     scope: 'createElections',
     title: 'Create elections',
