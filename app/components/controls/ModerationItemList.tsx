@@ -17,7 +17,7 @@ export default function ModerationItemList({ onModerationItemPress }: Props) {
 
     if (can('blockMembers')) {
       items.push({
-        destination: 'FlagReportTabs', // TODO: Update
+        destination: 'BlockedMembers',
         iconName: 'no-accounts',
         title: 'Block members',
       });

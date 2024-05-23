@@ -1,3 +1,4 @@
+export { default as BlockedMembersScreen } from './BlockedMembersScreen';
 export { default as EditOrgScreen } from './EditOrgScreen';
 export { default as FlagReportsHandledScreen } from './FlagReportsHandledScreen';
 export { default as FlagReportsPendingScreen } from './FlagReportsPendingScreen';
