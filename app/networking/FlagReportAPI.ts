@@ -1,5 +1,5 @@
 import {
-  E2EMultiDecryptor, FlagReport, FlagReportSort, PaginationData, fromJson,
+  E2EMultiDecryptor, FlagReport, PaginationData, fromJson,
 } from '../model';
 import { decryptMany, get } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
@@ -8,9 +8,9 @@ import { Authorization, isFlagReportsIndexResponse } from './types';
 
 type IndexProps = Authorization & {
   createdAtOrBefore: Date;
+  handled: boolean;
   e2eDecryptMany: E2EMultiDecryptor;
   page: number;
-  sort: FlagReportSort;
 };
 
 type IndexReturn = {
@@ -25,7 +25,7 @@ type IndexReturn = {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function fetchFlagReports({
-  createdAtOrBefore, e2eDecryptMany, jwt, page, sort,
+  createdAtOrBefore, e2eDecryptMany, handled, jwt, page,
 }: IndexProps): Promise<IndexReturn> {
   const uri = new URL(flagReportsURI);
 
@@ -33,8 +33,8 @@ export async function fetchFlagReports({
     'created_at_or_before',
     createdAtOrBefore.toISOString(),
   );
+  uri.searchParams.set('handled', String(handled));
   uri.searchParams.set('page', page.toString());
-  uri.searchParams.set('sort', sort);
 
   const response = await get({ jwt, uri: uri.href });
 

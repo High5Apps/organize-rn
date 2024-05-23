@@ -8,17 +8,18 @@ import FlagReportRow from './FlagReportRow';
 const LIST_EMPTY_MESSAGE = "Good news- Org members haven't flagged anything as **inappropriate** yet!\n\nAll flagged content will appear here, so that **moderators can decide** if it should be **blocked or allowed**.\n\nHowever, Org members can still choose to see blocked content in the **Transparency Log**.";
 
 type Props = {
+  handled: boolean;
   onItemPress?: (item: FlagReport) => void;
 };
 
-export default function FlagReportList({ onItemPress }: Props) {
+export default function FlagReportList({ handled, onItemPress }: Props) {
   const { currentUser } = useCurrentUser();
   if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const {
     fetchedLastPage, fetchFirstPageOfFlagReports, fetchNextPageOfFlagReports,
     flagReports, onFlagReportChanged, ready,
-  } = useFlagReports({ sort: 'top' });
+  } = useFlagReports({ handled });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {

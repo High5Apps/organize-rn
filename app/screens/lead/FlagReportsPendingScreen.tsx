@@ -24,7 +24,7 @@ export default function FlagReportsPendingScreen({
 
   return (
     <ScreenBackground>
-      <FlagReportList onItemPress={onItemPress} />
+      <FlagReportList handled={false} onItemPress={onItemPress} />
     </ScreenBackground>
   );
 }

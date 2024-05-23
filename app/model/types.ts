@@ -257,7 +257,6 @@ export type FlaggableType = 'Ballot' | 'Comment' | 'Post';
 export type FlagReport = Decrypt<FlagReportResponse> & {
   id: string;
 };
-export type FlagReportSort = 'top';
 
 export type ModeratableType = FlaggableType | 'User';
 export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';

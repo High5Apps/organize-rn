@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import useCurrentUser from './CurrentUser';
-import { FlagReport, FlagReportSort } from './types';
+import { FlagReport } from './types';
 import { createModerationEvent, fetchFlagReports } from '../networking';
 import { useFlagReportContext } from '../context';
 import { getIdsFrom } from './ModelCache';
@@ -14,14 +14,14 @@ const firstPageIndex = 1;
 const ERROR_ALERT_TITLE = 'Failed to create moderation event. Please try again';
 
 type Props = {
-  sort: FlagReportSort;
+  handled: boolean;
 };
 
 type FetchPageReturn = {
   hasNextPage: boolean;
 };
 
-export default function useFlagReports({ sort }: Props) {
+export default function useFlagReports({ handled }: Props) {
   const {
     cacheFlagReport, cacheFlagReports, getCachedFlagReport,
   } = useFlagReportContext();
@@ -48,9 +48,9 @@ export default function useFlagReports({ sort }: Props) {
     } = await fetchFlagReports({
       createdAtOrBefore: now,
       e2eDecryptMany,
+      handled,
       page: firstPageIndex,
       jwt,
-      sort,
     });
 
     if (errorMessage) {
@@ -77,10 +77,10 @@ export default function useFlagReports({ sort }: Props) {
       errorMessage, paginationData, flagReports: fetchedFlagReports,
     } = await fetchFlagReports({
       createdAtOrBefore,
+      handled,
       e2eDecryptMany,
       jwt,
       page: nextPageNumber,
-      sort,
     });
 
     if (errorMessage) {
