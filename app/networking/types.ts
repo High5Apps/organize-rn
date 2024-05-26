@@ -1,7 +1,7 @@
 import type {
-  BallotCategory, FlaggableType, ModerationEventAction, MyPermission,
-  Nomination, NominationUser, OfficeCategory, Org, OrgGraph, PaginationData,
-  PostCategory, User, VoteState,
+  BallotCategory, FlaggableType, ModerationEvent, ModerationEventAction,
+  MyPermission, Nomination, NominationUser, OfficeCategory, Org, OrgGraph,
+  PaginationData, PostCategory, User, VoteState,
 } from '../model';
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
@@ -500,5 +500,34 @@ export function isFlagReportsIndexResponse(object: unknown): object is FlagRepor
   return response?.flagReports
     && Array.isArray(response.flagReports)
     && response.flagReports.every(isFlagReportResponse)
+    && isPaginationData(response?.meta);
+}
+
+function isModerationEvent(object: unknown): object is ModerationEvent {
+  const response = (object as ModerationEvent);
+  return response?.action?.length > 0
+    && isDate(response.createdAt)
+    && response.id !== undefined // Require id from backend
+    && response.id?.length > 0
+    && response.moderatable?.category?.length > 0
+    && response.moderatable.creator?.id?.length > 0
+    && response.moderatable.creator?.pseudonym?.length > 0
+    && response.moderatable.id?.length > 0
+    && response.moderator?.id?.length > 0
+    && response.moderator?.pseudonym?.length > 0;
+}
+
+type ModerationEventsIndexResponse = {
+  moderationEvents: Required<ModerationEvent>[];
+  meta: PaginationData;
+};
+
+export function isModerationEventsIndexResponse(
+  object: unknown,
+): object is ModerationEventsIndexResponse {
+  const response = (object as ModerationEventsIndexResponse);
+  return response?.moderationEvents
+    && Array.isArray(response.moderationEvents)
+    && response.moderationEvents.every(isModerationEvent)
     && isPaginationData(response?.meta);
 }

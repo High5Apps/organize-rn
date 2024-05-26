@@ -4,7 +4,9 @@ export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createFlag } from './FlagAPI';
 export { fetchFlagReports } from './FlagReportAPI';
-export { createModerationEvent } from './ModerationEventAPI';
+export {
+  createModerationEvent, fetchModerationEvents,
+} from './ModerationEventAPI';
 export { createNomination, updateNomination } from './NominationAPI';
 export { fetchOffices } from './OfficeAPI';
 export { createOrg, fetchOrg, updateOrg } from './OrgAPI';
