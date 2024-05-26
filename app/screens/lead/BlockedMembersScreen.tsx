@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import type { BlockedMembersScreenProps } from '../../navigation';
-import { PrimaryButton, ScreenBackground } from '../../components';
+import { BlockedMemberList, PrimaryButton, ScreenBackground } from '../../components';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -33,6 +33,7 @@ export default function BlockedMembersScreen({
 
   return (
     <ScreenBackground>
+      <BlockedMemberList />
       <PrimaryButton
         iconName="person-search"
         label="Select member"

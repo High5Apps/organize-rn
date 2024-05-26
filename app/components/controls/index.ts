@@ -1,6 +1,7 @@
 export { default as useAnnounceButton } from './AnnounceButton';
 export { default as BallotPreviewList } from './BallotPreviewList';
 export { default as BallotTypeList } from './BallotTypeList';
+export { default as BlockedMemberList } from './BlockedMemberList';
 export { default as ButtonRow } from './ButtonRow';
 export { default as CandidateList } from './CandidateList';
 export { default as CameraControl } from './CameraControl';
