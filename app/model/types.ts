@@ -254,18 +254,28 @@ export type MyPermission = {
 };
 
 export type FlaggableType = 'Ballot' | 'Comment' | 'Post';
-export type FlagReport = Decrypt<FlagReportResponse> & {
-  id: string;
-};
-
 export type ModeratableType = FlaggableType | 'User';
 export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
 export type ModerationEvent = {
   action: ModerationEventAction;
   createdAt: Date;
   id?: string;
+  moderatable: {
+    category: ModeratableType;
+    creator: {
+      id: string;
+      pseudonym: string;
+    },
+    id: string;
+  },
   moderator: {
     id: string;
     pseudonym: string;
   };
+};
+
+export type FlagReport = Decrypt<Omit<FlagReportResponse, 'moderationEvent'>> & {
+  id: string;
+} & {
+  moderationEvent?: ModerationEvent;
 };

@@ -159,6 +159,11 @@ export default function FlagReportRow({
         moderationEvent: {
           action,
           createdAt: new Date(),
+          moderatable: {
+            category: item.flaggable.category,
+            creator: item.flaggable.creator,
+            id: item.flaggable.id,
+          },
           moderator: {
             id: currentUserId,
             pseudonym: currentUserPseudonym,

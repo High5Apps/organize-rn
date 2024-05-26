@@ -61,9 +61,22 @@ export async function fetchFlagReports({
   const titles = await decryptMany(encryptedTitles, e2eDecryptMany);
 
   const flagReports = fetchedFlagReports.map(
-    ({ flaggable: { encryptedTitle, ...fl }, ...fr }, i) => (
-      { ...fr, id: flaggableIds[i], flaggable: { ...fl, title: titles[i]! } }
-    ),
+    ({ flaggable: { encryptedTitle, ...fl }, moderationEvent, ...fr }, i) => ({
+      ...fr,
+      id: flaggableIds[i],
+      flaggable: { ...fl, title: titles[i]! },
+      moderationEvent: !moderationEvent ? undefined : {
+        action: moderationEvent.action,
+        createdAt: moderationEvent.createdAt,
+        id: moderationEvent.id,
+        moderatable: {
+          creator: fl.creator,
+          id: fl.id,
+          category: fl.category,
+        },
+        moderator: moderationEvent.moderator,
+      },
+    }),
   );
 
   return { flagReports, paginationData };

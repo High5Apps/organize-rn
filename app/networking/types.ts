@@ -1,7 +1,7 @@
 import type {
-  BallotCategory, FlaggableType, ModerationEvent, MyPermission, Nomination,
-  NominationUser, OfficeCategory, Org, OrgGraph, PaginationData, PostCategory,
-  User, VoteState,
+  BallotCategory, FlaggableType, ModerationEventAction, MyPermission,
+  Nomination, NominationUser, OfficeCategory, Org, OrgGraph, PaginationData,
+  PostCategory, User, VoteState,
 } from '../model';
 
 export type UnpublishedOrg = Omit<Org, 'id'>;
@@ -439,12 +439,23 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
     && response.myPermissions.every(isMyPermission);
 }
 
-export function isModerationEventResponse(object: unknown): object is ModerationEvent {
-  const response = (object as ModerationEvent);
+type FlagReportsModerationEventResponse = {
+  action: ModerationEventAction;
+  createdAt: Date;
+  id: string;
+  moderator: {
+    id: string;
+    pseudonym: string;
+  };
+};
+
+function isFlagReportsModerationEventResponse(
+  object: unknown,
+): object is FlagReportsModerationEventResponse {
+  const response = (object as FlagReportsModerationEventResponse);
   return response?.action?.length > 0
     && isDate(response.createdAt)
-    && response.id !== undefined // Require id from backend events, unlike local
-    && response.id.length > 0
+    && response.id?.length > 0
     && response.moderator?.id?.length > 0
     && response.moderator.pseudonym?.length > 0;
 }
@@ -462,7 +473,7 @@ export type Flaggable = {
 export type FlagReportResponse = {
   flaggable: Flaggable;
   flagCount: number;
-  moderationEvent?: ModerationEvent;
+  moderationEvent?: FlagReportsModerationEventResponse;
 };
 
 export function isFlagReportResponse(object: unknown): object is FlagReportResponse {
@@ -475,7 +486,7 @@ export function isFlagReportResponse(object: unknown): object is FlagReportRespo
     && response.flaggable.id?.length > 0
     && response.flagCount > 0
     && (!response?.moderationEvent
-      || isModerationEventResponse(response.moderationEvent)
+      || isFlagReportsModerationEventResponse(response.moderationEvent)
     );
 }
 
