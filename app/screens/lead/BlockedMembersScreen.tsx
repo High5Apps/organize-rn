@@ -33,7 +33,7 @@ export default function BlockedMembersScreen({
 
   return (
     <ScreenBackground>
-      <BlockedMemberList />
+      <BlockedMemberList contentContainerStyle={styles.contentContainerStyle} />
       <PrimaryButton
         iconName="person-search"
         label="Select member"

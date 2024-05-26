@@ -1,22 +1,44 @@
 import React, { useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import {
+  FlatList, ListRenderItem, StyleProp, ViewStyle,
+} from 'react-native';
 import { ModerationEvent, useModerationEvents } from '../../model';
 import BlockedMemberRow from './BlockedMemberRow';
 import { ItemSeparator, ListEmptyMessage } from '../views';
-import { usePullToRefresh } from '../hooks';
+import { useInfiniteScroll, usePullToRefresh } from '../hooks';
 
 const LIST_EMPTY_MESSAGE = "Blocking members prevents them from accessing your Org.\n\nYou Org hasn't blocked any members.\n\nIf you need to block someone, tap the button below to get started.";
 
-export default function BlockedMemberList() {
+type Props = {
+  contentContainerStyle?: StyleProp<ViewStyle>;
+};
+
+export default function BlockedMemberList({ contentContainerStyle }: Props) {
   const {
-    fetchFirstPageOfModerationEvents, moderationEvents, ready,
+    fetchedLastPage, fetchFirstPageOfModerationEvents,
+    fetchNextPageOfModerationEvents, moderationEvents, ready,
   } = useModerationEvents({
     actions: ['block'], active: true, moderatableType: 'User',
   });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
-    onRefresh: fetchFirstPageOfModerationEvents,
+    onRefresh: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      clearNextPageError();
+
+      await fetchFirstPageOfModerationEvents();
+    },
     refreshOnMount: true,
+  });
+
+  const {
+    clearError: clearNextPageError, ListFooterComponent, onEndReached,
+    onEndReachedThreshold,
+  } = useInfiniteScroll({
+    getDisabled: () => (
+      !moderationEvents.length || refreshing || fetchedLastPage
+    ),
+    onLoadNextPage: fetchNextPageOfModerationEvents,
   });
 
   const ListEmptyComponent = useMemo(() => (
@@ -30,14 +52,22 @@ export default function BlockedMemberList() {
 
   return (
     <FlatList
+      contentContainerStyle={contentContainerStyle}
       data={moderationEvents}
       ItemSeparatorComponent={ItemSeparator}
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={ready ? ListEmptyComponent : null}
+      ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       refreshControl={refreshControl}
       refreshing={refreshing}
       renderItem={renderItem}
     />
   );
 }
+
+BlockedMemberList.defaultProps = {
+  contentContainerStyle: undefined,
+};
