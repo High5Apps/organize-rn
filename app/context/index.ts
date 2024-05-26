@@ -8,6 +8,7 @@ export { useCachedValueContext } from './CachedValueContext';
 export { useCommentContext } from './CommentContext';
 export { useCurrentUserDataContext } from './CurrentUserDataContext';
 export { useFlagReportContext } from './FlagReportContext';
+export { useModerationEventContext } from './ModerationEventContext';
 export { useMyPermissionContext } from './MyPermissionContext';
 export { usePostContext } from './PostContext';
 export { useUserContext } from './UserContext';
