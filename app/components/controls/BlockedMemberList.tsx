@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import {
   FlatList, ListRenderItem, StyleProp, ViewStyle,
 } from 'react-native';
-import { ModerationEvent, useModerationEvents } from '../../model';
+import {
+  ModerationEvent, useModerationEvents, usePrependedModels,
+} from '../../model';
 import BlockedMemberRow from './BlockedMemberRow';
 import { ItemSeparator, ListEmptyMessage } from '../views';
 import { useInfiniteScroll, usePullToRefresh } from '../hooks';
@@ -11,14 +13,33 @@ const LIST_EMPTY_MESSAGE = "Blocking members prevents them from accessing your O
 
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
+  prependedModerationEventId?: string;
 };
 
-export default function BlockedMemberList({ contentContainerStyle }: Props) {
+export default function BlockedMemberList({
+  contentContainerStyle,
+  prependedModerationEventId: maybePrependedModerationEventId,
+}: Props) {
+  const listRef = useRef<FlatList<ModerationEvent>>(null);
+  const scrollToTop = () => listRef.current?.scrollToOffset({
+    animated: true, offset: 0,
+  });
+
   const {
-    fetchedLastPage, fetchFirstPageOfModerationEvents,
+    fetchedLastPage, fetchFirstPageOfModerationEvents, getCachedModerationEvent,
     fetchNextPageOfModerationEvents, moderationEvents, ready,
   } = useModerationEvents({
     actions: ['block'], active: true, moderatableType: 'User',
+  });
+
+  const {
+    allModels: data, resetPrependedModels: resetPrependedModerationEvents,
+  } = usePrependedModels<Required<ModerationEvent>>({
+    getCachedModel: getCachedModerationEvent,
+    maybePrependedModelId: maybePrependedModerationEventId,
+    models: moderationEvents,
+    onNewPrependedModel: scrollToTop,
+    ready,
   });
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
@@ -27,6 +48,7 @@ export default function BlockedMemberList({ contentContainerStyle }: Props) {
       clearNextPageError();
 
       await fetchFirstPageOfModerationEvents();
+      resetPrependedModerationEvents();
     },
     refreshOnMount: true,
   });
@@ -53,7 +75,7 @@ export default function BlockedMemberList({ contentContainerStyle }: Props) {
   return (
     <FlatList
       contentContainerStyle={contentContainerStyle}
-      data={moderationEvents}
+      data={data}
       ItemSeparatorComponent={ItemSeparator}
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={ready ? ListEmptyComponent : null}
@@ -61,6 +83,7 @@ export default function BlockedMemberList({ contentContainerStyle }: Props) {
       ListHeaderComponent={ListHeaderComponent}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
+      ref={listRef}
       refreshControl={refreshControl}
       refreshing={refreshing}
       renderItem={renderItem}
@@ -70,4 +93,5 @@ export default function BlockedMemberList({ contentContainerStyle }: Props) {
 
 BlockedMemberList.defaultProps = {
   contentContainerStyle: undefined,
+  prependedModerationEventId: undefined,
 };

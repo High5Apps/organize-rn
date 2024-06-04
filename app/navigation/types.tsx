@@ -231,7 +231,7 @@ export type SettingsScreenNavigationProp = (
 );
 
 export type BlockedMembersScreenParams = {
-  prependedUserId: string;
+  prependedModerationEventId: string;
 };
 
 export type PermissionScreenParams = {

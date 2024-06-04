@@ -5,6 +5,7 @@ import {
 } from '../../components';
 import {
   ConfirmationAlert, GENERIC_ERROR_MESSAGE, User, useCurrentUser,
+  useModerationEvents,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createModerationEvent } from '../../networking';
@@ -28,6 +29,8 @@ export default function BlockMemberScreen({
   const [filteredUserId, setFilteredUserId] = useState<string>();
   const [debouncedQuery, setDebouncedQuery] = useState<string | undefined>();
 
+  const { cacheModerationEvent } = useModerationEvents();
+
   const {
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
@@ -44,8 +47,9 @@ export default function BlockMemberScreen({
     const jwt = await currentUser.createAuthToken({ scope: '*' });
 
     let errorMessage: string | undefined;
+    let id: string | undefined;
     try {
-      ({ errorMessage } = await createModerationEvent({
+      ({ errorMessage, id } = await createModerationEvent({
         action: 'block',
         jwt,
         moderatableId: user.id,
@@ -60,11 +64,32 @@ export default function BlockMemberScreen({
         message: `${errorMessage}\nTap here to try again`,
         onPress: () => onBlock(user),
       });
-    } else {
+    } else if (id) {
       setResult('success');
-      navigation.navigate('BlockedMembers', { prependedUserId: user.id });
+
+      cacheModerationEvent({
+        action: 'block',
+        createdAt: new Date(),
+        id,
+        moderatable: {
+          category: 'User',
+          creator: {
+            id: user.id,
+            pseudonym: user.pseudonym,
+          },
+          id: user.id,
+        },
+        moderator: {
+          id: currentUser.id,
+          pseudonym: currentUser.pseudonym,
+        },
+      });
+
+      navigation.navigate('BlockedMembers', { prependedModerationEventId: id });
+    } else {
+      console.warn('WARNING: Expected errorMessage or moderationEventId');
     }
-  }, []);
+  }, [cacheModerationEvent, currentUser, navigation]);
 
   const onItemPress = useCallback(async (user: User) => {
     const { pseudonym } = user;

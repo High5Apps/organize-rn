@@ -27,13 +27,18 @@ const useStyles = () => {
 };
 
 export default function BlockedMembersScreen({
-  navigation,
+  navigation, route,
 }: BlockedMembersScreenProps) {
+  const prependedModerationEventId = route.params?.prependedModerationEventId;
+
   const { styles } = useStyles();
 
   return (
     <ScreenBackground>
-      <BlockedMemberList contentContainerStyle={styles.contentContainerStyle} />
+      <BlockedMemberList
+        contentContainerStyle={styles.contentContainerStyle}
+        prependedModerationEventId={prependedModerationEventId}
+      />
       <PrimaryButton
         iconName="person-search"
         label="Select member"
