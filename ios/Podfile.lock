@@ -1127,10 +1127,11 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.6.4):
     - React-Core
-  - RNScreens (3.30.1):
+  - RNScreens (3.32.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+    - React-RCTImage
   - RNSVG (14.1.0):
     - React-Core
   - SocketRocket (0.6.1)
@@ -1429,7 +1430,7 @@ SPEC CHECKSUMS:
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNDateTimePicker: 08f00a2c341bf96e4b30da15799fbdd4c5fa48a3
-  RNScreens: b6b64d956af3715adbfe84808694ae82d3fec74f
+  RNScreens: e842cdccb23c0a084bd6307f6fa83fd1c1738029
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 5787602f86d8521f17af0e606259b6d367754e74
