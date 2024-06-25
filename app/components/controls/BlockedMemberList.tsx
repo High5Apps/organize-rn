@@ -28,12 +28,14 @@ export default function BlockedMemberList({
   const {
     fetchedLastPage, fetchFirstPageOfModerationEvents, getCachedModerationEvent,
     fetchNextPageOfModerationEvents, moderationEvents, ready,
+    removeModerationEvent,
   } = useModerationEvents({
     actions: ['block'], active: true, moderatableType: 'User',
   });
 
   const {
-    allModels: data, resetPrependedModels: resetPrependedModerationEvents,
+    allModels: data, removePrependedModel: removePrependedModerationEvent,
+    resetPrependedModels: resetPrependedModerationEvents,
   } = usePrependedModels<Required<ModerationEvent>>({
     getCachedModel: getCachedModerationEvent,
     maybePrependedModelId: maybePrependedModerationEventId,
@@ -68,8 +70,16 @@ export default function BlockedMemberList({
   ), []);
 
   const renderItem: ListRenderItem<ModerationEvent> = useCallback(
-    ({ item }) => <BlockedMemberRow item={item} />,
-    [],
+    ({ item }) => (
+      <BlockedMemberRow
+        item={item}
+        onItemRemoved={() => {
+          removeModerationEvent(item.id);
+          removePrependedModerationEvent(item.id);
+        }}
+      />
+    ),
+    [removeModerationEvent],
   );
 
   return (

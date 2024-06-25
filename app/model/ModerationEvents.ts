@@ -109,6 +109,12 @@ export default function useModerationEvents({
     return result;
   }
 
+  function removeModerationEvent(id?: string) {
+    setModerationEventIds(moderationEventIds.filter(
+      (moderationEventId) => moderationEventId !== id,
+    ));
+  }
+
   return {
     cacheModerationEvent,
     fetchedLastPage,
@@ -117,5 +123,6 @@ export default function useModerationEvents({
     getCachedModerationEvent,
     moderationEvents,
     ready,
+    removeModerationEvent,
   };
 }

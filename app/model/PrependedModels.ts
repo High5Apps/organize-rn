@@ -40,9 +40,15 @@ export default function usePrependedModels<T extends Model>({
     }
   }, [maybePrependedModelId]);
 
+  function removePrependedModel(id?: string) {
+    setPrependedModelIds(prependedModelIds.filter(
+      (prependedModelId) => (prependedModelId !== id),
+    ));
+  }
+
   function resetPrependedModels() {
     setPrependedModelIds([]);
   }
 
-  return { allModels, resetPrependedModels };
+  return { allModels, removePrependedModel, resetPrependedModels };
 }
