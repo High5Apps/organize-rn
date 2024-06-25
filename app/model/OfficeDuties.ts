@@ -12,7 +12,7 @@ const OFFICE_DUTIES = {
   ],
   vice_president: [
     'Supports the president',
-    "Acts as president in the president's absense",
+    "Acts as president when the president's absent",
   ],
   secretary: [
     'Records and reports minutes on the proceedings of all meetings',
