@@ -97,7 +97,7 @@ export default function BlockMemberScreen({
       destructiveAction: 'Block',
       destructiveActionInTitle: `block ${pseudonym}`,
       onConfirm: () => onBlock(user),
-      subtitle: null,
+      subtitle: 'This will prevent them from accessing your Org',
     }).show();
   }, []);
 
