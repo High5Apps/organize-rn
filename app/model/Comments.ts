@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Comment } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
@@ -18,6 +18,11 @@ export default function useComments(postId?: string) {
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useCurrentUser();
+
+  useEffect(() => {
+    setCommentIds([]);
+    setReady(false);
+  }, [postId]);
 
   async function updateComments() {
     if (!currentUser || !postId) {

@@ -187,8 +187,9 @@ export default function CommentList({
   ), [cacheComment, post.id]);
 
   useEffect(() => {
+    listRef.current?.scrollToOffset({ animated: false, offset: 0 });
     refresh().catch(console.error);
-  }, []);
+  }, [post.id]);
 
   // Hide list empty message when it's not empty
   if (result === 'info' && data.length) {
