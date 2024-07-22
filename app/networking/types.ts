@@ -11,6 +11,10 @@ export function isDate(object: unknown): object is Date {
   return (date instanceof Date) && !Number.isNaN(date);
 }
 
+function isBoolean(object: unknown): object is boolean {
+  return [true, false].includes(object as boolean);
+}
+
 export type UserResponse = Omit<User, 'offices'> & {
   offices: OfficeCategory[];
 };
@@ -18,6 +22,7 @@ export type UserResponse = Omit<User, 'offices'> & {
 export function isUserResponse(object: unknown): object is UserResponse {
   const user = (object as UserResponse);
   return user?.connectionCount >= 0
+    && ((user.blocked === undefined) || isBoolean(user.blocked))
     && user.id?.length > 0
     && isDate(user.joinedAt)
     && user.pseudonym?.length > 0
@@ -185,8 +190,7 @@ export type CommentIndexComment = {
 function isCommentIndexComment(object: unknown): object is CommentIndexComment {
   const comment = (object as CommentIndexComment);
   return isBackendEncryptedMessage(comment.encryptedBody)
-    && (comment.blocked === undefined
-        || [true, false].includes(comment.blocked))
+    && (comment.blocked === undefined || isBoolean(comment.blocked))
     && isDate(comment.createdAt)
     && comment.id?.length > 0
     && comment.myVote !== undefined
@@ -431,8 +435,7 @@ export type MyPermissionsResponse = {
 
 export function isMyPermission(object: unknown): object is MyPermission {
   const myPermission = (object as MyPermission);
-  return [true, false].includes(myPermission?.permitted)
-    && myPermission?.scope?.length > 0;
+  return isBoolean(myPermission?.permitted) && myPermission?.scope?.length > 0;
 }
 
 export function isMyPermissionsResponse(object: unknown): object is MyPermissionsResponse {

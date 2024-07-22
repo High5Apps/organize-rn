@@ -112,7 +112,7 @@ export default function UserRow({
   compact, disabled, isMe, item, onPress,
 }: Props) {
   const {
-    connectionCount, joinedAt, offices, pseudonym, recruitCount,
+    blocked, connectionCount, joinedAt, offices, pseudonym, recruitCount,
   } = item;
   const tenure = getTenure(joinedAt);
 
@@ -121,6 +121,7 @@ export default function UserRow({
     pseudonym,
     joinedOffices,
     isMe && 'Me',
+    blocked && 'Blocked',
   ].filter((e) => e).join(', ');
 
   const { colors, onTextLayout, styles } = useStyles();
