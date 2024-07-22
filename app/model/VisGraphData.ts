@@ -15,7 +15,7 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
     if (officers === undefined) { return undefined; }
     return Object.fromEntries(officers.map((o) => [o.id, o.offices]));
   }, [officers]);
-  const { colors } = useTheme();
+  const { colors, opacity } = useTheme();
   const { currentUser } = useCurrentUser();
 
   if (!currentUser) { throw new Error('Expected current user'); }
@@ -52,10 +52,13 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
       return undefined;
     }
 
+    const blockedUserIds = new Set(orgGraph.blockedUserIds);
+
     return {
       nodes: orgGraph.userIds.map((id) => {
         const offices = officerMap[id] ?? [];
         const isMe = (id === currentUser?.id);
+        const isNodeBlocked = blockedUserIds.has(id);
         const {
           circleBorderColor, circleBackgroundColor, shadow,
         } = getCircleColors({ colors, isMe, offices });
@@ -65,15 +68,22 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
             border: circleBorderColor,
           },
           id,
+          opacity: isNodeBlocked ? opacity.blocked : opacity.visible,
           shadow,
         };
       }),
-      edges: orgGraph.connections.map(([from, to]) => ({
-        from,
-        to,
-      })),
+      edges: orgGraph.connections.map(([from, to]) => {
+        const isConnectionBlocked = blockedUserIds.has(from) || blockedUserIds.has(to);
+        return {
+          color: {
+            opacity: isConnectionBlocked ? opacity.blocked : opacity.visible,
+          },
+          from,
+          to,
+        };
+      }),
     };
-  }, [colors, currentUser?.id, orgGraph, officerMap]);
+  }, [colors, currentUser?.id, opacity, orgGraph, officerMap]);
 
   return { options, visGraphData };
 }

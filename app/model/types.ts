@@ -72,8 +72,9 @@ export type User = {
 };
 
 export type OrgGraph = {
-  userIds: string[];
+  blockedUserIds: string[];
   connections: [string, string][];
+  userIds: string[];
 };
 
 export type Org = Decrypt<Omit<OrgResponse, 'graph'>>;

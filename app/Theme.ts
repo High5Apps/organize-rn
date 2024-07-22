@@ -68,6 +68,7 @@ const lightTheme = {
     weights,
   },
   opacity: {
+    blocked: 0.25,
     disabled: 0.5,
     hidden: 0,
     visible: 1,

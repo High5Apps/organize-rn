@@ -75,7 +75,9 @@ export function isOrgGraph(object: unknown): object is OrgGraph {
     && response.connections.length >= 0
     && Array.isArray(response.userIds)
     && response.userIds.length > 0
-    && response.userIds.every((id) => id.length);
+    && response.userIds.every((id) => id.length)
+    && Array.isArray(response.blockedUserIds)
+    && response.blockedUserIds.every((id) => id.length);
 }
 
 export type OrgResponse = {
