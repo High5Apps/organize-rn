@@ -24,8 +24,8 @@ const OFFICE_DUTIES = {
   ],
   steward: [
     'Guides new members',
-    'Advises members during investigatory interviews by management',
     'Listens to members and raises their concerns to other officers',
+    'Advises members during investigatory interviews by management',
     'Promotes solidarity among all members',
   ],
   trustee: [
