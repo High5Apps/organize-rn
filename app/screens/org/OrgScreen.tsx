@@ -6,10 +6,9 @@ import {
 } from '../../components';
 import type { OrgScreenProps } from '../../navigation';
 import {
-  useCurrentUser, useOrg, useSelectedUser, useUsers, useVisGraphData,
+  getErrorMessage, useCurrentUser, useOrg, useSelectedUser, useUsers,
+  useVisGraphData,
 } from '../../model';
-
-const GRAPH_LOAD_ERROR_MESSAGE = 'Failed to load graph';
 
 export default function OrgScreen({ navigation }: OrgScreenProps) {
   const [graphError, setGraphError] = useState('');
@@ -39,9 +38,9 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
     await Promise.all([
       currentUser?.update().catch(console.error),
       fetchOfficers().catch(console.error),
-      refreshOrg().catch((e) => {
-        console.error(e);
-        setGraphError(GRAPH_LOAD_ERROR_MESSAGE);
+      refreshOrg().catch((error) => {
+        const errorMessage = getErrorMessage(error);
+        setGraphError(errorMessage);
       }),
     ]);
   }, [fetchOfficers, refreshOrg]);

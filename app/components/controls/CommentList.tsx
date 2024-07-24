@@ -8,9 +8,7 @@ import CommentRow from './CommentRow';
 import useTheme from '../../Theme';
 import { ItemSeparator, SectionHeader } from '../views';
 import PostWithBody from './PostWithBody';
-import {
-  Comment, GENERIC_ERROR_MESSAGE, Post, useComments,
-} from '../../model';
+import { Comment, Post, useComments } from '../../model';
 import type { InsertedComment } from '../../navigation';
 import { useRequestProgress } from '../hooks';
 
@@ -155,9 +153,8 @@ export default function CommentList({
           onPress: emptyListMessageOnPress,
         });
       }
-    } catch (e) {
-      console.error(e);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+    } catch (error) {
+      setResult('error', { error });
     }
     setLoading(false);
   };

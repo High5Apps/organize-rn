@@ -3,9 +3,8 @@ import {
   Alert, ListRenderItemInfo, SectionList, StyleSheet,
 } from 'react-native';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, OFFICE_CATEGORIES, Office,
-  OfficeCategory, PermissionScope, getOffice, toAction, useCurrentUser,
-  usePermission, usePermissionUpdater,
+  ConfirmationAlert, OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope,
+  getOffice, toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../model';
 import { ItemSeparator, renderSectionHeader } from '../views';
 import OfficeRow from './OfficeRow';
@@ -67,12 +66,8 @@ export default function OfficePermissionList({ scope }: Props) {
 
     try {
       await refreshPermission();
-    } catch (e) {
-      console.error(e);
-      setResult('error', {
-        message: GENERIC_ERROR_MESSAGE,
-        onPress: fetchPermission,
-      });
+    } catch (error) {
+      setResult('error', { error, onPress: fetchPermission });
     }
 
     setLoading(false);

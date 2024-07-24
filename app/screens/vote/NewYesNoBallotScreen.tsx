@@ -5,7 +5,7 @@ import {
   MultilineTextInput, PrimaryButton, startOfNextHourIn, useRequestProgress,
 } from '../../components';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useCachedValue,
+  BallotPreview, getErrorMessage, useBallotPreviews, useCachedValue,
   useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
@@ -94,8 +94,7 @@ export default function NewYesNoBallotScreen({
         votingEndsAt: votingEnd,
       }));
     } catch (error) {
-      console.error(error);
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

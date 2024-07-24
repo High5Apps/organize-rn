@@ -8,7 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  BallotPreview, GENERIC_ERROR_MESSAGE, useBallotPreviews, useCurrentUser,
+  BallotPreview, getErrorMessage, useBallotPreviews, useCurrentUser,
 } from '../../model';
 import { createBallot } from '../../networking';
 
@@ -119,8 +119,7 @@ export default function NewElectionBallotScreen({
         votingEndsAt: votingEnd,
       }));
     } catch (error) {
-      console.error(error);
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

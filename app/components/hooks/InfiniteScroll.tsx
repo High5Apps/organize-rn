@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import useRequestProgress from './RequestProgress';
 import useTheme from '../../Theme';
-import { GENERIC_ERROR_MESSAGE } from '../../model';
 
 // Fetch the next page when the user scrolls to within half the vertical list
 // height of the bottom of the list
@@ -42,9 +41,8 @@ export default function useInfiniteScroll({ getDisabled, onLoadNextPage }: Props
       if (!hasNextPage) {
         setResult('info', { message: 'You reached the end' });
       }
-    } catch (e) {
-      console.error(e);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+    } catch (error) {
+      setResult('error', { error });
     }
 
     setLoading(false);

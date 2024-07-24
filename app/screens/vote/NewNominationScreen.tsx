@@ -6,7 +6,7 @@ import {
 import type { NewNominationScreenProps } from '../../navigation';
 import { createNomination } from '../../networking';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, Nomination, User, useCurrentUser,
+  ConfirmationAlert, Nomination, User, getErrorMessage, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
 
@@ -54,7 +54,7 @@ export default function NewNominationScreen({
         ballotId: ballot.id, jwt, nomineeId: nominee.id,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

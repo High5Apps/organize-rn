@@ -4,7 +4,6 @@ import React, {
 import { RefreshControl as RNRefreshControl, StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
-import { GENERIC_ERROR_MESSAGE } from '../../model';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();
@@ -36,8 +35,7 @@ export default function usePullToRefresh({ onRefresh, refreshOnMount }: Props) {
     try {
       await onRefresh();
     } catch (error) {
-      console.error(error);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+      setResult('error', { error });
     }
 
     setRefreshing(false);

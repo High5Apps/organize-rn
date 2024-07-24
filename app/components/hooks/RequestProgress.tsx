@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import useTheme from '../../Theme';
 import { ResultType } from './types';
+import { getErrorMessage } from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -30,6 +31,7 @@ const useStyles = () => {
 };
 
 type SetResultOptions = {
+  error?: unknown;
   message?: string;
   onPress?: () => void;
 };
@@ -45,7 +47,7 @@ export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
   const [resultType, setResultType] = useState<ResultType>('none');
 
   function setResult(type: ResultType, {
-    message, onPress,
+    error, message, onPress,
   }: SetResultOptions = {}) {
     // In order to store a function in useState, you must pass a function that
     // creates the function. Passing just the onPress would make the useState
@@ -59,7 +61,9 @@ export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
       setLoading(false);
     }
 
-    if (message) {
+    if (error) {
+      setResultMessage(getErrorMessage(error));
+    } else if (message) {
       setResultMessage(message);
     } else {
       setResultMessage(null);

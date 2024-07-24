@@ -4,9 +4,7 @@ import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
   PrimaryButton, ResultType, ScreenBackground, useRequestProgress,
 } from '../../components';
-import {
-  GENERIC_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
-} from '../../model';
+import { getErrorMessage, QRCodeValue, useCurrentUser } from '../../model';
 import { ConnectionPreview, createConnection } from '../../networking';
 import { Status } from '../../networking/API';
 import useTheme from '../../Theme';
@@ -83,9 +81,8 @@ export default function NewConnectionScreen() {
         connectionResult = 'success';
       }
     } catch (error) {
-      console.error(error);
       connectionResult = 'error';
-      message = GENERIC_ERROR_MESSAGE;
+      message = getErrorMessage(error);
     }
 
     if (connectionResult === 'error') {

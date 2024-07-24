@@ -27,8 +27,7 @@ const useStyles = () => {
 };
 
 const onSyncSelectionError = (errorMessage: string) => {
-  console.error(errorMessage);
-  Alert.alert('Failed to update your vote. Please try again.');
+  Alert.alert('Failed to update your vote. Please try again.', errorMessage);
 };
 
 type Props = {

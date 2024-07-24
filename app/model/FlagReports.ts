@@ -6,7 +6,7 @@ import { createModerationEvent, fetchFlagReports } from '../networking';
 import { useFlagReportContext } from '../context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -124,7 +124,7 @@ export default function useFlagReports({ handled }: Props) {
         moderatableType: flaggable.category,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage) {

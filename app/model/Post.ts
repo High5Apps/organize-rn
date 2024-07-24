@@ -3,7 +3,7 @@ import { usePostContext } from '../context';
 import useCurrentUser from './CurrentUser';
 import { Post } from './types';
 import { fetchPost } from '../networking';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 
 type Props = {
   id: string;
@@ -32,7 +32,7 @@ export default function usePost({ id }: Props) {
         id, e2eDecrypt, jwt,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage) {

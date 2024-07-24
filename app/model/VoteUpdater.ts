@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Ballot } from './types';
 import useCurrentUser from './CurrentUser';
 import { createVote } from '../networking';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 import useSelectionUpdater from './SelectionUpdater';
 
 type Props = {
@@ -29,7 +29,7 @@ export default function useVoteUpdater({
         jwt,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

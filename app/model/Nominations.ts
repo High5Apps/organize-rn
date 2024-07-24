@@ -5,7 +5,7 @@ import {
 } from './types';
 import { UpdateNominationResponse, updateNomination } from '../networking';
 import useCurrentUser from './CurrentUser';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 
 const ERROR_ALERT_TITLE = 'Failed to accept or decline nomination. Please try again.';
 
@@ -111,7 +111,7 @@ export default function useNominations(
           id: updatedNomination.id,
         }));
       } catch (error) {
-        errorMessage = GENERIC_ERROR_MESSAGE;
+        errorMessage = getErrorMessage(error);
       }
 
       if (errorMessage) {

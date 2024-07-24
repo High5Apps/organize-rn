@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import SecondaryButton from './SecondaryButton';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, ModerationEvent, useCurrentUser,
+  ConfirmationAlert, getErrorMessage, ModerationEvent, useCurrentUser,
 } from '../../model';
 import { createModerationEvent } from '../../networking';
 import { useRequestProgress } from '../hooks';
@@ -43,7 +43,7 @@ export default function UnblockUserButton({
             moderatableType: 'User',
           }));
         } catch (error) {
-          errorMessage = GENERIC_ERROR_MESSAGE;
+          errorMessage = getErrorMessage(error);
         }
 
         setLoading(false);

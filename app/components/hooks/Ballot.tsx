@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
-import { Ballot, GENERIC_ERROR_MESSAGE, useCurrentUser } from '../../model';
+import { Ballot, getErrorMessage, useCurrentUser } from '../../model';
 import { fetchBallot } from '../../networking';
 import { useBallotContext } from '../../context';
 
@@ -52,7 +52,7 @@ export default function useBallot(ballotId: string, options: Options = {}) {
         ballotId, e2eDecrypt, e2eDecryptMany, jwt,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

@@ -6,8 +6,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  Comment, GENERIC_ERROR_MESSAGE, MAX_COMMENT_LENGTH, useCachedValue,
-  useComments, useCurrentUser,
+  Comment, MAX_COMMENT_LENGTH, useCachedValue, useComments, useCurrentUser,
 } from '../../model';
 import { createComment } from '../../networking';
 
@@ -117,8 +116,7 @@ export default function NewCommentScreenBase({
 
       onCommentCreated?.(newCommentId);
     } catch (error) {
-      console.error(error);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+      setResult('error', { error });
     }
   };
 

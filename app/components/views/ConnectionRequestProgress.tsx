@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useRequestProgress } from '../hooks';
 import {
-  GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
+  getErrorMessage, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
 } from '../../model';
 import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
@@ -65,8 +65,8 @@ export default function ConnectionRequestProgress({
           onConnectionPreview?.(connectionPreview);
         }
       } catch (error) {
-        console.error(error);
-        onConnectionPreviewError?.(GENERIC_ERROR_MESSAGE);
+        const errorMessage = getErrorMessage(error);
+        onConnectionPreviewError?.(errorMessage);
       }
 
       setLoading(false);

@@ -4,8 +4,7 @@ import {
   ScreenBackground, SearchBar, UserList, useRequestProgress,
 } from '../../components';
 import {
-  ConfirmationAlert, GENERIC_ERROR_MESSAGE, User, useCurrentUser,
-  useModerationEvents,
+  ConfirmationAlert, User, getErrorMessage, useCurrentUser, useModerationEvents,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createModerationEvent } from '../../networking';
@@ -56,7 +55,7 @@ export default function BlockMemberScreen({
         moderatableType: 'User',
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage !== undefined) {

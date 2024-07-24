@@ -6,7 +6,7 @@ import {
   useRequestProgress,
 } from '../../components';
 import {
-  GENERIC_ERROR_MESSAGE, QRCodeValue, createCurrentUser, useCurrentUser,
+  QRCodeValue, createCurrentUser, getErrorMessage, useCurrentUser,
 } from '../../model';
 import type { JoinOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -82,8 +82,7 @@ export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
         return;
       }
     } catch (error) {
-      console.error(error);
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     setErrorMessage(errorMessage);

@@ -5,7 +5,7 @@ import {
 import useTheme from '../../Theme';
 import UpvoteButton from './UpvoteButton';
 import {
-  GENERIC_ERROR_MESSAGE, VoteState, truncateText, useCurrentUser,
+  VoteState, getErrorMessage, truncateText, useCurrentUser,
 } from '../../model';
 import { createOrUpdateUpvote } from '../../networking';
 
@@ -59,13 +59,13 @@ export default function UpvoteControl({
 
   const { currentUser } = useCurrentUser();
 
-  const showErrorAlert = () => {
+  const showErrorAlert = (errorMessage: string) => {
     const upvotableType = postId ? 'Post' : 'Comment';
     const preview = truncateText({
       maxLength: ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH,
       text: errorItemFriendlyDifferentiator,
     });
-    const message = `${upvotableType}: ${preview}`;
+    const message = `${upvotableType}: ${preview}\n\n${errorMessage}`;
     Alert.alert(ERROR_ALERT_TITLE, message);
   };
 
@@ -85,15 +85,13 @@ export default function UpvoteControl({
         commentId, jwt, postId, value: vote,
       }));
     } catch (error) {
-      console.error(error);
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     setWaitingForVoteSate(null);
 
     if (errorMessage) {
-      console.error(errorMessage);
-      showErrorAlert();
+      showErrorAlert(errorMessage);
       return;
     }
 

@@ -8,7 +8,7 @@ import {
   useBallot, useDiscussButton, useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import {
-  GENERIC_ERROR_MESSAGE, Result, useBallotPreviews, useCurrentUser,
+  getErrorMessage, Result, useBallotPreviews, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createTerm } from '../../networking';
@@ -115,7 +115,7 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
         accepted: updatedResult.acceptedOffice, ballotId: ballot.id, jwt,
       }));
     } catch (error) {
-      errorMessage = GENERIC_ERROR_MESSAGE;
+      errorMessage = getErrorMessage(error);
     }
 
     if (errorMessage) {

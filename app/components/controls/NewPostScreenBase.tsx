@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Keyboard, ScrollView, StyleSheet, TextInput, View,
 } from 'react-native';
-import {
-  GENERIC_ERROR_MESSAGE, useCachedValue, usePosts, useCurrentUser,
-} from '../../model';
+import { useCachedValue, usePosts, useCurrentUser } from '../../model';
 import type { Post, PostCategory } from '../../model';
 import useTheme from '../../Theme';
 import { createPost } from '../../networking';
@@ -148,8 +146,7 @@ export default function NewPostScreenBase({
       cachePost(post);
       onPostCreated?.(post);
     } catch (error) {
-      console.error(error);
-      setResult('error', { message: GENERIC_ERROR_MESSAGE });
+      setResult('error', { error });
     }
   };
 
