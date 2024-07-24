@@ -1,12 +1,15 @@
 import { useMemo } from 'react';
 import { Share } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
 import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { SettingsSection } from './types';
+import type { SettingsScreenNavigationProp } from '../navigation';
 
 export default function useSettings(): SettingsSection[] {
   const { currentUser } = useCurrentUser();
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   if (!currentUser) {
     console.warn('Expected current user to be set');
@@ -26,6 +29,11 @@ export default function useSettings(): SettingsSection[] {
               onConfirm: currentUser.logOut,
             }).show,
             title: 'Leave Org',
+          },
+          {
+            iconName: 'visibility',
+            onPress: () => navigation.navigate('TransparencyLog'),
+            title: 'Transparency Log',
           },
         ],
       },

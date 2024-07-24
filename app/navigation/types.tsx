@@ -210,6 +210,7 @@ export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 export type OrgStackParamList = {
   Org: undefined;
   Settings: undefined;
+  TransparencyLog: undefined;
 };
 
 export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
@@ -220,6 +221,7 @@ export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
 
 export type OrgScreenProps = OrgStackScreenProps<'Org'>;
 export type SettingsScreenProps = OrgStackScreenProps<'Settings'>;
+export type TransparencyLogScreenProps = OrgStackScreenProps<'TransparencyLog'>;
 
 export type OrgStackNavigationProp<T extends keyof OrgStackParamList> =
   CompositeNavigationProp<
