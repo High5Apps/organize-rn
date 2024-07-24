@@ -1,7 +1,7 @@
 import {
   createConnection, createOrg, createUser, getUser, UnpublishedOrg,
 } from '../networking';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 import { Keys } from './keys';
 import { CurrentUserData, User } from './types';
 import CurrentUserBase from './CurrentUserBase';
@@ -39,10 +39,7 @@ export default async function createCurrentUser({
 
     userId = id;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-    return GENERIC_ERROR_MESSAGE;
+    return getErrorMessage(error);
   }
 
   const groupKey = maybeGroupKey ?? keys.aes.create();
@@ -74,10 +71,7 @@ export default async function createCurrentUser({
 
       orgId = id;
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      return GENERIC_ERROR_MESSAGE;
+      return getErrorMessage(error);
     }
   }
 
@@ -98,8 +92,7 @@ export default async function createCurrentUser({
         return maybeErrorMessage;
       }
     } catch (error) {
-      console.error(error);
-      return GENERIC_ERROR_MESSAGE;
+      return getErrorMessage(error);
     }
   }
 
@@ -115,10 +108,7 @@ export default async function createCurrentUser({
 
     fetchedUser = errorMessageOrUser.user;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-    return GENERIC_ERROR_MESSAGE;
+    return getErrorMessage(error);
   }
 
   return {

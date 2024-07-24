@@ -9,7 +9,7 @@ import {
   PrimaryButton, TextInputRow, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import { GENERIC_ERROR_MESSAGE, NewOrgSteps, useOrg } from '../../model';
+import { getErrorMessage, NewOrgSteps, useOrg } from '../../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -54,10 +54,7 @@ function useOrgInfo({
     try {
       await refreshOrg();
     } catch (error) {
-      let errorMessage = GENERIC_ERROR_MESSAGE;
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
+      const errorMessage = getErrorMessage(error);
       setResult('error', {
         message: `${errorMessage}\nTap to try again`,
         onPress: refresh,
@@ -76,10 +73,7 @@ function useOrgInfo({
       await updateOrg({ memberDefinition, name });
       setResult('success', { message: 'Successfully updated Org info' });
     } catch (error) {
-      let errorMessage = GENERIC_ERROR_MESSAGE;
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
+      const errorMessage = getErrorMessage(error);
       setResult('error', { message: errorMessage });
     }
   };

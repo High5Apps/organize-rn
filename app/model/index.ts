@@ -15,7 +15,9 @@ export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as formatDate } from './DateFormatter';
 export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
-export { GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE } from './Errors';
+export {
+  getErrorMessage, GENERIC_ERROR_MESSAGE, OTHER_ORG_ERROR_MESSAGE,
+} from './Errors';
 export { default as useFlag, getFlagIcon } from './Flag';
 export { default as useFlagReports } from './FlagReports';
 export { default as useOrg } from './Org';

@@ -5,7 +5,7 @@ import {
   useRequestProgress,
 } from '../../components';
 import type { PostScreenProps } from '../../navigation';
-import { GENERIC_ERROR_MESSAGE, usePost } from '../../model';
+import { getErrorMessage, usePost } from '../../model';
 import useTheme from '../../Theme';
 
 function toTitleCase(s: string) {
@@ -73,13 +73,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
           await refreshPost();
           setResult('success');
         } catch (error) {
-          let errorMessage;
-          if (error instanceof Error) {
-            errorMessage = error.message;
-          } else {
-            errorMessage = GENERIC_ERROR_MESSAGE;
-          }
-
+          const errorMessage = getErrorMessage(error);
           setResult('error', {
             message: `${errorMessage}\nTap to try again`,
             onPress: refresh,

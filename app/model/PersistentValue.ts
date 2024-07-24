@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getErrorMessage } from './Errors';
 
 type JSONValue =
   | null
@@ -21,9 +22,7 @@ export default function usePersistentValue<
       setStoredValue(parsedValue);
       setReady(true);
     }).catch((error) => {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      console.error(getErrorMessage(error));
     });
   }, []);
 
@@ -33,9 +32,7 @@ export default function usePersistentValue<
       AsyncStorage.setItem(key, stringifiedValue);
       setStoredValue(value);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      console.error(getErrorMessage(error));
     }
   }
 

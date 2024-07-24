@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 
 type Props = {
   choices?: string[];
@@ -64,11 +64,7 @@ export default function useSelectionUpdater({
     try {
       await onSyncSelection(updatedSelections);
     } catch (error) {
-      let errorMessage = GENERIC_ERROR_MESSAGE;
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
+      const errorMessage = getErrorMessage(error);
       onSyncSelectionError(errorMessage);
     }
 
@@ -106,10 +102,7 @@ export default function useSelectionUpdater({
       await onNewSelection(selection);
     } catch (error) {
       console.error('Uncaught error in onNewSelection');
-
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      console.error(getErrorMessage(error));
     }
   }, [onNewSelection]);
 

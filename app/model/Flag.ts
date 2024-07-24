@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlag } from '../networking';
-import { GENERIC_ERROR_MESSAGE } from './Errors';
+import { getErrorMessage } from './Errors';
 import { FlaggableType } from './types';
 
 type Props = {
@@ -42,11 +42,7 @@ export default function useFlag({
             ballotId, commentId, jwt, postId,
           }));
         } catch (error) {
-          if (error instanceof Error) {
-            errorMessage = error.message;
-          } else {
-            errorMessage = GENERIC_ERROR_MESSAGE;
-          }
+          errorMessage = getErrorMessage(error);
         }
 
         if (errorMessage) {
