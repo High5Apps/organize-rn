@@ -1,6 +1,10 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
+import { ScreenBackground, TransparencyLogList } from '../../components';
 
 export default function TransparencyLogScreen() {
-  return <PlaceholderScreen name="Transparency Log" />;
+  return (
+    <ScreenBackground>
+      <TransparencyLogList />
+    </ScreenBackground>
+  );
 }
