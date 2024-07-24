@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  FlagReport, ModerationEvent, ModerationEventAction, getFlagIcon,
-  getMessageAge, truncateText,
+  FlagReport, ModerationEvent, ModerationEventAction, getMessageAge,
+  getModeratableIcon, truncateText,
 } from '../../model';
 import useTheme from '../../Theme';
 import { DisclosureIcon } from '../views';
@@ -183,7 +183,7 @@ export default function FlagReportRow({
         <View style={styles.containerTop}>
           <View style={styles.rowTitle}>
             <Icon
-              name={getFlagIcon(flaggable.category)}
+              name={getModeratableIcon(flaggable.category)}
               style={[styles.rowIcon, styles.rowIconPrimary]}
             />
             <Text style={styles.rowTitleText}>{title}</Text>

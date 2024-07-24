@@ -16,7 +16,7 @@ export { default as formatDate } from './DateFormatter';
 export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { getErrorMessage, OTHER_ORG_ERROR_MESSAGE } from './Errors';
-export { default as useFlag, getFlagIcon } from './Flag';
+export { default as useFlag } from './Flag';
 export { default as useFlagReports } from './FlagReports';
 export { default as useOrg } from './Org';
 export {
@@ -24,7 +24,9 @@ export {
 } from './Json';
 export { default as JWT } from './JWT';
 export { default as getMessageAge } from './MessageAge';
-export { default as useModerationEvents } from './ModerationEvents';
+export {
+  default as useModerationEvents, getModeratableIcon,
+} from './ModerationEvents';
 export { default as useMyPermissions } from './MyPermissions';
 export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as useNominations } from './Nominations';

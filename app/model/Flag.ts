@@ -4,7 +4,6 @@ import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlag } from '../networking';
 import { getErrorMessage } from './Errors';
-import { FlaggableType } from './types';
 
 type Props = {
   ballotId?: string;
@@ -60,13 +59,3 @@ export default function useFlag({
 
   return { confirmThenCreateFlag };
 }
-
-const flaggableTypeIconMap: { [key in FlaggableType]: string } = {
-  Ballot: 'check-box',
-  Comment: 'forum',
-  Post: 'chat-bubble',
-};
-
-export const getFlagIcon = (category: FlaggableType) => (
-  flaggableTypeIconMap[category] ?? 'article'
-);

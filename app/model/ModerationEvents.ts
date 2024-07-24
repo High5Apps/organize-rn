@@ -126,3 +126,14 @@ export default function useModerationEvents({
     removeModerationEvent,
   };
 }
+
+const moderatableTypeIconMap: { [key in ModeratableType]: string } = {
+  Ballot: 'check-box',
+  Comment: 'forum',
+  Post: 'chat-bubble',
+  User: 'person',
+};
+
+export const getModeratableIcon = (category: ModeratableType) => (
+  moderatableTypeIconMap[category] ?? 'article'
+);
