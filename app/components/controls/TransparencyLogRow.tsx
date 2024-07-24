@@ -1,8 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, TouchableHighlight, View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getMessageAge, getModeratableIcon, type ModerationEvent } from '../../model';
 import useTheme from '../../Theme';
+import { DisclosureIcon } from '../views';
 
 const useStyles = () => {
   const {
@@ -12,8 +15,11 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.fill,
+      paddingStart: spacing.m,
       paddingVertical: spacing.s,
-      paddingHorizontal: spacing.m,
+
+      // Without this, it seems like there's more space at end vs. start
+      paddingEnd: spacing.s,
     },
     rowIcon: {
       alignSelf: 'flex-start',
@@ -57,13 +63,13 @@ const useStyles = () => {
 
 type Props = {
   item: ModerationEvent;
+  onPress?: (item: ModerationEvent) => void;
 };
 
-export default function TransparencyLogRow({
-  item: {
+export default function TransparencyLogRow({ item, onPress }: Props) {
+  const {
     action, createdAt, moderatable: { category, creator }, moderator,
-  },
-}: Props) {
+  } = item;
   const isBlocked = action === 'block';
   const pastAction = isBlocked ? 'blocked' : 'stopped blocking';
   let object: string;
@@ -78,21 +84,31 @@ export default function TransparencyLogRow({
   const actionIcon = isBlocked ? 'block' : 'check';
   const timeAgo = getMessageAge(createdAt);
 
-  const { styles } = useStyles();
+  const { colors, styles } = useStyles();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.rowTitle}>
-        <Icon
-          name={getModeratableIcon(category)}
-          style={[styles.rowIcon, styles.rowIconPrimary]}
-        />
-        <Text style={styles.rowTitleText}>{title}</Text>
+    <TouchableHighlight
+      onPress={() => onPress?.(item)}
+      underlayColor={colors.label}
+    >
+      <View style={styles.container}>
+        <View style={styles.rowTitle}>
+          <Icon
+            name={getModeratableIcon(category)}
+            style={[styles.rowIcon, styles.rowIconPrimary]}
+          />
+          <Text style={styles.rowTitleText}>{title}</Text>
+          <DisclosureIcon />
+        </View>
+        <View style={styles.rowSubtitle}>
+          <Icon name={actionIcon} style={styles.rowIcon} />
+          <Text style={styles.rowSubtitleText}>{timeAgo}</Text>
+        </View>
       </View>
-      <View style={styles.rowSubtitle}>
-        <Icon name={actionIcon} style={styles.rowIcon} />
-        <Text style={styles.rowSubtitleText}>{timeAgo}</Text>
-      </View>
-    </View>
+    </TouchableHighlight>
   );
 }
+
+TransparencyLogRow.defaultProps = {
+  onPress: undefined,
+};

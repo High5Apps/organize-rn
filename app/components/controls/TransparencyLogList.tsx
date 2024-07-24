@@ -7,7 +7,11 @@ import TransparencyLogRow from './TransparencyLogRow';
 
 const LIST_EMPTY_MESSAGE = "The moderators haven't blocked anything yet.\n\nYou can check this log to see when a moderator blocks or unblocks flagged content.";
 
-export default function TransparencyLogList() {
+type Props = {
+  onItemPress: (item: ModerationEvent) => void;
+};
+
+export default function TransparencyLogList({ onItemPress }: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfModerationEvents,
     fetchNextPageOfModerationEvents, moderationEvents, ready,
@@ -39,8 +43,8 @@ export default function TransparencyLogList() {
   ), []);
 
   const renderItem: ListRenderItem<ModerationEvent> = useCallback(
-    ({ item }) => <TransparencyLogRow item={item} />,
-    [removeModerationEvent],
+    ({ item }) => <TransparencyLogRow item={item} onPress={onItemPress} />,
+    [onItemPress, removeModerationEvent],
   );
 
   return (
