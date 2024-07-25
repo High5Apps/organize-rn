@@ -2,6 +2,7 @@ import {
   Dispatch, RefObject, SetStateAction, useEffect, useRef,
 } from 'react';
 import { Position, VisNetworkRef } from 'react-native-vis-network';
+import { NullUser } from '../../model';
 
 const ANIMATION_OPTIONS = {
   duration: 500,
@@ -63,6 +64,14 @@ export default function useClickHandler(
   async function clickHandler({
     event, userId: maybeUserId,
   }: ClickHandlerProps) {
+    // Without this, focusing on uncached users sometimes failed due to a race
+    // between the network user lookup and the multiple sequential async graph
+    // methods below. If the network request completed before the graph calls on
+    // the placeholder NullUser completed, the next round of graph calls with
+    // the fetched user would fail the event-in-progress check, preventing the
+    // graph from focusing on the fetched user.
+    if (maybeUserId === NullUser().id) { return; }
+
     // isEventInProgressRef is set to false automatically after any animation
     // ends. But you MUST manually set it to false on any code path below that
     // returns early without animating. Otherwise, the guard condition below

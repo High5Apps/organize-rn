@@ -207,8 +207,12 @@ export type NominationScreenProps = VoteStackScreenProps<'Nominations'>;
 export type OfficeAvailabilityScreenProps = VoteStackScreenProps<'OfficeAvailability'>;
 export type ResultScreenProps = VoteStackScreenProps<'Result'>;
 
+export type OrgScreenParams = {
+  selectedUserId: string;
+};
+
 export type OrgStackParamList = {
-  Org: undefined;
+  Org: undefined | OrgScreenParams;
   Settings: undefined;
   TransparencyLog: undefined;
 };

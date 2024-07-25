@@ -10,7 +10,7 @@ import {
   useVisGraphData,
 } from '../../model';
 
-export default function OrgScreen({ navigation }: OrgScreenProps) {
+export default function OrgScreen({ navigation, route }: OrgScreenProps) {
   const [graphError, setGraphError] = useState('');
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [graphRendered, setGraphRendered] = useState(false);
@@ -46,6 +46,10 @@ export default function OrgScreen({ navigation }: OrgScreenProps) {
   }, [fetchOfficers, refreshOrg]);
 
   useEffect(() => { onRefresh(); }, []);
+
+  useEffect(() => {
+    setSelectedUserId(route.params?.selectedUserId);
+  }, [route.params?.selectedUserId]);
 
   const ListHeaderComponent = useMemo(() => (
     <>
