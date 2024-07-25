@@ -16,6 +16,8 @@ export default function TransparencyLogScreen({
       navigation.navigate('DiscussStack', {
         screen: 'Post', initial: false, params: { postId: id },
       });
+    } else if (category === 'User') {
+      navigation.navigate('Org', { selectedUserId: id });
     } else {
       console.log({ item });
     }
