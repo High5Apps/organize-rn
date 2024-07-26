@@ -10,6 +10,7 @@ export {
   default as useComments, BLOCKED_COMMENT_BODY, MAX_COMMENT_DEPTH,
   MAX_COMMENT_LENGTH,
 } from './Comments';
+export { default as useCommentThread } from './CommentThread';
 export * from './Config';
 export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as formatDate } from './DateFormatter';
