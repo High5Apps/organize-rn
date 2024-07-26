@@ -82,6 +82,10 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 
+export type CommentThreadScreenParams = {
+  commentId: string;
+};
+
 export type InsertedComment = {
   commentId: string;
   parentCommentId?: string;
@@ -106,6 +110,7 @@ export type NewReplyScreenParams = {
 };
 
 export type DiscussStackParamList = {
+  CommentThread: CommentThreadScreenParams;
   DiscussTabs: NavigatorScreenParams<DiscussTabsParamList>;
   NewPost: NewPostScreenParams;
   Post: PostScreenParams;
@@ -119,6 +124,7 @@ export type DiscussStackScreenProps<T extends keyof DiscussStackParamList> =
     OrgTabsScreenProps<keyof OrgTabsParamList>
   >;
 
+export type CommentThreadScreenProps = DiscussStackScreenProps<'CommentThread'>;
 export type NewPostScreenProps = DiscussStackScreenProps<'NewPost'>;
 export type PostScreenProps = DiscussStackScreenProps<'Post'>;
 export type NewCommentScreenProps = DiscussStackScreenProps<'NewComment'>;

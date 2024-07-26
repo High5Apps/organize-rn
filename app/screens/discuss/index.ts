@@ -1,3 +1,4 @@
+export { default as CommentThreadScreen } from './CommentThreadScreen';
 export { default as DiscussDemandsScreen } from './DiscussDemandsScreen';
 export { default as DiscussGeneralScreen } from './DiscussGeneralScreen';
 export { default as DiscussGrievancesScreen } from './DiscussGrievancesScreen';

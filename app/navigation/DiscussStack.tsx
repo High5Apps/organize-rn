@@ -1,7 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  NewCommentScreen, NewPostScreen, NewReplyScreen, PostScreen,
+  CommentThreadScreen, NewCommentScreen, NewPostScreen, NewReplyScreen,
+  PostScreen,
 } from '../screens';
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
@@ -18,6 +19,11 @@ export default function DiscussStack() {
         name="DiscussTabs"
         component={DiscussTabs}
         options={{ headerShadowVisible: false, title: 'Discuss' }}
+      />
+      <Stack.Screen
+        name="CommentThread"
+        component={CommentThreadScreen}
+        options={{ title: 'Comment Thread' }}
       />
       <Stack.Screen
         name="NewPost"
