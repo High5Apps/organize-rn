@@ -1,32 +1,8 @@
 import React, { PropsWithChildren } from 'react';
-import {
-  StyleProp, StyleSheet, View, ViewStyle,
-} from 'react-native';
-import useTheme from '../../Theme';
+import { StyleProp, ViewStyle } from 'react-native';
 import { useCurrentUser } from '../../model';
-
-const useStyles = () => {
-  const { colors, spacing } = useTheme();
-
-  const containerPaddingHorizontal = spacing.s;
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: colors.fill,
-      flexDirection: 'row',
-      paddingEnd: containerPaddingHorizontal,
-    },
-    highlightOff: {
-      paddingStart: containerPaddingHorizontal,
-    },
-    highlightOn: {
-      borderColor: colors.primary,
-      borderStartWidth: containerPaddingHorizontal,
-    },
-  });
-
-  return { styles };
-};
+import HighlightedRowContainer from './HighlightedRowContainer';
+import useTheme from '../../Theme';
 
 type Props = {
   userIds: string[];
@@ -36,21 +12,20 @@ type Props = {
 export default function HighlightedCurrentUserRowContainer({
   children, userIds, style,
 }: PropsWithChildren<Props>) {
-  const { styles } = useStyles();
+  const { colors, spacing } = useTheme();
 
   const { currentUser } = useCurrentUser();
-  const highlighted = currentUser && userIds.includes(currentUser?.id);
+  const highlighted = !!currentUser && userIds.includes(currentUser?.id);
 
   return (
-    <View
-      style={[
-        styles.container,
-        style,
-        highlighted ? styles.highlightOn : styles.highlightOff,
-      ]}
+    <HighlightedRowContainer
+      color={colors.primary}
+      highlighted={highlighted}
+      style={style}
+      width={spacing.s}
     >
       {children}
-    </View>
+    </HighlightedRowContainer>
   );
 }
 
