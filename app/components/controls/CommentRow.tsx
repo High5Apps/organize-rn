@@ -66,15 +66,14 @@ type Props = {
   hideTextButtonRow?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
-  postId: string;
 };
 
 function CommentRow({
   compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
-  item, onCommentChanged, postId,
+  item, onCommentChanged,
 }: Props) {
   const {
-    blocked, createdAt, depth, id, myVote, pseudonym, score, userId,
+    blocked, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
   } = item;
   const body = blocked ? BLOCKED_COMMENT_BODY : item.body;
 

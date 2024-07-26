@@ -39,25 +39,15 @@ const useStyles = () => {
   return { styles };
 };
 
-function getCacheKey(
-  { commentId, postId }: { commentId?: string; postId?: string; },
-) {
-  let keyId;
-  if (commentId !== undefined && postId === undefined) {
-    keyId = commentId;
-  } else if (commentId === undefined && postId !== undefined) {
-    keyId = postId;
-  } else {
-    throw new Error('getCacheKey expected exactly one commentable');
-  }
-  return `comment-draft-${keyId}`;
-}
+const getCacheKey = (
+  { commentId, postId }: { commentId?: string; postId: string; },
+) => `comment-draft-${commentId ?? postId}`;
 
 type Props = {
   commentId?: string;
   HeaderComponent: ReactNode;
   onCommentCreated?: (commentId: string) => void;
-  postId?: string;
+  postId: string;
 };
 
 export default function NewCommentScreenBase({
@@ -107,6 +97,7 @@ export default function NewCommentScreenBase({
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId,
         myVote: 1,
+        postId,
         pseudonym: currentUser.pseudonym,
         score: 1,
         userId: currentUser.id,
@@ -153,5 +144,4 @@ export default function NewCommentScreenBase({
 NewCommentScreenBase.defaultProps = {
   commentId: undefined,
   onCommentCreated: () => {},
-  postId: undefined,
 };

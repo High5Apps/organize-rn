@@ -181,6 +181,7 @@ export type BackendComment = {
   encryptedBody: BackendEncryptedMessage;
   id: string;
   myVote: VoteState;
+  postId: string;
   pseudonym: string;
   score: number;
   userId: string;
@@ -194,6 +195,7 @@ function isBackendComment(object: unknown): object is BackendComment {
     && isDate(comment.createdAt)
     && comment.id?.length > 0
     && comment.myVote !== undefined
+    && comment.postId?.length > 0
     && comment.pseudonym?.length > 0
     && comment.score !== undefined
     && comment.userId?.length > 0

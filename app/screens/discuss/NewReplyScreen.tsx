@@ -21,7 +21,6 @@ export default function NewReplyScreen({
       hideTextButtonRow
       item={comment}
       onCommentChanged={cacheComment}
-      postId={postId}
     />
   );
 
@@ -37,6 +36,7 @@ export default function NewReplyScreen({
           postId,
         });
       }}
+      postId={postId}
     />
   );
 }

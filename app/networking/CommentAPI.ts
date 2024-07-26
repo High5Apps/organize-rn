@@ -15,7 +15,7 @@ type Props = {
   body: string;
   commentId?: string;
   e2eEncrypt: E2EEncryptor;
-  postId?: string;
+  postId: string;
 };
 
 type Return = {
@@ -29,14 +29,7 @@ type Return = {
 export async function createComment({
   body, commentId, e2eEncrypt, jwt, postId,
 }: Props & Authorization): Promise<Return> {
-  let uri;
-  if (commentId !== undefined && postId === undefined) {
-    uri = repliesURI(commentId);
-  } else if (commentId === undefined && postId !== undefined) {
-    uri = commentsURI(postId);
-  } else {
-    throw new Error('createUpvote expected exactly one upvotable');
-  }
+  const uri = commentId ? repliesURI(commentId) : commentsURI(postId);
 
   const encryptedBody = await encrypt(body, e2eEncrypt);
   const response = await post({

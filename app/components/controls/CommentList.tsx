@@ -176,12 +176,8 @@ export default function CommentList({
   ), [onPostChanged, post, RequestProgress]);
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
-    <CommentRow
-      item={item}
-      onCommentChanged={cacheComment}
-      postId={post.id}
-    />
-  ), [cacheComment, post.id]);
+    <CommentRow item={item} onCommentChanged={cacheComment} />
+  ), [cacheComment]);
 
   useEffect(() => {
     listRef.current?.scrollToOffset({ animated: false, offset: 0 });
