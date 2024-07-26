@@ -42,6 +42,7 @@ export const postUpvotesURI = (postId: string) => `${postURI(postId)}/upvotes`;
 
 export const commentsURI = (postId: string) => `${postURI(postId)}/comments`;
 const commentURI = (commentId: string) => `${apiRoute}/comments/${commentId}`;
+export const commentThreadURI = (commentId: string) => `${commentURI(commentId)}/thread`;
 export const commentUpvotesURI = (commentId: string) => `${commentURI(commentId)}/upvotes`;
 export const repliesURI = (commentId: string) => `${commentURI(commentId)}/comments`;
 

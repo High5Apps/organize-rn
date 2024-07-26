@@ -5,9 +5,10 @@ import {
   decryptMany, encrypt, get, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import { commentsURI, repliesURI } from './Routes';
+import { commentsURI, commentThreadURI, repliesURI } from './Routes';
 import {
-  Authorization, BackendComment, isCommentIndexResponse, isCreateModelResponse,
+  Authorization, BackendComment, isCommentIndexResponse,
+  isCommentThreadResponse, isCreateModelResponse,
 } from './types';
 
 type Props = {
@@ -104,6 +105,50 @@ export async function fetchComments({
 
   const { comments: fetchedComments } = json;
   const unnestedComments = getUnnestedComments(fetchedComments);
+  const encryptedBodies = unnestedComments.map((c) => c.encryptedBody);
+  const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
+  const decryptedBodiesWithoutReplies = unnestedComments.map(
+    ({ encryptedBody, replies, ...p }, i) => ({ ...p, body: bodies[i]! }),
+  );
+
+  return { comments: decryptedBodiesWithoutReplies };
+}
+
+type FetchThreadProps = {
+  commentId: string;
+  e2eDecryptMany: E2EMultiDecryptor;
+};
+
+type FetchThreadReturn = {
+  errorMessage?: never;
+  comments: Comment[];
+} | {
+  errorMessage: string;
+  comments?: never;
+};
+
+export async function fetchCommentThread({
+  commentId, e2eDecryptMany, jwt,
+}: FetchThreadProps & Authorization): Promise<FetchThreadReturn> {
+  const uri = commentThreadURI(commentId);
+  const response = await get({ jwt, uri });
+
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isCommentThreadResponse(json)) {
+    throw new Error('Failed to parse CommentThread from response');
+  }
+
+  const { thread: fetchedThread } = json;
+  const unnestedComments = getUnnestedComments([fetchedThread]);
   const encryptedBodies = unnestedComments.map((c) => c.encryptedBody);
   const bodies = await decryptMany(encryptedBodies, e2eDecryptMany);
   const decryptedBodiesWithoutReplies = unnestedComments.map(

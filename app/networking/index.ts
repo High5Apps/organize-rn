@@ -1,5 +1,5 @@
 export { createBallot, fetchBallot, fetchBallotPreviews } from './BallotAPI';
-export { createComment, fetchComments } from './CommentAPI';
+export { createComment, fetchComments, fetchCommentThread } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createFlag } from './FlagAPI';

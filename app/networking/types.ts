@@ -213,6 +213,23 @@ export function isCommentIndexResponse(object: unknown): object is CommentIndexR
     && response.comments.every(isBackendComment);
 }
 
+type CommentThreadResponse = {
+  thread: BackendComment;
+};
+
+function isCommentThreadComment(object: unknown): object is BackendComment {
+  const comment = (object as BackendComment);
+  return isBackendComment(comment)
+    && (comment.replies.length === 0
+      || (comment.replies.length === 1
+        && isCommentThreadComment(comment.replies[0])));
+}
+
+export function isCommentThreadResponse(object: unknown): object is CommentThreadResponse {
+  const response = (object as CommentThreadResponse);
+  return response?.thread && isCommentThreadComment(response.thread);
+}
+
 export type BallotIndexBallot = {
   category: BallotCategory,
   encryptedQuestion: BackendEncryptedMessage;
