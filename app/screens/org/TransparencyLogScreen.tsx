@@ -18,8 +18,12 @@ export default function TransparencyLogScreen({
       });
     } else if (category === 'User') {
       navigation.navigate('Org', { selectedUserId: id });
+    } else if (category === 'Comment') {
+      navigation.navigate('DiscussStack', {
+        screen: 'CommentThread', initial: false, params: { commentId: id },
+      });
     } else {
-      console.log({ item });
+      console.warn('WARNING: Unexpected ModerationEvent category');
     }
   }, [navigation]);
 
