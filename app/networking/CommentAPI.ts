@@ -7,8 +7,7 @@ import {
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { commentsURI, repliesURI } from './Routes';
 import {
-  Authorization, CommentIndexComment, isCommentIndexResponse,
-  isCreateModelResponse,
+  Authorization, BackendComment, isCommentIndexResponse, isCreateModelResponse,
 } from './types';
 
 type Props = {
@@ -64,8 +63,8 @@ type IndexProps = {
   postId: string;
 };
 
-function getUnnestedComments(nestedComments: CommentIndexComment[]): CommentIndexComment[] {
-  const unnestedComments: CommentIndexComment[] = [];
+function getUnnestedComments(nestedComments: BackendComment[]): BackendComment[] {
+  const unnestedComments: BackendComment[] = [];
   nestedComments.forEach((nestedComment) => {
     unnestedComments.push(nestedComment);
 

@@ -1,6 +1,6 @@
 import type {
-  BackendEncryptedMessage, BallotCandidate, BallotIndexBallot,
-  CommentIndexComment, FlagReportResponse, OrgResponse, PostIndexPost,
+  BackendComment, BackendEncryptedMessage, BallotCandidate, BallotIndexBallot,
+  FlagReportResponse, OrgResponse, PostIndexPost,
 } from '../networking';
 import type { AESEncryptedData } from './keys';
 import type { TimeRemainingOptions } from './TimeRemaining';
@@ -152,7 +152,7 @@ export type PaginationData = {
   nextPage: number | null;
 };
 
-export type Comment = Decrypt<Omit<CommentIndexComment, 'replies'>>;
+export type Comment = Decrypt<Omit<BackendComment, 'replies'>>;
 
 export function isDefined<T>(argument: T | undefined): argument is T {
   return argument !== undefined;

@@ -174,7 +174,7 @@ export function isCreateModelResponse(object: unknown): object is CreateModelRes
   return response?.id?.length > 0;
 }
 
-export type CommentIndexComment = {
+export type BackendComment = {
   blocked?: boolean;
   createdAt: Date;
   depth: number;
@@ -184,11 +184,11 @@ export type CommentIndexComment = {
   pseudonym: string;
   score: number;
   userId: string;
-  replies: CommentIndexComment[];
+  replies: BackendComment[];
 };
 
-function isCommentIndexComment(object: unknown): object is CommentIndexComment {
-  const comment = (object as CommentIndexComment);
+function isBackendComment(object: unknown): object is BackendComment {
+  const comment = (object as BackendComment);
   return isBackendEncryptedMessage(comment.encryptedBody)
     && (comment.blocked === undefined || isBoolean(comment.blocked))
     && isDate(comment.createdAt)
@@ -199,18 +199,18 @@ function isCommentIndexComment(object: unknown): object is CommentIndexComment {
     && comment.userId?.length > 0
     && comment.depth >= 0
     && Array.isArray(comment.replies)
-    && comment.replies.every(isCommentIndexComment);
+    && comment.replies.every(isBackendComment);
 }
 
 type CommentIndexResponse = {
-  comments: CommentIndexComment[];
+  comments: BackendComment[];
 };
 
 export function isCommentIndexResponse(object: unknown): object is CommentIndexResponse {
   const response = (object as CommentIndexResponse);
   return response?.comments
     && Array.isArray(response.comments)
-    && response.comments.every(isCommentIndexComment);
+    && response.comments.every(isBackendComment);
 }
 
 export type BallotIndexBallot = {
