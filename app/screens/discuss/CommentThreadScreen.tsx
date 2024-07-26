@@ -1,9 +1,15 @@
 import React from 'react';
-import PlaceholderScreen from '../PlaceholderScreen';
 import type { CommentThreadScreenProps } from '../../navigation';
+import { CommentThreadList, ScreenBackground } from '../../components';
 
 export default function CommentThreadScreen({
   route,
 }: CommentThreadScreenProps) {
-  return <PlaceholderScreen name={route.name} />;
+  const { commentId } = route.params;
+
+  return (
+    <ScreenBackground>
+      <CommentThreadList commentId={commentId} />
+    </ScreenBackground>
+  );
 }
