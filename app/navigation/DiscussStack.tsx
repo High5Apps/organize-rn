@@ -23,6 +23,7 @@ export default function DiscussStack() {
       <Stack.Screen
         name="CommentThread"
         component={CommentThreadScreen}
+        getId={({ params }) => params.commentId}
         options={{ title: 'Comment Thread' }}
       />
       <Stack.Screen
