@@ -24,8 +24,12 @@ export default function DiscussScreen<T extends keyof FlagReportTabsParamList>({
       navigation.navigate('DiscussStack', {
         screen: 'Post', initial: false, params: { postId: id },
       });
+    } else if (category === 'Comment') {
+      navigation.navigate('DiscussStack', {
+        screen: 'CommentThread', initial: false, params: { commentId: id },
+      });
     } else {
-      console.log({ flagReport });
+      console.warn('WARNING: Unexpected FlagReport category');
     }
   }, [navigation]);
 
