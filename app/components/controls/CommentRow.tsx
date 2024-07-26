@@ -66,16 +66,18 @@ type Props = {
   hideTextButtonRow?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
+  showBlockedContent?: boolean;
 };
 
 function CommentRow({
   compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
-  item, onCommentChanged,
+  item, onCommentChanged, showBlockedContent,
 }: Props) {
   const {
     blocked, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
   } = item;
-  const body = blocked ? BLOCKED_COMMENT_BODY : item.body;
+  const shouldShowAsBlocked = blocked && !showBlockedContent;
+  const body = shouldShowAsBlocked ? BLOCKED_COMMENT_BODY : item.body;
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const hideReplyButton = depth >= (MAX_COMMENT_DEPTH - 1);
@@ -96,7 +98,7 @@ function CommentRow({
       <Text
         selectable={enableBodyTextSelection}
         selectionColor={colors.primary}
-        style={[styles.title, blocked && styles.titleBlocked]}
+        style={[styles.title, shouldShowAsBlocked && styles.titleBlocked]}
       >
         {body}
       </Text>
@@ -123,7 +125,7 @@ function CommentRow({
     >
       <UpvoteControl
         commentId={id}
-        disabled={blocked}
+        disabled={shouldShowAsBlocked}
         errorItemFriendlyDifferentiator={body}
         onVoteChanged={(updatedVote, updatedScore) => {
           onCommentChanged?.({
@@ -141,11 +143,11 @@ function CommentRow({
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
             {!hideReplyButton && (
-              <TextButton disabled={blocked} onPress={onReplyPress}>
+              <TextButton disabled={shouldShowAsBlocked} onPress={onReplyPress}>
                 Reply
               </TextButton>
             )}
-            <FlagTextButton commentId={id} disabled={blocked} />
+            <FlagTextButton commentId={id} disabled={shouldShowAsBlocked} />
           </View>
         )}
       </View>
@@ -159,6 +161,7 @@ CommentRow.defaultProps = {
   enableBodyTextSelection: false,
   hideTextButtonRow: false,
   onCommentChanged: () => {},
+  showBlockedContent: false,
 };
 
 export default memo(CommentRow);

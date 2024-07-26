@@ -17,7 +17,12 @@ export default function CommentThreadList({ commentId }: Props) {
   } = usePullToRefresh({ onRefresh: fetchThread, refreshOnMount: true });
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
-    <CommentRow hideTextButtonRow item={item} onCommentChanged={cacheComment} />
+    <CommentRow
+      hideTextButtonRow
+      item={item}
+      onCommentChanged={cacheComment}
+      showBlockedContent
+    />
   ), []);
 
   return (
