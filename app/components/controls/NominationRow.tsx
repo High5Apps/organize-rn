@@ -4,7 +4,7 @@ import useTheme from '../../Theme';
 import {
   ConfirmationAlert, Nomination, NonPendingNomination,
 } from '../../model';
-import { HighlightedRowContainer } from '../views';
+import { HighlightedCurrentUserRowContainer } from '../views';
 import DecisionButtonsRow from './DecisionButtonsRow';
 import { DiscussButtonType } from './DiscussButton';
 import { AnnounceButtonType } from './AnnounceButton';
@@ -68,7 +68,7 @@ export default function NominationRow({
   );
 
   return (
-    <HighlightedRowContainer userIds={[nominator.id, nominee.id]}>
+    <HighlightedCurrentUserRowContainer userIds={[nominator.id, nominee.id]}>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <View style={styles.firstColumn}>
@@ -96,6 +96,6 @@ export default function NominationRow({
           />
         )}
       </View>
-    </HighlightedRowContainer>
+    </HighlightedCurrentUserRowContainer>
   );
 }

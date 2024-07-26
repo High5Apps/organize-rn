@@ -5,7 +5,7 @@ import {
 import useTheme from '../../Theme';
 import { Post, VoteState, getMessageAge } from '../../model';
 import UpvoteControl from './UpvoteControl';
-import { DisclosureIcon, HighlightedRowContainer } from '../views';
+import { DisclosureIcon, HighlightedCurrentUserRowContainer } from '../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -16,7 +16,7 @@ const useStyles = () => {
       // text, itself, not with the top of the text container
       marginTop: 6,
     },
-    highlightedRowContainer: {
+    highlightedCurrentUserRowContainer: {
       alignItems: 'flex-start',
     },
     innerContainer: {
@@ -86,8 +86,8 @@ function PostRow({
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <HighlightedRowContainer
-        style={styles.highlightedRowContainer}
+      <HighlightedCurrentUserRowContainer
+        style={styles.highlightedCurrentUserRowContainer}
         userIds={[userId]}
       >
         <UpvoteControl
@@ -108,7 +108,7 @@ function PostRow({
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         {!disabled && <DisclosureIcon style={styles.icon} />}
-      </HighlightedRowContainer>
+      </HighlightedCurrentUserRowContainer>
     </TouchableHighlight>
   );
 }

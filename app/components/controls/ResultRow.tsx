@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { ConfirmationAlert, Result, isDefined } from '../../model';
 import DecisionButtonsRow from './DecisionButtonsRow';
-import { HighlightedRowContainer } from '../views';
+import { HighlightedCurrentUserRowContainer } from '../views';
 import { DiscussButtonType } from './DiscussButton';
 
 const useStyles = () => {
@@ -186,7 +186,7 @@ export default function ResultRow({
   }, [currentUserId, result, onResultUpdated, termStartsAt]);
 
   return (
-    <HighlightedRowContainer userIds={[userId].filter(isDefined)}>
+    <HighlightedCurrentUserRowContainer userIds={[userId].filter(isDefined)}>
       <View style={styles.container}>
         <View style={styles.firstRow}>
           {IconComponent}
@@ -195,7 +195,7 @@ export default function ResultRow({
         </View>
         {SecondRow}
       </View>
-    </HighlightedRowContainer>
+    </HighlightedCurrentUserRowContainer>
   );
 }
 

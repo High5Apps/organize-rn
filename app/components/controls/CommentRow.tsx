@@ -10,7 +10,9 @@ import {
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
-import { HighlightedRowContainer, HyperlinkDetector } from '../views';
+import {
+  HighlightedCurrentUserRowContainer, HyperlinkDetector,
+} from '../views';
 import FlagTextButton from './FlagTextButton';
 
 const useStyles = () => {
@@ -24,7 +26,7 @@ const useStyles = () => {
   const nestedMarginStart = (screenWidth / 3) / (MAX_COMMENT_DEPTH - 1);
 
   const styles = StyleSheet.create({
-    highlightedRowContainer: {
+    highlightedCurrentUserRowContainer: {
       paddingEnd: spacing.m,
       paddingVertical: spacing.xs,
     },
@@ -116,9 +118,9 @@ function CommentRow({
   ) : BodyText;
 
   return (
-    <HighlightedRowContainer
+    <HighlightedCurrentUserRowContainer
       style={StyleSheet.flatten([
-        styles.highlightedRowContainer,
+        styles.highlightedCurrentUserRowContainer,
         { marginStart },
       ])}
       userIds={[userId]}
@@ -151,7 +153,7 @@ function CommentRow({
           </View>
         )}
       </View>
-    </HighlightedRowContainer>
+    </HighlightedCurrentUserRowContainer>
   );
 }
 

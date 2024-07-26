@@ -33,7 +33,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export default function HighlightedRowContainer({
+export default function HighlightedCurrentUserRowContainer({
   children, userIds, style,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
@@ -54,6 +54,6 @@ export default function HighlightedRowContainer({
   );
 }
 
-HighlightedRowContainer.defaultProps = {
+HighlightedCurrentUserRowContainer.defaultProps = {
   style: {},
 };

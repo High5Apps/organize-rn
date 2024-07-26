@@ -9,7 +9,7 @@ import {
   votingTimeRemainingFormatter,
 } from '../../model';
 import useTheme from '../../Theme';
-import { DisclosureIcon, HighlightedRowContainer } from '../views';
+import { DisclosureIcon, HighlightedCurrentUserRowContainer } from '../views';
 
 const useStyles = () => {
   const {
@@ -92,14 +92,17 @@ export default function BallotRow({ item, onPress }: Props) {
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
-      <HighlightedRowContainer style={styles.container} userIds={[userId]}>
+      <HighlightedCurrentUserRowContainer
+        style={styles.container}
+        userIds={[userId]}
+      >
         <Icon name={ballotTypeMap[category].iconName} style={styles.icon} />
         <View style={styles.innerContainer}>
           <Text style={[styles.text, styles.title]}>{question}</Text>
           <Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
         </View>
         <DisclosureIcon />
-      </HighlightedRowContainer>
+      </HighlightedCurrentUserRowContainer>
     </TouchableHighlight>
   );
 }
