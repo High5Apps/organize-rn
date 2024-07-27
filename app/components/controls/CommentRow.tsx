@@ -6,13 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../Theme';
 import {
   BLOCKED_COMMENT_BODY, Comment, MAX_COMMENT_DEPTH, getMessageAge,
+  useCurrentUser,
 } from '../../model';
 import UpvoteControl from './UpvoteControl';
 import TextButton from './TextButton';
 import type { PostScreenProps } from '../../navigation';
-import {
-  HighlightedCurrentUserRowContainer, HyperlinkDetector,
-} from '../views';
+import { HighlightedRowContainer, HyperlinkDetector } from '../views';
 import FlagTextButton from './FlagTextButton';
 
 const useStyles = () => {
@@ -58,7 +57,9 @@ const useStyles = () => {
     },
   });
 
-  return { colors, nestedMarginStart, styles };
+  return {
+    colors, nestedMarginStart, spacing, styles,
+  };
 };
 
 type Props = {
@@ -66,6 +67,7 @@ type Props = {
   disableDepthIndent?: boolean;
   enableBodyTextSelection?: boolean;
   hideTextButtonRow?: boolean;
+  highlightObjectionableContent?: boolean;
   item: Comment;
   onCommentChanged?: (comment: Comment) => void;
   showBlockedContent?: boolean;
@@ -73,7 +75,7 @@ type Props = {
 
 function CommentRow({
   compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
-  item, onCommentChanged, showBlockedContent,
+  highlightObjectionableContent, item, onCommentChanged, showBlockedContent,
 }: Props) {
   const {
     blocked, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
@@ -87,13 +89,18 @@ function CommentRow({
   const timeAgo = getMessageAge(createdAt);
   const subtitle = `By ${pseudonym} ${timeAgo}`;
 
-  const { colors, nestedMarginStart, styles } = useStyles();
+  const {
+    colors, nestedMarginStart, spacing, styles,
+  } = useStyles();
   const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
     navigation.navigate('NewReply', { commentId: id, postId });
   }, [id, navigation]);
+
+  const { currentUser } = useCurrentUser();
+  const highlightCurrentUser = !!currentUser && userId === currentUser?.id;
 
   const BodyText = (
     <HyperlinkDetector>
@@ -118,12 +125,14 @@ function CommentRow({
   ) : BodyText;
 
   return (
-    <HighlightedCurrentUserRowContainer
+    <HighlightedRowContainer
+      color={highlightObjectionableContent ? colors.error : colors.primary}
+      highlighted={highlightObjectionableContent || highlightCurrentUser}
       style={StyleSheet.flatten([
         styles.highlightedCurrentUserRowContainer,
         { marginStart },
       ])}
-      userIds={[userId]}
+      width={spacing.s}
     >
       <UpvoteControl
         commentId={id}
@@ -153,7 +162,7 @@ function CommentRow({
           </View>
         )}
       </View>
-    </HighlightedCurrentUserRowContainer>
+    </HighlightedRowContainer>
   );
 }
 
@@ -162,6 +171,7 @@ CommentRow.defaultProps = {
   disableDepthIndent: false,
   enableBodyTextSelection: false,
   hideTextButtonRow: false,
+  highlightObjectionableContent: false,
   onCommentChanged: () => {},
   showBlockedContent: false,
 };

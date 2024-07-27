@@ -19,6 +19,7 @@ export default function CommentThreadList({ commentId }: Props) {
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow
       hideTextButtonRow
+      highlightObjectionableContent={commentId === item.id}
       item={item}
       onCommentChanged={cacheComment}
       showBlockedContent
