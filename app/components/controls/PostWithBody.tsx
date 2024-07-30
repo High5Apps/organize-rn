@@ -3,7 +3,7 @@ import {
   LayoutChangeEvent, StyleSheet, Text, View,
 } from 'react-native';
 import { Post } from '../../model';
-import PostRow from './PostRow';
+import PostRow from './lists/PostRow';
 import useTheme from '../../Theme';
 import { HyperlinkDetector } from '../views';
 
