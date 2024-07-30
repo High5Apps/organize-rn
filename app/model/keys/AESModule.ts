@@ -44,6 +44,7 @@ export interface AESInterface {
     wrapperKeyId: string,
     messages: string[],
   ): Promise<AESEncryptedData[]>
+  generateKey(): Promise<string>;
 }
 
 export default AESModule as AESInterface;

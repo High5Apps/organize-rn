@@ -58,10 +58,15 @@ async function encryptMany(
   return AESModule.encryptMany(wrappedKey, wrapperKeyId, messages);
 }
 
+async function generateKey(): Promise<string> {
+  return AESModule.generateKey();
+}
+
 export default {
   decrypt,
   decryptMany,
   decryptWithExposedKey,
   encrypt,
   encryptMany,
+  generateKey,
 };

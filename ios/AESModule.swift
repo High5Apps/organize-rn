@@ -14,6 +14,7 @@ class AESModule: NSObject {
   static let KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage"
   static let KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
   static let KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
+  static let KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8
   static let MESSAGE_DECRYPTION_FAILED = "[Unable to decrypt]"
 
   @objc
@@ -132,6 +133,12 @@ class AESModule: NSObject {
     resolve(encryptedMessages.map({ encryptedMessage in
       encryptedMessage.dictionary
     }))
+  }
+  
+  @objc
+  func generateKey(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    let data = Data((0 ..< Self.KEY_STRENGTH_256_BIT_IN_BYTES).map { _ in .random(in: .min ... .max) })
+    resolve(data.base64EncodedString())
   }
   
   private func encrypt(_ message: String, with symmetricKey: SymmetricKey) throws -> EncryptedMessage {
