@@ -42,7 +42,7 @@ export default async function createCurrentUser({
     return getErrorMessage(error);
   }
 
-  const groupKey = maybeGroupKey ?? keys.aes.create();
+  const groupKey = maybeGroupKey ?? await keys.aes.create();
   const { publicKeyId: localEncryptionKeyId } = await keys.rsa.create();
   const {
     base64EncodedEncryptedMessage: encryptedGroupKey,

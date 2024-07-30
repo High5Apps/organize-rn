@@ -2,16 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 import AESKeychain from './AESKeychain';
 import ECCKeychain from './ECCKeychain';
 import RSAKeychain from './RSAKeychain';
-import Secret from './Secret';
 import { AESEncryptedData, AESMessage, AESWrappedKey } from './AESModule';
-
-const KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
 
 export default function Keys() {
   return {
     aes: {
       create() {
-        return Secret().base64(KEY_STRENGTH_256_BIT_IN_BYTES);
+        return AESKeychain.generateKey();
       },
       async decrypt({
         base64EncryptedMessage, base64InitializationVector,
