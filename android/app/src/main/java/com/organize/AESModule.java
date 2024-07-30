@@ -23,6 +23,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
 
@@ -44,6 +45,7 @@ public class AESModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "AESModule";
 
     private static final int INTEGRITY_CHECK_LENGTH_BYTES = 16;
+    private static final int KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8;
 
     AESModule(ReactApplicationContext context) {
         super(context);
@@ -199,6 +201,14 @@ public class AESModule extends ReactContextBaseJavaModule {
         }
 
         promise.resolve(resultArray);
+    }
+
+    @ReactMethod
+    public void generateKey(Promise promise) {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] keyBytes = new byte[KEY_STRENGTH_256_BIT_IN_BYTES];
+        secureRandom.nextBytes(keyBytes);
+        promise.resolve(toBase64(keyBytes));
     }
 
     private ReadableMap encrypt(Cipher cipher, String message) throws IllegalBlockSizeException, BadPaddingException {
