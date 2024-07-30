@@ -1,14 +1,13 @@
 import React, {
-  RefObject, useCallback, useEffect, useRef, useState,
+  ReactElement, RefObject, useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  FlatList, ListRenderItem, StyleProp, StyleSheet, ViewStyle,
+  FlatList, ListRenderItem, StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
 import CommentRow from './CommentRow';
 import useTheme from '../../../Theme';
 import { ItemSeparator, SectionHeader } from '../../views';
-import PostWithBody from '../PostWithBody';
-import { Comment, Post, useComments } from '../../../model';
+import { Comment, useComments } from '../../../model';
 import type { InsertedComment } from '../../../navigation';
 import { useRequestProgress } from '../../hooks';
 
@@ -117,18 +116,18 @@ type Props = {
   containerStyle?: StyleProp<ViewStyle>;
   emptyListMessageOnPress?: () => void;
   insertedComments?: InsertedComment[];
-  onPostChanged?: (post: Post) => void;
-  post: Post;
+  ListHeaderComponent?: ReactElement;
+  postId: string;
 };
 
 export default function CommentList({
   containerStyle, emptyListMessageOnPress,
-  insertedComments: maybeInsertedCommentIds, onPostChanged, post,
+  insertedComments: maybeInsertedCommentIds, ListHeaderComponent, postId,
 }: Props) {
   const listRef = useRef<FlatList<Comment>>(null);
 
   const { styles } = useStyles();
-  const { cacheComment, comments, updateComments } = useComments(post.id);
+  const { cacheComment, comments, updateComments } = useComments(postId);
   const {
     allComments: data, resetInsertedComments,
   } = useInsertedComments(comments, maybeInsertedCommentIds);
@@ -159,21 +158,21 @@ export default function CommentList({
     setLoading(false);
   };
 
-  const ListHeaderComponent = useCallback(() => (
+  const WrappedListHeaderComponent = useCallback(() => (
     <>
-      <PostWithBody
-        post={post}
+      <View
         onLayout={
           ({ nativeEvent: { layout: { height } } }) => setScrollOffset(height)
         }
-        onPostChanged={onPostChanged}
-      />
+      >
+        {ListHeaderComponent}
+      </View>
       <SectionHeader buttonText="Refresh" onPress={refresh}>
         Comments
       </SectionHeader>
       <RequestProgress style={styles.requestProgress} />
     </>
-  ), [onPostChanged, post, RequestProgress]);
+  ), [ListHeaderComponent, RequestProgress]);
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow item={item} onCommentChanged={cacheComment} />
@@ -182,7 +181,7 @@ export default function CommentList({
   useEffect(() => {
     listRef.current?.scrollToOffset({ animated: false, offset: 0 });
     refresh().catch(console.error);
-  }, [post.id]);
+  }, [postId]);
 
   // Hide list empty message when it's not empty
   if (result === 'info' && data.length) {
@@ -194,7 +193,7 @@ export default function CommentList({
       contentContainerStyle={containerStyle}
       data={data}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponent={WrappedListHeaderComponent}
       ref={listRef}
       renderItem={renderItem}
     />
@@ -205,5 +204,5 @@ CommentList.defaultProps = {
   containerStyle: {},
   emptyListMessageOnPress: () => {},
   insertedComments: [],
-  onPostChanged: () => {},
+  ListHeaderComponent: undefined,
 };

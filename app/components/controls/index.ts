@@ -19,6 +19,7 @@ export { default as NewConnectionControl } from './NewConnectionControl';
 export { default as NewPostScreenBase } from './NewPostScreenBase';
 export { default as OrgGraph } from './OrgGraph';
 export { default as PostCategorySelector } from './PostCategorySelector';
+export { default as PostWithBody } from './PostWithBody';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';

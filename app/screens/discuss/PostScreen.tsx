@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, {
+  useCallback, useEffect, useLayoutEffect, useMemo,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  CommentList, PrimaryButton, ScreenBackground, useFlagHeaderButton,
-  useRequestProgress,
+  CommentList, PostWithBody, PrimaryButton, ScreenBackground,
+  useFlagHeaderButton, useRequestProgress,
 } from '../../components';
 import type { PostScreenProps } from '../../navigation';
 import { getErrorMessage, usePost } from '../../model';
@@ -95,6 +97,10 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
     navigation.navigate('NewComment', { postId: post.id });
   }, [navigation, post]);
 
+  const ListHeaderComponent = useMemo(() => (
+    <PostWithBody post={post} onPostChanged={cachePost} />
+  ), [post]);
+
   return (
     <ScreenBackground>
       {post ? (
@@ -102,8 +108,8 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
           containerStyle={styles.listContainerStyle}
           emptyListMessageOnPress={navigateToNewCommentScreen}
           insertedComments={insertedComments}
-          onPostChanged={cachePost}
-          post={post}
+          ListHeaderComponent={ListHeaderComponent}
+          postId={postId}
         />
       ) : <RequestProgress style={styles.requestProgress} />}
       <PrimaryButton
