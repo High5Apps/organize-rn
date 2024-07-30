@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import {
   Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
-import useTheme from '../../Theme';
+import useTheme from '../../../Theme';
 
 const useStyles = () => {
   const {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import useTheme from '../../Theme';
-import { IconPrompt } from '../views';
+import useTheme from '../../../Theme';
+import { IconPrompt } from '../../views';
 import FrameButton from './FrameButton';
 
 const useStyles = () => {

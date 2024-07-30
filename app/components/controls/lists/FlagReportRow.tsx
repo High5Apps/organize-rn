@@ -9,7 +9,7 @@ import {
 } from '../../../model';
 import useTheme from '../../../Theme';
 import { DisclosureIcon } from '../../views';
-import SecondaryButton from '../SecondaryButton';
+import { SecondaryButton } from '../buttons';
 
 // This matches the max length for ballots and posts, but not comments, which is
 // much longer.

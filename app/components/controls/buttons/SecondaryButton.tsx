@@ -3,35 +3,33 @@ import {
   Pressable, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import useTheme from '../../Theme';
-import useDisabledDuringOnPress from './DisabledDuringOnPress';
+import useTheme from '../../../Theme';
+import useDisabledDuringOnPress from '../DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
-    colors, font, isDarkMode, opacity, shadows, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
-
   const styles = StyleSheet.create({
     icon: {
-      color: colors.background,
-      fontSize: sizes.icon,
-      marginEnd: spacing.s,
+      color: colors.primary,
+      fontSize: 24,
+      marginHorizontal: spacing.xs,
     },
     pressable: {
-      alignItems: 'center',
-      backgroundColor: colors.primary,
-      borderRadius: 25,
-      flex: 1,
       flexDirection: 'row',
+      height: sizes.buttonHeight,
       justifyContent: 'center',
-      ...shadows.elevation4,
+      alignItems: 'center',
     },
     pressed: {
-      opacity: isDarkMode ? opacity.disabled : opacity.visible,
-      ...shadows.elevation1,
+      opacity: opacity.disabled,
+    },
+    reversed: {
+      flexDirection: 'row-reverse',
     },
     text: {
-      color: colors.background,
+      color: colors.primary,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
@@ -40,25 +38,29 @@ const useStyles = () => {
 };
 
 type Props = {
+  disabled?: boolean;
   iconName?: string;
-  onPress?: (() => Promise<void>) | (() => void);
-  style?: StyleProp<ViewStyle>;
   label: string;
+  onPress?: (() => Promise<void>) | (() => void);
+  reversed?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function PrimaryButton({
-  iconName, onPress, label, style,
+export default function SecondaryButton({
+  disabled: disabledProp, iconName, label, onPress, reversed, style,
 }: Props) {
   const { styles } = useStyles();
-  const { disabled, onPressWrapper } = useDisabledDuringOnPress({ onPress });
-
+  const {
+    disabled: disabledDueToOnPress, onPressWrapper,
+  } = useDisabledDuringOnPress({ onPress });
   return (
     <Pressable
-      disabled={disabled}
+      disabled={disabledProp || disabledDueToOnPress}
       onPress={onPressWrapper}
       style={({ pressed }) => [
         styles.pressable,
-        pressed && styles.pressed,
+        reversed && styles.reversed,
+        (disabledProp || pressed) && styles.pressed,
         style,
       ]}
     >
@@ -70,8 +72,10 @@ export default function PrimaryButton({
   );
 }
 
-PrimaryButton.defaultProps = {
+SecondaryButton.defaultProps = {
+  disabled: false,
   iconName: undefined,
   onPress: () => {},
+  reversed: false,
   style: {},
 };

@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import TextButton from './TextButton';
-import { Nomination } from '../../model';
+import { Nomination } from '../../../model';
 import type {
   VoteStackParamList, VoteStackScreenProps,
-} from '../../navigation';
+} from '../../../navigation';
 
 type Props = {
   currentUserId: string;

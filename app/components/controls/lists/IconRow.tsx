@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../Theme';
 import { DisclosureIcon } from '../../views';
-import TextButton from '../TextButton';
+import { TextButton } from '../buttons';
 
 const useStyles = () => {
   const {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import FramedIconPromptButton from './FramedIconPromptButton';
-import QRCodeButton from './QRCodeButtton';
+import { FramedIconPromptButton, QRCodeButton } from './buttons';
 import {
   QRCodeDataFormatter, QR_CODE_TIME_TO_LIVE_SECONDS, useAppState,
   useCurrentUser,

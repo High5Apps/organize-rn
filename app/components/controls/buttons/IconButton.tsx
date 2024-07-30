@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import useTheme from '../../Theme';
+import useTheme from '../../../Theme';
 
 const useStyles = () => {
   const { colors, opacity, sizes } = useTheme();

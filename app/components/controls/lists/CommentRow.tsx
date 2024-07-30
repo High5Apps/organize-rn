@@ -9,10 +9,9 @@ import {
   useCurrentUser,
 } from '../../../model';
 import UpvoteControl from '../UpvoteControl';
-import TextButton from '../TextButton';
+import { FlagTextButton, TextButton } from '../buttons';
 import type { PostScreenProps } from '../../../navigation';
 import { HighlightedRowContainer, HyperlinkDetector } from '../../views';
-import FlagTextButton from '../FlagTextButton';
 
 const useStyles = () => {
   const {

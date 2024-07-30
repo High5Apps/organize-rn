@@ -6,8 +6,7 @@ import {
 } from '../../../model';
 import { HighlightedCurrentUserRowContainer } from '../../views';
 import DecisionButtonsRow from '../DecisionButtonsRow';
-import { DiscussButtonType } from '../DiscussButton';
-import { AnnounceButtonType } from '../AnnounceButton';
+import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

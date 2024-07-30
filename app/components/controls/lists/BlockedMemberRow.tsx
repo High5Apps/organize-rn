@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ModerationEvent, getMessageAge } from '../../../model';
 import useTheme from '../../../Theme';
-import UnblockUserButton from '../UnblockUserButton';
+import { UnblockUserButton } from '../buttons';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import TextButton from './TextButton';
 import type {
   VoteStackParamList, VoteStackScreenProps,
-} from '../../navigation';
+} from '../../../navigation';
 
 type Props = {
   postId?: string | null;

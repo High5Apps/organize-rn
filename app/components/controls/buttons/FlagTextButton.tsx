@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useFlag } from '../../model';
+import { useFlag } from '../../../model';
 import TextButton from './TextButton';
 
 type Props = {

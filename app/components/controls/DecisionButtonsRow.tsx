@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import useTheme from '../../Theme';
-import PrimaryButton from './PrimaryButton';
-import SecondaryButton from './SecondaryButton';
+import { PrimaryButton, SecondaryButton } from './buttons';
 
 const useStyles = () => {
   const { colors, sizes, spacing } = useTheme();

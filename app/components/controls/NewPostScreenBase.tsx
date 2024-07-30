@@ -11,7 +11,7 @@ import { KeyboardAvoidingScreenBackground } from '../views';
 import PostCategorySelector from './PostCategorySelector';
 import TextInputRow from './TextInputRow';
 import MultilineTextInput from './MultilineTextInput';
-import PrimaryButton from './PrimaryButton';
+import { PrimaryButton } from './buttons';
 
 const MAX_TITLE_LENGTH = 140;
 const MAX_BODY_LENGTH = 10000;

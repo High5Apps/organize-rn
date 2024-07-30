@@ -2,8 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import {
   StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle,
 } from 'react-native';
-import useTheme from '../../Theme';
-import useDisabledDuringOnPress from './DisabledDuringOnPress';
+import useTheme from '../../../Theme';
+import useDisabledDuringOnPress from '../DisabledDuringOnPress';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();

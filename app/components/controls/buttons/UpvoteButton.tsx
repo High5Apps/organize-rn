@@ -2,8 +2,8 @@ import React from 'react';
 import {
   StyleProp, StyleSheet, TouchableOpacity, ViewStyle,
 } from 'react-native';
-import { ArrowTriangle } from '../../../assets';
-import useTheme from '../../Theme';
+import { ArrowTriangle } from '../../../../assets';
+import useTheme from '../../../Theme';
 
 const useStyles = () => {
   const { colors: { primary }, opacity, sizes } = useTheme();

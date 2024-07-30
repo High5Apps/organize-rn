@@ -4,7 +4,7 @@ import {
   StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
-import IconButton from './IconButton';
+import { IconButton } from './buttons';
 
 const useStyles = () => {
   const {

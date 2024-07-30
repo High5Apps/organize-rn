@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import useTheme from '../../Theme';
+import useTheme from '../../../Theme';
 import FrameButton from './FrameButton';
-import { CountdownClockBorder } from '../views';
+import { CountdownClockBorder } from '../../views';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();

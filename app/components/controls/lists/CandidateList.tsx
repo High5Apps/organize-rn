@@ -5,7 +5,7 @@ import {
 import { Ballot, Candidate, useVoteUpdater } from '../../../model';
 import CandidateRow from './CandidateRow';
 import { ItemSeparator } from '../../views';
-import type { DiscussButtonType } from '../DiscussButton';
+import type { DiscussButtonType } from '../buttons';
 import useTheme from '../../../Theme';
 
 const useStyles = () => {

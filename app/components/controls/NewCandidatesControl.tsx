@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import TextInputRow from './TextInputRow';
-import TextButton from './TextButton';
+import { TextButton } from './buttons';
 import useTheme from '../../Theme';
 import { ConfirmationAlert } from '../../model';
 

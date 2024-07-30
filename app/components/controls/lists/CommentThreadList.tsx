@@ -4,7 +4,7 @@ import { Comment, useCommentThread } from '../../../model';
 import { usePullToRefresh } from '../../hooks';
 import CommentRow from './CommentRow';
 import { ItemSeparator } from '../../views';
-import TextButton from '../TextButton';
+import { TextButton } from '../buttons';
 import useTheme from '../../../Theme';
 
 const useStyles = () => {

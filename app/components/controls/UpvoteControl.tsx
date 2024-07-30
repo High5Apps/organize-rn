@@ -3,7 +3,7 @@ import {
   Alert, StyleSheet, Text, View,
 } from 'react-native';
 import useTheme from '../../Theme';
-import UpvoteButton from './UpvoteButton';
+import { UpvoteButton } from './buttons';
 import {
   VoteState, getErrorMessage, truncateText, useCurrentUser,
 } from '../../model';

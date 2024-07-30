@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 import { LockingScrollView, Scrim } from '../views';
-import IconButton from './IconButton';
+import { IconButton } from './buttons';
 
 const useStyles = () => {
   const {

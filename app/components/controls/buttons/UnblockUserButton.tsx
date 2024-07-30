@@ -3,9 +3,9 @@ import { Alert } from 'react-native';
 import SecondaryButton from './SecondaryButton';
 import {
   ConfirmationAlert, getErrorMessage, ModerationEvent, useCurrentUser,
-} from '../../model';
-import { createModerationEvent } from '../../networking';
-import { useRequestProgress } from '../hooks';
+} from '../../../model';
+import { createModerationEvent } from '../../../networking';
+import { useRequestProgress } from '../../hooks';
 
 type Props = {
   moderationEvent: ModerationEvent;

@@ -6,7 +6,7 @@ import { QRCodeValue, useAppState } from '../../model';
 import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
 import { SetQRValue } from './types';
-import FrameButton from './FrameButton';
+import { FrameButton } from './buttons';
 
 type Props = {
   qrValue: QRCodeValue | null;

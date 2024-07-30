@@ -3,7 +3,7 @@ import {
   StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
-import CircleButton from './CircleButton';
+import { CircleButton } from './buttons';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

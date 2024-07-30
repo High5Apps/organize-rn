@@ -5,7 +5,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Candidate } from '../../../model';
 import useTheme from '../../../Theme';
-import type { DiscussButtonType } from '../DiscussButton';
+import type { DiscussButtonType } from '../buttons';
 
 const useStyles = () => {
   const {

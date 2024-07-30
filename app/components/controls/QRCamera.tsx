@@ -5,7 +5,7 @@ import {
 } from 'react-native-vision-camera';
 import { QRCodeDataParser, isDefined, isNonNull } from '../../model';
 import { ErrorMessage, FadeInView } from '../views';
-import FrameButton from './FrameButton';
+import { FrameButton } from './buttons';
 import { SetQRValue } from './types';
 
 type Props = {

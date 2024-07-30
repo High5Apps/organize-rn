@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import TextButton from './TextButton';
+import { TextButton } from './buttons';
 import useTheme from '../../Theme';
 import DateTimePickerModal from './DateTimePickerModal';
 import { formatDate } from '../../model';

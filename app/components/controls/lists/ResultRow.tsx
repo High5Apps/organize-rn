@@ -7,7 +7,7 @@ import useTheme from '../../../Theme';
 import { ConfirmationAlert, Result, isDefined } from '../../../model';
 import DecisionButtonsRow from '../DecisionButtonsRow';
 import { HighlightedCurrentUserRowContainer } from '../../views';
-import { DiscussButtonType } from '../DiscussButton';
+import type { DiscussButtonType } from '../buttons';
 
 const useStyles = () => {
   const {

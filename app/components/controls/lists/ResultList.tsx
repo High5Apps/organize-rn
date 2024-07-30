@@ -3,7 +3,7 @@ import { FlatList, ListRenderItemInfo } from 'react-native';
 import { ItemSeparator } from '../../views';
 import ResultRow from './ResultRow';
 import { Result } from '../../../model';
-import { DiscussButtonType } from '../DiscussButton';
+import type { DiscussButtonType } from '../buttons';
 
 type Props = {
   currentUserId: string;

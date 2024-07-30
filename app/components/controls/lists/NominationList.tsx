@@ -12,8 +12,7 @@ import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,
 } from '../../views';
 import useTimeRemainingFooter from '../TimeRemainingFooter';
-import { DiscussButtonType } from '../DiscussButton';
-import { AnnounceButtonType } from '../AnnounceButton';
+import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
 
 type NominationSection = {
   title: string;
