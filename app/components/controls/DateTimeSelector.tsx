@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { TextButton } from './buttons';
 import useTheme from '../../Theme';
-import DateTimePickerModal from './DateTimePickerModal';
+import { DateTimePickerModal } from './modals';
 import { formatDate } from '../../model';
 
 const useStyles = () => {

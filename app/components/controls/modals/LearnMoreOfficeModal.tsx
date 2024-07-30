@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { OFFICE_DUTIES, OfficeCategory, getOffice } from '../../model';
+import { OFFICE_DUTIES, OfficeCategory, getOffice } from '../../../model';
 import LearnMoreModal from './LearnMoreModal';
-import { BulletedText } from '../views';
+import { BulletedText } from '../../views';
 
 type Props = {
   officeCategory: OfficeCategory | null;

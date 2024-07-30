@@ -4,7 +4,7 @@ import BaseDateTimePickerModal, {
   CancelButton, ConfirmButton, CustomCancelButtonPropTypes,
   CustomConfirmButtonPropTypes, cancelButtonStyles,
 } from 'react-native-modal-datetime-picker';
-import useTheme from '../../Theme';
+import useTheme from '../../../Theme';
 
 const useStyles = () => {
   const { colors, isDarkMode, sizes } = useTheme();
