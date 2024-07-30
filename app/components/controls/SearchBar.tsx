@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useDebounce } from 'use-debounce';
-import TextInputRow from './TextInputRow';
+import { TextInputRow } from './text';
 import useTheme from '../../Theme';
 
 const useStyles = () => {

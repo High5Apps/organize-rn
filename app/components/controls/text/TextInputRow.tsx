@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import {
   StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle,
 } from 'react-native';
-import useTheme from '../../Theme';
-import { IconButton } from './buttons';
+import useTheme from '../../../Theme';
+import { IconButton } from '../buttons';
 
 const useStyles = () => {
   const {

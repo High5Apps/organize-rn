@@ -9,8 +9,7 @@ import { createPost } from '../../networking';
 import { useRequestProgress } from '../hooks';
 import { KeyboardAvoidingScreenBackground } from '../views';
 import PostCategorySelector from './PostCategorySelector';
-import TextInputRow from './TextInputRow';
-import MultilineTextInput from './MultilineTextInput';
+import { MultilineTextInput, TextInputRow } from './text';
 import { PrimaryButton } from './buttons';
 
 const MAX_TITLE_LENGTH = 140;

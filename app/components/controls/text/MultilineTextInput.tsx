@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ForwardedRef, forwardRef } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
-import useTheme from '../../Theme';
+import useTheme from '../../../Theme';
 
 const useStyles = () => {
   const {
