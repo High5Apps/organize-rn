@@ -7,7 +7,7 @@ import {
   getOffice, toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
 import { ItemSeparator, renderSectionHeader } from '../../views';
-import OfficeRow from './OfficeRow';
+import { OfficeRow } from './rows';
 import { usePullToRefresh, useRequestProgress } from '../../hooks';
 import useTheme from '../../../Theme';
 

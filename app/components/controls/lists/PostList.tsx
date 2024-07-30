@@ -7,7 +7,7 @@ import {
   Post, PostCategory, PostSort, usePosts, usePrependedModels,
 } from '../../../model';
 import { ItemSeparator } from '../../views';
-import PostRow from './PostRow';
+import { PostRow } from './rows';
 import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
 
 type Props = {

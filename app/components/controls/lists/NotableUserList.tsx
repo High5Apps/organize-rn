@@ -10,7 +10,7 @@ import { User, useCurrentUser } from '../../../model';
 import useTheme from '../../../Theme';
 import { ItemSeparator, renderSectionHeader } from '../../views';
 import { usePullToRefresh } from '../../hooks';
-import UserRow from './UserRow';
+import { UserRow } from './rows';
 
 type NotableUserSection = {
   title: string;

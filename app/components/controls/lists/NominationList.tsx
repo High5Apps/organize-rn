@@ -7,7 +7,7 @@ import {
   nominationsTimeRemainingFormatter, useCurrentUser, useNominations,
 } from '../../../model';
 import { useBallot, usePullToRefresh } from '../../hooks';
-import NominationRow from './NominationRow';
+import { NominationRow } from './rows';
 import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,
 } from '../../views';

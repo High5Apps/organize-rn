@@ -5,7 +5,7 @@ import { usePullToRefresh } from '../../hooks';
 import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,
 } from '../../views';
-import OfficeRow from './OfficeRow';
+import { OfficeRow } from './rows';
 
 const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nTry again later';
 

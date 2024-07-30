@@ -3,7 +3,7 @@ import { FlatList, ListRenderItem } from 'react-native';
 import { ModerationEvent, useModerationEvents } from '../../../model';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
-import TransparencyLogRow from './TransparencyLogRow';
+import { TransparencyLogRow } from './rows';
 
 const LIST_EMPTY_MESSAGE = "The moderators haven't blocked anything yet.\n\nYou can check this log to see when a moderator blocks or unblocks flagged content.";
 

@@ -9,7 +9,7 @@ import {
 import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,
 } from '../../views';
-import BallotPreviewRow from './BallotPreviewRow';
+import { BallotPreviewRow } from './rows';
 import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
 
 const LIST_EMPTY_MESSAGE = 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!';

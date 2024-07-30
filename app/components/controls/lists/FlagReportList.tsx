@@ -3,7 +3,7 @@ import { FlatList, ListRenderItem } from 'react-native';
 import { FlagReport, useCurrentUser, useFlagReports } from '../../../model';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
-import FlagReportRow from './FlagReportRow';
+import { FlagReportRow } from './rows';
 
 const LIST_EMPTY_MESSAGE_PENDING = 'When **members flag content** as **inappropriate**, it shows up here.\n\n**You** and the other **mods decide** if it should be **blocked** or **allowed**.\n\nBlocked content is **hidden** from the **main feeds**, but members can still view it in the **Transparency Log**.';
 const LIST_EMPTY_MESSAGE_HANDLED = 'When you or the other mods allow or block flagged content, it shows up here.';

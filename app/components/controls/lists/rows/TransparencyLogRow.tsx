@@ -5,9 +5,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   getMessageAge, getModeratableIcon, type ModerationEvent,
-} from '../../../model';
-import useTheme from '../../../Theme';
-import { DisclosureIcon } from '../../views';
+} from '../../../../model';
+import useTheme from '../../../../Theme';
+import { DisclosureIcon } from '../../../views';
 
 const useStyles = () => {
   const {

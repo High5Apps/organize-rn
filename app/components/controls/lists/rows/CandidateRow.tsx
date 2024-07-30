@@ -3,9 +3,9 @@ import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Candidate } from '../../../model';
-import useTheme from '../../../Theme';
-import type { DiscussButtonType } from '../buttons';
+import { Candidate } from '../../../../model';
+import useTheme from '../../../../Theme';
+import type { DiscussButtonType } from '../../buttons';
 
 const useStyles = () => {
   const {

@@ -5,7 +5,7 @@ import {
 import {
   ModerationEvent, useModerationEvents, usePrependedModels,
 } from '../../../model';
-import BlockedMemberRow from './BlockedMemberRow';
+import { BlockedMemberRow } from './rows';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
 

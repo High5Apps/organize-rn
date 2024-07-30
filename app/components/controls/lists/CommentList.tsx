@@ -4,7 +4,7 @@ import React, {
 import {
   FlatList, ListRenderItem, StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import CommentRow from './CommentRow';
+import { CommentRow } from './rows';
 import useTheme from '../../../Theme';
 import { ItemSeparator, SectionHeader } from '../../views';
 import { Comment, useComments } from '../../../model';

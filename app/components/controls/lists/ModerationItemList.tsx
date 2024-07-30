@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ModerationItem } from './types';
-import IconRow from './IconRow';
+import { IconRow } from './rows';
 import { ItemSeparator } from '../../views';
 import { useMyPermissions } from '../../../model';
 

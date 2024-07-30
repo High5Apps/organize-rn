@@ -1,5 +1,5 @@
 import React from 'react';
-import { BallotType } from '../../../model';
+import { BallotType } from '../../../../model';
 import IconRow from './IconRow';
 
 type Props = {

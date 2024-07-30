@@ -3,15 +3,15 @@ import {
   ScrollView, StyleSheet, Text, View, useWindowDimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import useTheme from '../../../Theme';
+import useTheme from '../../../../Theme';
 import {
   BLOCKED_COMMENT_BODY, Comment, MAX_COMMENT_DEPTH, getMessageAge,
   useCurrentUser,
-} from '../../../model';
-import UpvoteControl from '../UpvoteControl';
-import { FlagTextButton, TextButton } from '../buttons';
-import type { PostScreenProps } from '../../../navigation';
-import { HighlightedRowContainer, HyperlinkDetector } from '../../views';
+} from '../../../../model';
+import UpvoteControl from '../../UpvoteControl';
+import { FlagTextButton, TextButton } from '../../buttons';
+import type { PostScreenProps } from '../../../../navigation';
+import { HighlightedRowContainer, HyperlinkDetector } from '../../../views';
 
 const useStyles = () => {
   const {

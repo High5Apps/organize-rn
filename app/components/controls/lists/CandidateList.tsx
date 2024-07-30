@@ -3,7 +3,7 @@ import {
   Alert, FlatList, ListRenderItemInfo, StyleProp, StyleSheet, Text, ViewStyle,
 } from 'react-native';
 import { Ballot, Candidate, useVoteUpdater } from '../../../model';
-import CandidateRow from './CandidateRow';
+import { CandidateRow } from './rows';
 import { ItemSeparator } from '../../views';
 import type { DiscussButtonType } from '../buttons';
 import useTheme from '../../../Theme';

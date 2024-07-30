@@ -1,6 +1,6 @@
 import React from 'react';
 import IconRow from './IconRow';
-import { SettingsItem } from '../../../model';
+import { SettingsItem } from '../../../../model';
 
 type Props = {
   item: SettingsItem;

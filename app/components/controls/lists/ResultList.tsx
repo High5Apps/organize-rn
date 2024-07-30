@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback } from 'react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 import { ItemSeparator } from '../../views';
-import ResultRow from './ResultRow';
+import { ResultRow } from './rows';
 import { Result } from '../../../model';
 import type { DiscussButtonType } from '../buttons';
 

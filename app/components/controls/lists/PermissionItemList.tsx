@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ItemSeparator } from '../../views';
-import IconRow from './IconRow';
+import { IconRow } from './rows';
 import { PermissionItem, permissionItems } from '../../../model';
 
 type Props = {

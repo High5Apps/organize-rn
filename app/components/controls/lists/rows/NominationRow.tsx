@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import useTheme from '../../../Theme';
+import useTheme from '../../../../Theme';
 import {
   ConfirmationAlert, Nomination, NonPendingNomination,
-} from '../../../model';
-import { HighlightedCurrentUserRowContainer } from '../../views';
-import DecisionButtonsRow from '../DecisionButtonsRow';
-import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
+} from '../../../../model';
+import { HighlightedCurrentUserRowContainer } from '../../../views';
+import DecisionButtonsRow from '../../DecisionButtonsRow';
+import type { AnnounceButtonType, DiscussButtonType } from '../../buttons';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

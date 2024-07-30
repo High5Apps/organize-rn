@@ -6,11 +6,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   BallotPreview, ballotTypeMap, getMessageAge, getTimeRemaining,
   nominationsTimeRemainingFormatter, votingTimeRemainingFormatter,
-} from '../../../model';
-import useTheme from '../../../Theme';
+} from '../../../../model';
+import useTheme from '../../../../Theme';
 import {
   DisclosureIcon, HighlightedCurrentUserRowContainer,
-} from '../../views';
+} from '../../../views';
 
 const useStyles = () => {
   const {

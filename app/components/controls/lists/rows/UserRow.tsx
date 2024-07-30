@@ -4,8 +4,8 @@ import {
   TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { User, getCircleColors, getTenure } from '../../../model';
-import useTheme from '../../../Theme';
+import { User, getCircleColors, getTenure } from '../../../../model';
+import useTheme from '../../../../Theme';
 
 const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
 

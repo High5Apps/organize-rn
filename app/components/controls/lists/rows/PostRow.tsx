@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import {
   ScrollView, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
-import useTheme from '../../../Theme';
-import { Post, VoteState, getMessageAge } from '../../../model';
-import UpvoteControl from '../UpvoteControl';
+import useTheme from '../../../../Theme';
+import { Post, VoteState, getMessageAge } from '../../../../model';
+import UpvoteControl from '../../UpvoteControl';
 import {
   DisclosureIcon, HighlightedCurrentUserRowContainer,
-} from '../../views';
+} from '../../../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

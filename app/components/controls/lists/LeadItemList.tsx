@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
-import IconRow from './IconRow';
+import { IconRow } from './rows';
 import { LeadItem } from './types';
 import { useMyPermissions } from '../../../model';
 import { usePullToRefresh } from '../../hooks';

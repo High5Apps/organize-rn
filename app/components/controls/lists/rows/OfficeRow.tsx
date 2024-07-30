@@ -3,9 +3,9 @@ import {
   StyleProp, StyleSheet, TouchableHighlight, View, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Office } from '../../../model';
+import { Office } from '../../../../model';
 import IconRow from './IconRow';
-import useTheme from '../../../Theme';
+import useTheme from '../../../../Theme';
 
 const useStyles = () => {
   const {

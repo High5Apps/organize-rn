@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import BallotTypeRow from './BallotTypeRow';
+import { BallotTypeRow } from './rows';
 import { BallotType, useBallotTypes } from '../../../model';
 import { ItemSeparator } from '../../views';
 
