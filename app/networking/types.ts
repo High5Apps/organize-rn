@@ -25,6 +25,7 @@ export function isUserResponse(object: unknown): object is UserResponse {
     && ((user.blocked === undefined) || isBoolean(user.blocked))
     && user.id?.length > 0
     && isDate(user.joinedAt)
+    && ((user.leftOrgAt === undefined) || isDate(user.leftOrgAt))
     && user.pseudonym?.length > 0
     && Array.isArray(user.offices)
     && user.offices.every((category) => category.length > 0)

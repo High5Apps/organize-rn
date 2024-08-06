@@ -67,6 +67,7 @@ export type User = {
   connectionCount: number;
   id: string;
   joinedAt: Date;
+  leftOrgAt?: Date;
   offices: Office[];
   pseudonym: string;
   recruitCount: number;
