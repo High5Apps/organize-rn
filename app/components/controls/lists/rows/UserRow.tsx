@@ -45,9 +45,6 @@ const useStyles = () => {
   const { circleHeight, marginTop, onTextLayout } = useCircleHeight(sizes.icon);
 
   const styles = StyleSheet.create({
-    blocked: {
-      opacity: opacity.blocked,
-    },
     circle: {
       aspectRatio: 1,
       borderRadius: circleHeight,
@@ -65,6 +62,9 @@ const useStyles = () => {
       backgroundColor: colors.fill,
       gap: spacing.s,
       padding: spacing.m,
+    },
+    dim: {
+      opacity: opacity.blocked,
     },
     rowIcon: {
       color: colors.labelSecondary,
@@ -149,7 +149,7 @@ export default function UserRow({
               styles.circle,
               styles.circleShadows,
               { backgroundColor, borderColor },
-              blocked && styles.blocked,
+              (blocked || leftOrgAt) && styles.dim,
             ]}
           />
           <Text onTextLayout={onTextLayout} style={styles.rowTitleText}>
