@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Pressable, StyleProp, StyleSheet, Text, ViewStyle,
+  Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../Theme';
@@ -40,14 +40,17 @@ const useStyles = () => {
 type Props = {
   disabled?: boolean;
   iconName?: string;
+  iconStyle?: StyleProp<TextStyle>;
   label: string;
   onPress?: (() => Promise<void>) | (() => void);
   reversed?: boolean;
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 };
 
 export default function SecondaryButton({
-  disabled: disabledProp, iconName, label, onPress, reversed, style,
+  disabled: disabledProp, iconName, iconStyle, label, onPress, reversed, style,
+  textStyle,
 }: Props) {
   const { styles } = useStyles();
   const {
@@ -64,8 +67,8 @@ export default function SecondaryButton({
         style,
       ]}
     >
-      {iconName && <Icon name={iconName} style={styles.icon} />}
-      <Text style={styles.text}>
+      {iconName && <Icon name={iconName} style={[styles.icon, iconStyle]} />}
+      <Text style={[styles.text, textStyle]}>
         {label}
       </Text>
     </Pressable>
@@ -75,7 +78,9 @@ export default function SecondaryButton({
 SecondaryButton.defaultProps = {
   disabled: false,
   iconName: undefined,
+  iconStyle: {},
   onPress: () => {},
   reversed: false,
   style: {},
+  textStyle: {},
 };
