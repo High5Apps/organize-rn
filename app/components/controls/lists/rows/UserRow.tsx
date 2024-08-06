@@ -118,7 +118,7 @@ export default function UserRow({
     blockedAt, connectionCount, joinedAt, leftOrgAt, offices, pseudonym,
     recruitCount,
   } = item;
-  const tenure = getTenure(joinedAt);
+  const tenure = getTenure(joinedAt, { blockedAt, leftOrgAt });
 
   const joinedOffices = offices.map((o) => o.title).join(', ');
   const title = [
