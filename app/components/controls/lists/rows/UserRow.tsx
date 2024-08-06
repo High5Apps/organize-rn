@@ -115,7 +115,7 @@ export default function UserRow({
   compact, disabled, isMe, item, onPress,
 }: Props) {
   const {
-    blocked, connectionCount, joinedAt, leftOrgAt, offices, pseudonym,
+    blockedAt, connectionCount, joinedAt, leftOrgAt, offices, pseudonym,
     recruitCount,
   } = item;
   const tenure = getTenure(joinedAt);
@@ -125,7 +125,7 @@ export default function UserRow({
     pseudonym,
     joinedOffices,
     isMe && 'Me',
-    blocked && 'Blocked',
+    blockedAt && 'Blocked',
     leftOrgAt && 'Left Org',
   ].filter((e) => e).join(', ');
 
@@ -149,7 +149,7 @@ export default function UserRow({
               styles.circle,
               styles.circleShadows,
               { backgroundColor, borderColor },
-              (blocked || leftOrgAt) && styles.dim,
+              (blockedAt || leftOrgAt) && styles.dim,
             ]}
           />
           <Text onTextLayout={onTextLayout} style={styles.rowTitleText}>

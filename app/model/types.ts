@@ -63,7 +63,7 @@ export type OfficeDuty = {
 export type UserFilter = 'officer';
 export type UserSort = 'low_service' | 'office' | 'service';
 export type User = {
-  blocked?: boolean;
+  blockedAt?: Date;
   connectionCount: number;
   id: string;
   joinedAt: Date;

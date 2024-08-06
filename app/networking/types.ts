@@ -22,7 +22,7 @@ export type UserResponse = Omit<User, 'offices'> & {
 export function isUserResponse(object: unknown): object is UserResponse {
   const user = (object as UserResponse);
   return user?.connectionCount >= 0
-    && ((user.blocked === undefined) || isBoolean(user.blocked))
+    && ((user.blockedAt === undefined) || isDate(user.blockedAt))
     && user.id?.length > 0
     && isDate(user.joinedAt)
     && ((user.leftOrgAt === undefined) || isDate(user.leftOrgAt))
