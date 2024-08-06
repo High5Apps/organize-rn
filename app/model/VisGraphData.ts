@@ -52,13 +52,15 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
       return undefined;
     }
 
-    const blockedUserIds = new Set(orgGraph.blockedUserIds);
+    const dimUserIds = new Set(
+      [...orgGraph.blockedUserIds, ...orgGraph.leftOrgUserIds],
+    );
 
     return {
       nodes: orgGraph.userIds.map((id) => {
         const offices = officerMap[id] ?? [];
         const isMe = (id === currentUser?.id);
-        const isNodeBlocked = blockedUserIds.has(id);
+        const isNodeDim = dimUserIds.has(id);
         const {
           circleBorderColor, circleBackgroundColor, shadow,
         } = getCircleColors({ colors, isMe, offices });
@@ -68,15 +70,15 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
             border: circleBorderColor,
           },
           id,
-          opacity: isNodeBlocked ? opacity.blocked : opacity.visible,
+          opacity: isNodeDim ? opacity.blocked : opacity.visible,
           shadow,
         };
       }),
       edges: orgGraph.connections.map(([from, to]) => {
-        const isConnectionBlocked = blockedUserIds.has(from) || blockedUserIds.has(to);
+        const isConnectionDim = dimUserIds.has(from) || dimUserIds.has(to);
         return {
           color: {
-            opacity: isConnectionBlocked ? opacity.blocked : opacity.visible,
+            opacity: isConnectionDim ? opacity.blocked : opacity.visible,
           },
           from,
           to,

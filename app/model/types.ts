@@ -75,6 +75,7 @@ export type User = {
 export type OrgGraph = {
   blockedUserIds: string[];
   connections: [string, string][];
+  leftOrgUserIds: string[];
   userIds: string[];
 };
 

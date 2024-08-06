@@ -82,7 +82,9 @@ export function isOrgGraph(object: unknown): object is OrgGraph {
     && response.userIds.length > 0
     && response.userIds.every((id) => id.length)
     && Array.isArray(response.blockedUserIds)
-    && response.blockedUserIds.every((id) => id.length);
+    && response.blockedUserIds.every((id) => id.length)
+    && Array.isArray(response.leftOrgUserIds)
+    && response.leftOrgUserIds.every((id) => id.length);
 }
 
 export type OrgResponse = {
