@@ -3,7 +3,9 @@ import {
   ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScreenBackground, SecondaryButton } from '../../components';
+import {
+  ScreenBackground, SecondaryButton, useRequestProgress,
+} from '../../components';
 import useTheme from '../../Theme';
 import { ConfirmationAlert, useCurrentUser } from '../../model';
 
@@ -61,6 +63,10 @@ export default function LeaveOrgScreen() {
   const { currentUser } = useCurrentUser();
   if (!currentUser) { throw new Error('Expected currentUser'); }
 
+  const {
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+
   return (
     <ScreenBackground>
       <ScrollView style={styles.scrollView}>
@@ -95,10 +101,20 @@ export default function LeaveOrgScreen() {
             onPress={ConfirmationAlert({
               destructiveAction: 'Leave Org',
               destructiveActionInTitle: 'leave this Org',
-              onConfirm: currentUser.logOut,
+              onConfirm: async () => {
+                setResult('none');
+                setLoading(true);
+
+                try {
+                  await currentUser.logOut();
+                } catch (error) {
+                  setResult('error', { error });
+                }
+              },
             }).show}
             textStyle={styles.button}
           />
+          <RequestProgress />
         </View>
       </ScrollView>
     </ScreenBackground>

@@ -8,7 +8,7 @@ import { Keys } from './keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
 } from './types';
-import { getUser } from '../networking';
+import { getUser, leaveOrg } from '../networking';
 
 export function CurrentUser(
   currentUserData: CurrentUserData,
@@ -79,6 +79,12 @@ export function CurrentUser(
   );
 
   const logOut = async () => {
+    const jwt = await currentUserBase.createAuthToken({ scope: '*' });
+    const { errorMessage } = await leaveOrg({ jwt });
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
+    }
+
     await deleteKeys();
     storeCurrentUserData(null);
     setCurrentUserData(null);
