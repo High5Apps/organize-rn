@@ -3,7 +3,7 @@ import {
 } from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
-import { usersURI, userUri } from './Routes';
+import { leaveOrgURI, usersURI, userUri } from './Routes';
 import {
   Authorization, UserResponse, isCreateModelResponse, isUserIndexResponse,
   isUserResponse,
@@ -141,4 +141,27 @@ export async function fetchUsers({
   const users = fetchedUsers.map(convertUserResponseToUser);
 
   return { paginationData, users };
+}
+
+type LeaveOrgReturn = {
+  errorMessage?: string;
+};
+
+export async function leaveOrg({
+  jwt,
+}: Authorization): Promise<LeaveOrgReturn> {
+  const uri = new URL(leaveOrgURI);
+
+  const response = await post({ jwt, uri: uri.href });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
 }
