@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
-import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
@@ -23,11 +22,7 @@ export default function useSettings(): SettingsSection[] {
         data: [
           {
             iconName: 'delete',
-            onPress: ConfirmationAlert({
-              destructiveAction: 'Leave Org',
-              destructiveActionInTitle: 'leave this Org',
-              onConfirm: currentUser.logOut,
-            }).show,
+            onPress: () => navigation.navigate('LeaveOrg'),
             title: 'Leave Org',
           },
           {

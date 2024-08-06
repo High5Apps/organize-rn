@@ -218,6 +218,7 @@ export type OrgScreenParams = {
 };
 
 export type OrgStackParamList = {
+  LeaveOrg: undefined;
   Org: undefined | OrgScreenParams;
   Settings: undefined;
   TransparencyLog: undefined;
@@ -229,6 +230,7 @@ export type OrgStackScreenProps<T extends keyof OrgStackParamList> =
     OrgTabsScreenProps<keyof OrgTabsParamList>
   >;
 
+export type LeaveOrgScreenProps = OrgStackScreenProps<'LeaveOrg'>;
 export type OrgScreenProps = OrgStackScreenProps<'Org'>;
 export type SettingsScreenProps = OrgStackScreenProps<'Settings'>;
 export type TransparencyLogScreenProps = OrgStackScreenProps<'TransparencyLog'>;

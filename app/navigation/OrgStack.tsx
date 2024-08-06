@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { OrgScreen, SettingsScreen, TransparencyLogScreen } from '../screens';
+import {
+  LeaveOrgScreen, OrgScreen, SettingsScreen, TransparencyLogScreen,
+} from '../screens';
 import { OrgStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import { useCurrentUser } from '../model';
@@ -18,6 +20,11 @@ export default function OrgStack() {
         component={OrgScreen}
         name="Org"
         options={{ title: currentUser?.org?.name }}
+      />
+      <Stack.Screen
+        component={LeaveOrgScreen}
+        name="LeaveOrg"
+        options={{ title: 'Leave Org' }}
       />
       <Stack.Screen component={SettingsScreen} name="Settings" />
       <Stack.Screen
