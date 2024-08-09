@@ -6,11 +6,10 @@ import { useCachedValue, usePosts, useCurrentUser } from '../../model';
 import type { Post, PostCategory } from '../../model';
 import useTheme from '../../Theme';
 import { createPost } from '../../networking';
-import { useRequestProgress } from '../hooks';
-import { KeyboardAvoidingScreenBackground } from '../views';
-import PostCategorySelector from './PostCategorySelector';
-import { MultilineTextInput, TextInputRow } from './text';
-import { PrimaryButton } from './buttons';
+import {
+  KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
+  PrimaryButton, TextInputRow, useRequestProgress,
+} from '../../components';
 
 const MAX_TITLE_LENGTH = 140;
 const MAX_BODY_LENGTH = 10000;

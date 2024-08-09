@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { NewPostScreenBase, useBallot } from '../../components';
+import { useBallot } from '../../components';
 import type { NewCandidacyAnnouncementScreenProps } from '../../navigation';
 import { getOffice, type Post } from '../../model';
+import { NewPostScreenBase } from '../discuss';
 
 export default function NewCandidacyAnnouncementScreen({
   navigation, route,

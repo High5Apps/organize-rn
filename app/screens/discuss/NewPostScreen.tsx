@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { NewPostScreenBase } from '../../components';
 import type { Post, PostCategory } from '../../model';
 import type {
   DiscussTabsParamList, NewPostScreenProps,
 } from '../../navigation';
+import NewPostScreenBase from './NewPostScreenBase';
 
 type DisccussTabName = keyof DiscussTabsParamList;
 function getNextScreenName(category?: PostCategory): DisccussTabName {

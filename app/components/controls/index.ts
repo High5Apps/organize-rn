@@ -6,7 +6,6 @@ export {
 export { default as DecisionButtonsRow } from './DecisionButtonsRow';
 export { default as NewCandidatesControl } from './NewCandidatesControl';
 export { default as NewConnectionControl } from './NewConnectionControl';
-export { default as NewPostScreenBase } from './NewPostScreenBase';
 export { default as OrgGraph } from './OrgGraph';
 export { default as PostCategorySelector } from './PostCategorySelector';
 export { default as PostWithBody } from './PostWithBody';
