@@ -8,8 +8,9 @@ import {
 } from '../../../model';
 import { ItemSeparator, renderSectionHeader } from '../../views';
 import { OfficeRow } from './rows';
-import { usePullToRefresh, useRequestProgress } from '../../hooks';
+import { useRequestProgress } from '../../hooks';
 import useTheme from '../../../Theme';
+import usePullToRefresh from './PullToRefresh';
 
 const useStyles = () => {
   const { spacing } = useTheme();

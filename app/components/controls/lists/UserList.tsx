@@ -6,8 +6,9 @@ import {
   User, UserSort, useCurrentUser, useUsers,
 } from '../../../model';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
-import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
 import { UserRow } from './rows';
+import usePullToRefresh from './PullToRefresh';
+import useInfiniteScroll from './InfiniteScroll';
 
 const LIST_EMPTY_MESSAGE = 'Nobody matched your search. Type a little more or check your spelling.';
 

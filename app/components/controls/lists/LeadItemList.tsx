@@ -6,7 +6,7 @@ import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { IconRow } from './rows';
 import { LeadItem } from './types';
 import { useMyPermissions } from '../../../model';
-import { usePullToRefresh } from '../../hooks';
+import usePullToRefresh from './PullToRefresh';
 
 const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these tools. You can request permissions from the president or another authorized officer.";
 

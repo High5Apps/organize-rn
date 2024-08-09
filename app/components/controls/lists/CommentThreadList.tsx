@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem, StyleSheet } from 'react-native';
 import { Comment, useCommentThread } from '../../../model';
-import { usePullToRefresh } from '../../hooks';
 import { CommentRow } from './rows';
 import { ItemSeparator } from '../../views';
 import { TextButton } from '../buttons';
 import useTheme from '../../../Theme';
+import usePullToRefresh from './PullToRefresh';
 
 const useStyles = () => {
   const { spacing } = useTheme();

@@ -2,8 +2,8 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import { RefreshControl as RNRefreshControl, StyleSheet } from 'react-native';
-import useTheme from '../../Theme';
-import useRequestProgress from './RequestProgress';
+import useTheme from '../../../Theme';
+import { useRequestProgress } from '../../hooks';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();

@@ -7,7 +7,8 @@ import {
 } from '../../../model';
 import { BlockedMemberRow } from './rows';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
-import { useInfiniteScroll, usePullToRefresh } from '../../hooks';
+import useInfiniteScroll from './InfiniteScroll';
+import usePullToRefresh from './PullToRefresh';
 
 const LIST_EMPTY_MESSAGE = "Blocking members prevents them from accessing your Org.\n\nYou Org hasn't blocked any members.\n\nIf you need to block someone, tap the button below to get started.";
 

@@ -6,13 +6,14 @@ import {
   Nomination, getOffice, isDefined, nominationsTimeRemainingExpiredFormatter,
   nominationsTimeRemainingFormatter, useCurrentUser, useNominations,
 } from '../../../model';
-import { useBallot, usePullToRefresh } from '../../hooks';
+import { useBallot } from '../../hooks';
 import { NominationRow } from './rows';
 import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,
 } from '../../views';
 import useTimeRemainingFooter from '../TimeRemainingFooter';
 import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
+import usePullToRefresh from './PullToRefresh';
 
 type NominationSection = {
   title: string;
