@@ -1,79 +1,93 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# organize-rn
 
-# Getting Started
+[organize-rn](https://github.com/High5Apps/organize-rn) is a [React Native](https://reactnative.dev/) client for the [organize-api](https://github.com/High5Apps/organize-api) backend server.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Development Setup
 
-## Step 1: Start the Metro Server
+1. Clone the repo from GitHub
+   ```sh
+   git clone git@github.com:High5Apps/organize-rn.git \
+      && cd organize-rn
+   ```
+2. If you don't already have it, install the following software on your development machine. You'll need a Mac for iOS development. Android development can happen on Mac or PC.
+   - [Xcode](https://developer.apple.com/support/xcode/) (Mac only)
+   - [CocoaPods](https://cocoapods.org/) (Mac only)
+   - [Android Studio](https://developer.android.com/studio/install)
+   - [Node](https://nodejs.org)
+   - [NPM](https://www.npmjs.com/)
+   - [VS Code](https://code.visualstudio.com/) (consider installing the following extensions)
+      - `dbaeumer.vscode-eslint`
+      - `waderyan.gitblame` 
+      - `pflannery.vscode-versionlens`
+3. Install the dependencies
+   ```sh
+   npm install
+   ```
+   For iOS development, you'll also need to install the CocoaPods dependencies
+   ```sh
+   cd ios && pod install
+   ```
+4. Start the development server
+   ```sh
+   npm start
+   ```
+5. Install and launch the app
+   ```sh
+   # On an iOS simulator
+   npm run ios
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+   # On an Android emulator
+   npm run android
+   ```
+6. Make a change to the [TypeScript](https://www.typescriptlang.org/) code, save it, and the app will update live without needing to be reinstalled
+   - You only need to reinstall the app if you make changes to native code ([Swift](https://www.swift.org/)/[Kotlin](https://kotlinlang.org/)/[Java](https://www.java.com)/[Objective-C](https://en.wikipedia.org/wiki/Objective-C)) or add/modify any dependencies
+   - You don't even need to reinstall the app at the beginning of each development session. You can just launch the simulator or emulator, open the app, and it will automatically connect to the development server and be ready for live code updates
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Testing
 
-```bash
-# using npm
-npm start
+The following command will ensure that dependencies are compatible, then type check, lint, and unit test the code:
+```sh
+npm test
+```
+To run just one part of these checks, use `npm run <command>` with one of the scripts in [`package.json`](/package.json).
 
-# OR using Yarn
-yarn start
+### Unit testing
+[Jest](https://jestjs.io/) is used as the unit testing framework. [`react-test-renderer`](https://legacy.reactjs.org/docs/test-renderer.html) is used for unit testing components.
+
+You can run a subset of the unit tests with `npx jest path/to/directory/or/file`. For example:
+```sh
+# Only run tests in the model directory
+npx jest __tests__/model/
+
+# Only run tests in the App.test.tsx file
+npx jest __tests__/App.test.tsx
 ```
 
-## Step 2: Start your Application
+To run just a subset of tests in a single file, append `.only` to the relevant `describe` in the test file. To run just one test in a single file, append `.only` to the relevant tests's `it`. For more options, see the Jest docs.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Installing on a physical device
+1. Enable developer mode on your [iPhone](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device) or [Android device](https://developer.android.com/studio/debug/dev-options)
+2. Connect your device to your development machine with a physical cable, or setup wireless/remote debugging
+   - For wireless debugging on iOS you need to ensure your device is on the same wireless network as your development machine, and you likely need to disable any VPN on both machines
+   - For wireless debugging on Android, follow [these directions](https://developer.android.com/studio/run/device#wireless). Both machines must be on the same wireless netowkr, but you can likely leave any VPN running. Running `adb devices` may help reconnect if the connection between machines drops.
+3. There are multiple options to install and run the app:
+   - Command line
+      ```sh
+      # Install for development on Android
+      npm run android:device
 
-### For Android
+      # Install a release build on Android
+      npm run android:device:release
 
-```bash
-# using npm
-npm run android
+      # Install for development on iOS
+      npm run ios:device
 
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+      # Install a release build on iOS
+      npm run ios:device:release
+      ```
+   - Xcode
+      1. Choose a debug or release build with **Product > Scheme > Edit Scheme > Info > Build Configuration > Debug or Release**
+      2. Click the Play button or `cmd+R`
+   - Android Studio
+      1. Choose a debug or release build with **Build > Select Build Variant > :app > debug or release**
+      2. Click the play button or `ctrl+R`
