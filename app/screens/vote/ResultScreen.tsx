@@ -5,7 +5,8 @@ import {
 import type { ResultScreenProps } from '../../navigation';
 import {
   BallotDetails, LearnMoreButtonRow, ResultGraph, ResultList, ScreenBackground,
-  useBallot, useDiscussButton, useLearnMoreOfficeModal, useTimeRemainingFooter,
+  useBallotProgress, useDiscussButton, useLearnMoreOfficeModal,
+  useTimeRemainingFooter,
 } from '../../components';
 import {
   getErrorMessage, Result, useBallotPreviews, useCurrentUser,
@@ -55,7 +56,8 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
 
   const {
     ballot, cacheBallot, RequestProgress,
-  } = useBallot(ballotId, {
+  } = useBallotProgress({
+    ballotId,
     shouldFetchOnMount: (cachedBallot) => {
       if (!cachedBallot?.results) { return true; }
 

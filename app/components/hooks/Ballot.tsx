@@ -1,28 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import useTheme from '../../Theme';
-import { useRequestProgress } from '../views';
+import { useCallback, useMemo } from 'react';
 import { Ballot, getErrorMessage, useCurrentUser } from '../../model';
 import { fetchBallot } from '../../networking';
 import { useBallotContext } from '../../context';
 
-const useStyles = () => {
-  const { spacing } = useTheme();
-
-  const styles = StyleSheet.create({
-    requestProgress: {
-      margin: spacing.m,
-    },
-  });
-
-  return { styles };
-};
-
-type Options = {
-  shouldFetchOnMount?: (cachedBallot?: Ballot) => boolean;
-};
-
-export default function useBallot(ballotId: string, options: Options = {}) {
+export default function useBallot(ballotId: string) {
   const { cacheBallot, getCachedBallot } = useBallotContext();
 
   const ballot = useMemo(
@@ -32,14 +13,7 @@ export default function useBallot(ballotId: string, options: Options = {}) {
 
   const { currentUser } = useCurrentUser();
 
-  const {
-    RequestProgress: UnstyledRequestProgress, setLoading, setResult,
-  } = useRequestProgress();
-
   const updateBallot = useCallback(async () => {
-    setResult('none');
-    setLoading(true);
-
     if (!currentUser) { return; }
     const { createAuthToken, e2eDecrypt, e2eDecryptMany } = currentUser;
 
@@ -56,30 +30,13 @@ export default function useBallot(ballotId: string, options: Options = {}) {
     }
 
     if (errorMessage !== undefined) {
-      setResult('error', {
-        message: `${errorMessage}\nTap here to try again`,
-        onPress: updateBallot,
-      });
+      throw new Error(errorMessage);
     } else if (fetchedBallot) {
       cacheBallot(fetchedBallot);
-      setLoading(false);
     }
   }, [ballotId, currentUser]);
 
-  useEffect(() => {
-    if (options?.shouldFetchOnMount?.(ballot)) {
-      updateBallot().catch(console.error);
-    }
-  }, []);
-
-  const { styles } = useStyles();
-
-  const RequestProgress = useCallback(
-    () => <UnstyledRequestProgress style={styles.requestProgress} />,
-    [UnstyledRequestProgress],
-  );
-
   return {
-    ballot, cacheBallot, getCachedBallot, RequestProgress, updateBallot,
+    ballot, cacheBallot, getCachedBallot, updateBallot,
   };
 }

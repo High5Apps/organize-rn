@@ -1,6 +1,7 @@
 export { default as Agreement } from './Agreement';
 export { default as AutoscaledText } from './AutoscaledText';
 export { default as BallotDetails } from './BallotDetails';
+export { default as useBallotProgress } from './BallotProgress';
 export { default as BulletedText } from './BulletedText';
 export { default as ConnectionReview } from './ConnectionReview';
 export { default as CountdownClockBorder } from './CountdownClockBorder';

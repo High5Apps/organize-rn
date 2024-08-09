@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { BallotScreenProps } from '../../navigation';
 import {
-  BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground, useBallot,
-  useDiscussButton, useFlagHeaderButton, useLearnMoreOfficeModal,
-  useTimeRemainingFooter,
+  BallotDetails, CandidateList, LearnMoreButtonRow, ScreenBackground,
+  useBallotProgress, useDiscussButton, useFlagHeaderButton,
+  useLearnMoreOfficeModal, useTimeRemainingFooter,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
@@ -46,7 +46,8 @@ export default function BallotScreen({ navigation, route }: BallotScreenProps) {
 
   const {
     ballot, cacheBallot, RequestProgress,
-  } = useBallot(ballotId, {
+  } = useBallotProgress({
+    ballotId,
     shouldFetchOnMount: (cachedBallot) => {
       if (!cachedBallot?.candidates) { return true; }
 
