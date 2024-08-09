@@ -13,7 +13,6 @@ export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';
 export { default as SearchBar } from './SearchBar';
 export { default as StepperControl } from './StepperControl';
-export { default as TabBarIcon } from './TabBarIcon';
 export { default as useTimeRemainingFooter } from './TimeRemainingFooter';
 export { default as UpvoteControl } from './UpvoteControl';
 export * from './buttons';
