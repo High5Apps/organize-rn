@@ -2,13 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ListEmptyMessage, PostList, PrimaryButton, ScreenBackground,
-  useCorrespondingDiscussTabUpdater,
 } from '../../components';
 import useTheme from '../../Theme';
 import type {
   DiscussTabsParamList, DiscussTabsScreenProps,
 } from '../../navigation';
 import { Post, PostCategory, PostSort } from '../../model';
+import useCorrespondingDiscussTabUpdater from './CorrespondingDiscussTabUpdater';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
