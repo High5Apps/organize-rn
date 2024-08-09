@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { useRequestProgress } from '../../hooks';
+import { useRequestProgress } from '../../views';
 import useTheme from '../../../Theme';
 
 // Fetch the next page when the user scrolls to within half the vertical list

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
-import useRequestProgress from './RequestProgress';
+import { useRequestProgress } from '../views';
 import { Ballot, getErrorMessage, useCurrentUser } from '../../model';
 import { fetchBallot } from '../../networking';
 import { useBallotContext } from '../../context';

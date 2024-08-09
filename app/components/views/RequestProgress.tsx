@@ -3,7 +3,6 @@ import {
   ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
-import { ResultType } from './types';
 import { getErrorMessage } from '../../model';
 
 const useStyles = () => {
@@ -35,6 +34,8 @@ type SetResultOptions = {
   message?: string;
   onPress?: () => void;
 };
+
+export type ResultType = 'error' | 'none' | 'success' | 'warning' | 'info';
 
 type Props = {
   removeWhenInactive?: boolean;

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import { useRequestProgress } from '../hooks';
 import {
   getErrorMessage, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
 } from '../../model';
 import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
+import useRequestProgress from './RequestProgress';
 
 const useStyles = () => {
   const { colors } = useTheme();

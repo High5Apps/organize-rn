@@ -6,10 +6,9 @@ import {
 } from 'react-native';
 import { CommentRow } from './rows';
 import useTheme from '../../../Theme';
-import { ItemSeparator, SectionHeader } from '../../views';
+import { ItemSeparator, SectionHeader, useRequestProgress } from '../../views';
 import { Comment, useComments } from '../../../model';
 import type { InsertedComment } from '../../../navigation';
-import { useRequestProgress } from '../../hooks';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();

@@ -6,9 +6,10 @@ import {
   ConfirmationAlert, OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope,
   getOffice, toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
-import { ItemSeparator, renderSectionHeader } from '../../views';
+import {
+  ItemSeparator, renderSectionHeader, useRequestProgress,
+} from '../../views';
 import { OfficeRow } from './rows';
-import { useRequestProgress } from '../../hooks';
 import useTheme from '../../../Theme';
 import usePullToRefresh from './PullToRefresh';
 

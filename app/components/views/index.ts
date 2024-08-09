@@ -21,6 +21,9 @@ export { default as ListEmptyMessage } from './ListEmptyMessage';
 export { default as LockingScrollView } from './LockingScrollView';
 export { default as MembershipReview } from './MembershipReview';
 export { default as ProgressBar } from './ProgressBar';
+export {
+  default as useRequestProgress, type ResultType,
+} from './RequestProgress';
 export { default as ResultGraph } from './ResultGraph';
 export { default as SafeAreaPadding } from './SafeAreaPadding';
 export { default as ScreenBackground } from './ScreenBackground';

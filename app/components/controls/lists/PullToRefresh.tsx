@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { RefreshControl as RNRefreshControl, StyleSheet } from 'react-native';
 import useTheme from '../../../Theme';
-import { useRequestProgress } from '../../hooks';
+import { useRequestProgress } from '../../views';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();

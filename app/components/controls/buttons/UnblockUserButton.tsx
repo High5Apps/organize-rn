@@ -5,7 +5,7 @@ import {
   ConfirmationAlert, getErrorMessage, ModerationEvent, useCurrentUser,
 } from '../../../model';
 import { createModerationEvent } from '../../../networking';
-import { useRequestProgress } from '../../hooks';
+import { useRequestProgress } from '../../views';
 
 type Props = {
   moderationEvent: ModerationEvent;
