@@ -2,7 +2,7 @@ import {
   Dispatch, RefObject, SetStateAction, useEffect, useRef,
 } from 'react';
 import { Position, VisNetworkRef } from 'react-native-vis-network';
-import { NullUser } from '../../model';
+import { NullUser } from '../../../model';
 
 const ANIMATION_OPTIONS = {
   duration: 500,
@@ -53,7 +53,7 @@ type ClickHandlerProps = {
   userId?: string;
 };
 
-export default function useClickHandler(
+export default function useOrgGraphClickHandler(
   isGraphAvailable: boolean,
   visNetwork: RefObject<VisNetworkRef>,
   hasMultipleNodes: boolean,

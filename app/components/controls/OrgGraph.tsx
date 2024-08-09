@@ -6,7 +6,8 @@ import VisNetwork, { Data, Options, VisNetworkRef } from 'react-native-vis-netwo
 import { useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
 import { ErrorMessage, ProgressBar } from '../views';
-import { useClickHandler, useOrgGraphProgress } from '../hooks';
+import { useOrgGraphProgress } from '../hooks';
+import { useOrgGraphClickHandler } from './handlers';
 
 const useStyles = () => {
   const { colors } = useTheme();
@@ -45,7 +46,7 @@ export default function OrgGraph({
 
   const visNetworkRef = useRef<VisNetworkRef>(null);
 
-  const { clickHandler } = useClickHandler(
+  const { clickHandler } = useOrgGraphClickHandler(
     loading,
     visNetworkRef,
     hasMultipleNodes,
