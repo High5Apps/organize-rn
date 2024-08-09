@@ -1,6 +1,7 @@
 export { default as useAnnounceButton } from './AnnounceButton';
 export { default as CircleButton } from './CircleButton';
 export { default as useDiscussButton } from './DiscussButton';
+export { default as useFlagHeaderButton } from './FlagHeaderButton';
 export { default as FlagTextButton } from './FlagTextButton';
 export { default as FrameButton } from './FrameButton';
 export { default as FramedIconPromptButton } from './FramedIconPromptButton';

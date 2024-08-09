@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useFlag } from '../../model';
-import { useHeaderButton } from '../controls';
+import { useFlag } from '../../../model';
+import useHeaderButton from './HeaderButton';
 
 type Props = {
   ballotId?: string;
