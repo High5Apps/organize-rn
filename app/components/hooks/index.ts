@@ -1,2 +1,2 @@
+// eslint-disable-next-line import/prefer-default-export
 export { default as useBallot } from './Ballot';
-export { default as useOrgGraphProgress } from './OrgGraphProgress';

@@ -20,6 +20,7 @@ export { default as KeyboardAvoidingScreenBackground } from './KeyboardAvoidingS
 export { default as ListEmptyMessage } from './ListEmptyMessage';
 export { default as LockingScrollView } from './LockingScrollView';
 export { default as MembershipReview } from './MembershipReview';
+export { default as useOrgGraphProgressBar } from './OrgGraphProgressBar';
 export { default as ProgressBar } from './ProgressBar';
 export {
   default as useRequestProgress, type ResultType,

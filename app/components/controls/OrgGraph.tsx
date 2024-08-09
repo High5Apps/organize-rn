@@ -5,8 +5,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import VisNetwork, { Data, Options, VisNetworkRef } from 'react-native-vis-network';
 import { useCurrentUser } from '../../model';
 import useTheme from '../../Theme';
-import { ErrorMessage, ProgressBar } from '../views';
-import { useOrgGraphProgress } from '../hooks';
+import { ErrorMessage, useOrgGraphProgressBar } from '../views';
 import { useOrgGraphClickHandler } from './handlers';
 
 const useStyles = () => {
@@ -57,7 +56,10 @@ export default function OrgGraph({
     clickHandler({ userId: selectedUserId });
   }, [selectedUserId]);
 
-  const progress = useOrgGraphProgress(loading, visNetworkRef);
+  const {
+    OrgGraphProgressBar, progress,
+  } = useOrgGraphProgressBar(loading, visNetworkRef);
+
   useEffect(() => {
     onRenderingProgressChanged?.(progress);
   }, [progress]);
@@ -92,7 +94,7 @@ export default function OrgGraph({
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} />
+      { OrgGraphProgressBar }
       { Component }
     </View>
   );
