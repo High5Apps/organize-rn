@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../Theme';
-import useDisabledDuringOnPress from '../DisabledDuringOnPress';
+import useDisabledDuringOnPress from './DisabledDuringOnPress';
 
 const useStyles = () => {
   const {
