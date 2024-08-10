@@ -3,7 +3,7 @@ import { fetchBallot } from '../networking';
 import { useBallotContext } from '../context';
 import useCurrentUser from './CurrentUser';
 import type { Ballot } from './types';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 export default function useBallot(ballotId: string) {
   const { cacheBallot, getCachedBallot } = useBallotContext();

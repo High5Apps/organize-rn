@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 type JSONValue =
   | null

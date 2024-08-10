@@ -3,7 +3,7 @@ import { usePostContext } from '../context';
 import useCurrentUser from './CurrentUser';
 import { Post } from './types';
 import { fetchPost } from '../networking';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 type Props = {
   id: string;

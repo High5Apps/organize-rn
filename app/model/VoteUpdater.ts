@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Ballot } from './types';
 import useCurrentUser from './CurrentUser';
 import { createVote } from '../networking';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 import useSelectionUpdater from './SelectionUpdater';
 
 type Props = {

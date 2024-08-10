@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 type Props = {
   choices?: string[];

@@ -1,7 +1,7 @@
 import {
   createConnection, createOrg, createUser, getUser, UnpublishedOrg,
 } from '../networking';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 import { Keys } from './keys';
 import { CurrentUserData, User } from './types';
 import CurrentUserBase from './CurrentUserBase';

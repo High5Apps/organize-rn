@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlag } from '../networking';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 type Props = {
   ballotId?: string;

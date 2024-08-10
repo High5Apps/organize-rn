@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import {
-  getErrorMessage, OTHER_ORG_ERROR_MESSAGE, QRCodeValue, useCurrentUser,
-} from '../../model';
+import { getErrorMessage, QRCodeValue, useCurrentUser } from '../../model';
 import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
+
+export const OTHER_ORG_ERROR_MESSAGE = "The code you scanned belongs to a member of another Org. You can't connect with people in other Orgs.";
 
 const useStyles = () => {
   const { colors } = useTheme();

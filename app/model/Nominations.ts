@@ -5,7 +5,7 @@ import {
 } from './types';
 import { UpdateNominationResponse, updateNomination } from '../networking';
 import useCurrentUser from './CurrentUser';
-import { getErrorMessage } from './Errors';
+import getErrorMessage from './ErrorMessage';
 
 const ERROR_ALERT_TITLE = 'Failed to accept or decline nomination. Please try again.';
 
