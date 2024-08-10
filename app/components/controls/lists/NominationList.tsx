@@ -4,9 +4,8 @@ import {
 } from 'react-native';
 import {
   Nomination, getOffice, isDefined, nominationsTimeRemainingExpiredFormatter,
-  nominationsTimeRemainingFormatter, useCurrentUser, useNominations,
+  nominationsTimeRemainingFormatter, useCurrentUser, useBallot, useNominations,
 } from '../../../model';
-import { useBallot } from '../../hooks';
 import { NominationRow } from './rows';
 import {
   ItemSeparator, ListEmptyMessage, renderSectionHeader,

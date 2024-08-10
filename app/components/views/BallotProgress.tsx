@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
-import { Ballot, getErrorMessage } from '../../model';
-import { useBallot } from '../hooks';
+import { Ballot, getErrorMessage, useBallot } from '../../model';
 import useRequestProgress from './RequestProgress';
 
 const useStyles = () => {

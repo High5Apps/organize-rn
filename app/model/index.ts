@@ -1,4 +1,5 @@
 export { default as useAppState } from './AppState';
+export { default as useBallot } from './Ballot';
 export {
   default as useBallotPreviews, nominationsTimeRemainingFormatter,
   nominationsTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,
