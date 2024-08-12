@@ -1,5 +1,7 @@
-import getShortenedTitles from '../../app/model/TitleShortener';
-import { SINGLE_CHARACTER_ELIPSIS } from '../../app/model/TruncateText';
+import getShortenedTitles from '../../../app/model/formatters/TitleShortener';
+import {
+  SINGLE_CHARACTER_ELIPSIS,
+} from '../../../app/model/formatters/TruncateText';
 
 const E = SINGLE_CHARACTER_ELIPSIS;
 

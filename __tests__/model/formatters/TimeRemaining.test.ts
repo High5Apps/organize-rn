@@ -1,8 +1,8 @@
 import {
   MILLISECONDS_PER_SECOND, SECONDS_PER_DAY, SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE, SECONDS_PER_WEEK,
-} from '../../app/model/MessageAge';
-import getTimeRemaining from '../../app/model/TimeRemaining';
+} from '../../../app/model/formatters/MessageAge';
+import getTimeRemaining from '../../../app/model/formatters/TimeRemaining';
 
 function getDateFromOffset(now: Date, timespanSeconds: number) {
   const nowSeconds = now.getTime() / 1000; // in seconds

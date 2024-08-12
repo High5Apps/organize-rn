@@ -3,10 +3,9 @@ import type {
   FlagReportResponse, OrgResponse, PostIndexPost,
 } from '../networking';
 import type { AESEncryptedData } from './keys';
-import type { TimeRemainingOptions } from './TimeRemaining';
 import type { PermissionItem } from './PermissionItems';
 
-export type { PermissionItem, TimeRemainingOptions };
+export type { PermissionItem };
 
 type EncryptedPrefix = 'encrypted';
 

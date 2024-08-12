@@ -1,6 +1,6 @@
 /* eslint-disable newline-per-chained-call */
 import { Buffer } from 'buffer';
-import { Scope, Signer } from './types';
+import { Scope, Signer } from '../types';
 
 const BASE64_CHAR_62 = '+';
 const BASE64_CHAR_63 = '/';

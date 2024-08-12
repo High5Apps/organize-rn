@@ -1,7 +1,7 @@
 import getMessageAge, {
   MILLISECONDS_PER_SECOND, SECONDS_PER_DAY, SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR,
-} from '../../app/model/MessageAge';
+} from '../../../app/model/formatters/MessageAge';
 
 function getDateFromOffset(now: Date, timespanSeconds: number) {
   const nowSeconds = now.getTime() / 1000; // in seconds

@@ -2,10 +2,10 @@ import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
 } from '../../app/model';
 import { CurrentUser } from '../../app/model/CurrentUser';
-import { base64ToBase64Url } from '../../app/model/JWT';
+import { base64ToBase64Url } from '../../app/model/formatters/JWT';
 import {
   QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS,
-} from '../../app/model/QRCodeData';
+} from '../../app/model/formatters/QRCodeData';
 import { fakeCurrentUserData, fakeGroupKey, fakeJwtString } from '../FakeData';
 
 const currentTime = new Date().getTime();

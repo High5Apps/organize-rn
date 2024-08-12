@@ -1,6 +1,6 @@
-import { CurrentUserType } from './CurrentUser';
+import type { CurrentUserType } from '../CurrentUser';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
-import { isQRCodeValue, QRCodeValue } from './types';
+import { isQRCodeValue, type QRCodeValue } from '../types';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';

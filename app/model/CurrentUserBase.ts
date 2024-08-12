@@ -1,4 +1,4 @@
-import JWT from './JWT';
+import { JWT } from './formatters';
 import { Keys } from './keys';
 import { E2EEncryptor, Scope, CurrentUserBaseData } from './types';
 

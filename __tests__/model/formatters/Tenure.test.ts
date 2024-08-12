@@ -1,4 +1,4 @@
-import getTenure from '../../app/model/Tenure';
+import getTenure from '../../../app/model/formatters/Tenure';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 

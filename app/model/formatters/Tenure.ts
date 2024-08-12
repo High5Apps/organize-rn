@@ -1,4 +1,4 @@
-import { isDefined } from './types';
+import { isDefined } from '../types';
 
 type Options = {
   blockedAt?: Date;
