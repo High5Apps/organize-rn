@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useFlag } from '../../../model';
 import useHeaderButton from './HeaderButton';
+import { FlagConfirmationAlert } from '../modals';
 
 type Props = {
   ballotId?: string;
@@ -26,13 +26,11 @@ export default function useFlagHeaderButton({
     }, 4000);
   }, []);
 
-  const { confirmThenCreateFlag } = useFlag({ ballotId, onSuccess, postId });
-
   useHeaderButton({
     disabled,
     hidden,
     iconName: flagIconName,
     navigation,
-    onPress: confirmThenCreateFlag,
+    onPress: FlagConfirmationAlert({ ballotId, onSuccess, postId }).show,
   });
 }

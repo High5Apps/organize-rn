@@ -13,7 +13,6 @@ export {
 } from './Comments';
 export { default as useCommentThread } from './CommentThread';
 export * from './Config';
-export { default as ConfirmationAlert } from './ConfirmationAlert';
 export { default as formatDate } from './DateFormatter';
 export { default as useCurrentUser } from './CurrentUser';
 export { default as createCurrentUser } from './CurrentUserCreation';

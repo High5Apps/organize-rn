@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { useFlag } from '../../../model';
 import TextButton from './TextButton';
+import { FlagConfirmationAlert } from '../modals';
 
 type Props = {
   commentId?: string;
@@ -24,10 +24,11 @@ export default function FlagTextButton({
     }, 4000);
   }, []);
 
-  const { confirmThenCreateFlag } = useFlag({ commentId, onSuccess });
-
   return (
-    <TextButton disabled={disabled} onPress={confirmThenCreateFlag}>
+    <TextButton
+      disabled={disabled}
+      onPress={FlagConfirmationAlert({ commentId, onSuccess }).show}
+    >
       {label}
     </TextButton>
   );

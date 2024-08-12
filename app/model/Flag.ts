@@ -1,6 +1,4 @@
 import { useCallback } from 'react';
-import { Alert } from 'react-native';
-import ConfirmationAlert from './ConfirmationAlert';
 import useCurrentUser from './CurrentUser';
 import { createFlag } from '../networking';
 import getErrorMessage from './ErrorMessage';
@@ -8,54 +6,30 @@ import getErrorMessage from './ErrorMessage';
 type Props = {
   ballotId?: string;
   commentId?: string;
-  onSuccess?: () => void;
   postId?: string;
 };
 
-export default function useFlag({
-  ballotId, commentId, onSuccess, postId,
-}: Props) {
+export default function useFlag({ ballotId, commentId, postId }: Props) {
   const { currentUser } = useCurrentUser();
 
-  const confirmThenCreateFlag = useCallback(() => {
-    let itemName = 'content';
-    if (ballotId !== undefined) {
-      itemName = 'ballot';
-    } else if (commentId !== undefined) {
-      itemName = 'comment';
-    } else if (postId !== undefined) {
-      itemName = 'discussion';
+  const wrappedCreateFlag = useCallback(async () => {
+    if (!currentUser) { throw new Error('Expected current user'); }
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+    let errorMessage: string | undefined;
+    try {
+      ({ errorMessage } = await createFlag({
+        ballotId, commentId, jwt, postId,
+      }));
+    } catch (error) {
+      errorMessage = getErrorMessage(error);
     }
 
-    ConfirmationAlert({
-      destructiveAction: 'Flag',
-      onConfirm: async () => {
-        if (!currentUser) { throw new Error('Expected current user'); }
-        const { createAuthToken } = currentUser;
+    if (errorMessage) {
+      throw new Error(errorMessage);
+    }
+  }, [ballotId, commentId, currentUser, postId]);
 
-        const jwt = await createAuthToken({ scope: '*' });
-
-        let errorMessage: string | undefined;
-        try {
-          ({ errorMessage } = await createFlag({
-            ballotId, commentId, jwt, postId,
-          }));
-        } catch (error) {
-          errorMessage = getErrorMessage(error);
-        }
-
-        if (errorMessage) {
-          Alert.alert(
-            `Failed to flag ${itemName}`,
-            errorMessage,
-          );
-        } else {
-          onSuccess?.();
-        }
-      },
-      title: `Flag this ${itemName} as inappropriate?`,
-    }).show();
-  }, [ballotId, commentId, currentUser, onSuccess, postId]);
-
-  return { confirmThenCreateFlag };
+  return { createFlag: wrappedCreateFlag };
 }

@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import SecondaryButton from './SecondaryButton';
 import {
-  ConfirmationAlert, getErrorMessage, ModerationEvent, useCurrentUser,
+  getErrorMessage, ModerationEvent, useCurrentUser,
 } from '../../../model';
 import { createModerationEvent } from '../../../networking';
 import { useRequestProgress } from '../../views';
+import { ConfirmationAlert } from '../modals';
 
 type Props = {
   moderationEvent: ModerationEvent;

@@ -3,8 +3,8 @@ import {
   Alert, ListRenderItemInfo, SectionList, StyleSheet,
 } from 'react-native';
 import {
-  ConfirmationAlert, OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope,
-  getOffice, toAction, useCurrentUser, usePermission, usePermissionUpdater,
+  OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope, getOffice,
+  toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
 import {
   ItemSeparator, renderSectionHeader, useRequestProgress,
@@ -12,6 +12,7 @@ import {
 import { OfficeRow } from './rows';
 import useTheme from '../../../Theme';
 import usePullToRefresh from './PullToRefresh';
+import { ConfirmationAlert } from '../modals';
 
 const useStyles = () => {
   const { spacing } = useTheme();

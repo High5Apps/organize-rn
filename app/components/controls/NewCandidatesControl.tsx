@@ -3,7 +3,7 @@ import { Keyboard, StyleSheet, View } from 'react-native';
 import { TextInputRow } from './text';
 import { TextButton } from './buttons';
 import useTheme from '../../Theme';
-import { ConfirmationAlert } from '../../model';
+import { ConfirmationAlert } from './modals';
 
 const MAX_TITLE_LENGTH = 60;
 

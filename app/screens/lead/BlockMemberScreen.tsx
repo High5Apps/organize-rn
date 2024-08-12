@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ScreenBackground, SearchBar, UserList, useRequestProgress,
+  ConfirmationAlert, ScreenBackground, SearchBar, UserList, useRequestProgress,
 } from '../../components';
 import {
-  ConfirmationAlert, User, getErrorMessage, useCurrentUser, useModerationEvents,
+  User, getErrorMessage, useCurrentUser, useModerationEvents,
 } from '../../model';
 import useTheme from '../../Theme';
 import { createModerationEvent } from '../../networking';

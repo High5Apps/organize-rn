@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ScreenBackground, SearchBar, UserList, useRequestProgress,
+  ConfirmationAlert, ScreenBackground, SearchBar, UserList, useRequestProgress,
 } from '../../components';
 import type { NewNominationScreenProps } from '../../navigation';
 import { createNomination } from '../../networking';
 import {
-  ConfirmationAlert, Nomination, User, getErrorMessage, useBallot,
-  useCurrentUser,
+  Nomination, User, getErrorMessage, useBallot, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
 

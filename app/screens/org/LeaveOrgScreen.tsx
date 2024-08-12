@@ -4,10 +4,10 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  ScreenBackground, SecondaryButton, useRequestProgress,
+  ConfirmationAlert, ScreenBackground, SecondaryButton, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import { ConfirmationAlert, useCurrentUser } from '../../model';
+import { useCurrentUser } from '../../model';
 
 const useStyles = () => {
   const {

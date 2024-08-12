@@ -4,10 +4,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../../Theme';
-import { ConfirmationAlert, Result, isDefined } from '../../../../model';
+import { Result, isDefined } from '../../../../model';
 import DecisionButtonsRow from '../../DecisionButtonsRow';
 import { HighlightedCurrentUserRowContainer } from '../../../views';
 import type { DiscussButtonType } from '../../buttons';
+import { ConfirmationAlert } from '../../modals';
 
 const useStyles = () => {
   const {
