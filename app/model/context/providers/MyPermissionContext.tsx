@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import type { MyPermission } from '../types';
-import useModelCache from '../ModelCache';
+import type { MyPermission } from '../../types';
+import useModelCache from '../../ModelCache';
 
 type MyPermissionWithId = MyPermission & {
   id: string;

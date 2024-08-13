@@ -5,9 +5,9 @@ import React, {
 // The line below needs to import directly from DelayedActivityIndicator to
 // prevent a circular dependency issue. Normally components import from models,
 // which import from context, not the other way around.
-import DelayedActivityIndicator from '../../components/views/DelayedActivityIndicator';
-import type { CurrentUserData } from '../types';
-import useStoredCurrentUserData from '../CurrentUserDataStorage';
+import DelayedActivityIndicator from '../../../components/views/DelayedActivityIndicator';
+import type { CurrentUserData } from '../../types';
+import useStoredCurrentUserData from '../../CurrentUserDataStorage';
 
 type CurrentUserDataContextType = {
   currentUserData: CurrentUserData | null;

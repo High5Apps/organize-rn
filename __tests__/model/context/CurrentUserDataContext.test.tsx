@@ -6,7 +6,7 @@ import { CurrentUserData } from '../../../app/model';
 import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../FakeData';
 import {
   CurrentUserDataContextProvider, useCurrentUserDataContext,
-} from '../../../app/model/context/CurrentUserDataContext';
+} from '../../../app/model/context/providers/CurrentUserDataContext';
 import useStoredCurrentUserData from '../../../app/model/CurrentUserDataStorage';
 
 jest.useFakeTimers();
