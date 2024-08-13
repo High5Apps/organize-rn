@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import useCurrentUser from './CurrentUser';
-import { FlagReport } from './types';
-import { createModerationEvent, fetchFlagReports } from '../networking';
-import { useFlagReportContext } from './context';
+import { FlagReport } from '../../types';
+import { createModerationEvent, fetchFlagReports } from '../../../networking';
+import { useFlagReportContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
-import getErrorMessage from './ErrorMessage';
+import getErrorMessage from '../../ErrorMessage';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useCommentContext } from './context';
+import { useCommentContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 import useCurrentUser from './CurrentUser';
-import { Comment } from './types';
-import { fetchCommentThread } from '../networking';
+import { Comment } from '../../types';
+import { fetchCommentThread } from '../../../networking';
 
 export default function useCommentThread(commentId: string) {
   const { cacheComment, cacheComments, getCachedComment } = useCommentContext();

@@ -1,4 +1,4 @@
-import type { CurrentUserType } from '../CurrentUser';
+import type { CurrentUserType } from '../context';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
 import { isQRCodeValue, type QRCodeValue } from '../types';
 

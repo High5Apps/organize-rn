@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import { createFlag } from '../networking';
 import getErrorMessage from './ErrorMessage';
 

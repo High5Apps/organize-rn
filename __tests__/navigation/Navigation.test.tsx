@@ -4,9 +4,9 @@ import Navigation from '../../app/navigation';
 import WelcomeStack from '../../app/navigation/WelcomeStack';
 import OrgTabs from '../../app/navigation/OrgTabs';
 import { fakeCurrentUserData } from '../FakeData';
-import useCurrentUser from '../../app/model/CurrentUser';
+import useCurrentUser from '../../app/model/context/consumers/CurrentUser';
 
-jest.mock('../../app/model/CurrentUser');
+jest.mock('../../app/model/context/consumers/CurrentUser');
 const mockUseCurrentUser = useCurrentUser as jest.Mock;
 
 async function renderNavigation() {

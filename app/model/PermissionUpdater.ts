@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import useSelectionUpdater from './SelectionUpdater';
 import { OFFICE_CATEGORIES, OfficeCategory, Permission } from './types';
 

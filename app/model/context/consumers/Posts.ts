@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
-import { Post, PostCategory, PostSort } from './types';
-import { fetchPosts } from '../networking';
-import { usePostContext } from './context';
+import { Post, PostCategory, PostSort } from '../../types';
+import { fetchPosts } from '../../../networking';
+import { usePostContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based

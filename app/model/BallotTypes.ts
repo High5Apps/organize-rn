@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import useMyPermissions from './MyPermissions';
+import { useMyPermissions } from './context';
 import { BallotCategory, BallotTypeInfo } from './types';
 
 const ballotTypes: BallotTypeInfo[] = [

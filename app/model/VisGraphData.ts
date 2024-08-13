@@ -3,7 +3,7 @@ import { Data, Options } from 'react-native-vis-network';
 import useTheme from '../Theme';
 import { OrgGraph, User } from './types';
 import getCircleColors from './OrgScreenCircleColors';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 
 type Props = {
   officers?: User[];

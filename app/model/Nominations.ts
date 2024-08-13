@@ -4,7 +4,7 @@ import {
   Ballot, Nomination, NonPendingNomination, isDefined,
 } from './types';
 import { UpdateNominationResponse, updateNomination } from '../networking';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import getErrorMessage from './ErrorMessage';
 
 const ERROR_ALERT_TITLE = 'Failed to accept or decline nomination. Please try again.';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { isDefined, Model } from './types';
+import { isDefined, Model } from '../../types';
 
 export function getIdsFrom<T extends Model>(models?: T[]) {
   return (models ?? []).map((model) => model.id);

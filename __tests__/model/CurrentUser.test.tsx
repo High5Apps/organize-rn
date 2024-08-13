@@ -1,4 +1,4 @@
-import { CurrentUser } from '../../app/model/CurrentUser';
+import { CurrentUser } from '../../app/model/context/consumers/CurrentUser';
 import { storeCurrentUserData } from '../../app/model/context/providers/caches/CurrentUserDataStorage';
 import { fakeCurrentUserData, fakeJwtString } from '../FakeData';
 import Keys from '../../app/model/keys/Keys';

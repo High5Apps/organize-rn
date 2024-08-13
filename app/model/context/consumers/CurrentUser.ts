@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CurrentUserBase from './CurrentUserBase';
+import CurrentUserBase from '../../CurrentUserBase';
 import {
   storeCurrentUserData, useCurrentUserDataContext, useUserContext,
-} from './context';
-import { Keys } from './keys';
+} from '../providers';
+import { Keys } from '../../keys';
 import {
   CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
-} from './types';
-import { getUser, leaveOrg } from '../networking';
+} from '../../types';
+import { getUser, leaveOrg } from '../../../networking';
 
 export function CurrentUser(
   currentUserData: CurrentUserData,

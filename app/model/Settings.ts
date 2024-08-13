@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
 

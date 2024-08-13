@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
-import { PermissionScope, isDefined } from './types';
+import { PermissionScope, isDefined } from '../../types';
 import useCurrentUser from './CurrentUser';
-import { fetchMyPermissions } from '../networking';
-import { useMyPermissionContext } from './context';
+import { fetchMyPermissions } from '../../../networking';
+import { useMyPermissionContext } from '../providers';
 
 type Props = {
   scopes: PermissionScope[];

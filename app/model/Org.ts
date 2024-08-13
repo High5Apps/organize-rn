@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { fetchOrg, updateOrg as updateBackendOrg } from '../networking';
 import { Org, OrgGraph } from './types';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 
 type UpdateProps = {
   memberDefinition?: string;

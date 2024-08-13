@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
-import { fetchBallot } from '../networking';
-import { useBallotContext } from './context';
+import { fetchBallot } from '../../../networking';
+import { useBallotContext } from '../providers';
 import useCurrentUser from './CurrentUser';
-import type { Ballot } from './types';
-import getErrorMessage from './ErrorMessage';
+import type { Ballot } from '../../types';
+import getErrorMessage from '../../ErrorMessage';
 
 export default function useBallot(ballotId: string) {
   const { cacheBallot, getCachedBallot } = useBallotContext();

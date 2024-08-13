@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { OfficeCategory, Permission, PermissionScope } from './types';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import { createPermission, fetchPermission } from '../networking';
 import { getOffice } from './Offices';
 

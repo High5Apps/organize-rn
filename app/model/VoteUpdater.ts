@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Ballot } from './types';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import { createVote } from '../networking';
 import getErrorMessage from './ErrorMessage';
 import useSelectionUpdater from './SelectionUpdater';

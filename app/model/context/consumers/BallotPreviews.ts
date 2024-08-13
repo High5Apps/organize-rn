@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { fetchBallotPreviews } from '../networking';
-import { useBallotPreviewContext } from './context';
+import { fetchBallotPreviews } from '../../../networking';
+import { useBallotPreviewContext } from '../providers';
 import useCurrentUser from './CurrentUser';
-import { BallotPreview } from './types';
+import { BallotPreview } from '../../types';
 import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based

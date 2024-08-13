@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
-import { usePostContext } from './context';
+import { usePostContext } from '../providers';
 import useCurrentUser from './CurrentUser';
-import { Post } from './types';
-import { fetchPost } from '../networking';
-import getErrorMessage from './ErrorMessage';
+import { Post } from '../../types';
+import { fetchPost } from '../../../networking';
+import getErrorMessage from '../../ErrorMessage';
 
 type Props = {
   id: string;

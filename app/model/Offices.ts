@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fetchOffices as fetchOfficesApi } from '../networking';
-import useCurrentUser from './CurrentUser';
+import { useCurrentUser } from './context';
 import { Office, OfficeCategory } from './types';
 
 type OfficeMetadata = {

@@ -2,9 +2,9 @@ import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
 import type {
   ModeratableType, ModerationEvent, ModerationEventAction,
-} from './types';
-import { fetchModerationEvents } from '../networking';
-import { useModerationEventContext } from './context';
+} from '../../types';
+import { fetchModerationEvents } from '../../../networking';
+import { useModerationEventContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based

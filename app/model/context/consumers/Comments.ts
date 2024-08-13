@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Comment } from './types';
+import { Comment } from '../../types';
 import useCurrentUser from './CurrentUser';
-import { fetchComments } from '../networking';
-import { useCommentContext } from './context';
+import { fetchComments } from '../../../networking';
+import { useCommentContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 
 export const BLOCKED_COMMENT_BODY = '[blocked]';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { fetchUsers } from '../networking';
-import { useUserContext } from './context';
-import { User, UserFilter, UserSort } from './types';
+import { fetchUsers } from '../../../networking';
+import { useUserContext } from '../providers';
+import { User, UserFilter, UserSort } from '../../types';
 import useCurrentUser from './CurrentUser';
 import useModels, { getIdsFrom } from './Models';
 

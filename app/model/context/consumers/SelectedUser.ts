@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { OrgGraph, User } from './types';
+import { OrgGraph, User } from '../../types';
 import useCurrentUser from './CurrentUser';
-import { getUser } from '../networking';
-import { useUserContext } from './context';
-import usePreviousValue from './PreviousValue';
-import NullUser from './NullUser';
+import { getUser } from '../../../networking';
+import { useUserContext } from '../providers';
+import usePreviousValue from '../../PreviousValue';
+import NullUser from '../../NullUser';
 
 export default function useSelectedUser(orgGraph?: OrgGraph) {
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
