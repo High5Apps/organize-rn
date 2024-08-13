@@ -1,16 +1,16 @@
 import {
   QRCodeDataFormatter, QRCodeDataParser, QRCodeValue,
-} from '../../app/model';
-import { CurrentUser } from '../../app/model/context/consumers/CurrentUser';
-import { base64ToBase64Url } from '../../app/model/formatters/JWT';
+} from '../../../app/model';
+import { CurrentUser } from '../../../app/model/context/consumers/CurrentUser';
+import { base64ToBase64Url } from '../../../app/model/formatters/JWT';
 import {
   QR_CODE_JWT_SCOPE, QR_CODE_TIME_TO_LIVE_SECONDS,
-} from '../../app/model/formatters/QRCodeData';
-import { fakeCurrentUserData, fakeGroupKey, fakeJwtString } from '../FakeData';
+} from '../../../app/model/formatters/QRCodeData';
+import { fakeCurrentUserData, fakeGroupKey, fakeJwtString } from '../../FakeData';
 
 const currentTime = new Date().getTime();
 
-jest.mock('../../app/model/context/consumers/CurrentUser');
+jest.mock('../../../app/model/context/consumers/CurrentUser');
 const mockCurrentUser = CurrentUser as jest.Mock;
 const mockCreateAuthToken = jest.fn().mockResolvedValue(fakeJwtString);
 const mockDecryptGroupKey = jest.fn().mockResolvedValue(fakeGroupKey);

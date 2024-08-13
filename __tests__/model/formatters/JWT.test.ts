@@ -1,5 +1,5 @@
-import { JWT, Signer } from '../../app/model';
-import { utf8ToBase64Url } from '../../app/model/formatters/JWT';
+import { JWT, Signer } from '../../../app/model';
+import { utf8ToBase64Url } from '../../../app/model/formatters/JWT';
 
 const shimSigner: Signer = (
   { message }: { message: string },
