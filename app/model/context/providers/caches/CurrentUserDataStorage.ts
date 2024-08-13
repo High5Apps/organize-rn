@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CurrentUserData, isCurrentUserData } from './types';
-import { fromJson, toJson } from './formatters';
+import { CurrentUserData, isCurrentUserData } from '../../../types';
+import { fromJson, toJson } from '../../../formatters';
 
 const STORAGE_KEY = 'currentUser';
 

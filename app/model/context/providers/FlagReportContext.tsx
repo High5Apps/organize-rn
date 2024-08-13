@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
 import type { FlagReport } from '../../types';
-import useModelCache from '../../ModelCache';
+import { useModelCache } from './caches';
 
 type FlagReportContextType = {
   cacheFlagReport: (flagReport: FlagReport) => void;

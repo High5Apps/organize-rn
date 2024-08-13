@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import isEqual from 'react-fast-compare';
-
-export type Model = {
-  id: string;
-};
-
-export function getIdsFrom<T extends Model>(models?: T[]) {
-  return (models ?? []).map((model) => model.id);
-}
+import { Model } from '../../../types';
 
 function modelToEntry<T extends Model>(model: T) {
   return [model.id, model] as const;

@@ -7,7 +7,7 @@ import React, {
 // which import from context, not the other way around.
 import DelayedActivityIndicator from '../../../components/views/DelayedActivityIndicator';
 import type { CurrentUserData } from '../../types';
-import useStoredCurrentUserData from '../../CurrentUserDataStorage';
+import { useStoredCurrentUserData } from './caches';
 
 type CurrentUserDataContextType = {
   currentUserData: CurrentUserData | null;

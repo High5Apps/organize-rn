@@ -1,7 +1,7 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import useCachedValueCache from '../../CachedValueCache';
+import { useCachedValueCache } from './caches';
 
 type CachedValueContextType = {
   getCachedValue: (key: string) => any;

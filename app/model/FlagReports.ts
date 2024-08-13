@@ -4,8 +4,7 @@ import useCurrentUser from './CurrentUser';
 import { FlagReport } from './types';
 import { createModerationEvent, fetchFlagReports } from '../networking';
 import { useFlagReportContext } from './context';
-import { getIdsFrom } from './ModelCache';
-import useModels from './Models';
+import useModels, { getIdsFrom } from './Models';
 import getErrorMessage from './ErrorMessage';
 
 // Page indexing is 1-based, not 0-based

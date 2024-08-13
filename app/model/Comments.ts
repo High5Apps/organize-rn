@@ -3,8 +3,7 @@ import { Comment } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
 import { useCommentContext } from './context';
-import { getIdsFrom } from './ModelCache';
-import useModels from './Models';
+import useModels, { getIdsFrom } from './Models';
 
 export const BLOCKED_COMMENT_BODY = '[blocked]';
 export const MAX_COMMENT_DEPTH = 8;

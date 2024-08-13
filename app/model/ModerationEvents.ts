@@ -5,8 +5,7 @@ import type {
 } from './types';
 import { fetchModerationEvents } from '../networking';
 import { useModerationEventContext } from './context';
-import { getIdsFrom } from './ModelCache';
-import useModels from './Models';
+import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;

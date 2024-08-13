@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ReactTestRenderer, act, create } from 'react-test-renderer';
-import useCachedValueCache from '../../app/model/CachedValueCache';
+import useCachedValueCache from '../../../../../app/model/context/providers/caches/CachedValueCache';
 
 type Props = {
   cachedKeyToUpdate?: string;

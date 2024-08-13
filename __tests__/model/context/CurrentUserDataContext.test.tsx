@@ -7,11 +7,11 @@ import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../FakeData';
 import {
   CurrentUserDataContextProvider, useCurrentUserDataContext,
 } from '../../../app/model/context/providers/CurrentUserDataContext';
-import useStoredCurrentUserData from '../../../app/model/CurrentUserDataStorage';
+import useStoredCurrentUserData from '../../../app/model/context/providers/caches/CurrentUserDataStorage';
 
 jest.useFakeTimers();
 
-jest.mock('../../../app/model/CurrentUserDataStorage');
+jest.mock('../../../app/model/context/providers/caches/CurrentUserDataStorage');
 const mockUseStoredCurrentUserData = useStoredCurrentUserData as jest.Mock;
 
 const testID = 'currentUserId';

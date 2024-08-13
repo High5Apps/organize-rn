@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { fetchUsers } from '../networking';
 import { useUserContext } from './context';
 import { User, UserFilter, UserSort } from './types';
-import { getIdsFrom } from './ModelCache';
 import useCurrentUser from './CurrentUser';
-import useModels from './Models';
+import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;

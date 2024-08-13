@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { Model } from './ModelCache';
-import { isDefined } from './types';
+import { isDefined, Model } from './types';
+
+export function getIdsFrom<T extends Model>(models?: T[]) {
+  return (models ?? []).map((model) => model.id);
+}
 
 type Props<T extends Model> = {
   getCachedModel: (id?: string | undefined) => T | undefined;

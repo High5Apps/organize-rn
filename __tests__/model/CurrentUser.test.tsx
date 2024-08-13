@@ -1,5 +1,5 @@
 import { CurrentUser } from '../../app/model/CurrentUser';
-import { storeCurrentUserData } from '../../app/model/CurrentUserDataStorage';
+import { storeCurrentUserData } from '../../app/model/context/providers/caches/CurrentUserDataStorage';
 import { fakeCurrentUserData, fakeJwtString } from '../FakeData';
 import Keys from '../../app/model/keys/Keys';
 import { leaveOrg } from '../../app/networking/UserAPI';
@@ -15,7 +15,7 @@ mockKeys.mockReturnValue({
   rsa: { delete: mockRsaDelete },
 });
 
-jest.mock('../../app/model/CurrentUserDataStorage');
+jest.mock('../../app/model/context/providers/caches/CurrentUserDataStorage');
 const mockStoreCurrentUserData = storeCurrentUserData as jest.Mock;
 
 const mockSetCurrentUserData = jest.fn();

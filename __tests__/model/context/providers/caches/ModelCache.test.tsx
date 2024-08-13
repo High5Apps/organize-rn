@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ReactTestRenderer, act, create } from 'react-test-renderer';
-import useModelCache from '../../app/model/ModelCache';
-import { getFakePost } from '../FakeData';
-import { Post } from '../../app/model';
+import useModelCache from '../../../../../app/model/context/providers/caches/ModelCache';
+import { getFakePost } from '../../../../FakeData';
+import { Post } from '../../../../../app/model';
 
 type Props = {
   postToUpdate?: Post;

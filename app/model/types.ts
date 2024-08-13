@@ -195,7 +195,9 @@ export type BallotSort = 'active' | 'inactive';
 
 export type BallotPreview = Decrypt<BallotIndexBallot>;
 
-export type { Model } from './ModelCache';
+export type Model = {
+  id: string;
+};
 
 export type Candidate = Require<Decrypt<BallotCandidate>, 'title'>;
 

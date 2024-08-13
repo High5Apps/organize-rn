@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { ReactTestRenderer, act, create } from 'react-test-renderer';
-import { CurrentUserData, isCurrentUserData } from '../../app/model';
+import { CurrentUserData, isCurrentUserData } from '../../../../../app/model';
 import useStoredCurrentUserData, {
   getStoredCurrentUserData, storeCurrentUserData,
-} from '../../app/model/CurrentUserDataStorage';
-import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../FakeData';
+} from '../../../../../app/model/context/providers/caches/CurrentUserDataStorage';
+import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../../../FakeData';
 
 describe('CurrentUserDataStorage', () => {
   beforeEach(async () => {

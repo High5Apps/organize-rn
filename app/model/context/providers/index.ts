@@ -1,6 +1,7 @@
 export { useBallotContext } from './BallotContext';
 export { useBallotPreviewContext } from './BallotPreviewContext';
 export { useCachedValueContext } from './CachedValueContext';
+export { storeCurrentUserData } from './caches';
 export { useCommentContext } from './CommentContext';
 export { default as Context } from './Context';
 export { useCurrentUserDataContext } from './CurrentUserDataContext';

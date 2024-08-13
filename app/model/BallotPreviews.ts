@@ -3,8 +3,7 @@ import { fetchBallotPreviews } from '../networking';
 import { useBallotPreviewContext } from './context';
 import useCurrentUser from './CurrentUser';
 import { BallotPreview } from './types';
-import { getIdsFrom } from './ModelCache';
-import useModels from './Models';
+import useModels, { getIdsFrom } from './Models';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
