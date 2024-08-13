@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCommentContext } from '../context';
+import { useCommentContext } from './context';
 import useModels from './Models';
 import useCurrentUser from './CurrentUser';
 import { Comment } from './types';

@@ -40,6 +40,7 @@ export { default as useSettings } from './Settings';
 export { default as useUsers } from './Users';
 export { default as useVisGraphData } from './VisGraphData';
 export { default as useVoteUpdater } from './VoteUpdater';
+export * from './context';
 export * from './formatters';
 export * from './keys';
 export * from './types';

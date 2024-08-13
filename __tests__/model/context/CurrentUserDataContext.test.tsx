@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
-import { DelayedActivityIndicator } from '../../app/components';
-import { CurrentUserData } from '../../app/model';
-import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../FakeData';
+import { DelayedActivityIndicator } from '../../../app/components';
+import { CurrentUserData } from '../../../app/model';
+import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../FakeData';
 import {
   CurrentUserDataContextProvider, useCurrentUserDataContext,
-} from '../../app/context/CurrentUserDataContext';
-import useStoredCurrentUserData from '../../app/model/CurrentUserDataStorage';
+} from '../../../app/model/context/CurrentUserDataContext';
+import useStoredCurrentUserData from '../../../app/model/CurrentUserDataStorage';
 
 jest.useFakeTimers();
 
-jest.mock('../../app/model/CurrentUserDataStorage');
+jest.mock('../../../app/model/CurrentUserDataStorage');
 const mockUseStoredCurrentUserData = useStoredCurrentUserData as jest.Mock;
 
 const testID = 'currentUserId';

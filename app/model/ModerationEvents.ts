@@ -4,7 +4,7 @@ import type {
   ModeratableType, ModerationEvent, ModerationEventAction,
 } from './types';
 import { fetchModerationEvents } from '../networking';
-import { useModerationEventContext } from '../context';
+import { useModerationEventContext } from './context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 

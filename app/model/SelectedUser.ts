@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { OrgGraph, User } from './types';
 import useCurrentUser from './CurrentUser';
 import { getUser } from '../networking';
-import { useUserContext } from '../context';
+import { useUserContext } from './context';
 import usePreviousValue from './PreviousValue';
 import NullUser from './NullUser';
 

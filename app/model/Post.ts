@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { usePostContext } from '../context';
+import { usePostContext } from './context';
 import useCurrentUser from './CurrentUser';
 import { Post } from './types';
 import { fetchPost } from '../networking';

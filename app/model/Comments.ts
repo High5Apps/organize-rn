@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Comment } from './types';
 import useCurrentUser from './CurrentUser';
 import { fetchComments } from '../networking';
-import { useCommentContext } from '../context';
+import { useCommentContext } from './context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 

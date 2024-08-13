@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { fetchBallot } from '../networking';
-import { useBallotContext } from '../context';
+import { useBallotContext } from './context';
 import useCurrentUser from './CurrentUser';
 import type { Ballot } from './types';
 import getErrorMessage from './ErrorMessage';

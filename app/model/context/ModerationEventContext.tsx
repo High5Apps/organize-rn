@@ -1,8 +1,8 @@
 import React, {
   PropsWithChildren, createContext, useContext, useMemo,
 } from 'react';
-import type { ModerationEvent } from '../model';
-import useModelCache from '../model/ModelCache';
+import type { ModerationEvent } from '../types';
+import useModelCache from '../ModelCache';
 
 type RequiredModerationEvent = Required<ModerationEvent>;
 

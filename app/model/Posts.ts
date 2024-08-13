@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useCurrentUser from './CurrentUser';
 import { Post, PostCategory, PostSort } from './types';
 import { fetchPosts } from '../networking';
-import { usePostContext } from '../context';
+import { usePostContext } from './context';
 import { getIdsFrom } from './ModelCache';
 import useModels from './Models';
 

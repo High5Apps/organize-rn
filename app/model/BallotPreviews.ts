@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fetchBallotPreviews } from '../networking';
-import { useBallotPreviewContext } from '../context';
+import { useBallotPreviewContext } from './context';
 import useCurrentUser from './CurrentUser';
 import { BallotPreview } from './types';
 import { getIdsFrom } from './ModelCache';
