@@ -90,7 +90,7 @@ Script files called from the NPM scripts in `package.json`.
 
 ## Cross-Cutting Concerns
 
-This sections talks about the things which are everywhere and nowhere in particular.
+This section talks about the things which are everywhere and nowhere in particular.
 
 ### Facilitate in-person action, don't discourage it
 
