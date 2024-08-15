@@ -38,7 +38,7 @@ const useStyles = () => {
     },
     subtitle: {
       color: colors.labelSecondary,
-      fontSize: font.sizes.subhead,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
     textButtonRow: {

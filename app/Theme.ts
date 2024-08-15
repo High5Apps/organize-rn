@@ -63,7 +63,6 @@ const lightTheme = {
       largeTitle: 34,
       title1: 28,
       body: 17,
-      subhead: 15,
     },
     weights,
   },

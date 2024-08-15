@@ -39,7 +39,7 @@ const useStyles = () => {
     },
     rank: {
       color: colors.primary,
-      fontSize: font.sizes.subhead,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
     },
     rankContainer: {
@@ -49,7 +49,7 @@ const useStyles = () => {
     },
     subtitle: {
       color: colors.labelSecondary,
-      fontSize: font.sizes.subhead,
+      fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
       marginStart: subtitleMarginStart,
     },
