@@ -12,6 +12,8 @@ This repo defines the components needed to develop, test, and build the Organize
 
 [React Navigation](https://reactnavigation.org/) is used to define screen heirarchies and navigate among them. In-memory data is managed using [Context](https://react.dev/learn/passing-data-deeply-with-context) and [Hooks](https://react.dev/reference/react/hooks). [Async Storage](https://github.com/react-native-async-storage/async-storage) is used for state persistence across launches. [Material Icons](https://fonts.google.com/icons) are used for iconography.
 
+<img alt="Architecture overview sketch" src="/docs/architecture/overview-sketch.jpg" width=33%>
+
 ## Code Map
 
 This section talks briefly about various important directories and data structures. Pay attention to the **Architecture Invariant** sections. They often talk about things which are deliberately absent in the source code.
