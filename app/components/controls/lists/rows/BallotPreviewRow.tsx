@@ -19,7 +19,6 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      columnGap: spacing.m,
       paddingVertical: spacing.s,
     },
     icon: {
@@ -35,6 +34,8 @@ const useStyles = () => {
     innerContainer: {
       flex: 1,
       flexDirection: 'column',
+
+      marginStart: spacing.s,
 
       // This attempts to align the top of the icons with the top of the
       // question text, itself, not with the top of the text container
