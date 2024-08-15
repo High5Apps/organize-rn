@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
-import { Share } from 'react-native';
+import { Linking, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ENABLE_DEVELOPER_SETTINGS } from './Config';
 import { useCurrentUser } from './context';
 import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
+
+const REPO_URL = 'https://github.com/High5Apps/organize-rn';
 
 export default function useSettings(): SettingsSection[] {
   const { currentUser } = useCurrentUser();
@@ -29,6 +31,16 @@ export default function useSettings(): SettingsSection[] {
             iconName: 'visibility',
             onPress: () => navigation.navigate('TransparencyLog'),
             title: 'Transparency Log',
+          },
+        ],
+      },
+      {
+        title: 'About',
+        data: [
+          {
+            iconName: 'code',
+            onPress: () => Linking.openURL(REPO_URL),
+            title: 'Source Code',
           },
         ],
       },
