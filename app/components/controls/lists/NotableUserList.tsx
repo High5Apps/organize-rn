@@ -79,7 +79,9 @@ export default function NotableUserList({
       notableUserSections.push({ title: 'Selected', data });
     }
 
-    notableUserSections.push({ title: 'Officers', data: officers });
+    if (officers.length) {
+      notableUserSections.push({ title: 'Officers', data: officers });
+    }
 
     const currentOrgGraphUser = currentUser.user();
     const { offices } = currentOrgGraphUser;
