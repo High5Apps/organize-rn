@@ -39,7 +39,11 @@
    ```sh
    npm start
    ```
-5. Install and launch the app
+5. Start the [organize-api](https://github.com/High5Apps/organize-api) development server
+   ```sh
+   dc up
+   ```
+6. Install and launch the app
    ```sh
    # On an iOS simulator
    npm run ios
@@ -47,7 +51,7 @@
    # On an Android emulator
    npm run android
    ```
-6. Make a change to the [TypeScript](https://www.typescriptlang.org/) code, save it, and the app will update live without needing to be reinstalled
+7. Make a change to the [TypeScript](https://www.typescriptlang.org/) code, save it, and the app will update live without needing to be reinstalled
    - You only need to reinstall the app if you make changes to native code ([Swift](https://www.swift.org/)/[Kotlin](https://kotlinlang.org/)/[Java](https://www.java.com)/[Objective-C](https://en.wikipedia.org/wiki/Objective-C)) or add/modify any dependencies
    - You don't even need to reinstall the app at the beginning of each development session. You can just launch the simulator or emulator, open the app, and it will automatically connect to the development server and be ready for live code updates
 
