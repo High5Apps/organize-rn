@@ -5,6 +5,7 @@ import { ENABLE_DEVELOPER_SETTINGS } from './Config';
 import { useCurrentUser } from './context';
 import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
+import Email from './Email';
 
 const REPO_URL = 'https://github.com/High5Apps/organize-rn';
 
@@ -31,6 +32,16 @@ export default function useSettings(): SettingsSection[] {
             iconName: 'visibility',
             onPress: () => navigation.navigate('TransparencyLog'),
             title: 'Transparency Log',
+          },
+        ],
+      },
+      {
+        title: 'Communication',
+        data: [
+          {
+            iconName: 'mail',
+            onPress: Email().openComposer,
+            title: 'Email the App Developer',
           },
         ],
       },
