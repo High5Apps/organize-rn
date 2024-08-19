@@ -7,6 +7,8 @@ import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
 import Email from './Email';
 
+const BUG_REPORT_BODY = 'Please describe the bug and add screenshots if possible. The more you can tell us, the quicker we can fix it.\n\nInclude things like what you expected to happen, what actually happened, and what you were doing in the app right before the bug happened. Thanks!\n\n';
+const BUG_REPORT_SUBJECT = 'Organize Bug Report';
 const REPO_URL = 'https://github.com/High5Apps/organize-rn';
 
 export default function useSettings(): SettingsSection[] {
@@ -42,6 +44,14 @@ export default function useSettings(): SettingsSection[] {
             iconName: 'mail',
             onPress: Email().openComposer,
             title: 'Email the App Developer',
+          },
+          {
+            iconName: 'bug-report',
+            onPress: Email({
+              body: BUG_REPORT_BODY,
+              subject: BUG_REPORT_SUBJECT,
+            }).openComposer,
+            title: 'Report a Bug',
           },
         ],
       },
