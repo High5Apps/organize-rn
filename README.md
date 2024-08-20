@@ -81,7 +81,7 @@ To run just a subset of tests in a single file, append `.only` to the relevant `
 1. Enable developer mode on your [iPhone](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device) or [Android device](https://developer.android.com/studio/debug/dev-options)
 2. Connect your device to your development machine with a physical cable, or setup wireless/remote debugging
    - For wireless debugging on iOS you need to ensure your device is on the same wireless network as your development machine, and you likely need to disable any VPN on both machines
-   - For wireless debugging on Android, follow [these directions](https://developer.android.com/studio/run/device#wireless). Both machines must be on the same wireless netowkr, but you can likely leave any VPN running. Running `adb devices` may help reconnect if the connection between machines drops.
+   - For wireless debugging on Android, follow [these directions](https://developer.android.com/studio/run/device#wireless). Both machines must be on the same wireless network, but you can likely leave any VPN running. Running `adb devices` may help reconnect if the connection between machines drops.
 3. There are multiple options to install and run the app:
    - Command line
       ```sh
