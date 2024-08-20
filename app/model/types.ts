@@ -26,7 +26,9 @@ type Decrypt<T> = T extends ReadonlyArray<any> ? T : (
             T[K] extends (BackendEncryptedMessage | undefined)
               ? (string | undefined) : never
           )
-        ) : (T[K] extends Date ? Date : Decrypt<T[K]>)
+        ) : (T[K] extends Date ? T[K] : (
+          T[K] extends (Date | undefined) ? T[K] : (
+            T[K] extends (Date | null) ? T[K] : Decrypt<T[K]>)))
       )
     } : T
   )
