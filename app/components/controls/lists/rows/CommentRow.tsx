@@ -77,9 +77,9 @@ function CommentRow({
   highlightObjectionableContent, item, onCommentChanged, showBlockedContent,
 }: Props) {
   const {
-    blocked, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
+    blockedAt, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
   } = item;
-  const shouldShowAsBlocked = blocked && !showBlockedContent;
+  const shouldShowAsBlocked = !!blockedAt && !showBlockedContent;
   const body = shouldShowAsBlocked ? BLOCKED_COMMENT_BODY : item.body;
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed

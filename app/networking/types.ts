@@ -178,7 +178,7 @@ export function isCreateModelResponse(object: unknown): object is CreateModelRes
 }
 
 export type BackendComment = {
-  blocked?: boolean;
+  blockedAt: Date | null;
   createdAt: Date;
   depth: number;
   encryptedBody: BackendEncryptedMessage;
@@ -194,7 +194,7 @@ export type BackendComment = {
 function isBackendComment(object: unknown): object is BackendComment {
   const comment = (object as BackendComment);
   return isBackendEncryptedMessage(comment.encryptedBody)
-    && (comment.blocked === undefined || isBoolean(comment.blocked))
+    && (comment.blockedAt === null || isDate(comment.blockedAt))
     && isDate(comment.createdAt)
     && comment.id?.length > 0
     && comment.myVote !== undefined
