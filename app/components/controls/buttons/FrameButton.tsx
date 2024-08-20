@@ -23,7 +23,7 @@ const useStyles = () => {
       ...shadows.elevation4,
     },
     pressed: {
-      opacity: isDarkMode ? opacity.hidden : opacity.visible,
+      opacity: isDarkMode ? opacity.disabled : opacity.visible,
       ...shadows.elevation1,
     },
   });
