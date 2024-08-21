@@ -3,9 +3,9 @@ import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
 import {
-  getErrorMessage, Keys, QRCodeValue, useCurrentUser,
+  ConnectionPreview, getErrorMessage, Keys, QRCodeValue, useCurrentUser,
 } from '../../model';
-import { ConnectionPreview, previewConnection } from '../../networking';
+import { previewConnection } from '../../networking';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
 

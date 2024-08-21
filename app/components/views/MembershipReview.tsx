@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { QRCodeValue } from '../../model';
-import { ConnectionPreview } from '../../networking';
+import { ConnectionPreview, QRCodeValue } from '../../model';
 import ConnectionRequestProgress from './ConnectionRequestProgress';
 import ReviewFrame from './ReviewFrame';
 

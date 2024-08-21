@@ -9,10 +9,10 @@ export type {
   BallotCategory, Nomination, OfficeCategory, PermissionItem,
 };
 export type {
-  Ballot, BallotPreview, Candidate, Comment, FlagReport, ModeratableType,
-  ModerationEvent, ModerationEventAction, MyPermission, OfficeAvailability, Org,
-  OrgGraph, Permission, PermissionScope, Post, PostCategory, PostSort, Result,
-  User, UserFilter, UserSort, VoteState,
+  Ballot, BallotPreview, Candidate, Comment, ConnectionPreview, FlagReport,
+  ModeratableType, ModerationEvent, ModerationEventAction, MyPermission,
+  OfficeAvailability, Org, OrgGraph, Permission, PermissionScope, Post,
+  PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
 } from '../networking';
 export { OFFICE_CATEGORIES, POST_CATEGORIES, isDefined } from '../networking';
 
