@@ -4,10 +4,7 @@ import {
   ConfirmationAlert, ScreenBackground, SearchBar, UserList, useRequestProgress,
 } from '../../components';
 import type { NewNominationScreenProps } from '../../navigation';
-import { createNomination } from '../../networking';
-import {
-  Nomination, User, getErrorMessage, useBallot, useCurrentUser,
-} from '../../model';
+import { User, getErrorMessage, useBallot } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -30,8 +27,7 @@ export default function NewNominationScreen({
   const [filteredUserId, setFilteredUserId] = useState<string>();
   const [debouncedQuery, setDebouncedQuery] = useState<string | undefined>();
 
-  const { currentUser } = useCurrentUser();
-  const { cacheBallot, ballot } = useBallot(ballotId);
+  const { ballot, createNomination } = useBallot(ballotId);
 
   const { styles } = useStyles();
 
@@ -40,54 +36,24 @@ export default function NewNominationScreen({
   } = useRequestProgress({ removeWhenInactive: true });
 
   const onNominate = useCallback(async (nominee: User) => {
-    if (!currentUser || !ballot) { return; }
-
     setFilteredUserId(nominee.id);
     setResult('none');
     setLoading(true);
 
-    const jwt = await currentUser.createAuthToken({ scope: '*' });
-    let errorMessage: string | undefined;
-    let nominationId: string | undefined;
     try {
-      ({ id: nominationId, errorMessage } = await createNomination({
-        ballotId: ballot.id, jwt, nomineeId: nominee.id,
-      }));
+      await createNomination({
+        nomineeId: nominee.id, nomineePseudonym: nominee.pseudonym,
+      });
+      setResult('success');
+      navigation.goBack();
     } catch (error) {
-      errorMessage = getErrorMessage(error);
-    }
-
-    if (errorMessage !== undefined) {
+      const errorMessage = getErrorMessage(error);
       setResult('error', {
         message: `${errorMessage}\nTap here to try again`,
         onPress: () => onNominate(nominee),
       });
     }
-
-    if (nominationId) {
-      setResult('success');
-
-      const nomination: Nomination = {
-        accepted: null,
-        id: nominationId,
-        nominator: {
-          id: currentUser.id,
-          pseudonym: currentUser.pseudonym,
-        },
-        nominee: {
-          id: nominee.id,
-          pseudonym: nominee.pseudonym,
-        },
-      };
-      const updatedBallot = { ...ballot };
-      updatedBallot.nominations = [nomination, ...(ballot.nominations ?? [])];
-      cacheBallot(updatedBallot);
-
-      navigation.goBack();
-    }
-
-    setLoading(false);
-  }, [ballot, currentUser]);
+  }, [ballot]);
 
   const onItemPress = useCallback(async (nominee: User) => {
     const { pseudonym } = nominee;
