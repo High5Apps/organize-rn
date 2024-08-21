@@ -1,6 +1,7 @@
 export { default as useAppState } from './AppState';
 export { default as useBallotTypes, ballotTypeMap } from './BallotTypes';
 export * from './Config';
+export { default as useConnection } from './Connection';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { default as getErrorMessage } from './ErrorMessage';
 export { default as useFlag } from './Flag';

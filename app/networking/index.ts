@@ -1,3 +1,4 @@
+export { Status } from './API';
 export { createBallot, fetchBallot, fetchBallotPreviews } from './BallotAPI';
 export { createComment, fetchComments, fetchCommentThread } from './CommentAPI';
 export { createConnection, previewConnection } from './ConnectionAPI';

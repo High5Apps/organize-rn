@@ -2,11 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
-  PrimaryButton, ResultType, ScreenBackground, useRequestProgress,
+  PrimaryButton, ScreenBackground, useRequestProgress,
 } from '../../components';
-import { getErrorMessage, QRCodeValue, useCurrentUser } from '../../model';
-import { ConnectionPreview, createConnection } from '../../networking';
-import { Status } from '../../networking/API';
+import { ConnectionPreview, QRCodeValue, useConnection } from '../../model';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -38,7 +36,7 @@ export default function NewConnectionScreen() {
   ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
-  const { currentUser } = useCurrentUser();
+  const { createConnection } = useConnection({ sharerJwt: qrValue?.jwt });
   const {
     RequestProgress, result, setLoading, setResult,
   } = useRequestProgress();
@@ -55,43 +53,17 @@ export default function NewConnectionScreen() {
   }, []);
 
   const onConnectPressed = async () => {
-    if (!qrValue || !currentUser) {
-      console.warn('Expected qrValue and currentUser to be set');
-      return;
-    }
-
     setLoading(true);
     setResult('none');
 
-    let message: string | undefined;
-    let connectionResult: ResultType;
     try {
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const sharerJwt = qrValue.jwt;
-      const {
-        errorMessage: maybeErrorMessage, status,
-      } = await createConnection({ jwt, sharerJwt });
-
-      if (maybeErrorMessage) {
-        message = maybeErrorMessage;
-        connectionResult = 'error';
-      } else {
-        message = (status === Status.Success)
-          ? 'Reconnected successfully' : 'Connected successfully';
-        connectionResult = 'success';
-      }
+      const { isReconnection } = await createConnection();
+      const message = isReconnection
+        ? 'Reconnected successfully' : 'Connected successfully';
+      setResult('success', { message });
     } catch (error) {
-      connectionResult = 'error';
-      message = getErrorMessage(error);
+      setResult('error', { error });
     }
-
-    if (connectionResult === 'error') {
-      setErrorMessage(message);
-    } else {
-      setResult(connectionResult, { message });
-    }
-
-    setLoading(false);
   };
 
   return (
