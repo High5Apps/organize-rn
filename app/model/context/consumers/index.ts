@@ -1,4 +1,5 @@
 export { default as useBallot } from './Ballot';
+export { default as useBallotPreview } from './BallotPreview';
 export {
   default as useBallotPreviews, nominationsTimeRemainingFormatter,
   nominationsTimeRemainingExpiredFormatter, votingTimeRemainingFormatter,

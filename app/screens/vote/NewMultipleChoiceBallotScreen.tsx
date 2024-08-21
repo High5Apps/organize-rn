@@ -5,12 +5,8 @@ import {
   MultilineTextInput, NewCandidatesControl, PrimaryButton, StepperControl,
   startOfNextHourIn, useRequestProgress,
 } from '../../components';
-import {
-  BallotPreview, getErrorMessage, useBallotPreviews, useCachedValue,
-  useCurrentUser,
-} from '../../model';
+import { useBallotPreview, useCachedValue } from '../../model';
 import useTheme from '../../Theme';
-import { createBallot } from '../../networking';
 import type { NewMultipleChoiceBallotScreenProps } from '../../navigation';
 
 const BALLOT_CATEGORY = 'multiple_choice';
@@ -62,15 +58,13 @@ export default function NewMultipleChoiceBallotScreen({
   const [question, setQuestion] = useCachedValue<string>(CACHE_KEY_QUESTION);
   const [votingEnd, setVotingEnd] = useState(startOfNextHourIn({ days: 7 }));
 
-  const { currentUser } = useCurrentUser();
+  const { createBallotPreview } = useBallotPreview();
 
   const { styles } = useStyles();
 
   const {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
-
-  const { cacheBallotPreview } = useBallotPreviews();
 
   const resetForm = () => {
     setCandidates(initialCandidates);
@@ -80,8 +74,6 @@ export default function NewMultipleChoiceBallotScreen({
   };
 
   const onPublishPressed = async () => {
-    if (!currentUser) { return; }
-
     setLoading(true);
     setResult('none');
 
@@ -96,48 +88,26 @@ export default function NewMultipleChoiceBallotScreen({
       uniqueCandidates.length ? uniqueCandidates : initialCandidates,
     );
 
-    let errorMessage: string | undefined;
-    let id: string | undefined;
     try {
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { e2eEncrypt, e2eEncryptMany } = currentUser;
-
-      ({ errorMessage, id } = await createBallot({
+      const ballotPreview = await createBallotPreview({
         candidateTitles: uniqueCandidates,
-        category: BALLOT_CATEGORY,
-        e2eEncrypt,
-        e2eEncryptMany,
-        jwt,
         maxSelections,
-        question: strippedQuestion,
-        votingEndsAt: votingEnd,
-      }));
+        partialBallotPreview: {
+          category: BALLOT_CATEGORY,
+          nominationsEndAt: null,
+          office: null,
+          question: strippedQuestion,
+          votingEndsAt: votingEnd,
+        },
+      });
+      resetForm();
+      setResult('success');
+      navigation.navigate('BallotPreviews', {
+        prependedBallotId: ballotPreview.id,
+      });
     } catch (error) {
-      errorMessage = getErrorMessage(error);
+      setResult('error', { error });
     }
-
-    if (errorMessage !== undefined) {
-      setResult('error', { message: errorMessage });
-      return;
-    }
-
-    resetForm();
-    setResult('success');
-
-    const ballotPreview: BallotPreview = {
-      category: BALLOT_CATEGORY,
-      id: id!,
-      nominationsEndAt: null,
-      office: null,
-      question: strippedQuestion,
-      userId: currentUser.id,
-      votingEndsAt: votingEnd,
-    };
-    cacheBallotPreview(ballotPreview);
-
-    navigation.navigate('BallotPreviews', {
-      prependedBallotId: ballotPreview.id,
-    });
   };
 
   return (

@@ -7,10 +7,7 @@ import {
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import {
-  BallotPreview, getErrorMessage, useBallotPreviews, useCurrentUser,
-} from '../../model';
-import { createBallot } from '../../networking';
+import { useBallotPreview } from '../../model';
 
 const BALLOT_CATEGORY = 'election';
 
@@ -68,7 +65,7 @@ export default function NewElectionBallotScreen({
   const [termEnd, setTermEnd] = useState(startOfNextHourIn({ days: 21 + 365 }));
   const [termStart, setTermStart] = useState(startOfNextHourIn({ days: 21 }));
 
-  const { currentUser } = useCurrentUser();
+  const { createBallotPreview } = useBallotPreview();
 
   const { styles } = useStyles();
 
@@ -79,8 +76,6 @@ export default function NewElectionBallotScreen({
   const {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
-
-  const { cacheBallotPreview } = useBallotPreviews();
 
   if (!office) { return null; }
 
@@ -94,56 +89,30 @@ export default function NewElectionBallotScreen({
   };
 
   const onPublishPressed = async () => {
-    if (!currentUser) { return; }
-
     setLoading(true);
     setResult('none');
 
-    let errorMessage: string | undefined;
-    let id: string | undefined;
     try {
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { e2eEncrypt, e2eEncryptMany } = currentUser;
-
-      ({ errorMessage, id } = await createBallot({
-        category: BALLOT_CATEGORY,
-        e2eEncrypt,
-        e2eEncryptMany,
-        jwt,
+      const ballotPreview = await createBallotPreview({
         maxSelections,
-        office: officeCategory,
-        question,
+        partialBallotPreview: {
+          category: BALLOT_CATEGORY,
+          nominationsEndAt: nominationsEnd,
+          office: officeCategory,
+          question,
+          votingEndsAt: votingEnd,
+        },
         termEndsAt: termEnd,
         termStartsAt: termStart,
-        nominationsEndAt: nominationsEnd,
-        votingEndsAt: votingEnd,
-      }));
+      });
+      resetForm();
+      setResult('success');
+      navigation.navigate('BallotPreviews', {
+        prependedBallotId: ballotPreview.id,
+      });
     } catch (error) {
-      errorMessage = getErrorMessage(error);
+      setResult('error', { error });
     }
-
-    if (errorMessage !== undefined) {
-      setResult('error', { message: errorMessage });
-      return;
-    }
-
-    resetForm();
-    setResult('success');
-
-    const ballotPreview: BallotPreview = {
-      category: BALLOT_CATEGORY,
-      id: id!,
-      nominationsEndAt: nominationsEnd,
-      office: officeCategory,
-      question,
-      userId: currentUser.id,
-      votingEndsAt: votingEnd,
-    };
-    cacheBallotPreview(ballotPreview);
-
-    navigation.navigate('BallotPreviews', {
-      prependedBallotId: ballotPreview.id,
-    });
   };
 
   return (
