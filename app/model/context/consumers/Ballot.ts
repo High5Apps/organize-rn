@@ -1,15 +1,19 @@
 import { useCallback, useMemo } from 'react';
 import {
-  createNomination as _createNomination, fetchBallot,
+  createNomination as _createNomination, createTerm, fetchBallot,
 } from '../../../networking';
 import { useBallotContext } from '../providers';
 import useCurrentUser from './CurrentUser';
-import type { Ballot, Nomination } from '../../types';
+import type { Ballot, Nomination, Result } from '../../types';
 import getErrorMessage from '../../ErrorMessage';
 
 type CreateNominationProps = {
   nomineeId: string;
   nomineePseudonym: string;
+};
+
+type UpdateResultProps = {
+  updatedResult: Result;
 };
 
 export default function useBallot(ballotId: string) {
@@ -84,7 +88,48 @@ export default function useBallot(ballotId: string) {
     }
   }, [ballotId, currentUser]);
 
+  const updateResultOptimistically = useCallback(async ({
+    updatedResult,
+  }: UpdateResultProps) => {
+    if (!ballot || !currentUser || updatedResult.acceptedOffice === undefined) {
+      return;
+    }
+
+    // Optimistically cache the updated ballot. Note there's no need to update
+    // currentUser.offices because the term cannot have started yet.
+    cacheBallot({
+      ...ballot,
+      results: ballot.results?.map((result) => (
+        (result.candidate.id !== updatedResult.candidate.id)
+          ? result : updatedResult)),
+    });
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+
+    let errorMessage: string | undefined;
+    try {
+      ({ errorMessage } = await createTerm({
+        accepted: updatedResult.acceptedOffice, ballotId: ballot.id, jwt,
+      }));
+    } catch (error) {
+      errorMessage = getErrorMessage(error);
+    }
+
+    if (errorMessage) {
+      // On error, revert ballot back to what it was before the optimistic
+      // update
+      cacheBallot(ballot);
+
+      throw new Error(errorMessage);
+    }
+  }, [ballot, currentUser]);
+
   return {
-    ballot, cacheBallot, createNomination, getCachedBallot, refreshBallot,
+    ballot,
+    cacheBallot,
+    createNomination,
+    getCachedBallot,
+    refreshBallot,
+    updateResultOptimistically,
   };
 }

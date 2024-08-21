@@ -24,7 +24,9 @@ type Props = {
 export default function useBallotProgress({
   ballotId, shouldFetchOnMount,
 }: Props) {
-  const { ballot, cacheBallot, refreshBallot } = useBallot(ballotId);
+  const {
+    ballot, cacheBallot, refreshBallot, updateResultOptimistically,
+  } = useBallot(ballotId);
 
   const {
     RequestProgress: UnstyledRequestProgress, setLoading, setResult,
@@ -60,5 +62,7 @@ export default function useBallotProgress({
     [UnstyledRequestProgress],
   );
 
-  return { ballot, cacheBallot, RequestProgress };
+  return {
+    ballot, cacheBallot, RequestProgress, updateResultOptimistically,
+  };
 }

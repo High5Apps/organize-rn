@@ -12,7 +12,6 @@ import {
   getErrorMessage, Result, useBallotPreviews, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
-import { createTerm } from '../../networking';
 
 const ERROR_ALERT_TITLE = 'Failed to accept or decline office. Please try again.';
 
@@ -55,7 +54,7 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
   const { params: { ballotId } } = route;
 
   const {
-    ballot, cacheBallot, RequestProgress,
+    ballot, RequestProgress, updateResultOptimistically,
   } = useBallotProgress({
     ballotId,
     shouldFetchOnMount: (cachedBallot) => {
@@ -98,36 +97,13 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
   } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
 
   const onResultUpdated = useCallback(async (updatedResult: Result) => {
-    if (!ballot || updatedResult.acceptedOffice === undefined) { return; }
-
-    // Optimistically cache the updated ballot. Note there's no need to update
-    // currentUser.offices because the term cannot have started yet.
-    cacheBallot({
-      ...ballot,
-      results: ballot.results?.map((result) => (
-        (result.candidate.id !== updatedResult.candidate.id)
-          ? result : updatedResult)),
-    });
-
-    const jwt = await currentUser.createAuthToken({ scope: '*' });
-
-    let errorMessage: string | undefined;
     try {
-      ({ errorMessage } = await createTerm({
-        accepted: updatedResult.acceptedOffice, ballotId: ballot.id, jwt,
-      }));
+      await updateResultOptimistically({ updatedResult });
     } catch (error) {
-      errorMessage = getErrorMessage(error);
-    }
-
-    if (errorMessage) {
-      // On error, revert ballot back to what it was before the optimistic
-      // update
-      cacheBallot(ballot);
-
+      const errorMessage = getErrorMessage(error);
       Alert.alert(ERROR_ALERT_TITLE, errorMessage);
     }
-  }, [ballot, cacheBallot, currentUser]);
+  }, [updateResultOptimistically]);
 
   const ListEmptyComponent = useMemo(() => (
     <Text style={[styles.text, styles.emptyResultsText]}>
