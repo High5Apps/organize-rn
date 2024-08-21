@@ -3,13 +3,10 @@ import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
 import {
-  ConnectionPreview, getErrorMessage, Keys, QRCodeValue, useCurrentUser,
+  ConnectionPreview, getErrorMessage, QRCodeValue, useConnection,
 } from '../../model';
-import { previewConnection } from '../../networking';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
-
-export const OTHER_ORG_ERROR_MESSAGE = "The code you scanned belongs to a member of another Org. You can't connect with people in other Orgs.";
 
 const useStyles = () => {
   const { colors } = useTheme();
@@ -40,7 +37,7 @@ export default function ConnectionRequestProgress({
   const { RequestProgress, setLoading } = useRequestProgress();
   const [response, setResponse] = useState<ConnectionPreview>();
 
-  const { currentUser } = useCurrentUser();
+  const { previewConnection } = useConnection({ sharerJwt });
 
   useEffect(() => {
     let subscribed = true;
@@ -50,23 +47,11 @@ export default function ConnectionRequestProgress({
       setLoading(true);
 
       try {
-        const { decryptWithExposedKey } = Keys().aes;
-        const { connectionPreview, errorMessage } = await previewConnection({
-          decryptWithExposedKey, groupKey, sharerJwt,
-        });
-
+        const connectionPreview = await previewConnection({ groupKey });
         if (!subscribed) { return; }
 
-        if (errorMessage !== undefined) {
-          onConnectionPreviewError?.(errorMessage);
-        } else if (currentUser && currentUser.org
-            && (currentUser.org.id !== connectionPreview.org.id)
-        ) {
-          onConnectionPreviewError?.(OTHER_ORG_ERROR_MESSAGE);
-        } else {
-          setResponse(connectionPreview);
-          onConnectionPreview?.(connectionPreview);
-        }
+        setResponse(connectionPreview);
+        onConnectionPreview?.(connectionPreview);
       } catch (error) {
         const errorMessage = getErrorMessage(error);
         onConnectionPreviewError?.(errorMessage);
@@ -78,7 +63,7 @@ export default function ConnectionRequestProgress({
     fetchRequestPreview();
 
     return unsubscribe;
-  }, [currentUser]);
+  }, [previewConnection]);
 
   return (
     <View style={[styles.container, style]}>
