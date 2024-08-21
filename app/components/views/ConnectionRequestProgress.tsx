@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleProp, StyleSheet, View, ViewStyle,
 } from 'react-native';
-import { getErrorMessage, QRCodeValue, useCurrentUser } from '../../model';
+import {
+  getErrorMessage, Keys, QRCodeValue, useCurrentUser,
+} from '../../model';
 import { ConnectionPreview, previewConnection } from '../../networking';
 import useTheme from '../../Theme';
 import useRequestProgress from './RequestProgress';
@@ -48,8 +50,9 @@ export default function ConnectionRequestProgress({
       setLoading(true);
 
       try {
+        const { decryptWithExposedKey } = Keys().aes;
         const { connectionPreview, errorMessage } = await previewConnection({
-          groupKey, sharerJwt,
+          decryptWithExposedKey, groupKey, sharerJwt,
         });
 
         if (!subscribed) { return; }

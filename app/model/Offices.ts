@@ -42,11 +42,17 @@ export default function useOfficeAvailability() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
-    const { errorMessage, offices } = await fetchOfficesApi({ jwt });
+    const {
+      errorMessage, offices: fetchedOffices,
+    } = await fetchOfficesApi({ jwt });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
+
+    const offices = fetchedOffices.map(
+      ({ open, type }) => getOffice(type, { open }),
+    );
 
     setOpenOffices(offices.filter(({ open }) => open));
     setFilledOffices(offices.filter(({ open }) => !open));

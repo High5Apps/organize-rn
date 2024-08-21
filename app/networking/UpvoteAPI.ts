@@ -1,9 +1,8 @@
-import type { VoteState } from '../model';
-import { fromJson } from '../model';
 import { post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { commentUpvotesURI, postUpvotesURI } from './Routes';
-import { Authorization } from './types';
+import { Authorization, VoteState } from './types';
 
 type Props = {
   commentId?: string;

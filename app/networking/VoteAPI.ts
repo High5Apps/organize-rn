@@ -1,6 +1,6 @@
-import { fromJson } from '../model';
 import { post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { votesURI } from './Routes';
 import { Authorization, isCreateModelResponse } from './types';
 

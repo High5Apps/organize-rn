@@ -1,14 +1,12 @@
 import {
-  Comment, E2EMultiDecryptor, E2EEncryptor, fromJson,
-} from '../model';
-import {
   decryptMany, encrypt, get, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { commentsURI, commentThreadURI, repliesURI } from './Routes';
 import {
-  Authorization, BackendComment, isCommentIndexResponse,
-  isCommentThreadResponse, isCreateModelResponse,
+  Authorization, BackendComment, Comment, E2EEncryptor, E2EMultiDecryptor,
+  isCommentIndexResponse, isCommentThreadResponse, isCreateModelResponse,
 } from './types';
 
 type Props = {

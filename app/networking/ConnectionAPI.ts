@@ -1,11 +1,12 @@
-import { fromJson, Keys } from '../model';
 import {
   fromBackendEncryptedMessage, get, post, Status,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { connectionPreviewURI, connectionsURI } from './Routes';
 import {
-  Authorization, ConnectionPreview, isPreviewConnectionResponse,
+  Authorization, ConnectionPreview, E2EDecryptorWithExposedKey,
+  isPreviewConnectionResponse,
 } from './types';
 
 type SharerJwt = {
@@ -45,6 +46,7 @@ export async function createConnection({
 }
 
 type PreviewProps = SharerJwt & {
+  decryptWithExposedKey: E2EDecryptorWithExposedKey;
   groupKey: string;
 };
 
@@ -57,7 +59,7 @@ type PreviewConnectionReturn = {
 };
 
 export async function previewConnection({
-  groupKey, sharerJwt,
+  decryptWithExposedKey, groupKey, sharerJwt,
 }: PreviewProps): Promise<PreviewConnectionReturn> {
   const uri = connectionPreviewURI;
   const response = await get({ sharerJwt, uri });
@@ -83,7 +85,6 @@ export async function previewConnection({
   const encryptedMemberDefinition = fromBackendEncryptedMessage(
     backendEncryptedMemberDefinition,
   );
-  const { decryptWithExposedKey } = Keys().aes;
   const [name, memberDefinition] = await Promise.all([
     decryptWithExposedKey({ ...encryptedName, base64Key: groupKey }),
     decryptWithExposedKey({

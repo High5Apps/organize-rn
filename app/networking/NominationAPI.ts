@@ -1,5 +1,4 @@
 import isEqual from 'react-fast-compare';
-import { fromJson } from '../model';
 import { patch, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { nominationURI, nominationsURI } from './Routes';
@@ -7,6 +6,7 @@ import {
   Authorization, UpdateNominationResponse, isCreateModelResponse,
   isUpdateNominationResponse,
 } from './types';
+import { fromJson } from './Json';
 
 type CreateProps = {
   ballotId: string;

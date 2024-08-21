@@ -1,14 +1,13 @@
-import type {
-  E2EMultiDecryptor, E2EEncryptor, PaginationData, Post, PostCategory, PostSort,
-  E2EDecryptor,
-} from '../model';
-import { fromJson } from '../model';
 import {
   decrypt, decryptMany, encrypt, get, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { postURI, postsURI } from './Routes';
-import type { Authorization } from './types';
+import type {
+  Authorization, E2EDecryptor, E2EEncryptor, E2EMultiDecryptor, PaginationData,
+  Post, PostCategory, PostSort,
+} from './types';
 import {
   isBackendEncryptedMessage, isFetchPostResponse, isPostIndexResponse,
   isPostResponse,

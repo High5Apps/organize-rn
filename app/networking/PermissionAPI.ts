@@ -1,13 +1,10 @@
-import {
-  OfficeCategory, Permission, PermissionScope, camelToSnake, fromJson, getOffice,
-  snakeToCamel,
-} from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { camelToSnake, fromJson, snakeToCamel } from './Json';
 import { myPermissionsURI, permissionURI } from './Routes';
 import {
-  Authorization, MyPermissionsResponse, isMyPermissionsResponse,
-  isPermissionResponse,
+  Authorization, MyPermissionsResponse, OfficeCategory, Permission,
+  PermissionScope, isMyPermissionsResponse, isPermissionResponse,
 } from './types';
 
 type Props = {
@@ -41,8 +38,7 @@ export async function fetchPermission({
     throw new Error('Failed to parse Permission from response');
   }
 
-  const { permission: { offices: officeCategories } } = json;
-  const offices = officeCategories.map((category) => getOffice(category));
+  const { permission: { offices } } = json;
 
   return { permission: { data: { offices }, scope } };
 }

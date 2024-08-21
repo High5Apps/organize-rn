@@ -4,7 +4,9 @@ import {
   TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { User, getCircleColors, getTenure } from '../../../../model';
+import {
+  User, getCircleColors, getOffice, getTenure,
+} from '../../../../model';
 import useTheme from '../../../../Theme';
 
 const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
@@ -120,7 +122,7 @@ export default function UserRow({
   } = item;
   const tenure = getTenure(joinedAt, { blockedAt, leftOrgAt });
 
-  const joinedOffices = offices.map((o) => o.title).join(', ');
+  const joinedOffices = offices.map((o) => getOffice(o).title).join(', ');
   const title = [
     pseudonym,
     joinedOffices,

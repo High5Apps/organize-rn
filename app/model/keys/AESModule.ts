@@ -1,12 +1,7 @@
 import { NativeModules } from 'react-native';
+import { AESEncryptedData } from '../../networking';
 
 const { AESModule } = NativeModules;
-
-export type AESEncryptedData = {
-  base64EncryptedMessage: string;
-  base64InitializationVector: string;
-  base64IntegrityCheck: string;
-};
 
 export type AESMessage = {
   message: string;

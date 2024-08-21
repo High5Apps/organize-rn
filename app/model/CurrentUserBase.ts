@@ -1,6 +1,7 @@
+import { E2EEncryptor } from '../networking';
 import { JWT } from './formatters';
 import { Keys } from './keys';
-import { E2EEncryptor, Scope, CurrentUserBaseData } from './types';
+import { Scope, CurrentUserBaseData } from './types';
 
 export const defaultAuthTokenTTLSeconds = 60;
 

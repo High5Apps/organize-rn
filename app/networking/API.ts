@@ -1,8 +1,8 @@
-import {
-  E2EMultiDecryptor, E2EEncryptor, E2EDecryptor, AESEncryptedData,
-  E2EMultiEncryptor, toJson,
-} from '../model';
-import type { BackendEncryptedMessage } from './types';
+import { toJson } from './Json';
+import type {
+  AESEncryptedData, BackendEncryptedMessage, E2EDecryptor, E2EEncryptor,
+  E2EMultiDecryptor, E2EMultiEncryptor,
+} from './types';
 
 export enum Status {
   Success = 200,

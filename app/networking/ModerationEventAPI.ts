@@ -1,12 +1,10 @@
-import {
-  ModeratableType, ModerationEvent, ModerationEventAction, PaginationData,
-  fromJson,
-} from '../model';
 import { get, post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { moderationEventsURI } from './Routes';
 import {
   Authorization, isCreateModelResponse, isModerationEventsIndexResponse,
+  ModeratableType, ModerationEvent, ModerationEventAction, PaginationData,
 } from './types';
 
 type Props = {

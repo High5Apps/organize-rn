@@ -1,8 +1,8 @@
-import { FlaggableType, fromJson, isDefined } from '../model';
 import { post } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { flagsURI } from './Routes';
-import { Authorization } from './types';
+import { Authorization, FlaggableType, isDefined } from './types';
 
 type Props = {
   ballotId?: string;

@@ -1,4 +1,5 @@
-import AESModule, { AESEncryptedData } from './AESModule';
+import { AESEncryptedData } from '../../networking';
+import AESModule from './AESModule';
 
 async function decrypt(
   wrappedKey: string,

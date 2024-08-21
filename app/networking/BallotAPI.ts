@@ -1,15 +1,13 @@
 import {
-  BallotPreview, BallotCategory, BallotSort, E2EEncryptor, E2EMultiDecryptor,
-  E2EMultiEncryptor, PaginationData, fromJson, Ballot, E2EDecryptor,
-  OfficeCategory,
-} from '../model';
-import {
   decrypt, decryptMany, encrypt, encryptMany, get, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { ballotURI, ballotsURI } from './Routes';
 import {
-  Authorization, isBallotIndexResponse, isBallotResponse, isCreateModelResponse,
+  Authorization, Ballot, BallotCategory, BallotPreview, E2EDecryptor,
+  E2EEncryptor, E2EMultiDecryptor, E2EMultiEncryptor, isBallotIndexResponse,
+  isBallotResponse, isCreateModelResponse, OfficeCategory, PaginationData,
 } from './types';
 
 type Props = {
@@ -76,6 +74,8 @@ export async function createBallot({
 
   return json;
 }
+
+type BallotSort = 'active' | 'inactive';
 
 type IndexProps = {
   activeAt?: Date;

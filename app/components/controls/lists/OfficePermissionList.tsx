@@ -90,8 +90,7 @@ export default function OfficePermissionList({ scope }: Props) {
 
     const { selected } = getSelectionInfo(officeCategory);
 
-    const { offices } = currentUser;
-    const officeCategories = offices.map((office) => office.type);
+    const { offices: officeCategories } = currentUser;
 
     if (selected && officeCategories.includes(officeCategory)) {
       const scopeAction = toAction(scope);

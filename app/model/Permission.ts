@@ -3,7 +3,6 @@ import isEqual from 'react-fast-compare';
 import { OfficeCategory, Permission, PermissionScope } from './types';
 import { useCurrentUser } from './context';
 import { createPermission, fetchPermission } from '../networking';
-import { getOffice } from './Offices';
 
 type Props = {
   scope: PermissionScope;
@@ -43,9 +42,7 @@ export default function usePermission({ scope }: Props) {
       }
 
       const updatedPermission = { ...permission };
-      updatedPermission.data = {
-        offices: offices.map((o) => getOffice(o)),
-      };
+      updatedPermission.data = { offices };
       setPermission(updatedPermission);
     },
     [currentUser, permission],

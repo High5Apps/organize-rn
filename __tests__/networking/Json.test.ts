@@ -1,6 +1,6 @@
 import {
   camelToSnake, fromJson, snakeToCamel, toJson,
-} from '../../../app/model/formatters/Json';
+} from '../../app/networking/Json';
 
 describe('camelToSnake', () => {
   it('converts single words', () => {

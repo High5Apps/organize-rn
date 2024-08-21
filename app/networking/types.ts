@@ -1,10 +1,6 @@
-import type {
-  BallotCategory, FlaggableType, ModerationEvent, ModerationEventAction,
-  MyPermission, Nomination, NominationUser, OfficeCategory, Org, OrgGraph,
-  PaginationData, PostCategory, User, VoteState,
-} from '../model';
-
-export type UnpublishedOrg = Omit<Org, 'id'>;
+export function isDefined<T>(argument: T | undefined): argument is T {
+  return argument !== undefined;
+}
 
 export function isDate(object: unknown): object is Date {
   const date = (object as Date);
@@ -15,8 +11,57 @@ function isBoolean(object: unknown): object is boolean {
   return [true, false].includes(object as boolean);
 }
 
-export type UserResponse = Omit<User, 'offices'> & {
+type EncryptedPrefix = 'encrypted';
+
+type DecryptableKey<S extends string> = (
+  S extends `${EncryptedPrefix}${string}` ? S : never
+);
+
+type DecryptKey<S extends string> = (
+  S extends `${EncryptedPrefix}${infer T}` ? Uncapitalize<T> : S
+);
+
+export type Decrypt<T> = T extends ReadonlyArray<any> ? T : (
+  T extends Array<infer Item> ? Decrypt<Item>[] : (
+    T extends object ? {
+      [K in keyof T as DecryptKey<K & string>]: (
+        K extends DecryptableKey<K & string> ? (
+          T[K] extends BackendEncryptedMessage ? string : (
+            T[K] extends (BackendEncryptedMessage | undefined)
+              ? (string | undefined) : never
+          )
+        ) : (T[K] extends Date ? T[K] : (
+          T[K] extends (Date | undefined) ? T[K] : (
+            T[K] extends (Date | null) ? T[K] : Decrypt<T[K]>)))
+      )
+    } : T
+  )
+);
+
+type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+export type Optional<T, K extends keyof T> = Omit<T, K> & Pick<Partial<T>, K>;
+
+const OFFICE_CATEGORIES = [
+  'founder',
+  'president',
+  'vice_president',
+  'secretary',
+  'treasurer',
+  'steward',
+  'trustee',
+] as const;
+export { OFFICE_CATEGORIES };
+export type OfficeCategory = typeof OFFICE_CATEGORIES[number];
+
+export type UserResponse = {
+  blockedAt?: Date;
+  connectionCount: number;
+  id: string;
+  joinedAt: Date;
+  leftOrgAt?: Date;
   offices: OfficeCategory[];
+  pseudonym: string;
+  recruitCount: number;
 };
 
 export function isUserResponse(object: unknown): object is UserResponse {
@@ -31,6 +76,11 @@ export function isUserResponse(object: unknown): object is UserResponse {
     && user.offices.every((category) => category.length > 0)
     && user.recruitCount >= 0;
 }
+
+export type User = Decrypt<UserResponse>;
+
+export type UserFilter = 'officer';
+export type UserSort = 'low_service' | 'office' | 'service';
 
 export type Authorization = {
   jwt: string;
@@ -75,6 +125,13 @@ export function isPreviewConnectionResponse(object: unknown): object is PreviewC
     && (response.user?.pseudonym.length > 0);
 }
 
+export type OrgGraph = {
+  blockedUserIds: string[];
+  connections: [string, string][];
+  leftOrgUserIds: string[];
+  userIds: string[];
+};
+
 export function isOrgGraph(object: unknown): object is OrgGraph {
   const response = (object as OrgGraph);
   return Array.isArray(response?.connections)
@@ -103,6 +160,21 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
     && isBackendEncryptedMessage(response.encryptedMemberDefinition);
 }
 
+export type Org = Decrypt<Omit<OrgResponse, 'graph'>>;
+
+export function isOrg(object: unknown): object is Org {
+  const org = (object as Org);
+  return (
+    org?.id?.length > 0
+      && org?.name?.length > 0
+      && org?.memberDefinition?.length > 0
+  );
+}
+
+export type UnpublishedOrg = Omit<Org, 'id'>;
+
+export type PostSort = 'new' | 'old' | 'top' | 'hot';
+
 type PostResponse = {
   id: string;
   createdAt: Date;
@@ -113,6 +185,12 @@ export function isPostResponse(object: unknown): object is PostResponse {
   return response?.id?.length > 0
     && isDate(response.createdAt);
 }
+
+const POST_CATEGORIES = ['general', 'grievances', 'demands'] as const;
+export { POST_CATEGORIES };
+export type PostCategory = typeof POST_CATEGORIES[number];
+
+export type VoteState = -1 | 0 | 1;
 
 export type PostIndexPost = {
   category: PostCategory;
@@ -139,6 +217,13 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.score !== undefined
     && post.myVote !== undefined;
 }
+
+export type Post = Optional<Decrypt<PostIndexPost>, 'candidateId'>;
+
+export type PaginationData = {
+  currentPage: number;
+  nextPage: number | null;
+};
 
 function isPaginationData(object: unknown): object is PaginationData {
   const response = (object as PaginationData);
@@ -207,6 +292,8 @@ function isBackendComment(object: unknown): object is BackendComment {
     && comment.replies.every(isBackendComment);
 }
 
+export type Comment = Decrypt<Omit<BackendComment, 'replies'>>;
+
 type CommentIndexResponse = {
   comments: BackendComment[];
 };
@@ -234,6 +321,8 @@ export function isCommentThreadResponse(object: unknown): object is CommentThrea
   const response = (object as CommentThreadResponse);
   return response?.thread && isCommentThreadComment(response.thread);
 }
+
+export type BallotCategory = 'yes_no' | 'multiple_choice' | 'election';
 
 export type BallotIndexBallot = {
   category: BallotCategory,
@@ -278,7 +367,9 @@ export function isBallotIndexResponse(object: unknown): object is BallotIndexRes
     && (!response?.meta || isPaginationData(response?.meta));
 }
 
-export type BallotCandidate = {
+export type BallotPreview = Decrypt<BallotIndexBallot>;
+
+type BallotCandidate = {
   encryptedTitle: BackendEncryptedMessage;
   id: string;
   postId?: never;
@@ -308,19 +399,37 @@ function isBallotCandidate(object: unknown): object is BallotCandidate {
     );
 }
 
+export type Candidate = Require<Decrypt<BallotCandidate>, 'title'>;
+
+export type NominationUser = {
+  id: string;
+  pseudonym: string;
+};
+
 function isNominationUser(object: unknown): object is NominationUser {
   const user = (object as NominationUser);
   return user && user.id.length > 0 && user.pseudonym.length > 0;
 }
 
-function isBallotNomination(object: unknown): object is Nomination {
-  const nomination = (object as Nomination);
+type BallotNomination = {
+  accepted: boolean | null;
+  id: string;
+  nominator: NominationUser;
+  nominee: NominationUser;
+};
+
+function isBallotNomination(object: unknown): object is BallotNomination {
+  const nomination = (object as BallotNomination);
   return nomination
     && [null, false, true].includes(nomination.accepted)
     && nomination.id?.length > 0
     && isNominationUser(nomination.nominator)
     && isNominationUser(nomination.nominee);
 }
+
+export type Nomination = Decrypt<BallotNomination> & {
+  candidate?: Candidate;
+};
 
 type BallotResult = {
   candidateId: string;
@@ -358,7 +467,7 @@ type BallotResponse = {
   });
   candidates: BallotCandidate[];
   myVote: string[];
-  nominations?: Nomination[];
+  nominations?: BallotNomination[];
   refreshedAt: Date;
   results?: BallotResult[];
   terms?: BallotTerm[];
@@ -387,6 +496,29 @@ export function isBallotResponse(object: unknown): object is BallotResponse {
     ));
 }
 
+export type Result = {
+  acceptedOffice?: boolean;
+  candidate: Candidate;
+  isWinner: boolean;
+  rank: number;
+  voteCount: number;
+};
+
+export type Ballot = BallotPreview & {
+  candidates: Candidate[];
+  maxCandidateIdsPerVote: number;
+  myVote: string[];
+  nominations?: Nomination[];
+  refreshedAt?: Date;
+  results?: Result[];
+} & ({
+  category: Exclude<BallotCategory, 'election'>;
+} | {
+  category: 'election';
+  termEndsAt: Date;
+  termStartsAt: Date;
+});
+
 export type UpdateNominationResponse = {
   candidate: {
     id: string | null;
@@ -405,25 +537,25 @@ export function isUpdateNominationResponse(object: unknown): object is UpdateNom
     && response.nomination.id?.length > 0;
 }
 
-type OfficeIndexOffice = {
+export type OfficeAvailability = {
   open: boolean;
   type: OfficeCategory;
 };
 
-function isOfficeIndexOffice(object: unknown): object is OfficeIndexOffice {
-  const response = (object as OfficeIndexOffice);
+function isOfficeAvailability(object: unknown): object is OfficeAvailability {
+  const response = (object as OfficeAvailability);
   return response?.open !== undefined && response.type.length > 0;
 }
 
 type OfficeIndexResponse = {
-  offices: OfficeIndexOffice[];
+  offices: OfficeAvailability[];
 };
 
 export function isOfficeIndexResponse(object: unknown): object is OfficeIndexResponse {
   const response = (object as OfficeIndexResponse);
   return response?.offices
     && Array.isArray(response.offices)
-    && response.offices.every(isOfficeIndexOffice);
+    && response.offices.every(isOfficeAvailability);
 }
 
 type UserIndexResponse = {
@@ -451,6 +583,23 @@ export function isPermissionResponse(object: unknown): object is PermissionRespo
     && response.permission.offices.every((office) => office?.length > 0);
 }
 
+export type PermissionScope = 'blockMembers' | 'createElections' | 'editOrg'
+| 'editPermissions' | 'moderate';
+
+type PermissionData = {
+  offices: OfficeCategory[];
+};
+
+export type Permission = {
+  scope: PermissionScope;
+  data: PermissionData;
+};
+
+export type MyPermission = {
+  permitted: boolean;
+  scope: PermissionScope;
+};
+
 export type MyPermissionsResponse = {
   myPermissions: MyPermission[];
 };
@@ -465,6 +614,8 @@ export function isMyPermissionsResponse(object: unknown): object is MyPermission
   return Array.isArray(response?.myPermissions)
     && response.myPermissions.every(isMyPermission);
 }
+
+export type ModerationEventAction = 'allow' | 'block' | 'undo_allow' | 'undo_block';
 
 type FlagReportsModerationEventResponse = {
   action: ModerationEventAction;
@@ -486,6 +637,8 @@ function isFlagReportsModerationEventResponse(
     && response.moderator?.id?.length > 0
     && response.moderator.pseudonym?.length > 0;
 }
+
+export type FlaggableType = 'Ballot' | 'Comment' | 'Post';
 
 export type Flaggable = {
   category: FlaggableType;
@@ -517,6 +670,12 @@ export function isFlagReportResponse(object: unknown): object is FlagReportRespo
     );
 }
 
+export type FlagReport = Decrypt<Omit<FlagReportResponse, 'moderationEvent'>> & {
+  id: string;
+} & {
+  moderationEvent?: ModerationEvent;
+};
+
 type FlagReportsIndexResponse = {
   flagReports: FlagReportResponse[];
   meta?: PaginationData;
@@ -529,6 +688,25 @@ export function isFlagReportsIndexResponse(object: unknown): object is FlagRepor
     && response.flagReports.every(isFlagReportResponse)
     && isPaginationData(response?.meta);
 }
+
+export type ModeratableType = FlaggableType | 'User';
+export type ModerationEvent = {
+  action: ModerationEventAction;
+  createdAt: Date;
+  id?: string;
+  moderatable: {
+    category: ModeratableType;
+    creator: {
+      id: string;
+      pseudonym: string;
+    },
+    id: string;
+  },
+  moderator: {
+    id: string;
+    pseudonym: string;
+  };
+};
 
 function isModerationEvent(object: unknown): object is ModerationEvent {
   const response = (object as ModerationEvent);
@@ -558,3 +736,17 @@ export function isModerationEventsIndexResponse(
     && response.moderationEvents.every(isModerationEvent)
     && isPaginationData(response?.meta);
 }
+
+export type AESEncryptedData = {
+  base64EncryptedMessage: string;
+  base64InitializationVector: string;
+  base64IntegrityCheck: string;
+};
+export type E2EEncryptor = (message: string) => Promise<AESEncryptedData>;
+export type E2EMultiEncryptor =
+  (messages: string[]) => Promise<AESEncryptedData[]>;
+export type E2EDecryptor = (encryptedMessage: AESEncryptedData) => Promise<string>;
+export type E2EMultiDecryptor =
+  (encryptedMessages: (AESEncryptedData | null)[]) => Promise<(string | null)[]>;
+export type E2EDecryptorWithExposedKey =
+  (props: AESEncryptedData & { base64Key: string }) => Promise<string>;

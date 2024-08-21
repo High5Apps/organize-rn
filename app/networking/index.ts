@@ -4,6 +4,7 @@ export { createConnection, previewConnection } from './ConnectionAPI';
 export { default as ErrorResponse } from './ErrorResponse';
 export { createFlag } from './FlagAPI';
 export { fetchFlagReports } from './FlagReportAPI';
+export { fromJson, toJson } from './Json';
 export {
   createModerationEvent, fetchModerationEvents,
 } from './ModerationEventAPI';

@@ -1,14 +1,12 @@
-import type {
-  E2EDecryptor, E2EEncryptor, Org, OrgGraph,
-} from '../model';
-import { fromJson } from '../model';
 import {
   decrypt, encrypt, get, patch, post,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { orgURI, orgsURI } from './Routes';
 import {
-  Authorization, isCreateModelResponse, isOrgResponse, UnpublishedOrg,
+  Authorization, E2EDecryptor, E2EEncryptor, isCreateModelResponse,
+  isOrgResponse, Org, OrgGraph, UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {

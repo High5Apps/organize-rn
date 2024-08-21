@@ -2,7 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import AESKeychain from './AESKeychain';
 import ECCKeychain from './ECCKeychain';
 import RSAKeychain from './RSAKeychain';
-import { AESEncryptedData, AESMessage, AESWrappedKey } from './AESModule';
+import { AESMessage, AESWrappedKey } from './AESModule';
+import { AESEncryptedData } from '../../networking';
 
 export default function Keys() {
   return {

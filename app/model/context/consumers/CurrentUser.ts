@@ -6,10 +6,10 @@ import {
   storeCurrentUserData, useCurrentUserDataContext, useUserContext,
 } from '../providers';
 import { Keys } from '../../keys';
+import { CurrentUserData, User } from '../../types';
 import {
-  CurrentUserData, E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, User,
-} from '../../types';
-import { getUser, leaveOrg } from '../../../networking';
+  E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, getUser, leaveOrg,
+} from '../../../networking';
 
 export function CurrentUser(
   currentUserData: CurrentUserData,

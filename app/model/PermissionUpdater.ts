@@ -16,7 +16,7 @@ export default function usePermissionUpdater({
   onSyncSelectionError, permission, updatePermission,
 }: Props) {
   const initialSelection = useMemo(
-    () => permission?.data.offices.map((o) => o.type),
+    () => permission?.data.offices,
     [permission],
   );
 

@@ -1,7 +1,8 @@
 // To hit a local backend development server over USB, npm run tether:android
 // It is not currently easy to hit a local dev server over USB on iOS
 
-import { PermissionScope, camelToSnake } from '../model';
+import { camelToSnake } from './Json';
+import { PermissionScope } from './types';
 
 const origin = __DEV__ ? 'http://localhost:8080' : 'https://getorganize.app';
 

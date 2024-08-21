@@ -1,10 +1,11 @@
-import {
-  E2EMultiDecryptor, FlagReport, PaginationData, fromJson,
-} from '../model';
 import { decryptMany, get } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
+import { fromJson } from './Json';
 import { flagReportsURI } from './Routes';
-import { Authorization, isFlagReportsIndexResponse } from './types';
+import {
+  Authorization, E2EMultiDecryptor, FlagReport, isFlagReportsIndexResponse,
+  PaginationData,
+} from './types';
 
 type IndexProps = Authorization & {
   createdAtOrBefore: Date;
