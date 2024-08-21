@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Keyboard, ScrollView, StyleSheet, TextInput, View,
 } from 'react-native';
-import { useCachedValue, usePosts, useCurrentUser } from '../../model';
+import { useCachedValue, usePost } from '../../model';
 import type { Post, PostCategory } from '../../model';
 import useTheme from '../../Theme';
-import { createPost } from '../../networking';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
   PrimaryButton, TextInputRow, useRequestProgress,
@@ -78,12 +77,9 @@ export default function NewPostScreenBase({
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
-  const { cachePost } = usePosts();
+  const { createPost } = usePost();
 
   const multilineTextInputRef = useRef<TextInput | null>(null);
-
-  const { currentUser } = useCurrentUser();
-  if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const { styles } = useStyles();
 
@@ -109,39 +105,14 @@ export default function NewPostScreenBase({
     }
 
     try {
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { e2eEncrypt } = currentUser;
-
-      const { errorMessage, createdAt, id } = await createPost({
+      const post = await createPost({
         body: maybeStrippedBody,
         candidateId,
         category: postCategory,
-        e2eEncrypt,
-        jwt,
         title: strippedTitle,
       });
-
-      if (errorMessage !== undefined) {
-        setResult('error', { message: errorMessage });
-        return;
-      }
-
       resetForm();
       setResult('success', { message: 'Successfully created post' });
-
-      const post: Post = {
-        body: maybeStrippedBody,
-        candidateId,
-        createdAt,
-        category: postCategory,
-        id,
-        myVote: 1,
-        pseudonym: currentUser.pseudonym,
-        score: 1,
-        title: strippedTitle,
-        userId: currentUser.id,
-      };
-      cachePost(post);
       onPostCreated?.(post);
     } catch (error) {
       setResult('error', { error });
