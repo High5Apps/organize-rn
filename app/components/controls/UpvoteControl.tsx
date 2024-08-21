@@ -5,9 +5,8 @@ import {
 import useTheme from '../../Theme';
 import { UpvoteButton } from './buttons';
 import {
-  VoteState, getErrorMessage, truncateText, useCurrentUser,
+  VoteState, getErrorMessage, truncateText, useUpvote,
 } from '../../model';
-import { createOrUpdateUpvote } from '../../networking';
 
 const ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH = 30;
 const ERROR_ALERT_TITLE = 'Upvote or Downvote failed. Please try again.';
@@ -50,14 +49,11 @@ export default function UpvoteControl({
 }: Props) {
   const { styles } = useStyles();
 
-  const [
-    waitingForVoteSate, setWaitingForVoteSate,
-  ] = useState<VoteState | null>(null);
   const [waitingForUp, setWaitingForUp] = useState<boolean>(false);
   const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
   const waitingForResponse = waitingForUp || waitingForDown;
 
-  const { currentUser } = useCurrentUser();
+  const { createUpvote, waitingForVoteSate } = useUpvote({ commentId, postId });
 
   const showErrorAlert = (errorMessage: string) => {
     const upvotableType = postId ? 'Post' : 'Comment';
@@ -67,37 +63,6 @@ export default function UpvoteControl({
     });
     const message = `${upvotableType}: ${preview}\n\n${errorMessage}`;
     Alert.alert(ERROR_ALERT_TITLE, message);
-  };
-
-  const onVote = async ({
-    previousVote, vote,
-  }: { previousVote: VoteState, vote: VoteState }) => {
-    if (!currentUser) { return; }
-
-    setWaitingForVoteSate(vote);
-
-    const jwt = await currentUser.createAuthToken({ scope: '*' });
-
-    let errorMessage;
-
-    try {
-      ({ errorMessage } = await createOrUpdateUpvote({
-        commentId, jwt, postId, value: vote,
-      }));
-    } catch (error) {
-      errorMessage = getErrorMessage(error);
-    }
-
-    setWaitingForVoteSate(null);
-
-    if (errorMessage) {
-      showErrorAlert(errorMessage);
-      return;
-    }
-
-    const voteDelta = (vote - previousVote);
-    const updatedScore = score + voteDelta;
-    onVoteChanged?.(vote, updatedScore);
   };
 
   const onPress = async ({ isUpvote }: { isUpvote: boolean }) => {
@@ -113,7 +78,15 @@ export default function UpvoteControl({
       setWaitingForOther(true);
     }
 
-    await onVote({ previousVote, vote });
+    try {
+      await createUpvote({ vote });
+      const voteDelta = (vote - previousVote);
+      const updatedScore = score + voteDelta;
+      onVoteChanged?.(vote, updatedScore);
+    } catch (error) {
+      const errorMessage = getErrorMessage(error);
+      showErrorAlert(errorMessage);
+    }
 
     setWaitingForMe(false);
     setWaitingForOther(false);

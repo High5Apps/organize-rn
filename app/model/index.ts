@@ -16,6 +16,7 @@ export { default as permissionItems, toAction } from './PermissionItems';
 export { default as usePermissionUpdater } from './PermissionUpdater';
 export { default as usePrependedModels } from './PrependedModels';
 export { default as useSettings } from './Settings';
+export { default as useUpvote } from './Upvote';
 export { default as useVisGraphData } from './VisGraphData';
 export { default as useVoteUpdater } from './VoteUpdater';
 export * from './context';
