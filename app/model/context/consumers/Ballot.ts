@@ -61,7 +61,7 @@ export default function useBallot(ballotId: string) {
     return nomination;
   }, [ballot, currentUser]);
 
-  const updateBallot = useCallback(async () => {
+  const refreshBallot = useCallback(async () => {
     if (!currentUser) { return; }
     const { createAuthToken, e2eDecrypt, e2eDecryptMany } = currentUser;
 
@@ -85,6 +85,6 @@ export default function useBallot(ballotId: string) {
   }, [ballotId, currentUser]);
 
   return {
-    ballot, cacheBallot, createNomination, getCachedBallot, updateBallot,
+    ballot, cacheBallot, createNomination, getCachedBallot, refreshBallot,
   };
 }

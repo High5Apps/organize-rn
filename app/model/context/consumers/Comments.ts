@@ -23,7 +23,7 @@ export default function useComments(postId?: string) {
     setReady(false);
   }, [postId]);
 
-  async function updateComments() {
+  async function refreshComments() {
     if (!currentUser || !postId) {
       return { isEmpty: true };
     }
@@ -49,6 +49,6 @@ export default function useComments(postId?: string) {
   }
 
   return {
-    cacheComment, comments, getCachedComment, ready, updateComments,
+    cacheComment, comments, getCachedComment, ready, refreshComments,
   };
 }

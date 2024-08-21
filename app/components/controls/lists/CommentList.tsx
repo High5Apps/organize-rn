@@ -126,7 +126,7 @@ export default function CommentList({
   const listRef = useRef<FlatList<Comment>>(null);
 
   const { styles } = useStyles();
-  const { cacheComment, comments, updateComments } = useComments(postId);
+  const { cacheComment, comments, refreshComments } = useComments(postId);
   const {
     allComments: data, resetInsertedComments,
   } = useInsertedComments(comments, maybeInsertedCommentIds);
@@ -143,7 +143,7 @@ export default function CommentList({
     setResult('none');
 
     try {
-      const { isEmpty } = await updateComments();
+      const { isEmpty } = await refreshComments();
       resetInsertedComments();
       if (isEmpty) {
         setResult('info', {

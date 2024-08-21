@@ -24,7 +24,7 @@ type Props = {
 export default function useBallotProgress({
   ballotId, shouldFetchOnMount,
 }: Props) {
-  const { ballot, cacheBallot, updateBallot } = useBallot(ballotId);
+  const { ballot, cacheBallot, refreshBallot } = useBallot(ballotId);
 
   const {
     RequestProgress: UnstyledRequestProgress, setLoading, setResult,
@@ -36,7 +36,7 @@ export default function useBallotProgress({
       setLoading(true);
 
       try {
-        await updateBallot();
+        await refreshBallot();
       } catch (error) {
         const errorMessage = getErrorMessage(error);
         setResult('error', {

@@ -29,7 +29,7 @@ type Props = {
 export default function NominationList({
   AnnounceButton, ballotId, contentContainerStyle, DiscussButton,
 }: Props) {
-  const { ballot, cacheBallot, updateBallot } = useBallot(ballotId);
+  const { ballot, cacheBallot, refreshBallot } = useBallot(ballotId);
   const {
     acceptedNominations, acceptOrDeclineNomination, declinedNominations,
     pendingNominations,
@@ -72,7 +72,7 @@ export default function NominationList({
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: async () => {
-      await updateBallot();
+      await refreshBallot();
       refreshTimeRemaining();
     },
     refreshOnMount: true,
