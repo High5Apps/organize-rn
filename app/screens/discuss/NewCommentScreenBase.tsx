@@ -5,10 +5,7 @@ import {
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import {
-  Comment, MAX_COMMENT_LENGTH, useCachedValue, useComments, useCurrentUser,
-} from '../../model';
-import { createComment } from '../../networking';
+import { MAX_COMMENT_LENGTH, useCachedValue, useComment } from '../../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -60,10 +57,7 @@ export default function NewCommentScreenBase({
   const {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
-  const { cacheComment, getCachedComment } = useComments();
-
-  const { currentUser } = useCurrentUser();
-  if (!currentUser) { throw new Error('Expected currentUser'); }
+  const { createComment } = useComment();
 
   const onPublishPressed = async () => {
     Keyboard.dismiss();
@@ -75,38 +69,13 @@ export default function NewCommentScreenBase({
     setBody(strippedBody);
 
     try {
-      const jwt = await currentUser.createAuthToken({ scope: '*' });
-      const { e2eEncrypt } = currentUser;
-      const { commentId: newCommentId, errorMessage } = await createComment({
-        body: strippedBody, commentId, e2eEncrypt, jwt, postId,
+      const comment = await createComment({
+        body: strippedBody, commentId, postId,
       });
-
-      if (errorMessage !== undefined) {
-        setResult('error', { message: errorMessage });
-        return;
-      }
-
       setBody(undefined);
       const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
       setResult('success', { message });
-
-      const parentComment = getCachedComment(commentId);
-      const comment: Comment = {
-        blockedAt: null,
-        body: strippedBody,
-        createdAt: new Date(),
-        depth: parentComment ? (parentComment.depth + 1) : 0,
-        id: newCommentId,
-        myVote: 1,
-        postId,
-        pseudonym: currentUser.pseudonym,
-        score: 1,
-        userId: currentUser.id,
-      };
-
-      cacheComment(comment);
-
-      onCommentCreated?.(newCommentId);
+      onCommentCreated?.(comment.id);
     } catch (error) {
       setResult('error', { error });
     }

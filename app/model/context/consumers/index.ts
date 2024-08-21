@@ -5,6 +5,7 @@ export {
   votingTimeRemainingExpiredFormatter,
 } from './BallotPreviews';
 export { default as useCachedValue } from './CachedValue';
+export { default as useComment } from './Comment';
 export {
   default as useComments, BLOCKED_COMMENT_BODY, MAX_COMMENT_DEPTH,
   MAX_COMMENT_LENGTH,
