@@ -6,11 +6,11 @@ import {
   useRequestProgress,
 } from '../../components';
 import {
-  QRCodeValue, createCurrentUser, getErrorMessage, useCurrentUser,
+  ConnectionPreview, QRCodeValue, createCurrentUser, getErrorMessage,
+  useCurrentUser,
 } from '../../model';
 import type { JoinOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
-import { ConnectionPreview } from '../../networking';
 
 const useStyles = () => {
   const { spacing } = useTheme();
