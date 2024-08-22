@@ -5,7 +5,7 @@ import {
   SecondaryButton, useRequestProgress,
 } from '../../components';
 import { NewOrgSteps, createCurrentUser, useCurrentUser } from '../../model';
-import type { OrgReviewScreenProps } from '../../navigation';
+import type { OrgReviewParams, OrgReviewScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -65,9 +65,11 @@ const useStyles = () => {
 export default function OrgReviewScreen({
   navigation, route,
 }: OrgReviewScreenProps) {
-  const { definition: untrimmedDefinition, name: untrimmedName } = route.params;
-  const definition = untrimmedDefinition.trim();
-  const name = untrimmedName.trim();
+  const untrimmedParams: OrgReviewParams = route.params;
+  const unpublishedOrg = Object.fromEntries(
+    Object.entries(untrimmedParams)
+      .map(([k, v]) => ([k, typeof v === 'string' ? v.trim() : v])),
+  ) as OrgReviewParams;
 
   const { styles } = useStyles();
   const { setCurrentUser } = useCurrentUser();
@@ -78,11 +80,6 @@ export default function OrgReviewScreen({
   const onCreatePressed = async () => {
     setLoading(true);
     setResult('none');
-
-    const unpublishedOrg = {
-      name,
-      memberDefinition: definition,
-    };
 
     createCurrentUser({ unpublishedOrg })
       .then(async (userOrErrorMessage) => {
@@ -101,14 +98,12 @@ export default function OrgReviewScreen({
     <ScreenBackground>
       <Text style={styles.title}>Review Your Org</Text>
       <LockingScrollView style={styles.scrollView}>
-        <View style={styles.paramContainer}>
-          <Text style={styles.label}>{`${NewOrgSteps[0].header}:`}</Text>
-          <Text style={styles.value}>{name}</Text>
-        </View>
-        <View style={styles.paramContainer}>
-          <Text style={styles.label}>{`${NewOrgSteps[1].header}:`}</Text>
-          <Text style={styles.value}>{definition}</Text>
-        </View>
+        {NewOrgSteps.map(({ header, param }) => (
+          <View key={param} style={styles.paramContainer}>
+            <Text style={styles.label}>{`${header}:`}</Text>
+            <Text style={styles.value}>{unpublishedOrg[param]}</Text>
+          </View>
+        ))}
       </LockingScrollView>
       <>
         <RequestProgress />

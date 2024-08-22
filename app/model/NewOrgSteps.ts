@@ -43,7 +43,7 @@ const NewOrgSteps: NewOrgStep[] = [
     maxLength: 75,
     message,
     messageMultiline: true,
-    param: 'definition',
+    param: 'memberDefinition',
     paramType: 'string',
     placeholder: () => 'An employee of *employer* at *location*',
     title: 'Define Who Can Join',
