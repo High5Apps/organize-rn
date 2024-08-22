@@ -10,9 +10,9 @@ export type {
 };
 export type {
   Ballot, BallotPreview, Candidate, Comment, ConnectionPreview, FlagReport,
-  ModeratableType, ModerationEvent, ModerationEventAction, MyPermission,
-  OfficeAvailability, Org, OrgGraph, Permission, PermissionScope, Post,
-  PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
+  Moderatable, ModeratableType, ModerationEvent, ModerationEventAction,
+  MyPermission, OfficeAvailability, Org, OrgGraph, Permission, PermissionScope,
+  Post, PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
 } from '../networking';
 export { OFFICE_CATEGORIES, POST_CATEGORIES, isDefined } from '../networking';
 

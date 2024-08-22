@@ -14,6 +14,7 @@ export {
 export { default as useCommentThread } from './CommentThread';
 export { default as useCurrentUser, type CurrentUserType } from './CurrentUser';
 export { default as useFlagReports } from './FlagReports';
+export { default as useModerationEvent } from './ModerationEvent';
 export {
   default as useModerationEvents, getModeratableIcon,
 } from './ModerationEvents';

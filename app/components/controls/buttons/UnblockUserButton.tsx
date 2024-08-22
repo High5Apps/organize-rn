@@ -2,9 +2,8 @@ import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import SecondaryButton from './SecondaryButton';
 import {
-  getErrorMessage, ModerationEvent, useCurrentUser,
+  getErrorMessage, ModerationEvent, useModerationEvent,
 } from '../../../model';
-import { createModerationEvent } from '../../../networking';
 import { useRequestProgress } from '../../views';
 import { ConfirmationAlert } from '../modals';
 
@@ -20,44 +19,30 @@ export default function UnblockUserButton({
     removeWhenInactive: true,
   });
 
-  const { currentUser } = useCurrentUser();
+  const { createModerationEvent } = useModerationEvent();
 
   const onPress = useCallback(async () => {
-    const {
-      id: moderatableId, pseudonym,
-    } = moderationEvent.moderatable.creator;
+    const { moderatable } = moderationEvent;
+
     ConfirmationAlert({
       destructiveAction: 'Unblock',
-      destructiveActionInTitle: `unblock ${pseudonym}`,
+      destructiveActionInTitle: `unblock ${moderatable.creator.pseudonym}`,
       onConfirm: async () => {
-        if (!currentUser || !moderationEvent.id) { return; }
-
         setLoading(true);
 
-        const jwt = await currentUser.createAuthToken({ scope: '*' });
-        let errorMessage: string | undefined;
         try {
-          ({ errorMessage } = await createModerationEvent({
-            action: 'undo_block',
-            jwt,
-            moderatableId,
-            moderatableType: 'User',
-          }));
+          await createModerationEvent({ action: 'undo_block', moderatable });
+          onUserUnblocked();
         } catch (error) {
-          errorMessage = getErrorMessage(error);
+          const errorMessage = getErrorMessage(error);
+          Alert.alert('Failed to unblock. Please try again', errorMessage);
         }
 
         setLoading(false);
-
-        if (errorMessage) {
-          Alert.alert('Failed to unblock. Please try again', errorMessage);
-        } else {
-          onUserUnblocked();
-        }
       },
       subtitle: 'Unblocking will also remove the row from this list',
     }).show();
-  }, [currentUser, moderationEvent, onUserUnblocked]);
+  }, [moderationEvent, onUserUnblocked]);
 
   return (
     <>

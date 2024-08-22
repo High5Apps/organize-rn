@@ -690,18 +690,19 @@ export function isFlagReportsIndexResponse(object: unknown): object is FlagRepor
 }
 
 export type ModeratableType = FlaggableType | 'User';
+export type Moderatable = {
+  category: ModeratableType;
+  creator: {
+    id: string;
+    pseudonym: string;
+  },
+  id: string;
+};
 export type ModerationEvent = {
   action: ModerationEventAction;
   createdAt: Date;
   id?: string;
-  moderatable: {
-    category: ModeratableType;
-    creator: {
-      id: string;
-      pseudonym: string;
-    },
-    id: string;
-  },
+  moderatable: Moderatable,
   moderator: {
     id: string;
     pseudonym: string;

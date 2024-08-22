@@ -4,10 +4,9 @@ import {
   ConfirmationAlert, ScreenBackground, SearchBar, UserList, useRequestProgress,
 } from '../../components';
 import {
-  User, getErrorMessage, useCurrentUser, useModerationEvents,
+  Moderatable, User, getErrorMessage, useModerationEvent,
 } from '../../model';
 import useTheme from '../../Theme';
-import { createModerationEvent } from '../../networking';
 import type { BlockMemberScreenProps } from '../../navigation';
 
 const useStyles = () => {
@@ -28,67 +27,42 @@ export default function BlockMemberScreen({
   const [filteredUserId, setFilteredUserId] = useState<string>();
   const [debouncedQuery, setDebouncedQuery] = useState<string | undefined>();
 
-  const { cacheModerationEvent } = useModerationEvents();
-
   const {
     RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
 
-  const { currentUser } = useCurrentUser();
+  const { createModerationEvent } = useModerationEvent();
 
   const onBlock = useCallback(async (user: User) => {
-    if (!currentUser) { return; }
-
     setFilteredUserId(user.id);
     setResult('none');
     setLoading(true);
 
-    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const moderatable: Moderatable = {
+      category: 'User',
+      creator: {
+        id: user.id,
+        pseudonym: user.pseudonym,
+      },
+      id: user.id,
+    };
 
-    let errorMessage: string | undefined;
-    let id: string | undefined;
     try {
-      ({ errorMessage, id } = await createModerationEvent({
-        action: 'block',
-        jwt,
-        moderatableId: user.id,
-        moderatableType: 'User',
-      }));
+      const moderationEvent = await createModerationEvent({
+        action: 'block', moderatable,
+      });
+      setResult('success');
+      navigation.navigate('BlockedMembers', {
+        prependedModerationEventId: moderationEvent.id,
+      });
     } catch (error) {
-      errorMessage = getErrorMessage(error);
-    }
-
-    if (errorMessage !== undefined) {
+      const errorMessage = getErrorMessage(error);
       setResult('error', {
         message: `${errorMessage}\nTap here to try again`,
         onPress: () => onBlock(user),
       });
-    } else if (id) {
-      setResult('success');
-
-      cacheModerationEvent({
-        action: 'block',
-        createdAt: new Date(),
-        id,
-        moderatable: {
-          category: 'User',
-          creator: {
-            id: user.id,
-            pseudonym: user.pseudonym,
-          },
-          id: user.id,
-        },
-        moderator: {
-          id: currentUser.id,
-          pseudonym: currentUser.pseudonym,
-        },
-      });
-
-      navigation.navigate('BlockedMembers', { prependedModerationEventId: id });
-    } else {
-      console.warn('WARNING: Expected errorMessage or moderationEventId');
     }
-  }, [cacheModerationEvent, currentUser, navigation]);
+  }, [createModerationEvent, navigation]);
 
   const onItemPress = useCallback(async (user: User) => {
     const { pseudonym } = user;
