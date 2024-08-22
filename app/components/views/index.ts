@@ -5,7 +5,6 @@ export { default as useBallotProgress } from './BallotProgress';
 export { default as BulletedText } from './BulletedText';
 export { default as ConnectionReview } from './ConnectionReview';
 export { default as CountdownClockBorder } from './CountdownClockBorder';
-export { default as DelayedActivityIndicator } from './DelayedActivityIndicator';
 export { default as DisclosureIcon } from './DisclosureIcon';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as FadeInView } from './FadeInView';

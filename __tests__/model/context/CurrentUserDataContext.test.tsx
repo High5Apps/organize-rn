@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
-import { DelayedActivityIndicator } from '../../../app/components';
 import { CurrentUserData } from '../../../app/model';
 import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../FakeData';
 import {
@@ -59,14 +58,13 @@ describe('CurrentUserDataContext', () => {
     expect(mockUseStoredCurrentUserData).toBeCalledWith(initialCurrentUserData);
   });
 
-  it('renders spinner until currentUser intialized', async () => {
+  it('renders nothing until currentUser intialized', async () => {
     mockUseStoredCurrentUserData.mockReturnValue({
       ...defaultReturnValue,
       initialized: false,
     });
     const { root } = await renderTestComponent({});
-    const spinner = root?.findByType(DelayedActivityIndicator);
-    expect(spinner).toBeTruthy();
+    expect(root?.children).toHaveLength(0);
     const children = root?.findAllByType(TestComponent);
     expect(children?.length).toBeFalsy();
   });
@@ -77,8 +75,7 @@ describe('CurrentUserDataContext', () => {
       initialized: true,
     });
     const { root } = await renderTestComponent({});
-    const spinner = root?.findAllByType(DelayedActivityIndicator);
-    expect(spinner?.length).toBeFalsy();
+    expect(root?.children).not.toHaveLength(0);
     const children = root?.findByType(TestComponent);
     expect(children).toBeTruthy();
   });

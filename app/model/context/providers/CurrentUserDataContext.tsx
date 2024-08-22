@@ -2,10 +2,6 @@ import React, {
   createContext, Dispatch, PropsWithChildren, SetStateAction, useContext,
   useMemo,
 } from 'react';
-// The line below needs to import directly from DelayedActivityIndicator to
-// prevent a circular dependency issue. Normally components import from models,
-// which import from context, not the other way around.
-import DelayedActivityIndicator from '../../../components/views/DelayedActivityIndicator';
 import type { CurrentUserData } from '../../types';
 import { useStoredCurrentUserData } from './caches';
 
@@ -37,7 +33,7 @@ export function CurrentUserDataContextProvider({
 
   return (
     <CurrentUserDataContext.Provider value={currentUserDataContext}>
-      {initialized ? children : <DelayedActivityIndicator delay={1000} />}
+      {initialized ? children : null}
     </CurrentUserDataContext.Provider>
   );
 }
