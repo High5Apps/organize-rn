@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import useCurrentUser from './CurrentUser';
 import { FlagReport } from '../../types';
-import { createModerationEvent, fetchFlagReports } from '../../../networking';
+import { fetchFlagReports } from '../../../networking';
 import { useFlagReportContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 import getErrorMessage from '../../ErrorMessage';
+import useModerationEvent from './ModerationEvent';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -33,6 +34,7 @@ export default function useFlagReports({ handled }: Props) {
   const [nextPageNumber, setNextPageNumber] = useState<number>(firstPageIndex);
 
   const { currentUser } = useCurrentUser();
+  const { createModerationEvent } = useModerationEvent();
 
   async function fetchFirstPageOfFlagReports(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
@@ -110,17 +112,13 @@ export default function useFlagReports({ handled }: Props) {
     cacheFlagReport(flagReport);
 
     // Create backend moderation event
-    const jwt = await currentUser.createAuthToken({ scope: '*' });
-
+    const { moderationEvent } = flagReport;
     let errorMessage: string | undefined;
     let id: string | undefined;
     try {
-      const { flaggable, moderationEvent } = flagReport;
-      ({ errorMessage, id } = await createModerationEvent({
+      ({ id } = await createModerationEvent({
         action: moderationEvent.action,
-        jwt,
-        moderatableId: flaggable.id,
-        moderatableType: flaggable.category,
+        moderatable: moderationEvent.moderatable,
       }));
     } catch (error) {
       errorMessage = getErrorMessage(error);
