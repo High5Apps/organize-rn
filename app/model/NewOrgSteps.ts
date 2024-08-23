@@ -48,6 +48,19 @@ const NewOrgSteps: NewOrgStep[] = [
     placeholder: () => 'An employee of *employer* at *location*',
     title: 'Define Who Can Join',
   },
+  {
+    body: 'The app developers will email this address if they need to contact your Org.\n\nWhether your Org has 10 members or 10,000, this email is the single point of contact for your entire Org.',
+    header: 'Email',
+    headline: 'Why do you need my email?',
+    iconName: 'mail',
+    maxLength: 100,
+    message,
+    messageMultiline: false,
+    param: 'email',
+    paramType: 'string',
+    placeholder: () => 'email@example.com',
+    title: 'Add Your Email',
+  },
 ];
 
 export default NewOrgSteps;

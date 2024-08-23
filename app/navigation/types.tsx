@@ -21,6 +21,7 @@ export type RootStackNavigationProp<T extends keyof RootStackParamList> =
   NativeStackNavigationProp<RootStackParamList, T>;
 
 export type NewOrgScreenParams = {
+  email?: string;
   memberDefinition?: string;
   name?: string;
   step: number;

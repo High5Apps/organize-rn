@@ -22,7 +22,7 @@ type CreateReturn = {
 };
 
 export async function createOrg({
-  e2eEncrypt, jwt, name, memberDefinition,
+  e2eEncrypt, email, jwt, memberDefinition, name,
 }: Props): Promise<CreateReturn> {
   const [
     encryptedName, encryptedMemberDefinition,
@@ -31,7 +31,7 @@ export async function createOrg({
     encrypt(memberDefinition, e2eEncrypt),
   ]);
   const response = await post({
-    bodyObject: { encryptedName, encryptedMemberDefinition },
+    bodyObject: { email, encryptedName, encryptedMemberDefinition },
     jwt,
     uri: orgsURI,
   });
