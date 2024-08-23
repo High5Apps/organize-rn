@@ -102,6 +102,7 @@ export async function fetchOrg({
 
 export type UpdateProps = {
   e2eEncrypt: E2EEncryptor;
+  email?: string;
   memberDefinition?: string;
   name?: string;
 };
@@ -111,10 +112,10 @@ type UpdateReturn = {
 };
 
 export async function updateOrg({
-  e2eEncrypt, jwt, memberDefinition, name,
+  e2eEncrypt, email, jwt, memberDefinition, name,
 }: UpdateProps & Authorization): Promise<UpdateReturn> {
-  if (!name && !memberDefinition) {
-    console.warn('Neither name nor memberDefinition props were present');
+  if (!email && !name && !memberDefinition) {
+    console.warn('No props were present in updateOrg');
     return {};
   }
 
@@ -124,7 +125,7 @@ export async function updateOrg({
   ]);
 
   const response = await patch({
-    bodyObject: { org: { encryptedMemberDefinition, encryptedName } },
+    bodyObject: { org: { email, encryptedMemberDefinition, encryptedName } },
     jwt,
     uri: orgURI,
   });
