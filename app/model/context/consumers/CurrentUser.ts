@@ -94,7 +94,7 @@ export function CurrentUser(
     AsyncStorage.clear();
   };
 
-  async function update() {
+  async function refresh() {
     const jwt = await currentUserBase.createAuthToken({ scope: '*' });
     const { errorMessage, user: fetchedUser } = await getUser({ id, jwt });
 
@@ -143,7 +143,7 @@ export function CurrentUser(
     e2eEncryptMany,
     logOut,
     org,
-    update,
+    refresh,
     user,
     ...user(),
     verify,

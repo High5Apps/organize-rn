@@ -36,7 +36,7 @@ export default function OrgScreen({ navigation, route }: OrgScreenProps) {
   const onRefresh = useCallback(async () => {
     setSelectedUserId(undefined);
     await Promise.all([
-      currentUser?.update().catch(console.error),
+      currentUser?.refresh().catch(console.error),
       fetchOfficers().catch(console.error),
       refreshOrg().catch((error) => {
         const errorMessage = getErrorMessage(error);
