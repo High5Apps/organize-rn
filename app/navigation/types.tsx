@@ -35,6 +35,7 @@ export type WelcomeStackParamList = {
   JoinOrg: undefined;
   NewOrg: NewOrgScreenParams;
   OrgReview: OrgReviewParams;
+  Verification: undefined;
   Welcome: undefined;
 };
 
@@ -48,6 +49,7 @@ export type WelcomeScreenProps = WelcomeStackScreenProps<'Welcome'>;
 export type NewOrgScreenProps = WelcomeStackScreenProps<'NewOrg'>;
 export type OrgReviewScreenProps = WelcomeStackScreenProps<'OrgReview'>;
 export type JoinOrgScreenProps = WelcomeStackScreenProps<'JoinOrg'>;
+export type VerificationScreenProps = WelcomeStackScreenProps<'Verification'>;
 
 export type WelcomeStackNavigationProp<T extends keyof WelcomeStackParamList> =
   CompositeNavigationProp<

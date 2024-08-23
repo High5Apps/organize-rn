@@ -55,6 +55,7 @@ export default async function createCurrentUser({
   });
 
   let orgId: string;
+  let unverified: boolean | undefined;
   if (maybeOrgId) {
     orgId = maybeOrgId;
   } else {
@@ -70,6 +71,7 @@ export default async function createCurrentUser({
       }
 
       orgId = id;
+      unverified = true;
     } catch (error) {
       return getErrorMessage(error);
     }
@@ -78,6 +80,7 @@ export default async function createCurrentUser({
   const org = {
     id: orgId,
     ...unpublishedOrg,
+    unverified,
   };
 
   if (maybeSharerJwt) {

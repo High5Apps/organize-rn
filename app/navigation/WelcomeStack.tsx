@@ -2,11 +2,13 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   WelcomeScreen, NewOrgScreen, OrgReview, JoinOrgScreen,
+  VerificationScreen,
 } from '../screens';
 import type { WelcomeStackParamList } from './types';
 import { SafeAreaPadding, StatusBar } from '../components';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import useTheme from '../Theme';
+import { useCurrentUser } from '../model';
 
 const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 
@@ -19,11 +21,15 @@ export default function WelcomeStack() {
     navigationBarColor: colors.background,
   };
 
+  const { currentUser } = useCurrentUser();
+  const inVerification = currentUser?.org?.unverified;
+  const initialRouteName = inVerification ? 'Verification' : 'Welcome';
+
   return (
     <StatusBar backgroundColor={colors.background}>
       <SafeAreaPadding>
         <Stack.Navigator
-          initialRouteName="Welcome"
+          initialRouteName={initialRouteName}
           screenOptions={screenOptions}
         >
           <Stack.Screen
@@ -41,6 +47,10 @@ export default function WelcomeStack() {
           <Stack.Screen
             name="JoinOrg"
             component={JoinOrgScreen}
+          />
+          <Stack.Screen
+            name="Verification"
+            component={VerificationScreen}
           />
         </Stack.Navigator>
       </SafeAreaPadding>

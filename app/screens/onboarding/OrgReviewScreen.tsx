@@ -91,6 +91,7 @@ export default function OrgReviewScreen({
         }
         const user = userOrErrorMessage;
         setCurrentUser(user);
+        navigation.navigate('Verification');
       }).catch(console.error);
   };
 

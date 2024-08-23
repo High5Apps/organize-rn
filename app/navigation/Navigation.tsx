@@ -9,10 +9,11 @@ import { useNavigationTheme } from '../Theme';
 export default function Navigation() {
   const navigationTheme = useNavigationTheme();
   const { currentUser } = useCurrentUser();
+  const onboarding = !currentUser || currentUser.org.unverified;
 
   return (
     <NavigationContainer linking={LinkingConfig} theme={navigationTheme}>
-      {currentUser ? <OrgTabs /> : <WelcomeStack />}
+      {onboarding ? <WelcomeStack /> : <OrgTabs />}
     </NavigationContainer>
   );
 }

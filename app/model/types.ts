@@ -1,6 +1,6 @@
 import type {
-  BallotCategory, Nomination, OfficeAvailability, OfficeCategory, Optional, Org,
-  User,
+  BallotCategory, Nomination, OfficeAvailability, OfficeCategory, Optional,
+  Org as _Org, User,
 } from '../networking';
 import { isOrg } from '../networking';
 import type { PermissionItem } from './PermissionItems';
@@ -11,8 +11,8 @@ export type {
 export type {
   Ballot, BallotPreview, Candidate, Comment, ConnectionPreview, FlagReport,
   Moderatable, ModeratableType, ModerationEvent, ModerationEventAction,
-  MyPermission, OfficeAvailability, Org, OrgGraph, Permission, PermissionScope,
-  Post, PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
+  MyPermission, OfficeAvailability, OrgGraph, Permission, PermissionScope, Post,
+  PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
 } from '../networking';
 export { OFFICE_CATEGORIES, POST_CATEGORIES, isDefined } from '../networking';
 
@@ -24,6 +24,10 @@ export type Office = Optional<OfficeAvailability, 'open'> & {
 export type OfficeDuty = {
   category: OfficeCategory;
   duties: string[];
+};
+
+export type Org = _Org & {
+  unverified?: boolean;
 };
 
 export type CurrentUserBaseData = {
