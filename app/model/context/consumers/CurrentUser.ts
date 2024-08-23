@@ -9,7 +9,9 @@ import { Keys } from '../../keys';
 import { CurrentUserData, User } from '../../types';
 import {
   E2EDecryptor, E2EMultiDecryptor, E2EMultiEncryptor, getUser, leaveOrg,
+  verifyOrg,
 } from '../../../networking';
+import getErrorMessage from '../../ErrorMessage';
 
 export function CurrentUser(
   currentUserData: CurrentUserData,
@@ -110,6 +112,28 @@ export function CurrentUser(
     }
   }
 
+  async function verify(code: string) {
+    const jwt = await currentUserBase.createAuthToken({ scope: '*' });
+
+    let errorMessage: string | undefined;
+    try {
+      ({ errorMessage } = await verifyOrg({ code, jwt }));
+    } catch (error) {
+      errorMessage = getErrorMessage(error);
+    }
+
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
+    }
+
+    setCurrentUserData((previousCurrentUserData) => {
+      if (previousCurrentUserData === null) { return null; }
+
+      const { unverified, ...verifiedOrg } = previousCurrentUserData.org;
+      return { ...previousCurrentUserData, org: verifiedOrg };
+    });
+  }
+
   return {
     ...currentUserBase,
     decryptGroupKey,
@@ -122,6 +146,7 @@ export function CurrentUser(
     update,
     user,
     ...user(),
+    verify,
   };
 }
 
