@@ -11,7 +11,9 @@ export {
 } from './ModerationEventAPI';
 export { createNomination, updateNomination } from './NominationAPI';
 export { fetchOffices } from './OfficeAPI';
-export { createOrg, fetchOrg, updateOrg } from './OrgAPI';
+export {
+  createOrg, fetchOrg, updateOrg, verifyOrg,
+} from './OrgAPI';
 export {
   createPermission, fetchPermission, fetchMyPermissions,
 } from './PermissionAPI';

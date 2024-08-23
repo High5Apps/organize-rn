@@ -3,7 +3,7 @@ import {
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
-import { orgURI, orgsURI } from './Routes';
+import { orgURI, orgsURI, verifyURI } from './Routes';
 import {
   Authorization, E2EDecryptor, E2EEncryptor, isCreateModelResponse,
   isOrgResponse, Org, OrgGraph, UnpublishedOrg,
@@ -129,6 +129,32 @@ export async function updateOrg({
     jwt,
     uri: orgURI,
   });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
+}
+
+export type VerifyProps = Authorization & {
+  code: string;
+};
+
+type VerifyReturn = {
+  errorMessage?: string;
+};
+
+export async function verifyOrg({
+  code, jwt,
+}: VerifyProps): Promise<VerifyReturn> {
+  const uri = verifyURI;
+  const response = await post({ bodyObject: { code }, jwt, uri });
 
   if (!response.ok) {
     const text = await response.text();

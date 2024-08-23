@@ -23,6 +23,8 @@ export const flagReportsURI = `${apiRoute}/flag_reports`;
 
 export const leaveOrgURI = `${apiRoute}/leave_org`;
 
+export const verifyURI = `${apiRoute}/verify`;
+
 export const moderationEventsURI = `${apiRoute}/moderation_events`;
 
 export const nominationURI = (nominationId: string) => `${apiRoute}/nominations/${nominationId}`;
