@@ -14,7 +14,7 @@ type NewOrgStep = {
   message?: string;
   messageMultiline: boolean;
   param: NewOrgParam;
-  paramType: 'number' | 'string';
+  paramType: 'string' | 'email';
   placeholder: () => string;
   title: string;
 };
@@ -57,7 +57,7 @@ const NewOrgSteps: NewOrgStep[] = [
     message,
     messageMultiline: false,
     param: 'email',
-    paramType: 'string',
+    paramType: 'email',
     placeholder: () => 'email@example.com',
     title: 'Add Your Email',
   },

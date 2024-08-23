@@ -87,7 +87,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         <TextInput
           autoFocus={false}
           blurOnSubmit={false}
-          keyboardType={paramType === 'number' ? 'number-pad' : 'default'}
+          keyboardType={paramType === 'email' ? 'email-address' : 'default'}
           maxLength={maxLength}
           onChangeText={setInput}
           onSubmitEditing={() => {
