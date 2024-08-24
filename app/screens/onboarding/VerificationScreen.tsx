@@ -9,7 +9,7 @@ import {
 import useTheme from '../../Theme';
 import { Email, useCurrentUser } from '../../model';
 
-const CONTACT_US_BODY = "I'd like to create a new Org on the Organize app! Please send me a verification code.";
+const CONTACT_US_BODY = "I'd like to create a new Org on the Organize app. Please send me a verification code!";
 const CONTACT_US_SUBJECT = 'Organize Verification';
 
 const useStyles = () => {
@@ -111,8 +111,8 @@ export default function VerificationScreen() {
           <Text style={styles.message}>Don&apos;t have a code yet?</Text>
           <TextButton
             onPress={Email({
-              body: CONTACT_US_BODY,
-              subject: `${CONTACT_US_SUBJECT} - ${currentUser!.org!.id}`,
+              body: `${CONTACT_US_BODY}\n\nReference ID: ${currentUser!.org!.id}`,
+              subject: CONTACT_US_SUBJECT,
             }).openComposer}
             style={styles.textButton}
           >
