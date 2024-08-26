@@ -19,6 +19,9 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
       paddingBottom: spacing.m,
     },
+    bodyDeleted: {
+      color: colors.labelSecondary,
+    },
   });
 
   return { styles };
@@ -35,14 +38,18 @@ export default function PostWithBody({ onLayout, onPostChanged, post }: Props) {
 
   if (!post) { return null; }
 
-  const { body } = post;
+  const body = post.deletedAt ? '[left Org]' : post.body;
 
   return (
     <View onLayout={onLayout}>
       <PostRow item={post} onPostChanged={onPostChanged} />
       {body && (
         <HyperlinkDetector>
-          <Text style={styles.body}>{body}</Text>
+          <Text
+            style={[styles.body, post.deletedAt && styles.bodyDeleted]}
+          >
+            {body}
+          </Text>
         </HyperlinkDetector>
       )}
     </View>
