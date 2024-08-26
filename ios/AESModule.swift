@@ -15,7 +15,7 @@ class AESModule: NSObject {
   static let KEY_INITIALIZATION_VECTOR = "base64InitializationVector"
   static let KEY_INTEGRITY_CHECK = "base64IntegrityCheck"
   static let KEY_STRENGTH_256_BIT_IN_BYTES = 256 / 8
-  static let MESSAGE_DECRYPTION_FAILED = "[deleted]"
+  static let MESSAGE_DECRYPTION_FAILED = "[unable to decrypt]"
 
   @objc
   static func requiresMainQueueSetup() -> Bool { false }

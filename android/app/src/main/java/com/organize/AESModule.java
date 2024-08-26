@@ -41,7 +41,7 @@ public class AESModule extends ReactContextBaseJavaModule {
     private static final String KEY_ENCRYPTED_MESSAGE = "base64EncryptedMessage";
     private static final String KEY_INITIALIZATION_VECTOR = "base64InitializationVector";
     private static final String KEY_INTEGRITY_CHECK = "base64IntegrityCheck";
-    private static final String MESSAGE_DECRYPTION_FAILED = "[deleted]";
+    private static final String MESSAGE_DECRYPTION_FAILED = "[unable to decrypt]";
     private static final String MODULE_NAME = "AESModule";
 
     private static final int INTEGRITY_CHECK_LENGTH_BYTES = 16;
