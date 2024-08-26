@@ -55,6 +55,7 @@ export default function usePost({ id: maybeId }: Props = {}) {
         candidateId,
         createdAt: createdAt!,
         category,
+        deletedAt: null,
         id: id!,
         myVote: 1,
         pseudonym: currentUser.pseudonym,

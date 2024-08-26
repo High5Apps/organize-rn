@@ -198,6 +198,7 @@ export type PostIndexPost = {
   category: PostCategory;
   candidateId: string | null;
   createdAt: Date;
+  deletedAt: Date | null;
   encryptedBody?: BackendEncryptedMessage;
   encryptedTitle: BackendEncryptedMessage;
   id: string;
@@ -212,6 +213,7 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
   return post?.id?.length > 0
     && (post.candidateId === null || post.candidateId?.length > 0)
     && post.category?.length > 0
+    && (post.deletedAt === null || isDate(post.deletedAt))
     && post.pseudonym?.length > 0
     && isBackendEncryptedMessage(post.encryptedTitle)
     && post.userId?.length > 0
@@ -267,6 +269,7 @@ export function isCreateModelResponse(object: unknown): object is CreateModelRes
 export type BackendComment = {
   blockedAt: Date | null;
   createdAt: Date;
+  deletedAt: Date | null;
   depth: number;
   encryptedBody: BackendEncryptedMessage;
   id: string;
@@ -283,6 +286,7 @@ function isBackendComment(object: unknown): object is BackendComment {
   return isBackendEncryptedMessage(comment.encryptedBody)
     && (comment.blockedAt === null || isDate(comment.blockedAt))
     && isDate(comment.createdAt)
+    && (comment.deletedAt === null || isDate(comment.deletedAt))
     && comment.id?.length > 0
     && comment.myVote !== undefined
     && comment.postId?.length > 0

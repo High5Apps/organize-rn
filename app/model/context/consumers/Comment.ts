@@ -39,6 +39,7 @@ export default function useComment() {
         blockedAt: null,
         body,
         createdAt: new Date(),
+        deletedAt: null,
         depth: parentComment ? (parentComment.depth + 1) : 0,
         id: newCommentId!,
         myVote: 1,

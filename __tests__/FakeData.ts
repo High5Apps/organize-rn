@@ -44,6 +44,7 @@ export function getFakePost(postId: string, score: number): Post {
   return {
     category: 'general',
     createdAt: new Date(),
+    deletedAt: null,
     id: `post${postId}`,
     myVote: 0,
     pseudonym: fakeCurrentUserData.pseudonym,
