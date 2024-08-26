@@ -39,7 +39,7 @@ export default function PostWithBody({ onLayout, onPostChanged, post }: Props) {
 
   return (
     <View onLayout={onLayout}>
-      <PostRow disabled item={post} onPostChanged={onPostChanged} />
+      <PostRow item={post} onPostChanged={onPostChanged} />
       {body && (
         <HyperlinkDetector>
           <Text style={styles.body}>{body}</Text>

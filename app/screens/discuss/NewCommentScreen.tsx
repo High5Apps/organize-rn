@@ -16,7 +16,6 @@ export default function NewCommentScreen({
   const HeaderComponent = (
     <PostRow
       compactView
-      disabled
       enableBodyTextSelection
       item={post}
       onPostChanged={cachePost}

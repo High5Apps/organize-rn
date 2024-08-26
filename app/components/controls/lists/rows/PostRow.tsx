@@ -47,7 +47,6 @@ const useStyles = () => {
 
 type Props = {
   compactView?: boolean;
-  disabled?: boolean;
   enableBodyTextSelection?: boolean;
   item: Post;
   onPress?: (item: Post) => void;
@@ -55,7 +54,7 @@ type Props = {
 };
 
 function PostRow({
-  compactView, disabled, enableBodyTextSelection, item, onPress, onPostChanged,
+  compactView, enableBodyTextSelection, item, onPress, onPostChanged,
 }: Props) {
   const {
     createdAt, id, myVote, pseudonym, score, title, userId,
@@ -84,7 +83,7 @@ function PostRow({
 
   return (
     <TouchableHighlight
-      disabled={disabled}
+      disabled={!onPress}
       onPress={() => onPress?.(item)}
       underlayColor={colors.label}
     >
@@ -109,7 +108,7 @@ function PostRow({
           {TitleView}
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        {!disabled && <DisclosureIcon style={styles.icon} />}
+        {!!onPress && <DisclosureIcon style={styles.icon} />}
       </HighlightedCurrentUserRowContainer>
     </TouchableHighlight>
   );
@@ -117,9 +116,8 @@ function PostRow({
 
 PostRow.defaultProps = {
   compactView: false,
-  disabled: false,
   enableBodyTextSelection: false,
-  onPress: () => {},
+  onPress: undefined,
   onPostChanged: () => {},
 };
 
