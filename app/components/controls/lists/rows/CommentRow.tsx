@@ -5,8 +5,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../../../Theme';
 import {
-  BLOCKED_COMMENT_BODY, Comment, MAX_COMMENT_DEPTH, getMessageAge,
-  useCurrentUser,
+  BLOCKED_COMMENT_BODY, Comment, DELETED_COMMENT_BODY, MAX_COMMENT_DEPTH,
+  getMessageAge, useCurrentUser,
 } from '../../../../model';
 import UpvoteControl from '../../UpvoteControl';
 import { FlagTextButton, TextButton } from '../../buttons';
@@ -14,9 +14,7 @@ import type { PostScreenProps } from '../../../../navigation';
 import { HighlightedRowContainer, HyperlinkDetector } from '../../../views';
 
 const useStyles = () => {
-  const {
-    colors, font, opacity, spacing,
-  } = useTheme();
+  const { colors, font, spacing } = useTheme();
 
   const { width: screenWidth } = useWindowDimensions();
 
@@ -51,8 +49,8 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    titleBlocked: {
-      opacity: opacity.disabled,
+    titleDisabled: {
+      color: colors.labelSecondary,
     },
   });
 
@@ -77,10 +75,19 @@ function CommentRow({
   highlightObjectionableContent, item, onCommentChanged, showBlockedContent,
 }: Props) {
   const {
-    blockedAt, createdAt, depth, id, myVote, postId, pseudonym, score, userId,
+    blockedAt, createdAt, deletedAt, depth, id, myVote, postId, pseudonym,
+    score, userId,
   } = item;
   const shouldShowAsBlocked = !!blockedAt && !showBlockedContent;
-  const body = shouldShowAsBlocked ? BLOCKED_COMMENT_BODY : item.body;
+  const shouldShowAsDisabled = !!deletedAt || shouldShowAsBlocked;
+  let body: string;
+  if (deletedAt) {
+    body = DELETED_COMMENT_BODY;
+  } else if (shouldShowAsBlocked) {
+    body = BLOCKED_COMMENT_BODY;
+  } else {
+    body = item.body;
+  }
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const hideReplyButton = depth >= (MAX_COMMENT_DEPTH - 1);
@@ -106,7 +113,7 @@ function CommentRow({
       <Text
         selectable={enableBodyTextSelection}
         selectionColor={colors.primary}
-        style={[styles.title, shouldShowAsBlocked && styles.titleBlocked]}
+        style={[styles.title, shouldShowAsDisabled && styles.titleDisabled]}
       >
         {body}
       </Text>
@@ -135,7 +142,7 @@ function CommentRow({
     >
       <UpvoteControl
         commentId={id}
-        disabled={shouldShowAsBlocked}
+        disabled={shouldShowAsDisabled}
         errorItemFriendlyDifferentiator={body}
         onVoteChanged={(updatedVote, updatedScore) => {
           onCommentChanged?.({
@@ -153,11 +160,14 @@ function CommentRow({
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
             {!hideReplyButton && (
-              <TextButton disabled={shouldShowAsBlocked} onPress={onReplyPress}>
+              <TextButton
+                disabled={shouldShowAsDisabled}
+                onPress={onReplyPress}
+              >
                 Reply
               </TextButton>
             )}
-            <FlagTextButton commentId={id} disabled={shouldShowAsBlocked} />
+            <FlagTextButton commentId={id} disabled={shouldShowAsDisabled} />
           </View>
         )}
       </View>

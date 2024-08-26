@@ -8,8 +8,8 @@ export {
 export { default as useCachedValue } from './CachedValue';
 export { default as useComment } from './Comment';
 export {
-  default as useComments, BLOCKED_COMMENT_BODY, MAX_COMMENT_DEPTH,
-  MAX_COMMENT_LENGTH,
+  default as useComments, BLOCKED_COMMENT_BODY, DELETED_COMMENT_BODY,
+  MAX_COMMENT_DEPTH, MAX_COMMENT_LENGTH,
 } from './Comments';
 export { default as useCommentThread } from './CommentThread';
 export { default as useCurrentUser, type CurrentUserType } from './CurrentUser';
