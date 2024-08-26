@@ -40,6 +40,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
     },
+    titleDeleted: {
+      color: colors.labelSecondary,
+    },
   });
 
   return { colors, styles };
@@ -57,8 +60,9 @@ function PostRow({
   compactView, enableBodyTextSelection, item, onPress, onPostChanged,
 }: Props) {
   const {
-    createdAt, id, myVote, pseudonym, score, title, userId,
+    createdAt, deletedAt, id, myVote, pseudonym, score, userId,
   } = item;
+  const title = deletedAt ? '[left Org]' : item.title;
 
   const { colors, styles } = useStyles();
 
@@ -69,7 +73,7 @@ function PostRow({
     <Text
       selectable={enableBodyTextSelection}
       selectionColor={colors.primary}
-      style={styles.title}
+      style={[styles.title, deletedAt && styles.titleDeleted]}
     >
       {title}
     </Text>
@@ -92,6 +96,7 @@ function PostRow({
         userIds={[userId]}
       >
         <UpvoteControl
+          disabled={!!deletedAt}
           errorItemFriendlyDifferentiator={title}
           onVoteChanged={(updatedVote: VoteState, updatedScore: number) => {
             onPostChanged?.({
