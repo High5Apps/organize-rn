@@ -78,6 +78,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
     },
+    rowTitleTextDeleted: {
+      color: colors.labelSecondary,
+    },
   });
 
   return { colors, styles };
@@ -135,10 +138,13 @@ export default function FlagReportRow({
   } = getModerationEventDependentValues(moderationEvent);
 
   const title = useMemo(
-    () => truncateText({ maxLength: MAX_TITLE_LENGTH, text: flaggable.title })
-      // Replace whitespace with space to prevent newlines from affecting layout
-      .replace(/\s/g, ' '),
-    [flaggable.title],
+    () => (flaggable.deletedAt ? '[left Org]'
+      : truncateText({ maxLength: MAX_TITLE_LENGTH, text: flaggable.title })
+        // Replace whitespace with space to prevent newlines from affecting
+        // layout
+        .replace(/\s/g, ' ')
+    ),
+    [flaggable.deletedAt, flaggable.title],
   );
 
   const { colors, styles } = useStyles();
@@ -186,7 +192,14 @@ export default function FlagReportRow({
               name={getModeratableIcon(flaggable.category)}
               style={[styles.rowIcon, styles.rowIconPrimary]}
             />
-            <Text style={styles.rowTitleText}>{title}</Text>
+            <Text
+              style={[
+                styles.rowTitleText,
+                flaggable.deletedAt && styles.rowTitleTextDeleted,
+              ]}
+            >
+              {title}
+            </Text>
             <DisclosureIcon />
           </View>
           <View style={styles.rowSubtitle}>

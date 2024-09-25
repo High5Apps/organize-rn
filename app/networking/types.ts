@@ -652,6 +652,7 @@ export type Flaggable = {
     id: string;
     pseudonym: string;
   };
+  deletedAt: Date | null;
   encryptedTitle: BackendEncryptedMessage;
   id: string;
 };
