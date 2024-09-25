@@ -44,7 +44,7 @@ export default function useSettings(): SettingsSection[] {
           {
             iconName: 'mail',
             onPress: Email().openComposer,
-            title: 'Email the App Developer',
+            title: 'Email Organize LLC',
           },
           {
             iconName: 'bug-report',
