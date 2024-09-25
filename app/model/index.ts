@@ -25,3 +25,5 @@ export * from './context';
 export * from './formatters';
 export * from './keys';
 export * from './types';
+
+export { privacyPolicyURI, termsOfServiceURI } from '../networking';

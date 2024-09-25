@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Linking, StyleSheet, Text } from 'react-native';
 import useTheme from '../../Theme';
+import { privacyPolicyURI, termsOfServiceURI } from '../../model';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -32,14 +33,14 @@ export default function Agreement({ buttonLabel }: Props) {
     <Text style={styles.text}>
       {`By tapping ${buttonLabel}, I agree to the Organize `}
       <Text
-        onPress={() => console.log('Terms pressed')}
+        onPress={() => Linking.openURL(termsOfServiceURI)}
         style={styles.link}
       >
         Terms
       </Text>
       {' and '}
       <Text
-        onPress={() => console.log('Privacy policy pressed')}
+        onPress={() => Linking.openURL(privacyPolicyURI)}
         style={styles.link}
       >
         Privacy Policy
