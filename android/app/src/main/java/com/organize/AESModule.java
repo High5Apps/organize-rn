@@ -78,9 +78,7 @@ public class AESModule extends ReactContextBaseJavaModule {
         try {
             message = decrypt(secretKey, base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck);
         } catch (IllegalBlockSizeException | BadPaddingException | AESException e) {
-            Log.e(getName(), e.toString());
-            promise.reject(e);
-            return;
+            message = MESSAGE_DECRYPTION_FAILED;
         }
         promise.resolve(message);
     }

@@ -29,14 +29,7 @@ class AESModule: NSObject {
     
     let encryptedMessage = EncryptedMessage(base64EncryptedMessage, base64InitializationVector, base64IntegrityCheck)
     
-    let message: String
-    do {
-      message = try decrypt(encryptedMessage, with: symmetricKey)
-    } catch {
-      reject(Self.AES_ERROR_CODE, error.localizedDescription, error)
-      return
-    }
-    
+    let message = (try? decrypt(encryptedMessage, with: symmetricKey)) ?? Self.MESSAGE_DECRYPTION_FAILED
     resolve(message)
   }
   
