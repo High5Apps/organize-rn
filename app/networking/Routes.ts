@@ -4,7 +4,11 @@
 import { camelToSnake } from './Json';
 import { PermissionScope } from './types';
 
-const origin = __DEV__ ? 'http://localhost:8080' : 'https://getorganize.app';
+const prodOrigin = 'https://getorganize.app';
+const origin = __DEV__ ? 'http://localhost:8080' : prodOrigin;
+
+export const privacyPolicyURI = `${prodOrigin}/privacy`;
+export const termsOfServiceURI = `${prodOrigin}/terms`;
 
 const version = 'v1';
 const apiRoute = `${origin}/api/${version}`;
