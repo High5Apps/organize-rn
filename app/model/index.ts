@@ -1,5 +1,5 @@
 export { default as useAppState } from './AppState';
-export { default as useBallotTypes, ballotTypeMap } from './BallotTypes';
+export { default as useBallotTypes, getBallotTypeInfo } from './BallotTypes';
 export * from './Config';
 export { default as useConnection } from './Connection';
 export { default as createCurrentUser } from './CurrentUserCreation';
@@ -26,4 +26,6 @@ export * from './formatters';
 export * from './keys';
 export * from './types';
 
-export { privacyPolicyURI, termsOfServiceURI } from '../networking';
+export {
+  appStoreURI, privacyPolicyURI, termsOfServiceURI,
+} from '../networking';

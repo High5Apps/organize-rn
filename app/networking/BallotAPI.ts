@@ -147,6 +147,10 @@ export async function fetchBallotPreviews({
     ({ encryptedQuestion, ...b }, i) => ({ ...b, question: questions[i]! }),
   );
 
+  // Uncomment the code below to test the effects of a new ballot category on an
+  // old app version
+  // ballotPreviews[0].category = 'unknown';
+
   return { ballotPreviews, paginationData };
 }
 

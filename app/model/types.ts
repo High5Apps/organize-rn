@@ -88,17 +88,6 @@ export type BallotType = {
   name: string;
 };
 
-type NewBallotSubtypeSelectionScreen = 'OfficeAvailability';
-type NewBallotScreen = 'NewYesOrNoBallot' | 'NewMultipleChoiceBallot' | 'NewElectionBallot';
-
-export type BallotTypeInfo = {
-  category: BallotCategory;
-  iconName: string;
-  name: string;
-  newScreenName: NewBallotScreen;
-  subtypeSelectionScreenName?: NewBallotSubtypeSelectionScreen;
-};
-
 export type Model = {
   id: string;
 };

@@ -4,13 +4,16 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  BallotPreview, ballotTypeMap, getMessageAge, getTimeRemaining,
+  BallotPreview, getBallotTypeInfo, getMessageAge, getTimeRemaining,
   nominationsTimeRemainingFormatter, votingTimeRemainingFormatter,
 } from '../../../../model';
 import useTheme from '../../../../Theme';
 import {
   DisclosureIcon, HighlightedCurrentUserRowContainer,
 } from '../../../views';
+
+const UNKNOWN_BALLOT_TYPE_TITLE = 'New vote type: you must update your app to see this vote';
+const UNKNOWN_BALLOT_TYPE_SUBTITLE = 'Tap to update your app';
 
 const useStyles = () => {
   const {
@@ -85,7 +88,12 @@ export default function BallotRow({ item, onPress }: Props) {
   const {
     category, question, userId, nominationsEndAt, votingEndsAt,
   } = item;
-  const subtitle = getSubtitle(votingEndsAt, nominationsEndAt);
+  const ballotTypeInfo = getBallotTypeInfo(category);
+  const title = (ballotTypeInfo.category === 'unknown')
+    ? UNKNOWN_BALLOT_TYPE_TITLE : question;
+  const subtitle = (ballotTypeInfo.category === 'unknown')
+    ? UNKNOWN_BALLOT_TYPE_SUBTITLE
+    : getSubtitle(votingEndsAt, nominationsEndAt);
 
   const { colors, styles } = useStyles();
 
@@ -98,9 +106,9 @@ export default function BallotRow({ item, onPress }: Props) {
         style={styles.container}
         userIds={[userId]}
       >
-        <Icon name={ballotTypeMap[category].iconName} style={styles.icon} />
+        <Icon name={ballotTypeInfo.iconName} style={styles.icon} />
         <View style={styles.innerContainer}>
-          <Text style={[styles.text, styles.title]}>{question}</Text>
+          <Text style={[styles.text, styles.title]}>{title}</Text>
           <Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
         </View>
         <DisclosureIcon />

@@ -1,20 +1,25 @@
 import React, { useCallback } from 'react';
 import { BallotTypeList, ScreenBackground } from '../../components';
 import type { BallotTypeScreenProps } from '../../navigation';
-import { BallotType, ballotTypeMap } from '../../model';
+import { BallotType } from '../../model';
+
+type NavigationTarget =
+  'OfficeAvailability' | 'NewMultipleChoiceBallot' | 'NewYesOrNoBallot';
 
 export default function BallotTypeScreen({
   navigation,
 }: BallotTypeScreenProps) {
   const onBallotTypeRowPress = useCallback(({ category }: BallotType) => {
-    const {
-      newScreenName, subtypeSelectionScreenName,
-    } = ballotTypeMap[category];
-    const screen = subtypeSelectionScreenName ?? newScreenName;
-
-    // @ts-ignore because params are only required for screens that use a
-    // subtypeSelectionScreen first to determine the relevant params, instead of
-    // navigating directly to the newScreen
+    let screen: NavigationTarget;
+    if (category === 'election') {
+      screen = 'OfficeAvailability';
+    } else if (category === 'multiple_choice') {
+      screen = 'NewMultipleChoiceBallot';
+    } else if (category === 'yes_no') {
+      screen = 'NewYesOrNoBallot';
+    } else {
+      throw new Error(`Unhandled ballot category: ${category}`);
+    }
     navigation.navigate(screen);
   }, [navigation]);
 

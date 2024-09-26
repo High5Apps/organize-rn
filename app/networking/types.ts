@@ -328,7 +328,7 @@ export function isCommentThreadResponse(object: unknown): object is CommentThrea
   return response?.thread && isCommentThreadComment(response.thread);
 }
 
-export type BallotCategory = 'yes_no' | 'multiple_choice' | 'election';
+export type BallotCategory = 'yes_no' | 'multiple_choice' | 'election' | 'unknown';
 
 export type BallotIndexBallot = {
   category: BallotCategory,
