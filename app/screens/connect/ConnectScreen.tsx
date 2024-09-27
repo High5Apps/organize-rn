@@ -6,10 +6,11 @@ import {
 } from '../../components';
 import type { ConnectScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
+import { appStoreURI } from '../../networking';
 
-const SHARE_MESSAGE = `To join the Org:
-1. Get the Organize app at getorganize.app/store
-2. Meet up with me in person to scan my membership code`;
+const SHARE_MESSAGE = `To join our Org:
+1. Get the Organize app at ${appStoreURI()}
+2. Meet me in person to scan my membership code`;
 
 const useStyles = () => {
   const {

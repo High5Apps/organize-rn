@@ -7,7 +7,7 @@ import { PermissionScope } from './types';
 const prodOrigin = 'https://getorganize.app';
 const origin = __DEV__ ? 'http://localhost:8080' : prodOrigin;
 
-export const appStoreURI = ({ ref }: { ref: string }) => `${prodOrigin}/store?ref=${ref}`;
+export const appStoreURI = ({ ref }: { ref?: string } = {}) => `${prodOrigin}/store${!ref ? '' : `?ref=${ref}`}`;
 export const privacyPolicyURI = `${prodOrigin}/privacy`;
 export const termsOfServiceURI = `${prodOrigin}/terms`;
 
