@@ -48,7 +48,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>QR Code Scanner</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your location is not needed. Please decline this request.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>
