@@ -615,6 +615,8 @@
 				DEVELOPMENT_TEAM = 58TA285GUY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Organize/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Organize;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -642,6 +644,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 58TA285GUY;
 				INFOPLIST_FILE = Organize/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Organize;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
