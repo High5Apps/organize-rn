@@ -6,7 +6,7 @@ const OFFICE_DUTIES = {
   president: [
     'Leads the Org',
     'Represents the Org in external matters',
-    'Works with the other officers to ensure the well being of the Org',
+    'Works with the other officers to ensure the well-being of the Org',
     'Presides over all meetings',
     'Decides questions of order',
   ],
