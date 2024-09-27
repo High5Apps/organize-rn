@@ -67,6 +67,8 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
 
   const TextInput = messageMultiline ? MultilineTextInput : TextInputRow;
 
+  const isEmail = paramType === 'email';
+
   return (
     <KeyboardAvoidingScreenBackground topNavigationBarHidden>
       <LearnMoreModal
@@ -85,9 +87,12 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         </Text>
         <HeaderText style={styles.headerText}>{header}</HeaderText>
         <TextInput
+          autoCapitalize={isEmail ? 'none' : 'sentences'}
+          autoComplete={isEmail ? 'email' : 'off'}
+          autoCorrect={!isEmail}
           autoFocus={false}
           blurOnSubmit={false}
-          keyboardType={paramType === 'email' ? 'email-address' : 'default'}
+          keyboardType={isEmail ? 'email-address' : 'default'}
           maxLength={maxLength}
           onChangeText={setInput}
           onSubmitEditing={() => {
