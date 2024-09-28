@@ -1,4 +1,4 @@
-package com.organize;
+package app.getorganize.organize;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;

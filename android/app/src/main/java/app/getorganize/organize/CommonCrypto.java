@@ -1,4 +1,4 @@
-package com.organize;
+package app.getorganize.organize;
 
 import static android.os.Build.VERSION.SDK_INT;
 

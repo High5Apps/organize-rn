@@ -1,9 +1,9 @@
-package com.organize;
+package app.getorganize.organize;
 
-import static com.organize.CommonCrypto.fromBase64;
-import static com.organize.CommonCrypto.fromUtf8;
-import static com.organize.CommonCrypto.toBase64;
-import static com.organize.CommonCrypto.toUtf8;
+import static app.getorganize.organize.CommonCrypto.fromBase64;
+import static app.getorganize.organize.CommonCrypto.fromUtf8;
+import static app.getorganize.organize.CommonCrypto.toBase64;
+import static app.getorganize.organize.CommonCrypto.toUtf8;
 
 import android.util.Log;
 

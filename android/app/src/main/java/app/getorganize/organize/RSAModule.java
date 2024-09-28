@@ -1,16 +1,19 @@
-package com.organize;
+package app.getorganize.organize;
 
 import static android.security.keystore.KeyProperties.DIGEST_SHA256;
 import static android.security.keystore.KeyProperties.PURPOSE_DECRYPT;
 import static android.security.keystore.KeyProperties.PURPOSE_ENCRYPT;
-import static com.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
-import static com.organize.CommonCrypto.fromBase64;
-import static com.organize.CommonCrypto.fromUtf8;
-import static com.organize.CommonCrypto.getPrivateKey;
-import static com.organize.CommonCrypto.getPublicKey;
-import static com.organize.CommonCrypto.logIsKeyInsideSecureHardware;
-import static com.organize.CommonCrypto.toBase64;
-import static com.organize.CommonCrypto.toUtf8;
+
+import static app.getorganize.organize.CommonCrypto.fromBase64;
+import static app.getorganize.organize.CommonCrypto.toUtf8;
+import static app.getorganize.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
+import static app.getorganize.organize.CommonCrypto.fromBase64;
+import static app.getorganize.organize.CommonCrypto.fromUtf8;
+import static app.getorganize.organize.CommonCrypto.getPrivateKey;
+import static app.getorganize.organize.CommonCrypto.getPublicKey;
+import static app.getorganize.organize.CommonCrypto.logIsKeyInsideSecureHardware;
+import static app.getorganize.organize.CommonCrypto.toBase64;
+import static app.getorganize.organize.CommonCrypto.toUtf8;
 
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;

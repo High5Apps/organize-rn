@@ -1,4 +1,4 @@
-package com.organize
+package app.getorganize.organize
 
 import android.os.Bundle
 

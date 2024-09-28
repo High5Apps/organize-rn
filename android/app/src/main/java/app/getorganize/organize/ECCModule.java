@@ -1,12 +1,12 @@
-package com.organize;
+package app.getorganize.organize;
 
-import static com.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
-import static com.organize.CommonCrypto.fromUtf8;
-import static com.organize.CommonCrypto.getPrivateKey;
-import static com.organize.CommonCrypto.getPublicKeyPem;
-import static com.organize.CommonCrypto.logIsKeyInsideSecureHardware;
-import static com.organize.CommonCrypto.toBase64;
-import static com.organize.CommonCrypto.toPemString;
+import static app.getorganize.organize.CommonCrypto.ANDROID_KEY_STORE_PROVIDER;
+import static app.getorganize.organize.CommonCrypto.fromUtf8;
+import static app.getorganize.organize.CommonCrypto.getPrivateKey;
+import static app.getorganize.organize.CommonCrypto.getPublicKeyPem;
+import static app.getorganize.organize.CommonCrypto.logIsKeyInsideSecureHardware;
+import static app.getorganize.organize.CommonCrypto.toBase64;
+import static app.getorganize.organize.CommonCrypto.toPemString;
 
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;

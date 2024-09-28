@@ -72,9 +72,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.organize"
+    namespace "app.getorganize.organize"
     defaultConfig {
-        applicationId "com.organize"
+        applicationId "app.getorganize.organize"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

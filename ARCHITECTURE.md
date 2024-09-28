@@ -18,7 +18,7 @@ This repo defines the components needed to develop, test, and build the Organize
 
 This section talks briefly about various important directories and data structures. Pay attention to the **Architecture Invariant** sections. They often talk about things which are deliberately absent in the source code.
 
-### `android/app/src/main/java/com/organize`
+### `android/app/src/main/java/app/getorganize/organize`
 
 [Android native modules](https://reactnative.dev/docs/native-modules-android) and React Native boilerplate specific to Android
 
