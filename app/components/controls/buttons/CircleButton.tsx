@@ -38,7 +38,9 @@ type Props = {
   onPress?: () => void;
 };
 
-export default function CircleButton({ disabled, iconName, onPress }: Props) {
+export default function CircleButton({
+  disabled = false, iconName, onPress = () => undefined,
+}: Props) {
   const { colors, styles } = useStyles();
   return (
     <TouchableHighlight
@@ -54,8 +56,3 @@ export default function CircleButton({ disabled, iconName, onPress }: Props) {
     </TouchableHighlight>
   );
 }
-
-CircleButton.defaultProps = {
-  disabled: false,
-  onPress: () => undefined,
-};

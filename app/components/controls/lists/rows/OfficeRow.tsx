@@ -49,7 +49,7 @@ type Props = {
 
 export default function OfficeRow({
   disabled, item: { iconName, title }, onPress, selected, showCheckBoxDisabled,
-  style, textButtonLabel,
+  style = {}, textButtonLabel,
 }: Props) {
   const { colors, styles } = useStyles();
   const hasCheckBox = selected !== undefined;
@@ -78,12 +78,3 @@ export default function OfficeRow({
     </TouchableHighlight>
   );
 }
-
-OfficeRow.defaultProps = {
-  disabled: undefined,
-  onPress: undefined,
-  selected: undefined,
-  showCheckBoxDisabled: undefined,
-  style: {},
-  textButtonLabel: undefined,
-};

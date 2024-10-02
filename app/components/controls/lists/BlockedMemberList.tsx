@@ -101,8 +101,3 @@ export default function BlockedMemberList({
     />
   );
 }
-
-BlockedMemberList.defaultProps = {
-  contentContainerStyle: undefined,
-  prependedModerationEventId: undefined,
-};

@@ -127,7 +127,8 @@ type Props = {
 };
 
 export default function FlagReportRow({
-  currentUserId, currentUserPseudonym, item, onFlagReportChanged, onPress,
+  currentUserId, currentUserPseudonym, item, onFlagReportChanged,
+  onPress = () => null,
 }: Props) {
   const {
     flaggable, flagCount, moderationEvent,
@@ -245,7 +246,3 @@ export default function FlagReportRow({
     </TouchableHighlight>
   );
 }
-
-FlagReportRow.defaultProps = {
-  onPress: () => null,
-};

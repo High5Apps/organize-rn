@@ -39,7 +39,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export default function IconPrompt({ iconName, prompt, style }: Props) {
+export default function IconPrompt({ iconName, prompt, style = {} }: Props) {
   const { styles } = useStyles();
 
   return (
@@ -51,7 +51,3 @@ export default function IconPrompt({ iconName, prompt, style }: Props) {
     </View>
   );
 }
-
-IconPrompt.defaultProps = {
-  style: {},
-};

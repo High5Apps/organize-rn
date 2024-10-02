@@ -33,8 +33,3 @@ export default function FlagTextButton({
     </TextButton>
   );
 }
-
-FlagTextButton.defaultProps = {
-  commentId: undefined,
-  disabled: undefined,
-};

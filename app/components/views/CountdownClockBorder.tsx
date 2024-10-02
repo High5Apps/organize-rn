@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function CountdownClockBorder({
-  duration, onFinished, sideLength,
+  duration, onFinished = () => {}, sideLength,
 }: Props) {
   const topRight = useRef(new Animated.Value(0)).current;
   const right = useRef(new Animated.Value(0)).current;
@@ -137,7 +137,3 @@ export default function CountdownClockBorder({
     </>
   );
 }
-
-CountdownClockBorder.defaultProps = {
-  onFinished: () => {},
-};

@@ -22,11 +22,9 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export default function HeaderText({ children, style }: PropsWithChildren<Props>) {
+export default function HeaderText({
+  children, style = {},
+}: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   return <Text style={[styles.text, style]}>{children}</Text>;
 }
-
-HeaderText.defaultProps = {
-  style: {},
-};

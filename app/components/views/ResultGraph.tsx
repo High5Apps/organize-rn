@@ -66,7 +66,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export default function ResultGraph({ results, style }: Props) {
+export default function ResultGraph({ results, style = {} }: Props) {
   const resultCount = results?.length ?? 0;
   const { styles } = useStyles(resultCount);
 
@@ -120,8 +120,3 @@ export default function ResultGraph({ results, style }: Props) {
     </View>
   );
 }
-
-ResultGraph.defaultProps = {
-  results: undefined,
-  style: {},
-};

@@ -37,7 +37,8 @@ type Props = {
 };
 
 export default function UserList({
-  debouncedQuery, ListFooterComponent, onItemPress, onlyShowUserId, sort,
+  debouncedQuery, ListFooterComponent, onItemPress = () => null, onlyShowUserId,
+  sort,
 }: Props) {
   const {
     fetchedLastPage, fetchFirstPageOfUsers, fetchNextPageOfUsers, ready, users,
@@ -112,10 +113,3 @@ export default function UserList({
     />
   );
 }
-
-UserList.defaultProps = {
-  debouncedQuery: undefined,
-  ListFooterComponent: undefined,
-  onItemPress: () => null,
-  onlyShowUserId: undefined,
-};

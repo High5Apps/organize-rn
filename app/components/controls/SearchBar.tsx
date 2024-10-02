@@ -22,7 +22,7 @@ type Props = {
 };
 
 export default function SearchBar({
-  disabled, onDebouncedQueryChanged,
+  disabled = false, onDebouncedQueryChanged = () => null,
 }: Props) {
   const [value, setValue] = useState<string | undefined>();
   const [debouncedQuery] = useDebounce(value, 500);
@@ -49,8 +49,3 @@ export default function SearchBar({
     />
   );
 }
-
-SearchBar.defaultProps = {
-  disabled: false,
-  onDebouncedQueryChanged: () => null,
-};

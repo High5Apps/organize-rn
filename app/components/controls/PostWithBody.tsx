@@ -33,7 +33,9 @@ type Props = {
   post?: Post;
 };
 
-export default function PostWithBody({ onLayout, onPostChanged, post }: Props) {
+export default function PostWithBody({
+  onLayout = () => {}, onPostChanged = () => {}, post,
+}: Props) {
   const { styles } = useStyles();
 
   if (!post) { return null; }
@@ -55,9 +57,3 @@ export default function PostWithBody({ onLayout, onPostChanged, post }: Props) {
     </View>
   );
 }
-
-PostWithBody.defaultProps = {
-  onLayout: () => {},
-  onPostChanged: () => {},
-  post: undefined,
-};

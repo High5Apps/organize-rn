@@ -49,8 +49,8 @@ type Props = {
 };
 
 export default function SecondaryButton({
-  disabled: disabledProp, iconName, iconStyle, label, onPress, reversed, style,
-  textStyle,
+  disabled: disabledProp = false, iconName, iconStyle = {}, label,
+  onPress = () => {}, reversed = false, style = {}, textStyle = {},
 }: Props) {
   const { styles } = useStyles();
   const {
@@ -74,13 +74,3 @@ export default function SecondaryButton({
     </Pressable>
   );
 }
-
-SecondaryButton.defaultProps = {
-  disabled: false,
-  iconName: undefined,
-  iconStyle: {},
-  onPress: () => {},
-  reversed: false,
-  style: {},
-  textStyle: {},
-};

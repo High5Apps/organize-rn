@@ -25,7 +25,7 @@ type Props = {
 };
 
 export default function CommentThreadList({
-  commentId, onViewPostPressed,
+  commentId, onViewPostPressed = () => null,
 }: Props) {
   const { cacheComment, comments, fetchThread } = useCommentThread(commentId);
   const postId: string | undefined = comments[0]?.postId;
@@ -67,7 +67,3 @@ export default function CommentThreadList({
     />
   );
 }
-
-CommentThreadList.defaultProps = {
-  onViewPostPressed: () => null,
-};

@@ -106,7 +106,3 @@ export default function LearnMoreModal({
     </Modal>
   );
 }
-
-LearnMoreModal.defaultProps = {
-  body: undefined,
-};

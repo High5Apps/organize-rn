@@ -23,7 +23,3 @@ export default function StatusBar({
     </>
   );
 }
-
-StatusBar.defaultProps = {
-  backgroundColor: undefined,
-};

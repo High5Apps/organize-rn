@@ -48,11 +48,6 @@ function TestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
   );
 }
 
-TestComponent.defaultProps = {
-  postToUpdate: undefined,
-  postsToUpdate: undefined,
-};
-
 async function renderTestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
   let renderer: ReactTestRenderer | undefined;
   await act(async () => {

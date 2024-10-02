@@ -114,7 +114,7 @@ type Props = {
 };
 
 export default function UserRow({
-  compact, disabled, isMe, item, onPress,
+  compact = false, disabled = false, isMe, item, onPress = () => null,
 }: Props) {
   const {
     blockedAt, connectionCount, joinedAt, leftOrgAt, offices, pseudonym,
@@ -170,9 +170,3 @@ export default function UserRow({
     </TouchableHighlight>
   );
 }
-
-UserRow.defaultProps = {
-  compact: false,
-  disabled: false,
-  onPress: () => null,
-};

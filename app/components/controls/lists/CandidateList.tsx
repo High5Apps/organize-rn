@@ -40,7 +40,7 @@ type Props = {
 };
 
 export default function CandidateList({
-  ballot, cacheBallot, contentContainerStyle, DiscussButton,
+  ballot, cacheBallot, contentContainerStyle = {}, DiscussButton,
   ListFooterComponent, ListHeaderComponent,
 }: Props) {
   const {
@@ -92,10 +92,3 @@ export default function CandidateList({
     />
   );
 }
-
-CandidateList.defaultProps = {
-  ballot: undefined,
-  contentContainerStyle: {},
-  ListFooterComponent: undefined,
-  ListHeaderComponent: undefined,
-};

@@ -48,7 +48,7 @@ type Props = {
 };
 
 export default function NewCommentScreenBase({
-  commentId, HeaderComponent, onCommentCreated, postId,
+  commentId, HeaderComponent, onCommentCreated = () => {}, postId,
 }: Props) {
   const cacheKey = getCacheKey({ commentId, postId });
   const [maybeBody, setBody] = useCachedValue<string | undefined>(cacheKey);
@@ -110,8 +110,3 @@ export default function NewCommentScreenBase({
     </KeyboardAvoidingScreenBackground>
   );
 }
-
-NewCommentScreenBase.defaultProps = {
-  commentId: undefined,
-  onCommentCreated: () => {},
-};

@@ -34,7 +34,7 @@ type Props = {
 };
 
 export default function StepperControl({
-  disabled, max, min, setValue, style, value,
+  disabled = false, max, min, setValue, style = {}, value,
 }: Props) {
   const { styles } = useStyles();
 
@@ -64,10 +64,3 @@ export default function StepperControl({
     </View>
   );
 }
-
-StepperControl.defaultProps = {
-  disabled: false,
-  max: undefined,
-  min: undefined,
-  style: {},
-};

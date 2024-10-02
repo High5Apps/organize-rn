@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function NominationList({
-  AnnounceButton, ballotId, contentContainerStyle, DiscussButton,
+  AnnounceButton, ballotId, contentContainerStyle = {}, DiscussButton,
 }: Props) {
   const { ballot, cacheBallot, refreshBallot } = useBallot(ballotId);
   const {
@@ -104,7 +104,3 @@ export default function NominationList({
     />
   );
 }
-
-NominationList.defaultProps = {
-  contentContainerStyle: {},
-};

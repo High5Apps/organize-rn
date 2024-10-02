@@ -50,8 +50,8 @@ type Props = {
 };
 
 export default function IconRow({
-  disabled, hideDisclosureIcon, iconName, onPress, textButtonLabel, style,
-  title,
+  disabled, hideDisclosureIcon = false, iconName, onPress, textButtonLabel,
+  style = {}, title,
 }: Props) {
   const { colors, styles } = useStyles();
 
@@ -84,11 +84,3 @@ export default function IconRow({
     </TouchableHighlight>
   );
 }
-
-IconRow.defaultProps = {
-  disabled: undefined,
-  hideDisclosureIcon: false,
-  onPress: undefined,
-  style: {},
-  textButtonLabel: undefined,
-};

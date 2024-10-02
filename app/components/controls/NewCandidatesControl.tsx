@@ -29,7 +29,7 @@ type Props = {
 };
 
 export default function NewCandidatesControl({
-  candidates, disabled, setCandidates,
+  candidates, disabled = false, setCandidates,
 }: Props) {
   const [
     focusedInputIndex, setFocusedInputIndex,
@@ -103,7 +103,3 @@ export default function NewCandidatesControl({
     </View>
   );
 }
-
-NewCandidatesControl.defaultProps = {
-  disabled: false,
-};

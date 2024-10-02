@@ -32,7 +32,7 @@ type Props = {
 };
 
 export default function DateTimeSelector({
-  dateTime, disabled, setDateTime, style,
+  dateTime, disabled = false, setDateTime, style = {},
 }: Props) {
   const [pickerVisible, setPickerVisible] = useState(false);
 
@@ -55,11 +55,6 @@ export default function DateTimeSelector({
     </View>
   );
 }
-
-DateTimeSelector.defaultProps = {
-  disabled: false,
-  style: {},
-};
 
 type DurationProps = {
   days: number;

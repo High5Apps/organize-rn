@@ -22,7 +22,7 @@ type Props = {
 };
 
 export default function FramedIconPromptButton({
-  iconName, onPress, prompt,
+  iconName, onPress = () => {}, prompt,
 }: Props) {
   const { styles } = useStyles();
 
@@ -32,7 +32,3 @@ export default function FramedIconPromptButton({
     </FrameButton>
   );
 }
-
-FramedIconPromptButton.defaultProps = {
-  onPress: () => {},
-};

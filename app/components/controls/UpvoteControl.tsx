@@ -44,8 +44,8 @@ type Props = {
 };
 
 export default function UpvoteControl({
-  commentId, disabled, errorItemFriendlyDifferentiator, onVoteChanged, postId,
-  score, voteState,
+  commentId, disabled = false, errorItemFriendlyDifferentiator,
+  onVoteChanged = () => {}, postId, score, voteState,
 }: Props) {
   const { styles } = useStyles();
 
@@ -113,10 +113,3 @@ export default function UpvoteControl({
     </View>
   );
 }
-
-UpvoteControl.defaultProps = {
-  commentId: undefined,
-  disabled: false,
-  onVoteChanged: () => {},
-  postId: undefined,
-};

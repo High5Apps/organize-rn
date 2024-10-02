@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function ConnectionReview({
-  onConnectionPreview, onConnectionPreviewError, qrValue, style,
+  onConnectionPreview, onConnectionPreviewError, qrValue, style = {},
 }: Props) {
   return (
     <ConnectionRequestProgress
@@ -35,7 +35,3 @@ export default function ConnectionReview({
     />
   );
 }
-
-ConnectionReview.defaultProps = {
-  style: {},
-};

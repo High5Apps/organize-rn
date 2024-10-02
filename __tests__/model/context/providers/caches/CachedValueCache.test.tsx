@@ -36,10 +36,6 @@ function TestComponent({ cachedKeyToUpdate, cachedValues }: Props) {
   );
 }
 
-TestComponent.defaultProps = {
-  cachedKeyToUpdate: undefined,
-};
-
 async function renderTestComponent({
   cachedKeyToUpdate, cachedValues,
 }: Props) {

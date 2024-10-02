@@ -54,7 +54,3 @@ export default function DecisionButtonsRow({
     </View>
   );
 }
-
-DecisionButtonsRow.defaultProps = {
-  acceptLabel: undefined,
-};

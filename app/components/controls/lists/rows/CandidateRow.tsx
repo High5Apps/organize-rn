@@ -62,8 +62,8 @@ type Props = IconNameProps & {
 };
 
 export default function CandidateRow({
-  disabled, DiscussButton, indicatesSelectionToggling, item, onPress, selected,
-  showDisabled,
+  disabled = false, DiscussButton, indicatesSelectionToggling = false, item,
+  onPress = () => {}, selected = false, showDisabled = false,
 }: Props) {
   const { postId, title } = item;
 
@@ -88,11 +88,3 @@ export default function CandidateRow({
     </TouchableHighlight>
   );
 }
-
-CandidateRow.defaultProps = {
-  disabled: false,
-  indicatesSelectionToggling: false,
-  onPress: () => {},
-  selected: false,
-  showDisabled: false,
-};

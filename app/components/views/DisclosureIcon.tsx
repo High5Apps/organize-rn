@@ -20,11 +20,7 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-export default function DisclosureIcon({ style }: Props) {
+export default function DisclosureIcon({ style = {} }: Props) {
   const { styles } = useStyles();
   return <Icon name="chevron-right" style={[styles.icon, style]} />;
 }
-
-DisclosureIcon.defaultProps = {
-  style: {},
-};

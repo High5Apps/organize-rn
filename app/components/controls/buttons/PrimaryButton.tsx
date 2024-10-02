@@ -47,7 +47,7 @@ type Props = {
 };
 
 export default function PrimaryButton({
-  iconName, onPress, label, style,
+  iconName, onPress = () => {}, label, style = {},
 }: Props) {
   const { styles } = useStyles();
   const { disabled, onPressWrapper } = useDisabledDuringOnPress({ onPress });
@@ -69,9 +69,3 @@ export default function PrimaryButton({
     </Pressable>
   );
 }
-
-PrimaryButton.defaultProps = {
-  iconName: undefined,
-  onPress: () => {},
-  style: {},
-};

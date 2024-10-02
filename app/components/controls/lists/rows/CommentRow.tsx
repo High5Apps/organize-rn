@@ -71,8 +71,10 @@ type Props = {
 };
 
 function CommentRow({
-  compactView, disableDepthIndent, enableBodyTextSelection, hideTextButtonRow,
-  highlightObjectionableContent, item, onCommentChanged, showBlockedContent,
+  compactView = false, disableDepthIndent = false,
+  enableBodyTextSelection = false, hideTextButtonRow = false,
+  highlightObjectionableContent = false, item, onCommentChanged = () => {},
+  showBlockedContent = false,
 }: Props) {
   const {
     blockedAt, createdAt, deletedAt, depth, id, myVote, postId, pseudonym,
@@ -174,15 +176,5 @@ function CommentRow({
     </HighlightedRowContainer>
   );
 }
-
-CommentRow.defaultProps = {
-  compactView: false,
-  disableDepthIndent: false,
-  enableBodyTextSelection: false,
-  hideTextButtonRow: false,
-  highlightObjectionableContent: false,
-  onCommentChanged: () => {},
-  showBlockedContent: false,
-};
 
 export default memo(CommentRow);

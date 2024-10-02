@@ -33,7 +33,7 @@ type Props = {
 };
 
 export default function NewConnectionControl({
-  prompt, promptHidden, qrValue, ReviewComponent, setQRValue,
+  prompt, promptHidden = false, qrValue, ReviewComponent, setQRValue,
 }: Props) {
   const { styles } = useStyles();
 
@@ -48,7 +48,3 @@ export default function NewConnectionControl({
     </View>
   );
 }
-
-NewConnectionControl.defaultProps = {
-  promptHidden: false,
-};

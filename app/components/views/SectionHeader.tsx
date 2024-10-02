@@ -31,7 +31,7 @@ type Props = {
 };
 
 export default function SectionHeader({
-  buttonText, children, onPress,
+  buttonText, children, onPress = () => {},
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
@@ -42,11 +42,6 @@ export default function SectionHeader({
     </View>
   );
 }
-
-SectionHeader.defaultProps = {
-  buttonText: undefined,
-  onPress: () => {},
-};
 
 type TitledSection = {
   title: string;

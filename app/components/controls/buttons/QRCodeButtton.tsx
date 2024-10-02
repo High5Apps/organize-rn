@@ -26,7 +26,7 @@ type Props = {
 };
 
 export default function QRCodeButton({
-  onPress, onTimeout, qrCodeValue, timeout,
+  onPress = () => {}, onTimeout = () => {}, qrCodeValue, timeout,
 }: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
@@ -67,8 +67,3 @@ export default function QRCodeButton({
     </FrameButton>
   );
 }
-
-QRCodeButton.defaultProps = {
-  onPress: () => {},
-  onTimeout: () => {},
-};

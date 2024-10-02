@@ -18,6 +18,7 @@ module.exports = {
         'no-undef': 'off',
         'react/function-component-definition': 'off',
         'no-empty': ['error', { 'allowEmptyCatch': true }],
+        'react/require-default-props': 'off',
       },
     },
   ],

@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function Scrim({
-  children, onPress, style,
+  children, onPress = () => {}, style = {},
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   return (
@@ -35,8 +35,3 @@ export default function Scrim({
     </Pressable>
   );
 }
-
-Scrim.defaultProps = {
-  onPress: () => {},
-  style: {},
-};

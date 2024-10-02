@@ -38,7 +38,8 @@ type Props = {
 };
 
 export default function IconButton({
-  disabled, iconName, iconSize, onPress, style,
+  disabled = false, iconName, iconSize = 'default', onPress = () => {},
+  style = {},
 }: Props) {
   const { styles } = useStyles();
   return (
@@ -62,10 +63,3 @@ export default function IconButton({
     </Pressable>
   );
 }
-
-IconButton.defaultProps = {
-  disabled: false,
-  iconSize: 'default',
-  onPress: () => {},
-  style: {},
-};

@@ -57,7 +57,8 @@ type Props = {
 };
 
 function PostRow({
-  compactView, enableBodyTextSelection, item, onPress, onPostChanged,
+  compactView = false, enableBodyTextSelection = false, item, onPress,
+  onPostChanged = () => {},
 }: Props) {
   const {
     createdAt, deletedAt, id, myVote, pseudonym, score, userId,
@@ -118,12 +119,5 @@ function PostRow({
     </TouchableHighlight>
   );
 }
-
-PostRow.defaultProps = {
-  compactView: false,
-  enableBodyTextSelection: false,
-  onPress: undefined,
-  onPostChanged: () => {},
-};
 
 export default memo(PostRow);

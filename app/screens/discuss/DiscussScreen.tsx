@@ -78,8 +78,3 @@ export default function DiscussScreen<T extends keyof DiscussTabsParamList>({
     </ScreenBackground>
   );
 }
-
-DiscussScreen.defaultProps = {
-  category: undefined,
-  prependedPostId: undefined,
-};

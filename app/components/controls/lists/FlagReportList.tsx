@@ -77,7 +77,3 @@ export default function FlagReportList({ handled, onItemPress }: Props) {
     />
   );
 }
-
-FlagReportList.defaultProps = {
-  onItemPress: undefined,
-};

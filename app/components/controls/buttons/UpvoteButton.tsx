@@ -34,7 +34,8 @@ type Props = {
 };
 
 export default function UpvoteButton({
-  buttonStyle, fill, flip, onPress, showDisabled, softDisabled,
+  buttonStyle = {}, fill = false, flip = false, onPress = () => {},
+  showDisabled = false, softDisabled = false,
 }: Props) {
   const { opacity, primary, styles } = useStyles();
 
@@ -63,12 +64,3 @@ export default function UpvoteButton({
     </TouchableOpacity>
   );
 }
-
-UpvoteButton.defaultProps = {
-  buttonStyle: {},
-  fill: false,
-  flip: false,
-  onPress: () => {},
-  showDisabled: false,
-  softDisabled: false,
-};

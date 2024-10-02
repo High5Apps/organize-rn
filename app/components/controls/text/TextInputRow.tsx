@@ -57,8 +57,8 @@ type Props = TextInputProps & {
 
 export default function TextInputRow(props: Props) {
   const {
-    containerStyle, editable, focused, iconEndDisabled, iconEndName,
-    iconEndOnPress, style,
+    containerStyle, editable, focused, iconEndDisabled = false, iconEndName,
+    iconEndOnPress = () => undefined, style,
   } = props;
 
   // Can't use !editable because editable defaults to true when undefined
@@ -103,11 +103,3 @@ export default function TextInputRow(props: Props) {
     </View>
   );
 }
-
-TextInputRow.defaultProps = {
-  containerStyle: undefined,
-  focused: undefined,
-  iconEndDisabled: false,
-  iconEndName: undefined,
-  iconEndOnPress: () => undefined,
-};

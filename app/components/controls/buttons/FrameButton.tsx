@@ -46,8 +46,9 @@ type Props = {
 
 export default function FrameButton(props: PropsWithChildren<Props>) {
   const {
-    children, deemphasizeWhenDisabled, disabled, onContainerSizeChange, onPress,
-    showPressedInLightMode, style,
+    children, deemphasizeWhenDisabled = false, disabled = false,
+    onContainerSizeChange = () => {}, onPress = () => {},
+    showPressedInLightMode = false, style = {},
   } = props;
 
   const { isDarkMode, styles } = useStyles();
@@ -76,12 +77,3 @@ export default function FrameButton(props: PropsWithChildren<Props>) {
     </Pressable>
   );
 }
-
-FrameButton.defaultProps = {
-  deemphasizeWhenDisabled: false,
-  disabled: false,
-  onContainerSizeChange: () => {},
-  onPress: () => {},
-  showPressedInLightMode: false,
-  style: {},
-};

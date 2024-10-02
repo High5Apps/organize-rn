@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function PostCategorySelector({
-  disabled, onSelectionChanged, selection,
+  disabled = false, onSelectionChanged = () => {}, selection = 'general',
 }: Props) {
   const { styles } = useStyles();
 
@@ -45,9 +45,3 @@ export default function PostCategorySelector({
     />
   );
 }
-
-PostCategorySelector.defaultProps = {
-  disabled: false,
-  onSelectionChanged: () => {},
-  selection: 'general',
-};

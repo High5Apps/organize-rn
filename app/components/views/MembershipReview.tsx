@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function MembershipReview({
-  onConnectionPreview, onConnectionPreviewError, qrValue, style,
+  onConnectionPreview, onConnectionPreviewError, qrValue, style = {},
 }: Props) {
   return (
     <ConnectionRequestProgress
@@ -39,7 +39,3 @@ export default function MembershipReview({
     />
   );
 }
-
-MembershipReview.defaultProps = {
-  style: {},
-};

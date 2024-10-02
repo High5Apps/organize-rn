@@ -33,8 +33,9 @@ type Props = {
 };
 
 export default function OrgGraph({
-  hasMultipleNodes, error, onInteraction, onRenderingProgressChanged, options,
-  selectedUserId, setSelectedUserId, visGraphData,
+  hasMultipleNodes, error, onInteraction = () => {},
+  onRenderingProgressChanged = () => {}, options, selectedUserId,
+  setSelectedUserId, visGraphData,
 }: Props) {
   const [loading, setLoading] = useState(false);
 
@@ -99,10 +100,3 @@ export default function OrgGraph({
     </View>
   );
 }
-
-OrgGraph.defaultProps = {
-  onInteraction: () => {},
-  onRenderingProgressChanged: () => {},
-  selectedUserId: undefined,
-  visGraphData: undefined,
-};

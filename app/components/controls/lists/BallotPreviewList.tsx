@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function BallotPreviewList({
-  contentContainerStyle, onItemPress,
+  contentContainerStyle = {}, onItemPress = () => {},
   prependedBallotId: maybePrependedBallotId,
 }: Props) {
   const listRef = useRef<SectionList<BallotPreview, BallotPreviewSection>>(null);
@@ -112,9 +112,3 @@ export default function BallotPreviewList({
     />
   );
 }
-
-BallotPreviewList.defaultProps = {
-  contentContainerStyle: {},
-  onItemPress: () => {},
-  prependedBallotId: undefined,
-};

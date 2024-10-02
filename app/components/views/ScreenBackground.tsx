@@ -34,7 +34,3 @@ export default function ScreenBackground({
     </Pressable>
   );
 }
-
-ScreenBackground.defaultProps = {
-  onPress: undefined,
-};

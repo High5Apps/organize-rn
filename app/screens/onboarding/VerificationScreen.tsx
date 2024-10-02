@@ -104,6 +104,7 @@ export default function VerificationScreen() {
             onChangeText={setCode}
             onSubmitEditing={Keyboard.dismiss}
             placeholder="123456"
+            returnKeyType="none"
             value={code}
           />
         </View>

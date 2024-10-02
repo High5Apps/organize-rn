@@ -30,7 +30,7 @@ type Props = {
 
 export default function ConnectionRequestProgress({
   onConnectionPreview, onConnectionPreviewError, qrCodeValue,
-  reviewFrameProvider, style,
+  reviewFrameProvider, style = {},
 }: Props) {
   const { groupKey, jwt: sharerJwt } = qrCodeValue;
   const { styles } = useStyles();
@@ -72,7 +72,3 @@ export default function ConnectionRequestProgress({
     </View>
   );
 }
-
-ConnectionRequestProgress.defaultProps = {
-  style: {},
-};

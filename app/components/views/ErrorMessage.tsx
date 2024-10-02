@@ -21,11 +21,7 @@ type Props = {
   message?: string;
 };
 
-export default function ErrorMessage({ message }: Props) {
+export default function ErrorMessage({ message = '' }: Props) {
   const { styles } = useStyles();
   return <Text style={styles.text}>{message}</Text>;
 }
-
-ErrorMessage.defaultProps = {
-  message: '',
-};

@@ -42,7 +42,7 @@ type Props = {
 };
 
 export default function KeyboardAvoidingScreenBackground({
-  children, style, topNavigationBarHidden,
+  children, style = {}, topNavigationBarHidden = false,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
@@ -68,8 +68,3 @@ export default function KeyboardAvoidingScreenBackground({
     </ScreenBackground>
   );
 }
-
-KeyboardAvoidingScreenBackground.defaultProps = {
-  style: {},
-  topNavigationBarHidden: false,
-};

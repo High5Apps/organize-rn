@@ -84,7 +84,7 @@ type Props = {
   onPress?: (item: BallotPreview) => void;
 };
 
-export default function BallotRow({ item, onPress }: Props) {
+export default function BallotRow({ item, onPress = () => {} }: Props) {
   const {
     category, question, userId, nominationsEndAt, votingEndsAt,
   } = item;
@@ -116,7 +116,3 @@ export default function BallotRow({ item, onPress }: Props) {
     </TouchableHighlight>
   );
 }
-
-BallotRow.defaultProps = {
-  onPress: () => {},
-};

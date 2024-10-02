@@ -28,8 +28,8 @@ type Props = {
 };
 
 export default function NotableUserList({
-  disableRows, ListHeaderComponent, officers, onRefresh,
-  scrollEnabled, selectedUser, setSelectedUserId,
+  disableRows = true, ListHeaderComponent, officers, onRefresh,
+  scrollEnabled = true, selectedUser, setSelectedUserId,
 }: Props) {
   const [listHeaderComponentHeight, setListHeaderComponentHeight] = useState(0);
 
@@ -124,10 +124,3 @@ export default function NotableUserList({
     />
   );
 }
-
-NotableUserList.defaultProps = {
-  disableRows: true,
-  ListHeaderComponent: undefined,
-  scrollEnabled: true,
-  selectedUser: undefined,
-};

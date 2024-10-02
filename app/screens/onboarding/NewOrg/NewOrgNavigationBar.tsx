@@ -38,7 +38,7 @@ type Props = {
 };
 
 export default function NewOrgNavigationBar({
-  backPressed, currentStep, nextDisabled, nextPressed,
+  backPressed, currentStep, nextDisabled = false, nextPressed,
 }: Props) {
   const { styles } = useStyles();
 
@@ -66,7 +66,3 @@ export default function NewOrgNavigationBar({
     </View>
   );
 }
-
-NewOrgNavigationBar.defaultProps = {
-  nextDisabled: false,
-};

@@ -38,10 +38,6 @@ export function CurrentUserDataContextProvider({
   );
 }
 
-CurrentUserDataContextProvider.defaultProps = {
-  initialCurrentUserData: undefined,
-};
-
 export const useCurrentUserDataContext = () => useContext(
   CurrentUserDataContext,
 );

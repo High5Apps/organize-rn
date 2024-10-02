@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function QRCamera({
-  buttonDisabled, children, enabled, onPress, setQRValue,
+  buttonDisabled = false, children, enabled, onPress = () => {}, setQRValue,
 }: PropsWithChildren<Props>) {
   const [cameraInitialized, setCameraInitialized] = useState(false);
 
@@ -78,8 +78,3 @@ export default function QRCamera({
     </FrameButton>
   );
 }
-
-QRCamera.defaultProps = {
-  buttonDisabled: false,
-  onPress: () => {},
-};

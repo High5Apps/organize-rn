@@ -32,7 +32,8 @@ type Props = {
 };
 
 export default function TextButton({
-  children, containerStyle, disabled, onPress, style,
+  children, containerStyle = {}, disabled = false, onPress = () => {},
+  style = {},
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
@@ -52,10 +53,3 @@ export default function TextButton({
     </TouchableOpacity>
   );
 }
-
-TextButton.defaultProps = {
-  containerStyle: {},
-  disabled: false,
-  onPress: () => {},
-  style: {},
-};

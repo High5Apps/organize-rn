@@ -120,7 +120,7 @@ type Props = {
 };
 
 export default function CommentList({
-  containerStyle, emptyListMessageOnPress,
+  containerStyle = {}, emptyListMessageOnPress = () => {},
   insertedComments: maybeInsertedCommentIds, ListHeaderComponent, postId,
 }: Props) {
   const listRef = useRef<FlatList<Comment>>(null);
@@ -198,10 +198,3 @@ export default function CommentList({
     />
   );
 }
-
-CommentList.defaultProps = {
-  containerStyle: {},
-  emptyListMessageOnPress: () => {},
-  insertedComments: [],
-  ListHeaderComponent: undefined,
-};

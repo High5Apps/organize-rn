@@ -51,12 +51,3 @@ export default function ResultList({
     />
   );
 }
-
-ResultList.defaultProps = {
-  ListEmptyComponent: undefined,
-  ListFooterComponent: undefined,
-  ListHeaderComponent: undefined,
-  maxWinners: undefined,
-  results: undefined,
-  termStartsAt: undefined,
-};

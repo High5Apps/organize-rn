@@ -31,7 +31,7 @@ const DEFAULT_DELIMITER = '**';
 
 // For example, 'Hello, **world**' would display "world" as bold
 export default function TextBoldener({
-  baseStyle, boldStyle, delimiter: maybeDelimiter, text,
+  baseStyle, boldStyle, delimiter: maybeDelimiter = DEFAULT_DELIMITER, text,
 }: Props) {
   const delimiter = maybeDelimiter ?? DEFAULT_DELIMITER;
   const emboldenedText = emboldenOnDelimiter({
@@ -39,7 +39,3 @@ export default function TextBoldener({
   });
   return <Text style={baseStyle}>{emboldenedText}</Text>;
 }
-
-TextBoldener.defaultProps = {
-  delimiter: DEFAULT_DELIMITER,
-};

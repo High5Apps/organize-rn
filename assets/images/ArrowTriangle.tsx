@@ -22,7 +22,7 @@ type Props = {
 };
 
 function ArrowTriangle({
-  color, fill, flip, style,
+  color, fill = false, flip = false, style = {},
 }: Props) {
   const { styles } = useStyles();
 
@@ -48,11 +48,5 @@ function ArrowTriangle({
     </Svg>
   );
 }
-
-ArrowTriangle.defaultProps = {
-  fill: false,
-  flip: false,
-  style: {},
-};
 
 export default ArrowTriangle;

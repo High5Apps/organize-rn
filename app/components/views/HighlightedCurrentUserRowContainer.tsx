@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function HighlightedCurrentUserRowContainer({
-  children, userIds, style,
+  children, userIds, style = {},
 }: PropsWithChildren<Props>) {
   const { colors, spacing } = useTheme();
 
@@ -28,7 +28,3 @@ export default function HighlightedCurrentUserRowContainer({
     </HighlightedRowContainer>
   );
 }
-
-HighlightedCurrentUserRowContainer.defaultProps = {
-  style: {},
-};

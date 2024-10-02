@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function FadeInView({
-  children, delay, style,
+  children, delay = 0, style = {},
 }: PropsWithChildren<Props>) {
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -34,8 +34,3 @@ export default function FadeInView({
     </Animated.View>
   );
 }
-
-FadeInView.defaultProps = {
-  delay: 0,
-  style: {},
-};

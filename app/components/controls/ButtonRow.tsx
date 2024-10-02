@@ -29,7 +29,7 @@ type Props = {
 };
 
 export default function ButtonRow({
-  children, elevated, style,
+  children, elevated = false, style = {},
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
@@ -45,8 +45,3 @@ export default function ButtonRow({
     </View>
   );
 }
-
-ButtonRow.defaultProps = {
-  elevated: false,
-  style: {},
-};

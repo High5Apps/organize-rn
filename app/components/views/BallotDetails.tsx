@@ -56,8 +56,3 @@ export default function BallotDetails({ ballot, style }: Props) {
     </View>
   );
 }
-
-BallotDetails.defaultProps = {
-  ballot: undefined,
-  style: undefined,
-};

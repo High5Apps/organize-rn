@@ -21,8 +21,8 @@ type Props = {
 };
 
 export default function PostList({
-  category, contentContainerStyle, prependedPostId: maybePrependedPostId,
-  ListEmptyComponent, onItemPress, sort,
+  category, contentContainerStyle = {}, prependedPostId: maybePrependedPostId,
+  ListEmptyComponent, onItemPress = () => {}, sort,
 }: Props) {
   const listRef = useRef<FlatList<Post>>(null);
   useScrollToTop(listRef);
@@ -84,10 +84,3 @@ export default function PostList({
     />
   );
 }
-
-PostList.defaultProps = {
-  category: undefined,
-  contentContainerStyle: {},
-  prependedPostId: undefined,
-  onItemPress: () => {},
-};

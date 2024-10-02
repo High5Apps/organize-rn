@@ -65,7 +65,7 @@ type Props = {
 };
 
 export default function NewPostScreenBase({
-  candidateId, initialCategory, initialPostTitle, onPostCreated,
+  candidateId, initialCategory, initialPostTitle, onPostCreated = () => null,
 }: Props) {
   const [
     postCategory, setPostCategory,
@@ -170,10 +170,3 @@ export default function NewPostScreenBase({
     </KeyboardAvoidingScreenBackground>
   );
 }
-
-NewPostScreenBase.defaultProps = {
-  candidateId: undefined,
-  initialCategory: undefined,
-  initialPostTitle: undefined,
-  onPostCreated: () => null,
-};

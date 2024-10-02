@@ -110,7 +110,3 @@ export default function TransparencyLogRow({ item, onPress }: Props) {
     </TouchableHighlight>
   );
 }
-
-TransparencyLogRow.defaultProps = {
-  onPress: undefined,
-};

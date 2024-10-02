@@ -199,7 +199,3 @@ export default function ResultRow({
     </HighlightedCurrentUserRowContainer>
   );
 }
-
-ResultRow.defaultProps = {
-  termStartsAt: undefined,
-};

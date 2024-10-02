@@ -93,11 +93,6 @@ function TestComponent({
   );
 }
 
-TestComponent.defaultProps = {
-  initialCurrentUserData: undefined,
-  newCurrentUserData: undefined,
-};
-
 async function renderTestComponent({
   initialCurrentUserData, newCurrentUserData,
 }: Props) {
