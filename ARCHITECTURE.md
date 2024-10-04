@@ -68,7 +68,7 @@ Heirarchies of `screens` defined using the React Navigation framework
 
 ##### `app/networking`
 
-APIs for communicating with the [organize-api](https://github.com/High5Apps/organize-api) backend server and adapting the responses so that they're easier to work with in the `model` layer
+APIs for communicating with the [organize-backend](https://github.com/High5Apps/organize-backend) backend server and adapting the responses so that they're easier to work with in the `model` layer
 
 **Architecture Invariant:** The `model` layer assumes that all data is decrypted instead of encrypted, camelCase instead of snake_case, and uses `Date` objects instead of date strings. As such, all of these transformations must be handled by the `networking` layer, not the `model` layer.
 
@@ -112,7 +112,7 @@ But it should never:
 
 ### No lock-in to a single native platform
 
-React Native was chosen as the core framework to remove the single point of failure inherent to relying on iOS or Android alone. The motivation for this is detailed further in [this section](https://github.com/High5Apps/organize-api/blob/main/ARCHITECTURE.md#minimal-reliance-on-external-services-with-unaligned-interests) of the `organize-api` [`ARCHITECTURE.md` file](https://github.com/High5Apps/organize-api/blob/main/ARCHITECTURE.md).
+React Native was chosen as the core framework to remove the single point of failure inherent to relying on iOS or Android alone. The motivation for this is detailed further in [this section](https://github.com/High5Apps/organize-backend/blob/main/ARCHITECTURE.md#minimal-reliance-on-external-services-with-unaligned-interests) of the `organize-backend` [`ARCHITECTURE.md` file](https://github.com/High5Apps/organize-backend/blob/main/ARCHITECTURE.md).
 
 Furthermore, [React Native for Web](https://necolas.github.io/react-native-web/) offers a straightforward mitigation plan if both native platforms were to abruptly end their partnerships.
 

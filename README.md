@@ -1,6 +1,6 @@
 # organize-rn
 
-[organize-rn](https://github.com/High5Apps/organize-rn) is a [React Native](https://reactnative.dev/) client for the [organize-api](https://github.com/High5Apps/organize-api) backend server.
+[organize-rn](https://github.com/High5Apps/organize-rn) is a [React Native](https://reactnative.dev/) client for the [organize-backend](https://github.com/High5Apps/organize-backend) backend server.
 
 ## Screenshots
 
@@ -39,7 +39,7 @@
    ```sh
    npm start
    ```
-5. Start the [organize-api](https://github.com/High5Apps/organize-api) development server
+5. Start the [organize-backend](https://github.com/High5Apps/organize-backend) development server
    ```sh
    dc up
    ```
