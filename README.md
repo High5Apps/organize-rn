@@ -2,6 +2,8 @@
 
 [organize-rn](https://github.com/High5Apps/organize-rn) is a [React Native](https://reactnative.dev/) client for the [organize-backend](https://github.com/High5Apps/organize-backend) backend server.
 
+Looking for the app? Check out <https://getorganize.app>
+
 ## Screenshots
 
 <img alt="Improve your work life" src="/docs/screenshots/ios-0-improve.png" width=19%>&nbsp;
