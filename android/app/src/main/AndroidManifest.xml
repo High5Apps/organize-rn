@@ -26,12 +26,14 @@
           <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
 
-        <!-- Required for deep links -->
-        <intent-filter>
+        <!-- Required for app links -->
+        <intent-filter android:autoVerify="true">
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
-          <data android:scheme="organize" />
+          <data android:scheme="https"
+            android:host="getorganize.app"
+            android:path="/connect" />
         </intent-filter>
       </activity>
     </application>
