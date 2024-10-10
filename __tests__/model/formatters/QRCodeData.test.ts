@@ -81,13 +81,4 @@ describe('parse', () => {
   it('parses groupKey', () => {
     expect(value.groupKey).toBe(fakeGroupKey);
   });
-
-  it('returns null for other protocols', () => {
-    const parsedUrl = new URL(formattedString);
-    parsedUrl.protocol = 'foo:';
-    const input = parsedUrl.href;
-    const parsed = QRCodeDataParser({ input }).parse();
-    expect(parsed).toBeNull();
-    expect(consoleWarnSpy).toBeCalled();
-  });
 });

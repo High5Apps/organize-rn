@@ -1,16 +1,11 @@
 import type { CurrentUserType } from '../context';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
 import { isQRCodeValue, type QRCodeValue } from '../types';
+import { connectURI } from '../../networking';
 
 export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
 
-// PROTOCOL should never be changed to https. Using a non-HTTP protocol lowers
-// the risk of the group key accidentally being sent to the server.
-const PROTOCOL = 'organize:';
-
-const CONNECT_PATH = 'connect';
-const URL_BASE = `${PROTOCOL}//${CONNECT_PATH}`;
 const JWT_PARAM = 'jwt';
 const GROUP_KEY_PARAM = 'gk';
 
@@ -38,9 +33,14 @@ export function QRCodeDataFormatter({
 
     const base64UrlGroupKey = base64ToBase64Url(base64GroupKey);
 
-    const url = new URL(URL_BASE);
-    url.searchParams.set(JWT_PARAM, jwtString);
-    url.searchParams.set(GROUP_KEY_PARAM, base64UrlGroupKey);
+    const url = new URL(connectURI);
+    const searchParams = new URLSearchParams();
+    searchParams.set(JWT_PARAM, jwtString);
+    searchParams.set(GROUP_KEY_PARAM, base64UrlGroupKey);
+
+    // Using hash params ensures that the group key can't be sent to the backend
+    url.hash = searchParams.toString();
+
     return url.href;
   }
 
@@ -61,13 +61,8 @@ export function QRCodeDataParser({ input }: ParserProps) {
       return null;
     }
 
-    const { protocol: parsedProtocol, searchParams } = parsedUrl;
-
-    if (parsedProtocol !== PROTOCOL) {
-      console.warn(`Unexpected protocol: ${parsedProtocol}`);
-      return null;
-    }
-
+    const paramsWithoutHashSign = parsedUrl.hash.slice(1);
+    const searchParams = new URLSearchParams(paramsWithoutHashSign);
     const jwt = searchParams.get(JWT_PARAM);
     const base64UrlGroupKey = searchParams.get(GROUP_KEY_PARAM);
 
