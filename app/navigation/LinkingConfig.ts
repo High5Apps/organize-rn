@@ -1,44 +1,51 @@
 import { LinkingOptions } from '@react-navigation/native';
+import { useCurrentUser } from '../model';
+import { RootStackParamList } from './types';
 
-const linking: LinkingOptions<ReactNavigation.RootParamList> = {
-  prefixes: ['organize://'],
-  config: {
-    screens: {
-      WelcomeStack: {
-        initialRouteName: 'Welcome',
+type LinkingConfig = LinkingOptions<RootStackParamList>;
+
+const linking: LinkingConfig = {
+  prefixes: ['https://getorganize.app'],
+};
+
+export default function useLinkingConfig(): LinkingConfig | undefined {
+  const { currentUser } = useCurrentUser();
+  if (!currentUser) {
+    return {
+      ...linking,
+      config: {
         screens: {
-          NewOrg: 'orgs/new',
-          OrgReview: 'orgs/review',
-          JoinOrg: 'memberships/new',
-          Welcome: 'welcome',
+          WelcomeStack: {
+            initialRouteName: 'Welcome',
+            screens: {
+              JoinOrg: 'connect',
+            },
+          },
         },
       },
-      OrgTabs: {
-        screens: {
-          ConnectStack: {
-            screens: {
-              Connect: 'connect',
-            },
-          },
-          DiscussStack: {
-            screens: {
-              Discuss: 'discuss',
-            },
-          },
-          VoteStack: {
-            screens: {
-              Vote: 'vote',
-            },
-          },
-          OrgStack: {
-            screens: {
-              Org: 'org',
-            },
+    };
+  }
+
+  if (currentUser.org.unverified) {
+    return undefined;
+  }
+
+  return {
+    ...linking,
+    config: {
+      screens: {
+        OrgTabs: {
+          initialRouteName: 'ConnectStack',
+          screens: {
+            ConnectStack: {
+              initialRouteName: 'Connect',
+              screens: {
+                NewConnection: 'connect',
+              },
+            } as any, // as any fixes https://github.com/react-navigation/react-navigation/issues/10876
           },
         },
       },
     },
-  },
-};
-
-export default linking;
+  };
+}

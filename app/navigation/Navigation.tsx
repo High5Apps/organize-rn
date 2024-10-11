@@ -1,14 +1,15 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import LinkingConfig from './LinkingConfig';
 import { useNavigationTheme } from '../Theme';
 import RootStack from './RootStack';
+import useLinkingConfig from './LinkingConfig';
 
 export default function Navigation() {
   const navigationTheme = useNavigationTheme();
+  const linkingConfig = useLinkingConfig();
 
   return (
-    <NavigationContainer linking={LinkingConfig} theme={navigationTheme}>
+    <NavigationContainer linking={linkingConfig} theme={navigationTheme}>
       <RootStack />
     </NavigationContainer>
   );
