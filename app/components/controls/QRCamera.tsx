@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  Camera, Code, useCameraDevice, useCodeScanner,
+  Camera, Code, useCameraDevice, useCameraPermission, useCodeScanner,
 } from 'react-native-vision-camera';
 import { QRCodeDataParser, isDefined, isNonNull } from '../../model';
 import { ErrorMessage, FadeInView } from '../views';
@@ -27,7 +27,7 @@ export default function QRCamera({
       const uniqueScannedValues = [...new Set(scannedValues)];
       try {
         const maybeFirstQRValue = uniqueScannedValues.map(
-          (scannedValue) => QRCodeDataParser({ input: scannedValue }).parse(),
+          (scannedValue) => QRCodeDataParser().parse({ input: scannedValue }),
         ).filter(isNonNull).at(0);
         if (maybeFirstQRValue) {
           setQRValue(maybeFirstQRValue);
@@ -38,7 +38,8 @@ export default function QRCamera({
     },
   });
 
-  const device = useCameraDevice('back');
+  const { hasPermission } = useCameraPermission();
+  const device = hasPermission && useCameraDevice('back');
 
   let content;
   if (device) {

@@ -70,7 +70,7 @@ describe('parse', () => {
   beforeAll(async () => {
     consoleWarnSpy.mockClear();
     formattedString = await formatter.toString();
-    value = QRCodeDataParser({ input: formattedString }).parse()!;
+    value = QRCodeDataParser().parse({ input: formattedString })!;
     expect(consoleWarnSpy).not.toBeCalled();
   });
 

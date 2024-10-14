@@ -7,7 +7,9 @@ import {
 } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import type { OfficeCategory, PermissionScope, PostCategory } from '../model';
+import type {
+  OfficeCategory, PermissionScope, PostCategory, QRValueRouteParams,
+} from '../model';
 
 export type RootStackParamList = {
   WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
@@ -32,7 +34,7 @@ export type OrgReviewParams = Required<Omit<NewOrgScreenParams, 'step'>>;
 export type NewOrgParam = keyof OrgReviewParams;
 
 export type WelcomeStackParamList = {
-  JoinOrg: undefined;
+  JoinOrg: QRValueRouteParams | undefined;
   NewOrg: NewOrgScreenParams;
   OrgReview: OrgReviewParams;
   Verification: undefined;
@@ -74,7 +76,7 @@ export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
 
 export type ConnectStackParamList = {
   Connect: undefined;
-  NewConnection: undefined;
+  NewConnection: QRValueRouteParams | undefined;
 };
 
 export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
@@ -84,6 +86,7 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
   >;
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
+export type NewConnectionScreenProps = ConnectStackScreenProps<'NewConnection'>;
 
 export type CommentThreadScreenParams = {
   commentId: string;

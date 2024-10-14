@@ -3,6 +3,7 @@ export { default as JWT } from './JWT';
 export { default as getMessageAge } from './MessageAge';
 export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
+  useQRValue,
 } from './QRCodeData';
 export { default as getTenure } from './Tenure';
 export { default as getTimeRemaining } from './TimeRemaining';

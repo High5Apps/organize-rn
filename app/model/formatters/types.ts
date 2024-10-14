@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
+export type { QRValueRouteParams } from './QRCodeData';
 export type { TimeRemainingOptions } from './TimeRemaining';

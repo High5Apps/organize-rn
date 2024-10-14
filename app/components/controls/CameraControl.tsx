@@ -74,7 +74,7 @@ export default function CameraControl({
   const isAuthorized = cameraPermission === 'granted';
   const IconPromptComponent = getIconPrompt(cameraPermission);
 
-  if (!isAuthorized) {
+  if (!isAuthorized && !qrValue) {
     return (
       <FrameButton onPress={onPress}>
         {IconPromptComponent}

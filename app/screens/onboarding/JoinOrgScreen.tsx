@@ -6,8 +6,8 @@ import {
   useRequestProgress,
 } from '../../components';
 import {
-  ConnectionPreview, QRCodeValue, createCurrentUser, getErrorMessage,
-  useCurrentUser,
+  ConnectionPreview, createCurrentUser, getErrorMessage, useCurrentUser,
+  useQRValue,
 } from '../../model';
 import type { JoinOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -37,9 +37,9 @@ const useStyles = () => {
 
 const primaryButtonLabel = 'Join';
 
-export default function JoinOrgScreen({ navigation }: JoinOrgScreenProps) {
+export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
-  const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
+  const [qrValue, setQRValue] = useQRValue(route.params);
   const [
     connectionPreview, setConnectionPreview,
   ] = useState<ConnectionPreview | null>(null);

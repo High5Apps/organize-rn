@@ -4,8 +4,9 @@ import {
   ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
   PrimaryButton, ScreenBackground, useRequestProgress,
 } from '../../components';
-import { ConnectionPreview, QRCodeValue, useConnection } from '../../model';
+import { ConnectionPreview, useConnection, useQRValue } from '../../model';
 import useTheme from '../../Theme';
+import type { NewConnectionScreenProps } from '../../navigation';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -28,9 +29,11 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function NewConnectionScreen() {
+export default function NewConnectionScreen({
+  route,
+}: NewConnectionScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
-  const [qrValue, setQRValue] = useState<QRCodeValue | null>(null);
+  const [qrValue, setQRValue] = useQRValue(route.params);
   const [
     connectionPreview, setConnectionPreview,
   ] = useState<ConnectionPreview | null>(null);

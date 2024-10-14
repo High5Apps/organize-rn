@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type { CurrentUserType } from '../context';
 import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
 import { isQRCodeValue, type QRCodeValue } from '../types';
@@ -47,26 +48,20 @@ export function QRCodeDataFormatter({
   return { toString };
 }
 
-type ParserProps = {
+type GetQRValueProps = {
+  base64UrlGroupKey?: string | null;
+  jwt?: string | null;
+};
+
+type ParseProps = {
   input: string;
 };
 
-export function QRCodeDataParser({ input }: ParserProps) {
-  function parse(): QRCodeValue | null {
-    let parsedUrl: URL;
-    try {
-      parsedUrl = new URL(input);
-    } catch (_) {
-      console.warn(`Failed to parse url from: ${input}`);
-      return null;
-    }
-
-    const paramsWithoutHashSign = parsedUrl.hash.slice(1);
-    const searchParams = new URLSearchParams(paramsWithoutHashSign);
-    const jwt = searchParams.get(JWT_PARAM);
-    const base64UrlGroupKey = searchParams.get(GROUP_KEY_PARAM);
-
-    if (jwt === null || base64UrlGroupKey === null) {
+export function QRCodeDataParser() {
+  function getQRValue({
+    base64UrlGroupKey, jwt,
+  }: GetQRValueProps): QRCodeValue | null {
+    if (!jwt || !base64UrlGroupKey) {
       return null;
     }
 
@@ -82,5 +77,40 @@ export function QRCodeDataParser({ input }: ParserProps) {
     return value;
   }
 
-  return { parse };
+  function parse({ input }: ParseProps): QRCodeValue | null {
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(input);
+    } catch (_) {
+      console.warn(`Failed to parse url from: ${input}`);
+      return null;
+    }
+
+    const paramsWithoutHashSign = parsedUrl.hash.slice(1);
+    const searchParams = new URLSearchParams(paramsWithoutHashSign);
+    const jwt = searchParams.get(JWT_PARAM);
+    const base64UrlGroupKey = searchParams.get(GROUP_KEY_PARAM);
+    return getQRValue({ base64UrlGroupKey, jwt });
+  }
+
+  return { getQRValue, parse };
+}
+
+export type QRValueRouteParams = {
+  jwt: string;
+  gk: string;
+};
+
+export function useQRValue(routeParams: QRValueRouteParams | undefined) {
+  const { gk: base64UrlGroupKey, jwt } = routeParams ?? {};
+
+  const [qrValue, setQRValue] = useState<QRCodeValue | null>(
+    QRCodeDataParser().getQRValue({ base64UrlGroupKey, jwt }),
+  );
+
+  useEffect(() => {
+    setQRValue(QRCodeDataParser().getQRValue({ base64UrlGroupKey, jwt }));
+  }, [base64UrlGroupKey, jwt]);
+
+  return [qrValue, setQRValue] as const;
 }
