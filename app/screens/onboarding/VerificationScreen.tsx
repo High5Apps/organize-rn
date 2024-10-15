@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Keyboard, ScrollView, StyleSheet, Text, View,
+  Keyboard, Platform, ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
@@ -104,7 +104,7 @@ export default function VerificationScreen() {
             onChangeText={setCode}
             onSubmitEditing={Keyboard.dismiss}
             placeholder="123456"
-            returnKeyType="none"
+            returnKeyType={Platform.OS === 'android' ? 'none' : 'default'}
             value={code}
           />
         </View>
