@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { CircleLogo } from '../../../assets';
 import {
   AutoscaledText, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
@@ -27,9 +27,6 @@ const useStyles = () => {
       color: colors.labelSecondary,
       fontFamily: font.weights.regular,
     },
-    subtitleEmphasized: {
-      fontStyle: 'italic',
-    },
     title: {
       color: colors.label,
       fontFamily: font.weights.medium,
@@ -54,9 +51,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           Organize
         </AutoscaledText>
         <AutoscaledText style={styles.subtitle}>
-          Fearlessly form
-          <Text style={styles.subtitleEmphasized}> your </Text>
-          union
+          Form your own labor union
         </AutoscaledText>
       </LockingScrollView>
       <ButtonRow elevated={buttonRowElevated}>
