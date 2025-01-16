@@ -6,7 +6,7 @@ import { useCurrentUser } from './context';
 import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
 import Email from './Email';
-import { privacyPolicyURI, termsOfServiceURI } from '../networking';
+import { blogURI, privacyPolicyURI, termsOfServiceURI } from '../networking';
 
 const BUG_REPORT_BODY = 'Please describe the bug and add screenshots if possible. The more you can tell us, the quicker we can fix it.\n\nInclude things like what you expected to happen, what actually happened, and what you were doing in the app right before the bug happened. Thanks!\n\n';
 const BUG_REPORT_SUBJECT = 'Organize Bug Report';
@@ -59,6 +59,11 @@ export default function useSettings(): SettingsSection[] {
       {
         title: 'About',
         data: [
+          {
+            iconName: 'menu-book',
+            onPress: () => Linking.openURL(blogURI),
+            title: 'How to Organize',
+          },
           {
             iconName: 'lock',
             onPress: () => Linking.openURL(privacyPolicyURI),

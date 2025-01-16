@@ -19,7 +19,7 @@ export {
 } from './PermissionAPI';
 export { createPost, fetchPost, fetchPosts } from './PostAPI';
 export {
-  appStoreURI, connectURI, privacyPolicyURI, termsOfServiceURI,
+  appStoreURI, blogURI, connectURI, privacyPolicyURI, termsOfServiceURI,
 } from './Routes';
 export { createTerm } from './TermAPI';
 export { default as createOrUpdateUpvote } from './UpvoteAPI';
