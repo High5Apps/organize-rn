@@ -4,17 +4,18 @@
 import { camelToSnake } from './Json';
 import { PermissionScope } from './types';
 
-const prodOrigin = 'https://getorganize.app';
-const origin = __DEV__ ? 'http://localhost:8080' : prodOrigin;
+const domain = 'getorganize.app';
+const apiOrigin = __DEV__ ? 'http://localhost:8080' : `https://api.${domain}`;
 
-export const appStoreURI = ({ ref }: { ref?: string } = {}) => `${prodOrigin}/store${!ref ? '' : `?ref=${ref}`}`;
-export const blogURI = `${prodOrigin}/blog/tips_for_starting_a_union`;
-export const connectURI = `${prodOrigin}/connect`;
-export const privacyPolicyURI = `${prodOrigin}/privacy`;
-export const termsOfServiceURI = `${prodOrigin}/terms`;
+const siteOrigin = `https://${domain}`;
+export const appStoreURI = ({ ref }: { ref?: string } = {}) => `${siteOrigin}/store${!ref ? '' : `?ref=${ref}`}`;
+export const blogURI = `${siteOrigin}/blog/tips_for_starting_a_union`;
+export const connectURI = `${siteOrigin}/connect`;
+export const privacyPolicyURI = `${siteOrigin}/privacy`;
+export const termsOfServiceURI = `${siteOrigin}/terms`;
 
 const version = 'v1';
-const apiRoute = `${origin}/api/${version}`;
+const apiRoute = `${apiOrigin}/${version}`;
 
 export const ballotsURI = `${apiRoute}/ballots`;
 export const ballotURI = (ballotId: string) => `${ballotsURI}/${ballotId}`;
