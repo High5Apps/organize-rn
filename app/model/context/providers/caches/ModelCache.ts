@@ -22,6 +22,13 @@ export default function useModelCache<T extends Model>() {
     if (models === undefined) { return; }
 
     setModelCache((mc) => {
+      const allEqual = models.every((model) => {
+        const cachedModel = mc.get(model.id);
+        return cachedModel && isEqual(model, cachedModel);
+      });
+
+      if (allEqual) { return mc; }
+
       const unequalModels = models.map((model) => {
         const cachedModel = mc.get(model.id);
         const equal = cachedModel && isEqual(model, cachedModel);

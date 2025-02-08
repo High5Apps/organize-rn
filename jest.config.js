@@ -130,7 +130,6 @@ module.exports = {
     "<rootDir>/__tests__/jestSetupMockReactNativeVisionCamera.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeSafeAreaContext.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeWebview.ts",
-    "<rootDir>/__tests__/jestSetupMockReactNavigation.ts",
   ],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test

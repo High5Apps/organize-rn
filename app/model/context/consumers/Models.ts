@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { isDefined, Model } from '../../types';
 
@@ -14,7 +14,9 @@ export default function useModels<T extends Model>({
   getCachedModel,
 }: Props<T>) {
   const [ids, setIds] = useState<string[]>([]);
-  const [models, setModels] = useState<T[]>([]);
+  const models = useMemo(() => (
+    ids.map(getCachedModel).filter(isDefined)
+  ), [ids, getCachedModel]);
 
   // This doesn't allow updaters, because I couldn't figure out how to reliably
   // get the previous value. It's not necessarily just `ids` if wrappedSetIds is
@@ -27,11 +29,5 @@ export default function useModels<T extends Model>({
     }
   }
 
-  useEffect(() => {
-    const newModels = ids.map(getCachedModel).filter(isDefined);
-    if (!isEqual(models, newModels)) {
-      setModels(newModels);
-    }
-  }, [ids, getCachedModel]);
   return { ids, models, setIds: wrappedSetIds };
 }

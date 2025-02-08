@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import isEqual from 'react-fast-compare';
 import { Data, Options } from 'react-native-vis-network';
 import useTheme from '../Theme';
 import { OrgGraph, User } from './types';
@@ -11,14 +12,20 @@ type Props = {
 };
 
 export default function useVisGraphData({ officers, orgGraph }: Props) {
-  const officerMap = useMemo(() => {
-    if (officers === undefined) { return undefined; }
-    return Object.fromEntries(officers.map((o) => [o.id, o.offices]));
-  }, [officers]);
+  const [
+    debouncedOfficers, setDebouncedOfficers,
+  ] = useState<User[] | undefined>(officers);
+
   const { colors, opacity } = useTheme();
   const { currentUser } = useCurrentUser();
 
   if (!currentUser) { throw new Error('Expected current user'); }
+
+  useEffect(() => {
+    if (!isEqual(debouncedOfficers, officers)) {
+      setDebouncedOfficers(officers);
+    }
+  }, [officers]);
 
   const options: Options = useMemo(() => {
     const edgeWidth = 2;
@@ -48,9 +55,13 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
   }, [colors.primary, currentUser.org.id]);
 
   const visGraphData: Data | undefined = useMemo(() => {
-    if (orgGraph === undefined || officerMap === undefined) {
+    if (orgGraph === undefined || debouncedOfficers === undefined) {
       return undefined;
     }
+
+    const officerMap = Object.fromEntries(
+      debouncedOfficers.map((o) => [o.id, o.offices]),
+    );
 
     const dimUserIds = new Set(
       [...orgGraph.blockedUserIds, ...orgGraph.leftOrgUserIds],
@@ -85,7 +96,7 @@ export default function useVisGraphData({ officers, orgGraph }: Props) {
         };
       }),
     };
-  }, [colors, currentUser?.id, opacity, orgGraph, officerMap]);
+  }, [colors, currentUser?.id, opacity, orgGraph, debouncedOfficers]);
 
   return { options, visGraphData };
 }

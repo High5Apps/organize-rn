@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { IconRow } from './rows';
@@ -11,14 +9,12 @@ import usePullToRefresh from './PullToRefresh';
 const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these tools. You can request permissions from the president or another authorized officer.";
 
 function useLeadItems() {
-  const [leadItems, setLeadItems] = useState<LeadItem[]>([]);
-
   const { can, ready, refreshMyPermissions } = useMyPermissions({
     scopes: ['blockMembers', 'editOrg', 'editPermissions', 'moderate'],
   });
 
-  useEffect(() => {
-    if (!ready) { return; }
+  const leadItems = useMemo(() => {
+    if (!ready) { return []; }
 
     const items: LeadItem[] = [];
 
@@ -46,7 +42,7 @@ function useLeadItems() {
       });
     }
 
-    setLeadItems(items);
+    return items;
   }, [can, ready]);
 
   return { leadItems, ready, refreshMyPermissions };

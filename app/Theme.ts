@@ -74,21 +74,10 @@ const lightTheme = {
   },
   shadows: {
     elevation1: {
-      elevation: 1, // Android only
-      shadowOffset: { // iOS only
-        height: 1,
-        width: 0,
-      },
-      shadowRadius: 1, // iOS only
+      boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.25)',
     },
     elevation4: {
-      elevation: 4, // Android only
-      shadowOffset: { // iOS only
-        height: 2,
-        width: 0,
-      },
-      shadowOpacity: 0.5, // iOS only
-      shadowRadius: 4, // iOS only
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.25)',
     },
   },
   sizes: {

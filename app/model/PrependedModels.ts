@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Model, isDefined } from './types';
 
 type Props<T extends Model> = {
@@ -12,8 +12,15 @@ type Props<T extends Model> = {
 export default function usePrependedModels<T extends Model>({
   getCachedModel, maybePrependedModelId, models, onNewPrependedModel, ready,
 }: Props<T>) {
-  const [allModels, setAllModels] = useState<T[]>(models);
   const [prependedModelIds, setPrependedModelIds] = useState<string[]>([]);
+  const allModels = useMemo(() => {
+    const prependedModels = (prependedModelIds ?? [])
+      .map(getCachedModel)
+      .filter(isDefined);
+    const newAllModels = [...prependedModels, ...models];
+    const deduplicatedNewAllModels = [...new Set(newAllModels)];
+    return deduplicatedNewAllModels;
+  }, [models, getCachedModel, prependedModelIds]);
 
   useEffect(() => {
     if (!ready || !maybePrependedModelId) { return; }
@@ -24,15 +31,6 @@ export default function usePrependedModels<T extends Model>({
     // without pulling-to-refresh.
     setPrependedModelIds((ids) => [newlyPrependedModelId, ...ids]);
   }, [maybePrependedModelId, ready]);
-
-  useEffect(() => {
-    const prependedModels = (prependedModelIds ?? [])
-      .map(getCachedModel)
-      .filter(isDefined);
-    const newAllModels = [...prependedModels, ...models];
-    const deduplicatedNewAllModels = [...new Set(newAllModels)];
-    setAllModels(deduplicatedNewAllModels);
-  }, [models, getCachedModel, prependedModelIds]);
 
   useEffect(() => {
     if (maybePrependedModelId) {

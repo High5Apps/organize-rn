@@ -7,16 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* OrganizeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* OrganizeTests.m */; };
 		03E8C6E0D4434BBD803F8C57 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F818E9740C4B4106AAD692F4 /* OpenSans-Italic.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		30AC3D6C4D7B43BAA43476CC /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2EB4A494897544979386713C /* OpenSans-LightItalic.ttf */; };
 		3B4EEF6C41774FCDAAA783A6 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E1C0EE8F108423380CB0050 /* OpenSans-BoldItalic.ttf */; };
 		5EB0DEA6818842528A434746 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5AB2D2211C0345E38952F968 /* OpenSans-Light.ttf */; };
 		60C12D7C9BF3C2738FE25E32 /* libPods-Organize.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51154D243FF7E48B8F1ABEB8 /* libPods-Organize.a */; };
 		700E13D2FFAF4BC0925F54DA /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CFE0D41D1449FABAF2895E /* OpenSans-ExtraBoldItalic.ttf */; };
-		7632F1C3B4485B79217ED989 /* libPods-Organize-OrganizeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBAA0416F8B3C03236CD2C6 /* libPods-Organize-OrganizeTests.a */; };
 		7AEDC8E797445470F67F103F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C9E3FC70ACEFF90549A2E2C5 /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C21359CF2AE7DF780063529B /* AESModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C21359CE2AE7DF780063529B /* AESModule.m */; };
@@ -43,8 +40,8 @@
 		C264D8CC29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
 		C264D8CD29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */; };
 		C2D7839F2BCD3F5A0033793D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */; };
-		C2FB820729EFFB78006822B3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2FB820629EFFB78006822B3 /* AppDelegate.mm */; };
-		C2FB820829EFFB78006822B3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2FB820629EFFB78006822B3 /* AppDelegate.mm */; };
+		C2F8CDAD2D4C3187009B0CCA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8CDAC2D4C3182009B0CCA /* AppDelegate.swift */; };
+		C2F8CDAE2D4C3187009B0CCA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8CDAC2D4C3182009B0CCA /* AppDelegate.swift */; };
 		D6DE628DE78C492FBCDBC14F /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFDE8F599D04435FA9F3B931 /* OpenSans-SemiBold.ttf */; };
 		DBD6DCA9038F4AC782D8BC51 /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BAABBD8AF184A13BFAB9497 /* OpenSans-MediumItalic.ttf */; };
 		DEBD754CDBB945758B4122FD /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D41068D39BC44F64AA8B6587 /* OpenSans-Regular.ttf */; };
@@ -66,14 +63,10 @@
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* OrganizeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrganizeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* OrganizeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrganizeTests.m; sourceTree = "<group>"; };
 		0BAABBD8AF184A13BFAB9497 /* OpenSans-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-MediumItalic.ttf"; path = "../assets/fonts/OpenSans-MediumItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Organize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Organize.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Organize/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Organize/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Organize/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Organize/main.m; sourceTree = "<group>"; };
 		2EB4A494897544979386713C /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-LightItalic.ttf"; path = "../assets/fonts/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		48911BEB19BB4E40866D20FA /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBoldItalic.ttf"; path = "../assets/fonts/OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		4E5EC8252BFB101097494683 /* Pods-Organize.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize.release.xcconfig"; path = "Target Support Files/Pods-Organize/Pods-Organize.release.xcconfig"; sourceTree = "<group>"; };
@@ -82,10 +75,8 @@
 		68A19006701343E2A10CD168 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		6E1C0EE8F108423380CB0050 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-BoldItalic.ttf"; path = "../assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Organize/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		881D19E712B2647E2880E155 /* Pods-Organize-OrganizeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize-OrganizeTests.debug.xcconfig"; path = "Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		885FAE2799144F0381AFAF9B /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		B4E6D6674628499FAD34DCDC /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
-		BC44650402388DDA9EA291E9 /* Pods-Organize-OrganizeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize-OrganizeTests.release.xcconfig"; path = "Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests.release.xcconfig"; sourceTree = "<group>"; };
 		C21359CE2AE7DF780063529B /* AESModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AESModule.m; sourceTree = "<group>"; };
 		C21359D12AE7E06D0063529B /* AESModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESModule.swift; sourceTree = "<group>"; };
 		C2464F752AEE404300884EB6 /* RSAModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModule.m; sourceTree = "<group>"; };
@@ -102,12 +93,11 @@
 		C264D8CB29CC93FB0066583C /* GenericPasswordConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPasswordConvertible.swift; sourceTree = "<group>"; };
 		C2BDA67C2CB742CB00B94130 /* Organize.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Organize.entitlements; path = Organize/Organize.entitlements; sourceTree = "<group>"; };
 		C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		C2FB820629EFFB78006822B3 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Organize/AppDelegate.mm; sourceTree = "<group>"; };
+		C2F8CDAC2D4C3182009B0CCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9E3FC70ACEFF90549A2E2C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Organize/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D41068D39BC44F64AA8B6587 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		DFDE8F599D04435FA9F3B931 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		E8A0ABFDB217F535EBA6E605 /* Pods-Organize.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Organize.debug.xcconfig"; path = "Target Support Files/Pods-Organize/Pods-Organize.debug.xcconfig"; sourceTree = "<group>"; };
-		EBBAA0416F8B3C03236CD2C6 /* libPods-Organize-OrganizeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Organize-OrganizeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F4CFE0D41D1449FABAF2895E /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		F818E9740C4B4106AAD692F4 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Italic.ttf"; path = "../assets/fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
@@ -118,7 +108,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7632F1C3B4485B79217ED989 /* libPods-Organize-OrganizeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,35 +122,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* OrganizeTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* OrganizeTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = OrganizeTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* Organize */ = {
 			isa = PBXGroup;
 			children = (
+				C2F8CDAC2D4C3182009B0CCA /* AppDelegate.swift */,
 				C2BDA67C2CB742CB00B94130 /* Organize.entitlements */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				C2FB820629EFFB78006822B3 /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				C25CB49C2B9E0B2A00142C59 /* Colors.xcassets */,
 				C2D7839E2BCD3F5A0033793D /* MaterialIcons.ttf */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				13B07FB71A68108700A75B9A /* main.m */,
 				C24A8C0529CC56D10062FF5C /* Organize-Bridging-Header.h */,
 				C24A8C0629CC56D10062FF5C /* OrganizeTests-Bridging-Header.h */,
 				C21359CE2AE7DF780063529B /* AESModule.m */,
@@ -185,7 +155,6 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				51154D243FF7E48B8F1ABEB8 /* libPods-Organize.a */,
-				EBBAA0416F8B3C03236CD2C6 /* libPods-Organize-OrganizeTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -221,7 +190,6 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* Organize */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* OrganizeTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				E233CBF5F47BEE60B243DCF8 /* Pods */,
@@ -246,8 +214,6 @@
 			children = (
 				E8A0ABFDB217F535EBA6E605 /* Pods-Organize.debug.xcconfig */,
 				4E5EC8252BFB101097494683 /* Pods-Organize.release.xcconfig */,
-				881D19E712B2647E2880E155 /* Pods-Organize-OrganizeTests.debug.xcconfig */,
-				BC44650402388DDA9EA291E9 /* Pods-Organize-OrganizeTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -259,12 +225,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "OrganizeTests" */;
 			buildPhases = (
-				2C38F34724E0006E67D25301 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				023BA632DE2ECDAD0B4A5B44 /* [CP] Embed Pods Frameworks */,
-				EE3566C65A657F7EDD2726B5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -386,45 +349,6 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		023BA632DE2ECDAD0B4A5B44 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2C38F34724E0006E67D25301 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Organize-OrganizeTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D1EA1FF7ABA7DAE515B7302 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -481,23 +405,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EE3566C65A657F7EDD2726B5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Organize-OrganizeTests/Pods-Organize-OrganizeTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -505,10 +412,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* OrganizeTests.m in Sources */,
+				C2F8CDAE2D4C3187009B0CCA /* AppDelegate.swift in Sources */,
 				C264D8C429CC92F80066583C /* SecKeyStore.swift in Sources */,
 				C2464F7A2AEE407A00884EB6 /* RSAModule.swift in Sources */,
-				C2FB820829EFFB78006822B3 /* AppDelegate.mm in Sources */,
 				C2464F772AEE404300884EB6 /* RSAModule.m in Sources */,
 				C24A8C0C29CC58E70062FF5C /* ECCModule.swift in Sources */,
 				C264D8C129CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
@@ -530,11 +436,10 @@
 				C21359CF2AE7DF780063529B /* AESModule.m in Sources */,
 				C264D8C929CC93EC0066583C /* GenericPasswordStore.swift in Sources */,
 				C24A8C0429CC51860062FF5C /* ECCModule.m in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				C264D8C029CC8CC70066583C /* SecKeyConvertible.swift in Sources */,
 				C264D8CC29CC93FB0066583C /* GenericPasswordConvertible.swift in Sources */,
+				C2F8CDAD2D4C3187009B0CCA /* AppDelegate.swift in Sources */,
 				C264D8C629CC931A0066583C /* KeyStoreError.swift in Sources */,
-				C2FB820729EFFB78006822B3 /* AppDelegate.mm in Sources */,
 				C24A8C0B29CC58E70062FF5C /* ECCModule.swift in Sources */,
 				C2464F792AEE407A00884EB6 /* RSAModule.swift in Sources */,
 			);
@@ -553,7 +458,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 881D19E712B2647E2880E155 /* Pods-Organize-OrganizeTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -563,7 +467,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = OrganizeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,14 +489,13 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC44650402388DDA9EA291E9 /* Pods-Organize-OrganizeTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = OrganizeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,7 +639,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -760,7 +663,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -812,7 +718,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -835,7 +741,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

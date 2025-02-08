@@ -30,6 +30,10 @@ export default function QRCodeButton({
 }: Props) {
   const [frameSize, setFrameSize] = useState(0);
 
+  // CountdownClockBorder initializes animations based on its sideLength, so
+  // don't render CountdownClockBorder until frameSize is set
+  const shouldShowCountdownClockBorder = !!frameSize;
+
   const { colors, spacing, styles } = useStyles();
 
   const qrCodeSize = frameSize - spacing.l;
@@ -39,14 +43,16 @@ export default function QRCodeButton({
     <FrameButton
       onContainerSizeChange={({ width }) => setFrameSize(width)}
       onPress={onPress}
-      style={{ borderWidth: 0 }}
+      style={shouldShowCountdownClockBorder && { borderWidth: 0 }}
     >
-      <CountdownClockBorder
-        duration={timeout}
-        onFinished={onTimeout}
-        // Add back the removed border width
-        sideLength={frameSize + 2 * spacing.s}
-      />
+      {!shouldShowCountdownClockBorder ? null : (
+        <CountdownClockBorder
+          duration={timeout}
+          onFinished={onTimeout}
+          // Add back the removed border width
+          sideLength={frameSize + 2 * spacing.s}
+        />
+      )}
       <QRCode
         color={colors.label}
         backgroundColor={colors.fill}

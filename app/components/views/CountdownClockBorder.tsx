@@ -1,5 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import Animated, {
+  Easing, runOnJS, useSharedValue, withTiming, WithTimingConfig,
+} from 'react-native-reanimated';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -29,47 +32,50 @@ type Props = {
 export default function CountdownClockBorder({
   duration, onFinished = () => {}, sideLength,
 }: Props) {
-  const topRight = useRef(new Animated.Value(0)).current;
-  const right = useRef(new Animated.Value(0)).current;
-  const bottom = useRef(new Animated.Value(0)).current;
-  const left = useRef(new Animated.Value(0)).current;
-  const topLeft = useRef(new Animated.Value(0)).current;
-
-  const sideDuration = duration / 4;
-  const halfSideDuration = sideDuration / 2;
-  const sideConfig: Animated.TimingAnimationConfig = {
-    duration: sideDuration,
-    easing: Easing.linear,
-    toValue: 1,
-    useNativeDriver: false,
-  };
-  const halfSideConfig: Animated.TimingAnimationConfig = {
-    ...sideConfig,
-    duration: halfSideDuration,
-  };
-
-  const start = () => {
-    Animated.sequence([
-      Animated.timing(topRight, halfSideConfig),
-      Animated.timing(right, sideConfig),
-      Animated.timing(bottom, sideConfig),
-      Animated.timing(left, sideConfig),
-      Animated.timing(topLeft, halfSideConfig),
-    ]).start(({ finished }) => finished && onFinished?.());
-  };
+  const halfSideLength = sideLength / 2;
+  const topRight = useSharedValue(halfSideLength);
+  const right = useSharedValue(0);
+  const bottom = useSharedValue(0);
+  const left = useSharedValue(0);
+  const topLeft = useSharedValue(0);
 
   useEffect(() => {
-    if (sideLength) {
-      start();
-    }
-  }, [sideLength]);
+    if (!sideLength) { return; }
+
+    const sideDuration = duration / 4;
+    const halfSideDuration = sideDuration / 2;
+    const sideConfig: WithTimingConfig = {
+      duration: sideDuration,
+      easing: Easing.linear,
+    };
+    const halfSideConfig: WithTimingConfig = {
+      ...sideConfig,
+      duration: halfSideDuration,
+    };
+
+    topRight.value = withTiming(sideLength, halfSideConfig, (topRightDone) => {
+      if (!topRightDone) { return; }
+      right.value = withTiming(sideLength, sideConfig, (rightDone) => {
+        if (!rightDone) { return; }
+        bottom.value = withTiming(sideLength, sideConfig, (bottomDone) => {
+          if (!bottomDone) { return; }
+          left.value = withTiming(sideLength, sideConfig, (leftDone) => {
+            if (!leftDone) { return; }
+            topLeft.value = withTiming(
+              halfSideLength,
+              halfSideConfig,
+              (topLeftDone) => {
+                if (!topLeftDone) { return; }
+                runOnJS(onFinished)();
+              },
+            );
+          });
+        });
+      });
+    });
+  }, [duration, onFinished, sideLength]);
 
   const { styles } = useStyles();
-
-  const sideInterpolationConfig: Animated.InterpolationConfigType = {
-    inputRange: [0, 1],
-    outputRange: [0, sideLength],
-  };
 
   return (
     <>
@@ -77,61 +83,35 @@ export default function CountdownClockBorder({
         style={[
           styles.line,
           styles.horizontal,
-          {
-            right: 0,
-            top: 0,
-            left: topRight.interpolate({
-              inputRange: [0, 1],
-              outputRange: [sideLength / 2, sideLength],
-            }),
-          },
+          { left: topRight, right: 0, top: 0 },
         ]}
       />
       <Animated.View
         style={[
           styles.line,
           styles.vertical,
-          {
-            bottom: 0,
-            top: right.interpolate(sideInterpolationConfig),
-            right: 0,
-          },
+          { bottom: 0, right: 0, top: right },
         ]}
       />
       <Animated.View
         style={[
           styles.line,
           styles.horizontal,
-          {
-            bottom: 0,
-            left: 0,
-            right: bottom.interpolate(sideInterpolationConfig),
-          },
+          { bottom: 0, left: 0, right: bottom },
         ]}
       />
       <Animated.View
         style={[
           styles.line,
           styles.vertical,
-          {
-            bottom: left.interpolate(sideInterpolationConfig),
-            left: 0,
-            top: 0,
-          },
+          { bottom: left, left: 0, top: 0 },
         ]}
       />
       <Animated.View
         style={[
           styles.line,
           styles.horizontal,
-          {
-            left: topLeft.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, sideLength / 2],
-            }),
-            right: 0.5 * sideLength,
-            top: 0,
-          },
+          { left: topLeft, right: halfSideLength, top: 0 },
         ]}
       />
     </>
