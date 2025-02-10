@@ -1,30 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  Alert, ListRenderItemInfo, SectionList, StyleSheet,
-} from 'react-native';
+import { Alert, ListRenderItemInfo, SectionList } from 'react-native';
 import {
   OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope, getOffice,
   toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
-import {
-  ItemSeparator, renderSectionHeader, useRequestProgress,
-} from '../../views';
+import { ItemSeparator, renderSectionHeader } from '../../views';
 import { OfficeRow } from './rows';
-import useTheme from '../../../Theme';
 import usePullToRefresh from './PullToRefresh';
 import { ConfirmationAlert } from '../modals';
-
-const useStyles = () => {
-  const { spacing } = useTheme();
-
-  const styles = StyleSheet.create({
-    requestProgress: {
-      margin: spacing.m,
-    },
-  });
-
-  return { styles };
-};
 
 const onSyncSelectionError = (errorMessage: string) => {
   console.error(errorMessage);
@@ -46,8 +29,6 @@ export default function OfficePermissionList({ scope }: Props) {
   } = usePermission({ scope });
   const { currentUser } = useCurrentUser();
 
-  const { styles } = useStyles();
-
   const sections: OfficeSection[] = useMemo(() => {
     if (!permission) { return []; }
 
@@ -55,29 +36,8 @@ export default function OfficePermissionList({ scope }: Props) {
     return [{ title: 'Officers', data: offices }];
   }, [permission]);
 
-  const {
-    RequestProgress: UnstyledRequestProgress, setLoading, setResult,
-  } = useRequestProgress();
-  const RequestProgress = useMemo(
-    () => <UnstyledRequestProgress style={styles.requestProgress} />,
-    [UnstyledRequestProgress],
-  );
-
-  const fetchPermission = async () => {
-    setLoading(true);
-    setResult('none');
-
-    try {
-      await refreshPermission();
-    } catch (error) {
-      setResult('error', { error, onPress: fetchPermission });
-    }
-
-    setLoading(false);
-  };
-
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
-    onRefresh: fetchPermission,
+    onRefresh: refreshPermission,
     refreshOnMount: true,
   });
 
@@ -126,7 +86,6 @@ export default function OfficePermissionList({ scope }: Props) {
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
-      ListEmptyComponent={RequestProgress}
       ListHeaderComponent={ListHeaderComponent}
       refreshControl={refreshControl}
       refreshing={refreshing}
