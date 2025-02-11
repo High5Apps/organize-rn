@@ -17,7 +17,7 @@ export default function TransparencyLogScreen({
         screen: 'Post', initial: false, params: { postId: id },
       });
     } else if (category === 'User') {
-      navigation.navigate('Org', { selectedUserId: id });
+      navigation.popTo('Org', { selectedUserId: id });
     } else if (category === 'Comment') {
       navigation.navigate('DiscussStack', {
         screen: 'CommentThread', initial: false, params: { commentId: id },

@@ -21,7 +21,7 @@ export default function NewPostScreen({
   const onPostCreated = useCallback((post: Post) => {
     const params = { prependedPostId: post.id };
     const screen = getNextScreenName(maybeCategory);
-    navigation.navigate('DiscussTabs', { screen, params });
+    navigation.popTo('DiscussTabs', { screen, params });
   }, []);
 
   return (

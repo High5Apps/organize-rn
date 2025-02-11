@@ -83,7 +83,7 @@ export default function NewYesNoBallotScreen({
       });
       resetForm();
       setResult('success');
-      navigation.navigate('BallotPreviews', {
+      navigation.popTo('BallotPreviews', {
         prependedBallotId: ballotPreview.id,
       });
     } catch (error) {

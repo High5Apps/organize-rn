@@ -102,7 +102,7 @@ export default function NewMultipleChoiceBallotScreen({
       });
       resetForm();
       setResult('success');
-      navigation.navigate('BallotPreviews', {
+      navigation.popTo('BallotPreviews', {
         prependedBallotId: ballotPreview.id,
       });
     } catch (error) {

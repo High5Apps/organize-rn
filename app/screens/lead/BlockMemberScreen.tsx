@@ -52,7 +52,7 @@ export default function BlockMemberScreen({
         action: 'block', moderatable,
       });
       setResult('success');
-      navigation.navigate('BlockedMembers', {
+      navigation.popTo('BlockedMembers', {
         prependedModerationEventId: moderationEvent.id,
       });
     } catch (error) {

@@ -1,9 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConnectStack from './ConnectStack';
 import { OrgTabsParamList } from './types';
-import useTheme from '../Theme';
 import { TabBarIcon } from '../components';
 import DiscussStack from './DiscussStack';
 import VoteStack from './VoteStack';
@@ -11,31 +9,16 @@ import OrgStack from './OrgStack';
 import LeadStack from './LeadStack';
 import { useCurrentUser } from '../model';
 
-const useStyles = () => {
-  const { font, spacing } = useTheme();
-
-  const styles = StyleSheet.create({
-    tabBarIconLabel: {
-      fontFamily: font.weights.semiBold,
-      marginBottom: spacing.xxs,
-    },
-  });
-
-  return { styles };
-};
-
 const Tab = createBottomTabNavigator<OrgTabsParamList>();
 
 export default function OrgTabs() {
-  const { styles } = useStyles();
-
   const { currentUser } = useCurrentUser();
 
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarAllowFontScaling: false,
         headerShown: false,
-        tabBarLabelStyle: styles.tabBarIconLabel,
         tabBarHideOnKeyboard: true,
       }}
     >

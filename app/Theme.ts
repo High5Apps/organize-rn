@@ -133,7 +133,7 @@ export type Theme = ReturnType<typeof useTheme>;
 export type ThemeColors = Theme['colors'];
 
 export const useNavigationTheme = () => {
-  const { colors, isDarkMode } = useTheme();
+  const { colors, font, isDarkMode } = useTheme();
   return {
     colors: {
       background: colors.background,
@@ -144,5 +144,23 @@ export const useNavigationTheme = () => {
       text: colors.label,
     },
     dark: isDarkMode,
+    fonts: {
+      regular: {
+        fontFamily: font.weights.regular,
+        fontWeight: '400' as const,
+      },
+      medium: {
+        fontFamily: font.weights.medium,
+        fontWeight: '500' as const,
+      },
+      bold: {
+        fontFamily: font.weights.semiBold,
+        fontWeight: '600' as const,
+      },
+      heavy: {
+        fontFamily: font.weights.bold,
+        fontWeight: '700' as const,
+      },
+    },
   };
 };

@@ -4,9 +4,7 @@ import {
 import useTheme from '../Theme';
 
 export default function useDefaultTopTabOptions() {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { colors, sizes, spacing } = useTheme();
 
   const screenPaddingStart = spacing.m;
   const screenOptions: MaterialTopTabNavigationOptions = {
@@ -20,9 +18,6 @@ export default function useDefaultTopTabOptions() {
     tabBarItemStyle: {
       paddingHorizontal: 0,
       width: 'auto',
-    },
-    tabBarLabelStyle: {
-      fontFamily: font.weights.semiBold,
     },
     tabBarScrollEnabled: true,
     tabBarStyle: {

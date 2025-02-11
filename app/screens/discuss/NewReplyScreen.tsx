@@ -29,7 +29,7 @@ export default function NewReplyScreen({
       commentId={commentId}
       HeaderComponent={HeaderComponent}
       onCommentCreated={(newCommentId) => {
-        navigation.navigate('Post', {
+        navigation.popTo('Post', {
           insertedComments: [
             { commentId: newCommentId, parentCommentId: commentId },
           ],

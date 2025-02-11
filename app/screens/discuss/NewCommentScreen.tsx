@@ -26,7 +26,7 @@ export default function NewCommentScreen({
     <NewCommentScreenBase
       HeaderComponent={HeaderComponent}
       onCommentCreated={(commentId) => {
-        navigation.navigate('Post', {
+        navigation.popTo('Post', {
           insertedComments: [{ commentId }],
           postId: post.id,
         });
