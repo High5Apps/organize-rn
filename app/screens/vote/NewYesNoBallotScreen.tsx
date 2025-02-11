@@ -100,13 +100,13 @@ export default function NewYesNoBallotScreen({
       >
         <HeaderText>Question</HeaderText>
         <MultilineTextInput
-          blurOnSubmit
           editable={!loading}
           enablesReturnKeyAutomatically
           maxLength={MAX_QUESTION_LENGTH}
           onChangeText={setQuestion}
           placeholder="Should we..."
           style={styles.multilineTextInput}
+          submitBehavior="blurAndSubmit"
           returnKeyType="done"
           value={question}
         />

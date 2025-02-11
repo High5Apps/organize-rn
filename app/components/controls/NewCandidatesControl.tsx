@@ -43,7 +43,6 @@ export default function NewCandidatesControl({
       {candidates.map((candidate, i) => (
         <TextInputRow
           autoFocus={false}
-          blurOnSubmit={false}
           editable={!disabled}
           focused={focusedInputIndex === i}
           iconEndDisabled={disabled || candidates.length === 1}
@@ -90,6 +89,7 @@ export default function NewCandidatesControl({
             }
           }}
           placeholder={`Choice ${1 + i}`}
+          submitBehavior="submit"
           value={candidate}
         />
       ))}

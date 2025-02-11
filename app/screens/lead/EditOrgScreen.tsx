@@ -128,12 +128,10 @@ export default function EditOrgScreen() {
               <HeaderText>Org name</HeaderText>
               <TextInputRow
                 autoFocus={false}
-                blurOnSubmit={false}
                 editable={!loading}
                 enablesReturnKeyAutomatically
                 maxLength={nameStep.maxLength}
                 onChangeText={setName}
-                onSubmitEditing={Keyboard.dismiss}
                 placeholder={namePlaceholder}
                 returnKeyType="done"
                 value={name}
@@ -143,12 +141,10 @@ export default function EditOrgScreen() {
               <HeaderText>Org email</HeaderText>
               <TextInputRow
                 autoFocus={false}
-                blurOnSubmit={false}
                 editable={!loading}
                 enablesReturnKeyAutomatically
                 maxLength={emailStep.maxLength}
                 onChangeText={setEmail}
-                onSubmitEditing={Keyboard.dismiss}
                 placeholder={emailPlaceholder}
                 returnKeyType="done"
                 value={email}
@@ -157,13 +153,13 @@ export default function EditOrgScreen() {
             <View style={styles.section}>
               <HeaderText>Org memeber definition</HeaderText>
               <MultilineTextInput
-                blurOnSubmit
                 editable={!loading}
                 enablesReturnKeyAutomatically
                 maxLength={memberDefinitionStep.maxLength}
                 onChangeText={setMemberDefinition}
                 placeholder={definitionPlaceholder}
                 style={styles.multilineTextInput}
+                submitBehavior="blurAndSubmit"
                 returnKeyType="done"
                 value={memberDefinition}
               />

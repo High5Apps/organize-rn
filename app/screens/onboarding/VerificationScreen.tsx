@@ -98,7 +98,6 @@ export default function VerificationScreen() {
           <HeaderText style={styles.headerText}>Code</HeaderText>
           <TextInputRow
             autoFocus={false}
-            blurOnSubmit={false}
             keyboardType="number-pad"
             maxLength={6}
             onChangeText={setCode}

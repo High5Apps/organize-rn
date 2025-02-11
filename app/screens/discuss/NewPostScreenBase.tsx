@@ -131,9 +131,6 @@ export default function NewPostScreenBase({
         )}
         <View style={styles.container}>
           <TextInputRow
-            // Prevents dismissing the keyboard when hitting next on Android
-            // before entering any input
-            blurOnSubmit={false}
             editable={!loading}
             enablesReturnKeyAutomatically // iOS only
             maxLength={MAX_TITLE_LENGTH}
@@ -145,6 +142,9 @@ export default function NewPostScreenBase({
               }
             }}
             placeholder="Title"
+            // Prevents dismissing the keyboard when hitting next on Android
+            // before entering any input
+            submitBehavior="submit"
             value={title}
           />
           <MultilineTextInput

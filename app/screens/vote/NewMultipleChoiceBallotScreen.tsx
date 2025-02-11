@@ -119,13 +119,13 @@ export default function NewMultipleChoiceBallotScreen({
       >
         <HeaderText>Question</HeaderText>
         <MultilineTextInput
-          blurOnSubmit
           editable={!loading}
           enablesReturnKeyAutomatically
           maxLength={MAX_QUESTION_LENGTH}
           onChangeText={setQuestion}
           placeholder="Which of these should we..."
           style={styles.multilineTextInput}
+          submitBehavior="blurAndSubmit"
           returnKeyType="done"
           value={question}
         />

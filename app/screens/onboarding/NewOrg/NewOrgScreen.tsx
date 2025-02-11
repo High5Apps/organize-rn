@@ -91,7 +91,6 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           autoComplete={isEmail ? 'email' : 'off'}
           autoCorrect={!isEmail}
           autoFocus={false}
-          blurOnSubmit={false}
           keyboardType={isEmail ? 'email-address' : 'default'}
           maxLength={maxLength}
           onChangeText={setInput}
@@ -101,6 +100,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           }}
           placeholder={useMemo(placeholder, [])}
           style={messageMultiline && styles.multilineTextInput}
+          submitBehavior="submit"
           value={input}
         />
         <Text style={styles.message}>{message}</Text>
