@@ -27,7 +27,6 @@ Looking for the app? Check out <https://getorganize.app>
    - [NPM](https://www.npmjs.com/)
    - [VS Code](https://code.visualstudio.com/) (consider installing the following extensions)
       - `dbaeumer.vscode-eslint`
-      - `waderyan.gitblame` 
       - `pflannery.vscode-versionlens`
 3. Install the dependencies
    ```sh
