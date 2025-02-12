@@ -81,7 +81,7 @@ export function QRCodeDataParser() {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(input);
-    } catch (_) {
+    } catch {
       console.warn(`Failed to parse url from: ${input}`);
       return null;
     }
