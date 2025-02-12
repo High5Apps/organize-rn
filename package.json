@@ -48,7 +48,7 @@
     "react-native-vision-camera": "^4.6.3",
     "react-native-webview": "^13.13.1",
     "use-debounce": "^10.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -67,7 +67,6 @@
     "@types/react": "^18.2.6",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^18.0.0",
-    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "eslint": "^8.19.0",
