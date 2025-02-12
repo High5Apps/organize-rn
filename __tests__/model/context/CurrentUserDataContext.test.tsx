@@ -55,7 +55,8 @@ describe('CurrentUserDataContext', () => {
     mockUseStoredCurrentUserData.mockReturnValue(defaultReturnValue);
     const initialCurrentUserData = fakeCurrentUserData;
     await renderTestComponent({ initialCurrentUserData });
-    expect(mockUseStoredCurrentUserData).toBeCalledWith(initialCurrentUserData);
+    expect(mockUseStoredCurrentUserData)
+      .toHaveBeenCalledWith(initialCurrentUserData);
   });
 
   it('renders nothing until currentUser intialized', async () => {
@@ -99,9 +100,9 @@ describe('CurrentUserDataContext', () => {
         initialized: true,
       });
       const mockSetStoredCurrentUserData = defaultReturnValue.setStoredCurrentUserData;
-      expect(mockSetStoredCurrentUserData).not.toBeCalled();
+      expect(mockSetStoredCurrentUserData).not.toHaveBeenCalled();
       await renderTestComponent({});
-      expect(mockSetStoredCurrentUserData).toBeCalled();
+      expect(mockSetStoredCurrentUserData).toHaveBeenCalled();
     });
   });
 });

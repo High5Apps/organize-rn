@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, {
+  JSX, ReactNode, useEffect, useState,
+} from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';

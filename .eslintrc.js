@@ -14,6 +14,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
+        '@typescript-eslint/no-deprecated': 'error',
         '@typescript-eslint/no-shadow': ['error'],
         'no-console': ['warn', { allow: ['error', 'warn'] }],
         'no-shadow': 'off',

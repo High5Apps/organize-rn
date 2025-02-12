@@ -35,23 +35,23 @@ describe('useCurrentUser', () => {
 
     it('should delete keys', async () => {
       await mockCurrentUser.logOut();
-      expect(mockEccDelete).toBeCalled();
-      expect(mockRsaDelete).toBeCalled();
+      expect(mockEccDelete).toHaveBeenCalled();
+      expect(mockRsaDelete).toHaveBeenCalled();
     });
 
     it('should clear currentUser', async () => {
       await mockCurrentUser.logOut();
-      expect(mockSetCurrentUserData).toBeCalledWith(null);
+      expect(mockSetCurrentUserData).toHaveBeenCalledWith(null);
     });
 
     it('should store null user', async () => {
       await mockCurrentUser.logOut();
-      expect(mockStoreCurrentUserData).toBeCalledWith(null);
+      expect(mockStoreCurrentUserData).toHaveBeenCalledWith(null);
     });
 
     it('should call UserAPI.leaveOrg', async () => {
       await mockCurrentUser.logOut();
-      expect(mockLeaveOrg).toBeCalled();
+      expect(mockLeaveOrg).toHaveBeenCalled();
     });
 
     it('should throw on UserAPI.leaveOrg error', async () => {

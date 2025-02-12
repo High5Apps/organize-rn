@@ -42,21 +42,21 @@ describe('toString', () => {
   describe('createAuthToken', () => {
     it('uses QR_CODE_JWT_SCOPE', () => {
       const expected = expect.objectContaining({ scope: QR_CODE_JWT_SCOPE });
-      expect(mockCreateAuthToken).toBeCalledWith(expected);
+      expect(mockCreateAuthToken).toHaveBeenCalledWith(expected);
     });
 
     it('does not use the * scope', () => {
       const unexpected = expect.objectContaining({ scope: '*' });
-      expect(mockCreateAuthToken).not.toBeCalledWith(unexpected);
+      expect(mockCreateAuthToken).not.toHaveBeenCalledWith(unexpected);
     });
 
     it('uses the current time', () => {
       const expected = expect.objectContaining({ currentTime });
-      expect(mockCreateAuthToken).toBeCalledWith(expected);
+      expect(mockCreateAuthToken).toHaveBeenCalledWith(expected);
     });
 
     it('uses QR_CODE_TIME_TO_LIVE_SECONDS', () => {
-      expect(mockCreateAuthToken).toBeCalledWith(expect.objectContaining({
+      expect(mockCreateAuthToken).toHaveBeenCalledWith(expect.objectContaining({
         timeToLiveSeconds: QR_CODE_TIME_TO_LIVE_SECONDS,
       }));
     });
@@ -71,7 +71,7 @@ describe('parse', () => {
     consoleWarnSpy.mockClear();
     formattedString = await formatter.toString();
     value = QRCodeDataParser().parse({ input: formattedString })!;
-    expect(consoleWarnSpy).not.toBeCalled();
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
   it('parses jwt', () => {
