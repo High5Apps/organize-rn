@@ -15,6 +15,7 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/no-shadow': ['error'],
+        'no-console': ['warn', { allow: ['error', 'warn'] }],
         'no-shadow': 'off',
         'no-undef': 'off',
         'react/function-component-definition': 'off',
