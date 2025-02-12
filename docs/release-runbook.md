@@ -14,7 +14,7 @@
     2. Click **Product > Archive**
     3. After success, if the Organizer window doesn't open automatically, click **Window > Organizer**
     4. Click **Distribute App > App Store Connect**
-        - You may see "Upload Symbols Failed" warning about Hermes. This is a [known issue](https://github.com/facebook/react-native/commit/f529fe4) that should be fixed in RN77.
+        - You may see "Upload Symbols Failed" warning about Hermes. This is a [known issue](https://github.com/facebook/react-native/commit/f529fe48768b8a1ee4d74a4964a294c485da83b9) that should be fixed in RN78.
 5. Create and upload the Android App Bundle
     1. Open **Android Studio**
     1. If needed, update the build variant from **debug** to **release**
