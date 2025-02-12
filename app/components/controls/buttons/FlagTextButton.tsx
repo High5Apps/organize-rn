@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import TextButton from './TextButton';
-import { FlagConfirmationAlert } from '../modals';
+import FlagConfirmationAlert from '../modals/FlagConfirmationAlert';
 
 type Props = {
   commentId?: string;

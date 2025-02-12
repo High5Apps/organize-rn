@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useHeaderButton from './HeaderButton';
-import { FlagConfirmationAlert } from '../modals';
+import FlagConfirmationAlert from '../modals/FlagConfirmationAlert';
 
 type Props = {
   ballotId?: string;
