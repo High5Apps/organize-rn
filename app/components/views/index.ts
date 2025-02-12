@@ -29,7 +29,6 @@ export { default as ResultGraph } from './ResultGraph';
 export { default as SafeAreaPadding } from './SafeAreaPadding';
 export { default as ScreenBackground } from './ScreenBackground';
 export { default as Scrim } from './Scrim';
-export { default as SectionHeader, renderSectionHeader } from './SectionHeader';
 export { default as StatusBar } from './StatusBar';
 export { default as TabBarIcon } from './TabBarIcon';
 export { default as TextBoldener } from './TextBoldener';

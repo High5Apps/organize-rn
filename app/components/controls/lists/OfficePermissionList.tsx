@@ -4,10 +4,11 @@ import {
   OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope, getOffice,
   toAction, useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
-import { ItemSeparator, renderSectionHeader } from '../../views';
+import { ItemSeparator } from '../../views';
 import { OfficeRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import { ConfirmationAlert } from '../modals';
+import { renderSectionHeader } from '../SectionHeader';
 
 const onSyncSelectionError = (errorMessage: string) => {
   console.error(errorMessage);

@@ -8,9 +8,10 @@ import {
 import { useScrollToTop } from '@react-navigation/native';
 import { User, useCurrentUser } from '../../../model';
 import useTheme from '../../../Theme';
-import { ItemSeparator, renderSectionHeader } from '../../views';
+import { ItemSeparator } from '../../views';
 import { UserRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
+import { renderSectionHeader } from '../SectionHeader';
 
 type NotableUserSection = {
   title: string;

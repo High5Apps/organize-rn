@@ -12,6 +12,7 @@ export { default as PostWithBody } from './PostWithBody';
 export { default as QRCamera } from './QRCamera';
 export { default as QRCodeControl } from './QRCodeControl';
 export { default as SearchBar } from './SearchBar';
+export { default as SectionHeader, renderSectionHeader } from './SectionHeader';
 export { default as StepperControl } from './StepperControl';
 export { default as useTimeRemainingFooter } from './TimeRemainingFooter';
 export { default as UpvoteControl } from './UpvoteControl';

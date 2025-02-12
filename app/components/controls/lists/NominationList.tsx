@@ -7,12 +7,11 @@ import {
   nominationsTimeRemainingFormatter, useCurrentUser, useBallot, useNominations,
 } from '../../../model';
 import { NominationRow } from './rows';
-import {
-  ItemSeparator, ListEmptyMessage, renderSectionHeader,
-} from '../../views';
+import { ItemSeparator, ListEmptyMessage } from '../../views';
 import useTimeRemainingFooter from '../TimeRemainingFooter';
 import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
 import usePullToRefresh from './PullToRefresh';
+import { renderSectionHeader } from '../SectionHeader';
 
 type NominationSection = {
   title: string;

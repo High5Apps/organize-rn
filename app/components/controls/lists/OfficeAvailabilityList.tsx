@@ -1,11 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { ListRenderItemInfo, SectionList } from 'react-native';
 import { Office, isDefined, useOfficeAvailability } from '../../../model';
-import {
-  ItemSeparator, ListEmptyMessage, renderSectionHeader,
-} from '../../views';
+import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { OfficeRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
+import { renderSectionHeader } from '../SectionHeader';
 
 const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nTry again later';
 

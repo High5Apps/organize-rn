@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
-import { TextButton } from '../controls';
+import { TextButton } from './buttons';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
