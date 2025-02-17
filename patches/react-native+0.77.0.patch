@@ -1,17 +1,16 @@
 diff --git a/node_modules/react-native/React/Fabric/Mounting/ComponentViews/ScrollView/RCTPullToRefreshViewComponentView.mm b/node_modules/react-native/React/Fabric/Mounting/ComponentViews/ScrollView/RCTPullToRefreshViewComponentView.mm
-index 3a5679e..1fd88d7 100644
+index 3a5679e..6f5749b 100644
 --- a/node_modules/react-native/React/Fabric/Mounting/ComponentViews/ScrollView/RCTPullToRefreshViewComponentView.mm
 +++ b/node_modules/react-native/React/Fabric/Mounting/ComponentViews/ScrollView/RCTPullToRefreshViewComponentView.mm
-@@ -24,6 +24,8 @@ @interface RCTPullToRefreshViewComponentView () <RCTPullToRefreshViewViewProtoco
+@@ -24,6 +24,7 @@ @interface RCTPullToRefreshViewComponentView () <RCTPullToRefreshViewViewProtoco
  @end
  
  @implementation RCTPullToRefreshViewComponentView {
-+  Props::Shared _initialProps;
 +  BOOL _isBeforeInitialLayout;
    UIRefreshControl *_refreshControl;
    RCTScrollViewComponentView *__weak _scrollViewComponentView;
  }
-@@ -36,7 +38,7 @@ - (instancetype)initWithFrame:(CGRect)frame
+@@ -36,7 +37,7 @@ - (instancetype)initWithFrame:(CGRect)frame
      // The pull-to-refresh view is not a subview of this view.
      self.hidden = YES;
  
@@ -20,7 +19,7 @@ index 3a5679e..1fd88d7 100644
      [self _initializeUIRefreshControl];
    }
  
-@@ -49,11 +51,6 @@ - (void)_initializeUIRefreshControl
+@@ -49,11 +50,6 @@ - (void)_initializeUIRefreshControl
    [_refreshControl addTarget:self
                        action:@selector(handleUIControlEventValueChanged)
              forControlEvents:UIControlEventValueChanged];
@@ -32,10 +31,11 @@ index 3a5679e..1fd88d7 100644
  }
  
  #pragma mark - RCTComponentViewProtocol
-@@ -67,22 +64,21 @@ - (void)prepareForRecycle
+@@ -67,22 +63,22 @@ - (void)prepareForRecycle
  {
    [super prepareForRecycle];
    _scrollViewComponentView = nil;
++  _props = nil;
 +  _isBeforeInitialLayout = YES;
    [self _initializeUIRefreshControl];
  }
@@ -51,9 +51,9 @@ index 3a5679e..1fd88d7 100644
 -    } else {
 -      [_refreshControl endRefreshing];
 -    }
-+  // Prop updates are ignored by _refreshControl until after the initial layout, so just store them in _initialProps until then
++  // Prop updates are ignored by _refreshControl until after the initial layout, so just store them in _props until then
 +  if (_isBeforeInitialLayout) {
-+    _initialProps = props;
++    _props = std::static_pointer_cast<const BaseViewProps>(props);
 +    return;
    }
    
@@ -94,7 +94,7 @@ index 3a5679e..1fd88d7 100644
 +  if (_isBeforeInitialLayout) {
 +    _isBeforeInitialLayout = NO;
 +
-+    [self updateProps:_initialProps oldProps:PullToRefreshViewShadowNode::defaultSharedProps()];
++    [self updateProps:_props oldProps:PullToRefreshViewShadowNode::defaultSharedProps()];
 +  }
 +}
 +
