@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Keyboard, Platform, ScrollView, StyleSheet, Text, View,
+  Keyboard, Platform, StyleSheet, Text, View,
 } from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
@@ -25,7 +25,7 @@ const useStyles = () => {
       marginHorizontal: spacing.m,
       paddingHorizontal: spacing.m,
     },
-    containerStyle: {
+    container: {
       rowGap: spacing.m,
     },
     headerText: {
@@ -87,46 +87,40 @@ export default function VerificationScreen() {
   const { styles } = useStyles();
 
   return (
-    <KeyboardAvoidingScreenBackground topNavigationBarHidden>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={styles.containerStyle}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Text style={styles.title}>Account Verification</Text>
-        <View>
-          <HeaderText style={styles.headerText}>Code</HeaderText>
-          <TextInputRow
-            autoFocus={false}
-            keyboardType="number-pad"
-            maxLength={6}
-            onChangeText={setCode}
-            onSubmitEditing={Keyboard.dismiss}
-            placeholder="123456"
-            returnKeyType={Platform.OS === 'android' ? 'none' : 'default'}
-            value={code}
-          />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.message}>Don&apos;t have a code yet?</Text>
-          <TextButton
-            onPress={Email({
-              body: `${CONTACT_US_BODY}\n\nReference ID: ${currentUser!.org!.id}`,
-              subject: CONTACT_US_SUBJECT,
-            }).openComposer}
-            style={styles.textButton}
-          >
-            Contact Us
-          </TextButton>
-        </View>
-        <PrimaryButton
-          iconName="verified"
-          label="Verify"
-          onPress={onVerify}
-          style={styles.button}
+    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Account Verification</Text>
+      <View>
+        <HeaderText style={styles.headerText}>Code</HeaderText>
+        <TextInputRow
+          autoFocus={false}
+          keyboardType="number-pad"
+          maxLength={6}
+          onChangeText={setCode}
+          onSubmitEditing={Keyboard.dismiss}
+          placeholder="123456"
+          returnKeyType={Platform.OS === 'android' ? 'none' : 'default'}
+          value={code}
         />
-        <RequestProgress />
-      </ScrollView>
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.message}>Don&apos;t have a code yet?</Text>
+        <TextButton
+          onPress={Email({
+            body: `${CONTACT_US_BODY}\n\nReference ID: ${currentUser!.org!.id}`,
+            subject: CONTACT_US_SUBJECT,
+          }).openComposer}
+          style={styles.textButton}
+        >
+          Contact Us
+        </TextButton>
+      </View>
+      <PrimaryButton
+        iconName="verified"
+        label="Verify"
+        onPress={onVerify}
+        style={styles.button}
+      />
+      <RequestProgress />
     </KeyboardAvoidingScreenBackground>
   );
 }

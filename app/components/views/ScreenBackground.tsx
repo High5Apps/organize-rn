@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -10,27 +10,12 @@ const useStyles = () => {
       backgroundColor: colors.background,
       flex: 1,
     },
-    pressable: {
-      flex: 1,
-    },
   });
 
   return { styles };
 };
 
-type Props = {
-  onPress?: () => void;
-};
-
-export default function ScreenBackground({
-  children, onPress,
-}: PropsWithChildren<Props>) {
+export default function ScreenBackground({ children }: PropsWithChildren<{}>) {
   const { styles } = useStyles();
-  return (
-    <Pressable disabled={!onPress} onPress={onPress} style={styles.pressable}>
-      <View style={styles.background}>
-        {children}
-      </View>
-    </Pressable>
-  );
+  return <View style={styles.background}>{children}</View>;
 }

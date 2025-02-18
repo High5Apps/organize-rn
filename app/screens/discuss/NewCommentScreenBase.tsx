@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Keyboard, ScrollView, StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, MultilineTextInput, PrimaryButton,
   useRequestProgress,
@@ -27,9 +27,6 @@ const useStyles = () => {
     },
     requestProgress: {
       marginHorizontal: spacing.m,
-    },
-    scrollView: {
-      flex: 1,
     },
   });
 
@@ -82,31 +79,25 @@ export default function NewCommentScreenBase({
   };
 
   return (
-    <KeyboardAvoidingScreenBackground>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-        style={styles.scrollView}
-      >
-        {HeaderComponent}
-        <MultilineTextInput
-          autoFocus
-          editable={!loading}
-          maxLength={MAX_COMMENT_LENGTH}
-          onChangeText={setBody}
-          placeholder="What do you think?"
-          style={styles.multilineTextInput}
-          returnKeyType="default"
-          value={maybeBody}
-        />
-        <RequestProgress style={styles.requestProgress} />
-        <PrimaryButton
-          iconName="publish"
-          label="Publish"
-          onPress={onPublishPressed}
-          style={styles.button}
-        />
-      </ScrollView>
+    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+      {HeaderComponent}
+      <MultilineTextInput
+        autoFocus
+        editable={!loading}
+        maxLength={MAX_COMMENT_LENGTH}
+        onChangeText={setBody}
+        placeholder="What do you think?"
+        style={styles.multilineTextInput}
+        returnKeyType="default"
+        value={maybeBody}
+      />
+      <RequestProgress style={styles.requestProgress} />
+      <PrimaryButton
+        iconName="publish"
+        label="Publish"
+        onPress={onPublishPressed}
+        style={styles.button}
+      />
     </KeyboardAvoidingScreenBackground>
   );
 }

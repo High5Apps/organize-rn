@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Keyboard, ScrollView, StyleSheet, View,
-} from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
   PrimaryButton, TextInputRow, useRequestProgress,
@@ -23,15 +21,11 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
     },
     container: {
-      flex: 1,
       margin: spacing.m,
       rowGap: spacing.m,
     },
     multilineTextInput: {
       height: 100,
-    },
-    scrollView: {
-      flex: 1,
     },
     section: {
       rowGap: spacing.s,
@@ -125,77 +119,71 @@ export default function EditOrgScreen() {
   const { styles } = useStyles();
 
   return (
-    <KeyboardAvoidingScreenBackground>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-        style={styles.scrollView}
-      >
-        {org && (
-          <>
-            <View style={styles.section}>
-              <HeaderText>Org name</HeaderText>
-              <TextInputRow
-                autoFocus={false}
-                editable={!loading}
-                enablesReturnKeyAutomatically
-                maxLength={nameStep.maxLength}
-                onChangeText={setName}
-                placeholder={namePlaceholder}
-                returnKeyType="done"
-                value={name}
-              />
-            </View>
-            <View style={styles.section}>
-              <HeaderText>Org email</HeaderText>
-              <TextInputRow
-                autoFocus={false}
-                editable={!loading}
-                enablesReturnKeyAutomatically
-                maxLength={emailStep.maxLength}
-                onChangeText={setEmail}
-                placeholder={emailPlaceholder}
-                returnKeyType="done"
-                value={email}
-              />
-            </View>
-            <View style={styles.section}>
-              <HeaderText>Org memeber definition</HeaderText>
-              <MultilineTextInput
-                editable={!loading}
-                enablesReturnKeyAutomatically
-                maxLength={memberDefinitionStep.maxLength}
-                onChangeText={setMemberDefinition}
-                placeholder={definitionPlaceholder}
-                style={styles.multilineTextInput}
-                submitBehavior="blurAndSubmit"
-                returnKeyType="done"
-                value={memberDefinition}
-              />
-            </View>
-            <View style={styles.section}>
-              <HeaderText>Employer name</HeaderText>
-              <TextInputRow
-                autoFocus={false}
-                editable={!loading}
-                enablesReturnKeyAutomatically
-                maxLength={EMPLOYER_NAME_MAX_LENGTH}
-                onChangeText={setEmployerName}
-                placeholder={EMPLOYER_NAME_PLACEHOLDER}
-                returnKeyType="done"
-                value={employerName}
-              />
-            </View>
-            <PrimaryButton
-              iconName="publish"
-              label="Publish"
-              onPress={updateOrgInfo}
-              style={styles.button}
+    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+      {org && (
+        <>
+          <View style={styles.section}>
+            <HeaderText>Org name</HeaderText>
+            <TextInputRow
+              autoFocus={false}
+              editable={!loading}
+              enablesReturnKeyAutomatically
+              maxLength={nameStep.maxLength}
+              onChangeText={setName}
+              placeholder={namePlaceholder}
+              returnKeyType="done"
+              value={name}
             />
-          </>
-        )}
-        <RequestProgress />
-      </ScrollView>
+          </View>
+          <View style={styles.section}>
+            <HeaderText>Org email</HeaderText>
+            <TextInputRow
+              autoFocus={false}
+              editable={!loading}
+              enablesReturnKeyAutomatically
+              maxLength={emailStep.maxLength}
+              onChangeText={setEmail}
+              placeholder={emailPlaceholder}
+              returnKeyType="done"
+              value={email}
+            />
+          </View>
+          <View style={styles.section}>
+            <HeaderText>Org memeber definition</HeaderText>
+            <MultilineTextInput
+              editable={!loading}
+              enablesReturnKeyAutomatically
+              maxLength={memberDefinitionStep.maxLength}
+              onChangeText={setMemberDefinition}
+              placeholder={definitionPlaceholder}
+              style={styles.multilineTextInput}
+              submitBehavior="blurAndSubmit"
+              returnKeyType="done"
+              value={memberDefinition}
+            />
+          </View>
+          <View style={styles.section}>
+            <HeaderText>Employer name</HeaderText>
+            <TextInputRow
+              autoFocus={false}
+              editable={!loading}
+              enablesReturnKeyAutomatically
+              maxLength={EMPLOYER_NAME_MAX_LENGTH}
+              onChangeText={setEmployerName}
+              placeholder={EMPLOYER_NAME_PLACEHOLDER}
+              returnKeyType="done"
+              value={employerName}
+            />
+          </View>
+          <PrimaryButton
+            iconName="publish"
+            label="Publish"
+            onPress={updateOrgInfo}
+            style={styles.button}
+          />
+        </>
+      )}
+      <RequestProgress />
     </KeyboardAvoidingScreenBackground>
   );
 }

@@ -1,34 +1,12 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import {
-  Keyboard, KeyboardAvoidingView, StyleProp, StyleSheet, ViewStyle,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useHeaderHeight } from '@react-navigation/elements';
+import React, { PropsWithChildren } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import ScreenBackground from './ScreenBackground';
-
-function useKeyboardVisibility() {
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
-
-  return keyboardVisible;
-}
+import useTheme from '../../Theme';
 
 const useStyles = () => {
   const styles = StyleSheet.create({
-    keyboardAvoidingView: {
+    keyboardAwareScrollView: {
       flex: 1,
     },
   });
@@ -37,34 +15,25 @@ const useStyles = () => {
 };
 
 type Props = {
-  style?: StyleProp<ViewStyle>;
-  topNavigationBarHidden?: boolean;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
 export default function KeyboardAvoidingScreenBackground({
-  children, style = {}, topNavigationBarHidden = false,
+  children, contentContainerStyle,
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
-
-  const headerHeight = useHeaderHeight();
-  const { top: topPadding } = useSafeAreaInsets();
-  const keyboardVerticalOffset = topNavigationBarHidden
-    ? topPadding + headerHeight : headerHeight;
-
-  const keyboardVisible = useKeyboardVisibility();
-
-  // Without this, the onPress prevents scroll gestures on deeper components
-  const onPress = keyboardVisible ? Keyboard.dismiss : undefined;
+  const { spacing } = useTheme();
 
   return (
-    <ScreenBackground onPress={onPress}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={[styles.keyboardAvoidingView, style]}
+    <ScreenBackground>
+      <KeyboardAwareScrollView
+        bottomOffset={spacing.m}
+        contentContainerStyle={contentContainerStyle}
+        keyboardShouldPersistTaps="handled"
+        style={styles.keyboardAwareScrollView}
       >
         {children}
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </ScreenBackground>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground,
   MultilineTextInput, PrimaryButton, startOfNextHourIn, useRequestProgress,
@@ -24,7 +24,6 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
     },
     container: {
-      flex: 1,
       margin: spacing.m,
       rowGap: spacing.s,
     },
@@ -34,9 +33,6 @@ const useStyles = () => {
     multilineTextInput: {
       marginBottom: spacing.s,
       height: 100,
-    },
-    scrollView: {
-      flex: 1,
     },
   });
 
@@ -92,39 +88,33 @@ export default function NewYesNoBallotScreen({
   };
 
   return (
-    <KeyboardAvoidingScreenBackground>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-        style={styles.scrollView}
-      >
-        <HeaderText>Question</HeaderText>
-        <MultilineTextInput
-          editable={!loading}
-          enablesReturnKeyAutomatically
-          maxLength={MAX_QUESTION_LENGTH}
-          onChangeText={setQuestion}
-          placeholder="Should we..."
-          style={styles.multilineTextInput}
-          submitBehavior="blurAndSubmit"
-          returnKeyType="done"
-          value={question}
-        />
-        <HeaderText>Voting Ends On</HeaderText>
-        <DateTimeSelector
-          dateTime={votingEnd}
-          disabled={loading}
-          setDateTime={setVotingEnd}
-          style={styles.dateTimeSelector}
-        />
-        <RequestProgress />
-        <PrimaryButton
-          iconName="publish"
-          label="Publish"
-          onPress={onPublishPressed}
-          style={styles.button}
-        />
-      </ScrollView>
+    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+      <HeaderText>Question</HeaderText>
+      <MultilineTextInput
+        editable={!loading}
+        enablesReturnKeyAutomatically
+        maxLength={MAX_QUESTION_LENGTH}
+        onChangeText={setQuestion}
+        placeholder="Should we..."
+        style={styles.multilineTextInput}
+        submitBehavior="blurAndSubmit"
+        returnKeyType="done"
+        value={question}
+      />
+      <HeaderText>Voting Ends On</HeaderText>
+      <DateTimeSelector
+        dateTime={votingEnd}
+        disabled={loading}
+        setDateTime={setVotingEnd}
+        style={styles.dateTimeSelector}
+      />
+      <RequestProgress />
+      <PrimaryButton
+        iconName="publish"
+        label="Publish"
+        onPress={onPublishPressed}
+        style={styles.button}
+      />
     </KeyboardAvoidingScreenBackground>
   );
 }

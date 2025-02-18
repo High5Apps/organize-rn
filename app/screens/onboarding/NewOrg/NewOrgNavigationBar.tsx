@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { SecondaryButton } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import useTheme from '../../../Theme';
@@ -43,26 +44,28 @@ export default function NewOrgNavigationBar({
   const { styles } = useStyles();
 
   return (
-    <View style={styles.container}>
-      <SecondaryButton
-        iconName="navigate-before"
-        label="Back"
-        onPress={backPressed}
-      />
-      <Text style={styles.currentStep}>
-        {`Step ${1 + currentStep} `}
-        <Text style={styles.totalSteps}>
-          {/* The extra step is for the review page */}
-          {`of ${1 + NewOrgSteps.length}`}
+    <KeyboardStickyView>
+      <View style={styles.container}>
+        <SecondaryButton
+          iconName="navigate-before"
+          label="Back"
+          onPress={backPressed}
+        />
+        <Text style={styles.currentStep}>
+          {`Step ${1 + currentStep} `}
+          <Text style={styles.totalSteps}>
+            {/* The extra step is for the review page */}
+            {`of ${1 + NewOrgSteps.length}`}
+          </Text>
         </Text>
-      </Text>
-      <SecondaryButton
-        disabled={nextDisabled}
-        iconName="navigate-next"
-        label="Next"
-        onPress={nextPressed}
-        reversed
-      />
-    </View>
+        <SecondaryButton
+          disabled={nextDisabled}
+          iconName="navigate-next"
+          label="Next"
+          onPress={nextPressed}
+          reversed
+        />
+      </View>
+    </KeyboardStickyView>
   );
 }

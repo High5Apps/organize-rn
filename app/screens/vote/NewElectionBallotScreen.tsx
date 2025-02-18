@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
-  DateTimeSelector, HeaderText, KeyboardAvoidingScreenBackground, OfficeRow,
-  PrimaryButton, StepperControl, startOfNextHourIn, useLearnMoreOfficeModal,
+  DateTimeSelector, HeaderText, OfficeRow, PrimaryButton, ScreenBackground,
+  StepperControl, startOfNextHourIn, useLearnMoreOfficeModal,
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
@@ -116,7 +116,7 @@ export default function NewElectionBallotScreen({
   };
 
   return (
-    <KeyboardAvoidingScreenBackground>
+    <ScreenBackground>
       <LearnMoreOfficeModal />
       <ScrollView
         contentContainerStyle={styles.container}
@@ -180,6 +180,6 @@ export default function NewElectionBallotScreen({
           style={styles.button}
         />
       </ScrollView>
-    </KeyboardAvoidingScreenBackground>
+    </ScreenBackground>
   );
 }

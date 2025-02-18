@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Keyboard, ScrollView, StyleSheet, TextInput, View,
+  Keyboard, StyleSheet, TextInput, View,
 } from 'react-native';
 import { useCachedValue, usePost } from '../../model';
 import type { Post, PostCategory } from '../../model';
@@ -35,9 +35,6 @@ const useStyles = () => {
     },
     requestProgress: {
       marginHorizontal: spacing.m,
-    },
-    scrollView: {
-      flex: 1,
     },
   });
 
@@ -121,52 +118,50 @@ export default function NewPostScreenBase({
 
   return (
     <KeyboardAvoidingScreenBackground>
-      <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView}>
-        {!initialCategory && (
-          <PostCategorySelector
-            disabled={loading}
-            onSelectionChanged={setPostCategory}
-            selection={postCategory}
-          />
-        )}
-        <View style={styles.container}>
-          <TextInputRow
-            editable={!loading}
-            enablesReturnKeyAutomatically // iOS only
-            maxLength={MAX_TITLE_LENGTH}
-            onChangeText={setTitle}
-            onEndEditing={({ nativeEvent: { text } }) => setTitle(text)}
-            onSubmitEditing={({ nativeEvent: { text } }) => {
-              if (text.length) {
-                multilineTextInputRef.current?.focus();
-              }
-            }}
-            placeholder="Title"
-            // Prevents dismissing the keyboard when hitting next on Android
-            // before entering any input
-            submitBehavior="submit"
-            value={title}
-          />
-          <MultilineTextInput
-            editable={!loading}
-            maxLength={MAX_BODY_LENGTH}
-            onChangeText={setBody}
-            onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
-            placeholder="Body (optional)"
-            style={styles.multilineTextInput}
-            returnKeyType="default"
-            ref={multilineTextInputRef}
-            value={body}
-          />
-          <RequestProgress style={styles.requestProgress} />
-          <PrimaryButton
-            iconName="publish"
-            label="Publish"
-            onPress={onPublishPressed}
-            style={styles.button}
-          />
-        </View>
-      </ScrollView>
+      {!initialCategory && (
+        <PostCategorySelector
+          disabled={loading}
+          onSelectionChanged={setPostCategory}
+          selection={postCategory}
+        />
+      )}
+      <View style={styles.container}>
+        <TextInputRow
+          editable={!loading}
+          enablesReturnKeyAutomatically // iOS only
+          maxLength={MAX_TITLE_LENGTH}
+          onChangeText={setTitle}
+          onEndEditing={({ nativeEvent: { text } }) => setTitle(text)}
+          onSubmitEditing={({ nativeEvent: { text } }) => {
+            if (text.length) {
+              multilineTextInputRef.current?.focus();
+            }
+          }}
+          placeholder="Title"
+          // Prevents dismissing the keyboard when hitting next on Android
+          // before entering any input
+          submitBehavior="submit"
+          value={title}
+        />
+        <MultilineTextInput
+          editable={!loading}
+          maxLength={MAX_BODY_LENGTH}
+          onChangeText={setBody}
+          onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
+          placeholder="Body (optional)"
+          style={styles.multilineTextInput}
+          returnKeyType="default"
+          ref={multilineTextInputRef}
+          value={body}
+        />
+        <RequestProgress style={styles.requestProgress} />
+        <PrimaryButton
+          iconName="publish"
+          label="Publish"
+          onPress={onPublishPressed}
+          style={styles.button}
+        />
+      </View>
     </KeyboardAvoidingScreenBackground>
   );
 }

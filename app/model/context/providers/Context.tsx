@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CurrentUserDataContextProvider } from './CurrentUserDataContext';
 import { PostContextProvider } from './PostContext';
@@ -23,9 +24,11 @@ export default function Context({ children }: PropsWithChildren<{}>) {
                   <FlagReportContextProvider>
                     <ModerationEventContextProvider>
                       <CachedValueContextProvider>
-                        <SafeAreaProvider>
-                          {children}
-                        </SafeAreaProvider>
+                        <KeyboardProvider>
+                          <SafeAreaProvider>
+                            {children}
+                          </SafeAreaProvider>
+                        </KeyboardProvider>
                       </CachedValueContextProvider>
                     </ModerationEventContextProvider>
                   </FlagReportContextProvider>

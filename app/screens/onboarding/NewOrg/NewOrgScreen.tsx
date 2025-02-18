@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, LearnMoreModal,
-  MultilineTextInput, SecondaryButton, TextInputRow,
+  HeaderText, LearnMoreModal, MultilineTextInput, ScreenBackground,
+  SecondaryButton, TextInputRow,
 } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import type {
@@ -70,18 +70,18 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const isEmail = paramType === 'email';
 
   return (
-    <KeyboardAvoidingScreenBackground topNavigationBarHidden>
-      <LearnMoreModal
-        body={body}
-        headline={headline}
-        iconName={iconName}
-        setVisible={setModalVisible}
-        visible={modalVisible}
-      />
+    <ScreenBackground>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
       >
+        <LearnMoreModal
+          body={body}
+          headline={headline}
+          iconName={iconName}
+          setVisible={setModalVisible}
+          visible={modalVisible}
+        />
         <Text style={styles.title}>
           {title}
         </Text>
@@ -118,6 +118,6 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         nextDisabled={nextDisabled}
         nextPressed={navigateNext}
       />
-    </KeyboardAvoidingScreenBackground>
+    </ScreenBackground>
   );
 }
