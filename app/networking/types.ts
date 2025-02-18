@@ -149,6 +149,7 @@ export type OrgResponse = {
   graph: OrgGraph,
   id: string,
   email?: string;
+  encryptedEmployerName?: BackendEncryptedMessage;
   encryptedName: BackendEncryptedMessage;
   encryptedMemberDefinition: BackendEncryptedMessage;
 };
@@ -158,6 +159,8 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
   return isOrgGraph(response?.graph)
     && response.id?.length > 0
     && ((response.email === undefined) || response.email.length > 0)
+    && ((response.encryptedEmployerName === undefined)
+      || isBackendEncryptedMessage(response.encryptedEmployerName))
     && isBackendEncryptedMessage(response.encryptedName)
     && isBackendEncryptedMessage(response.encryptedMemberDefinition);
 }

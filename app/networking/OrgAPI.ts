@@ -5,8 +5,8 @@ import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
 import { orgURI, orgsURI, verifyURI } from './Routes';
 import {
-  Authorization, E2EDecryptor, E2EEncryptor, isCreateModelResponse,
-  isOrgResponse, Org, OrgGraph, UnpublishedOrg,
+  Authorization, E2EDecryptor, E2EEncryptor, isBackendEncryptedMessage,
+  isCreateModelResponse, isOrgResponse, Org, OrgGraph, UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {
@@ -85,17 +85,24 @@ export async function fetchOrg({
     throw new Error('Failed to parse Org from response');
   }
 
-  const { encryptedName, encryptedMemberDefinition } = json;
-  const [name, memberDefinition] = await Promise.all([
+  const {
+    encryptedEmployerName, encryptedName, encryptedMemberDefinition,
+  } = json;
+  const [employerName, name, memberDefinition] = await Promise.all([
+    isBackendEncryptedMessage(encryptedEmployerName)
+      ? decrypt(encryptedEmployerName, e2eDecrypt) : undefined,
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedMemberDefinition, e2eDecrypt),
   ]);
   const {
+    encryptedEmployerName: unusedEEN,
     encryptedName: unusedEN,
     encryptedMemberDefinition: unusedEMD,
     graph: orgGraph,
     ...org
-  } = { ...json, name, memberDefinition };
+  } = {
+    ...json, employerName, name, memberDefinition,
+  };
 
   return { org, orgGraph };
 }
@@ -103,6 +110,7 @@ export async function fetchOrg({
 export type UpdateProps = {
   e2eEncrypt: E2EEncryptor;
   email?: string;
+  employerName?: string;
   memberDefinition?: string;
   name?: string;
 };
@@ -112,20 +120,27 @@ type UpdateReturn = {
 };
 
 export async function updateOrg({
-  e2eEncrypt, email, jwt, memberDefinition, name,
+  e2eEncrypt, email, employerName, jwt, memberDefinition, name,
 }: UpdateProps & Authorization): Promise<UpdateReturn> {
-  if (!email && !name && !memberDefinition) {
+  if (!email && !employerName && !name && !memberDefinition) {
     console.warn('No props were present in updateOrg');
     return {};
   }
 
-  const [encryptedMemberDefinition, encryptedName] = await Promise.all([
+  const [
+    encryptedEmployerName, encryptedMemberDefinition, encryptedName,
+  ] = await Promise.all([
+    employerName ? encrypt(employerName, e2eEncrypt) : undefined,
     memberDefinition ? encrypt(memberDefinition, e2eEncrypt) : undefined,
     name ? encrypt(name, e2eEncrypt) : undefined,
   ]);
 
   const response = await patch({
-    bodyObject: { org: { email, encryptedMemberDefinition, encryptedName } },
+    bodyObject: {
+      org: {
+        email, encryptedEmployerName, encryptedMemberDefinition, encryptedName,
+      },
+    },
     jwt,
     uri: orgURI,
   });

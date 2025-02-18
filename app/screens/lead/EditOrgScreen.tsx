@@ -9,6 +9,9 @@ import {
 import useTheme from '../../Theme';
 import { getErrorMessage, NewOrgSteps, useOrg } from '../../model';
 
+const EMPLOYER_NAME_MAX_LENGTH = 50;
+const EMPLOYER_NAME_PLACEHOLDER = 'Acme, Inc.';
+
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
 
@@ -42,6 +45,7 @@ function useOrgInfo({
   setLoading, setResult,
 }: Pick<ReturnType<typeof useRequestProgress>, 'setLoading' | 'setResult'>) {
   const [email, setEmail] = useState<string | undefined>('');
+  const [employerName, setEmployerName] = useState<string | undefined>();
   const [memberDefinition, setMemberDefinition] = useState('');
   const [name, setName] = useState('');
 
@@ -69,7 +73,9 @@ function useOrgInfo({
     Keyboard.dismiss();
 
     try {
-      await updateOrg({ email, memberDefinition, name });
+      await updateOrg({
+        email, employerName, memberDefinition, name,
+      });
       setResult('success', { message: 'Successfully updated Org info' });
     } catch (error) {
       const errorMessage = getErrorMessage(error);
@@ -83,16 +89,19 @@ function useOrgInfo({
     if (!org) { return; }
 
     setEmail(org.email);
+    setEmployerName(org.employerName);
     setMemberDefinition(org.memberDefinition);
     setName(org.name);
   }, [org]);
 
   return {
     email,
+    employerName,
     memberDefinition,
     name,
     org,
     setEmail,
+    setEmployerName,
     setMemberDefinition,
     setName,
     updateOrgInfo,
@@ -104,8 +113,8 @@ export default function EditOrgScreen() {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress();
   const {
-    email, memberDefinition, name, org, setEmail, setMemberDefinition, setName,
-    updateOrgInfo,
+    email, employerName, memberDefinition, name, org, setEmail, setEmployerName,
+    setMemberDefinition, setName, updateOrgInfo,
   } = useOrgInfo({ setLoading, setResult });
 
   const [nameStep, memberDefinitionStep, emailStep] = NewOrgSteps;
@@ -162,6 +171,19 @@ export default function EditOrgScreen() {
                 submitBehavior="blurAndSubmit"
                 returnKeyType="done"
                 value={memberDefinition}
+              />
+            </View>
+            <View style={styles.section}>
+              <HeaderText>Employer name</HeaderText>
+              <TextInputRow
+                autoFocus={false}
+                editable={!loading}
+                enablesReturnKeyAutomatically
+                maxLength={EMPLOYER_NAME_MAX_LENGTH}
+                onChangeText={setEmployerName}
+                placeholder={EMPLOYER_NAME_PLACEHOLDER}
+                returnKeyType="done"
+                value={employerName}
               />
             </View>
             <PrimaryButton

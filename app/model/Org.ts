@@ -6,6 +6,7 @@ import { useCurrentUser } from './context';
 
 type UpdateProps = {
   email?: string;
+  employerName?: string;
   memberDefinition?: string;
   name?: string;
 };
@@ -43,7 +44,7 @@ export default function useOrg() {
   }, [currentUser, org, orgGraph]);
 
   const updateOrg = useCallback(async ({
-    email, memberDefinition, name,
+    email, employerName, memberDefinition, name,
   }: UpdateProps) => {
     if (!currentUser || !org) {
       throw new Error('Expected currentUser to be set');
@@ -52,7 +53,7 @@ export default function useOrg() {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eEncrypt } = currentUser;
     const { errorMessage } = await updateBackendOrg({
-      e2eEncrypt, email, jwt, memberDefinition, name,
+      e2eEncrypt, email, employerName, jwt, memberDefinition, name,
     });
 
     if (errorMessage !== undefined) {
@@ -62,6 +63,7 @@ export default function useOrg() {
     const updatedOrg = {
       ...org,
       email: email ?? org.email,
+      employerName: employerName ?? org.employerName,
       memberDefinition: memberDefinition ?? org.memberDefinition,
       name: name ?? org.name,
     };
