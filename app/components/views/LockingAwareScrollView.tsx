@@ -36,6 +36,7 @@ export default function LockingAwareScrollView({
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
+      keyboardShouldPersistTaps="handled"
       onContentSizeChange={(_, h) => setContentHeight(h)}
       onLayout={(event) => {
         const { height } = event.nativeEvent.layout;

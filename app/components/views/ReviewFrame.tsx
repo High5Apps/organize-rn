@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import useTheme from '../../Theme';
-import LockingAwareScrollView from './LockingAwareScrollView';
+import LockingScrollView from './LockingScrollView';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -45,7 +45,7 @@ export default function ReviewFrame({ labeledValues }: Props) {
   const { styles } = useStyles();
 
   return (
-    <LockingAwareScrollView style={styles.lockingAwareScrollView}>
+    <LockingScrollView style={styles.lockingAwareScrollView}>
       {labeledValues.map(({ label, value }) => (
         <View key={label} style={styles.valueContainer}>
           <Text style={[styles.text, styles.label]}>
@@ -56,6 +56,6 @@ export default function ReviewFrame({ labeledValues }: Props) {
           </Text>
         </View>
       ))}
-    </LockingAwareScrollView>
+    </LockingScrollView>
   );
 }

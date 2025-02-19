@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Share, StyleSheet, Text } from 'react-native';
 import {
   ButtonRow, LockingAwareScrollView, PrimaryButton, QRCodeControl,
@@ -43,17 +43,22 @@ const useStyles = () => {
 };
 
 export default function ConnectScreen({ navigation }: ConnectScreenProps) {
+  const [buttonRowElevated, setButtonRowElevated] = useState(false);
+
   const { styles } = useStyles();
 
   return (
     <ScreenBackground>
-      <LockingAwareScrollView style={styles.scrollView}>
+      <LockingAwareScrollView
+        onScrollEnabledChanged={setButtonRowElevated}
+        style={styles.scrollView}
+      >
         <QRCodeControl />
         <Text style={styles.prompt}>
           Recruit or connect with members by letting them scan your secret code.
         </Text>
       </LockingAwareScrollView>
-      <ButtonRow elevated={false} style={styles.buttonRow}>
+      <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
         <SecondaryButton
           iconName="qr-code-scanner"
           label="Scan"
