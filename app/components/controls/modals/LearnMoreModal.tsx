@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../Theme';
-import { LockingScrollView, Scrim } from '../../views';
+import { LockingAwareScrollView, Scrim } from '../../views';
 import { IconButton } from '../buttons';
 
 const useStyles = () => {
@@ -92,7 +92,7 @@ export default function LearnMoreModal({
           <Text style={styles.headline}>
             {headline}
           </Text>
-          <LockingScrollView>
+          <LockingAwareScrollView>
             <View onStartShouldSetResponder={() => true}>
               {children ?? (
                 <Text style={styles.body}>
@@ -100,7 +100,7 @@ export default function LearnMoreModal({
                 </Text>
               )}
             </View>
-          </LockingScrollView>
+          </LockingAwareScrollView>
         </View>
       </Scrim>
     </Modal>

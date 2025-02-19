@@ -16,7 +16,7 @@ type Props = {
   style?: ViewStyle;
 };
 
-export default function LockingScrollView({
+export default function LockingAwareScrollView({
   children, onScrollEnabledChanged = () => {}, style = {},
 }: PropsWithChildren<Props>) {
   const [contentHeight, setContentHeight] = useState(0);

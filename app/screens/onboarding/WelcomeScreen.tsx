@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { CircleLogo } from '../../../assets';
 import {
-  AutoscaledText, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
-  SecondaryButton,
+  AutoscaledText, ButtonRow, LockingAwareScrollView, PrimaryButton,
+  ScreenBackground, SecondaryButton,
 } from '../../components';
 import type { WelcomeScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -42,7 +42,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
 
   return (
     <ScreenBackground>
-      <LockingScrollView
+      <LockingAwareScrollView
         onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
       >
@@ -53,7 +53,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         <AutoscaledText style={styles.subtitle}>
           Form your own labor union
         </AutoscaledText>
-      </LockingScrollView>
+      </LockingAwareScrollView>
       <ButtonRow elevated={buttonRowElevated}>
         <SecondaryButton
           iconName="add"

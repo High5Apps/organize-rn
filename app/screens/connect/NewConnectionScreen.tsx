@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  ButtonRow, ConnectionReview, LockingScrollView, NewConnectionControl,
+  ButtonRow, ConnectionReview, LockingAwareScrollView, NewConnectionControl,
   PrimaryButton, ScreenBackground, useRequestProgress,
 } from '../../components';
 import { ConnectionPreview, useConnection, useQRValue } from '../../model';
@@ -71,7 +71,7 @@ export default function NewConnectionScreen({
 
   return (
     <ScreenBackground>
-      <LockingScrollView
+      <LockingAwareScrollView
         onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
       >
@@ -89,7 +89,7 @@ export default function NewConnectionScreen({
           )}
           setQRValue={setQRValue}
         />
-      </LockingScrollView>
+      </LockingAwareScrollView>
       <>
         <RequestProgress />
         <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>

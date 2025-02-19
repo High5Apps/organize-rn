@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
-  Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
+  Agreement, ButtonRow, LockingAwareScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton, useRequestProgress,
 } from '../../components';
 import { NewOrgSteps, createCurrentUser, useCurrentUser } from '../../model';
@@ -98,14 +98,14 @@ export default function OrgReviewScreen({
   return (
     <ScreenBackground>
       <Text style={styles.title}>Review Your Org</Text>
-      <LockingScrollView style={styles.scrollView}>
+      <LockingAwareScrollView style={styles.scrollView}>
         {NewOrgSteps.map(({ header, param }) => (
           <View key={param} style={styles.paramContainer}>
             <Text style={styles.label}>{`${header}:`}</Text>
             <Text style={styles.value}>{unpublishedOrg[param]}</Text>
           </View>
         ))}
-      </LockingScrollView>
+      </LockingAwareScrollView>
       <>
         <RequestProgress />
         <Agreement buttonLabel={buttonLabel} />

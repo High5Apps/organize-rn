@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  Agreement, ButtonRow, LockingScrollView, MembershipReview,
+  Agreement, ButtonRow, LockingAwareScrollView, MembershipReview,
   NewConnectionControl, PrimaryButton, ScreenBackground, SecondaryButton,
   useRequestProgress,
 } from '../../components';
@@ -90,7 +90,7 @@ export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps)
 
   return (
     <ScreenBackground>
-      <LockingScrollView
+      <LockingAwareScrollView
         onScrollEnabledChanged={setButtonRowElevated}
         style={styles.scrollView}
       >
@@ -108,7 +108,7 @@ export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps)
           )}
           setQRValue={setQRValue}
         />
-      </LockingScrollView>
+      </LockingAwareScrollView>
       <>
         <RequestProgress />
         {!!qrValue && connectionPreview && (

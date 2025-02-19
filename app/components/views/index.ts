@@ -18,7 +18,7 @@ export { default as IconPrompt } from './IconPrompt';
 export { default as ItemSeparator } from './ItemSeparator';
 export { default as KeyboardAvoidingScreenBackground } from './KeyboardAvoidingScreenBackground';
 export { default as ListEmptyMessage } from './ListEmptyMessage';
-export { default as LockingScrollView } from './LockingScrollView';
+export { default as LockingAwareScrollView } from './LockingAwareScrollView';
 export { default as MembershipReview } from './MembershipReview';
 export { default as useOrgGraphProgressBar } from './OrgGraphProgressBar';
 export { default as ProgressBar } from './ProgressBar';
