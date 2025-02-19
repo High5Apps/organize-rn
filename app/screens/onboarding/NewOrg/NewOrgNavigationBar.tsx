@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SecondaryButton } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import useTheme from '../../../Theme';
@@ -42,9 +43,10 @@ export default function NewOrgNavigationBar({
   backPressed, currentStep, nextDisabled = false, nextPressed,
 }: Props) {
   const { styles } = useStyles();
+  const { bottom: bottomInset } = useSafeAreaInsets();
 
   return (
-    <KeyboardStickyView>
+    <KeyboardStickyView offset={{ opened: bottomInset }}>
       <View style={styles.container}>
         <SecondaryButton
           iconName="navigate-before"
