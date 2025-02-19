@@ -1,10 +1,9 @@
 import React from 'react';
-import {
-  ScrollView, StyleSheet, Text, View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  ConfirmationAlert, ScreenBackground, SecondaryButton, useRequestProgress,
+  ConfirmationAlert, LockingScrollView, ScreenBackground, SecondaryButton,
+  useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import { useCurrentUser } from '../../model';
@@ -69,7 +68,7 @@ export default function LeaveOrgScreen() {
 
   return (
     <ScreenBackground>
-      <ScrollView style={styles.scrollView}>
+      <LockingScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <Icon name="warning-amber" style={styles.iconWarning} />
           <Text style={styles.textHeadline}>
@@ -116,7 +115,7 @@ export default function LeaveOrgScreen() {
           />
           <RequestProgress />
         </View>
-      </ScrollView>
+      </LockingScrollView>
     </ScreenBackground>
   );
 }

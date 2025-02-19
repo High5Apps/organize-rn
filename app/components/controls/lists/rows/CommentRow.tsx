@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import {
-  ScrollView, StyleSheet, Text, View, useWindowDimensions,
+  StyleSheet, Text, View, useWindowDimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../../../Theme';
@@ -11,7 +11,9 @@ import {
 import UpvoteControl from '../../UpvoteControl';
 import { FlagTextButton, TextButton } from '../../buttons';
 import type { PostScreenProps } from '../../../../navigation';
-import { HighlightedRowContainer, HyperlinkDetector } from '../../../views';
+import {
+  HighlightedRowContainer, HyperlinkDetector, LockingScrollView,
+} from '../../../views';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -123,12 +125,8 @@ function CommentRow({
   );
   const BodyView = compactView ? (
     <View style={styles.scrollViewContainer}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        persistentScrollbar // persistentScrollbar only works on Android
-      >
-        {BodyText}
-      </ScrollView>
+      {/* persistentScrollbar only works on Android */}
+      <LockingScrollView persistentScrollbar>{BodyText}</LockingScrollView>
     </View>
   ) : BodyText;
 

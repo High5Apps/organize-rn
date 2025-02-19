@@ -27,6 +27,7 @@ export default function KeyboardAvoidingScreenBackground({
   return (
     <ScreenBackground>
       <KeyboardAwareScrollView
+        alwaysBounceVertical={false}
         bottomOffset={spacing.m}
         contentContainerStyle={contentContainerStyle}
         keyboardShouldPersistTaps="handled"

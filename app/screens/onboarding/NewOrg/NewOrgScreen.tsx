@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import NewOrgNavigationBar from './NewOrgNavigationBar';
 import {
-  HeaderText, LearnMoreModal, MultilineTextInput, ScreenBackground,
-  SecondaryButton, TextInputRow,
+  HeaderText, LearnMoreModal, LockingScrollView, MultilineTextInput,
+  ScreenBackground, SecondaryButton, TextInputRow,
 } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import type {
@@ -71,7 +71,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
 
   return (
     <ScreenBackground>
-      <ScrollView
+      <LockingScrollView
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
       >
@@ -109,7 +109,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           label="Learn More"
           onPress={() => setModalVisible(true)}
         />
-      </ScrollView>
+      </LockingScrollView>
       <NewOrgNavigationBar
         backPressed={() => {
           stepNavigator.navigateToPrevious(currentStep, params);

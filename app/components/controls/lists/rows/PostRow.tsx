@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import {
-  ScrollView, StyleSheet, Text, TouchableHighlight, View,
+  StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import useTheme from '../../../../Theme';
 import { Post, VoteState, getMessageAge } from '../../../../model';
 import UpvoteControl from '../../UpvoteControl';
 import {
-  DisclosureIcon, HighlightedCurrentUserRowContainer,
+  DisclosureIcon, HighlightedCurrentUserRowContainer, LockingScrollView,
 } from '../../../views';
 
 const useStyles = () => {
@@ -82,7 +82,7 @@ function PostRow({
 
   const TitleView = compactView ? (
     <View style={styles.scrollViewContainer}>
-      <ScrollView persistentScrollbar>{TitleText}</ScrollView>
+      <LockingScrollView persistentScrollbar>{TitleText}</LockingScrollView>
     </View>
   ) : TitleText;
 

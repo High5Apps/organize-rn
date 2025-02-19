@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import type { NewElectionBallotScreenProps } from '../../navigation';
 import {
-  DateTimeSelector, HeaderText, OfficeRow, PrimaryButton, ScreenBackground,
-  StepperControl, startOfNextHourIn, useLearnMoreOfficeModal,
+  DateTimeSelector, HeaderText, LockingScrollView, OfficeRow, PrimaryButton,
+  ScreenBackground, StepperControl, startOfNextHourIn, useLearnMoreOfficeModal,
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
@@ -118,9 +118,8 @@ export default function NewElectionBallotScreen({
   return (
     <ScreenBackground>
       <LearnMoreOfficeModal />
-      <ScrollView
+      <LockingScrollView
         contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
         style={styles.scrollView}
       >
         <HeaderText>Question</HeaderText>
@@ -179,7 +178,7 @@ export default function NewElectionBallotScreen({
           onPress={onPublishPressed}
           style={styles.button}
         />
-      </ScrollView>
+      </LockingScrollView>
     </ScreenBackground>
   );
 }
