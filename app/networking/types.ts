@@ -761,3 +761,30 @@ export type E2EMultiDecryptor =
   (encryptedMessages: (AESEncryptedData | null)[]) => Promise<(string | null)[]>;
 export type E2EDecryptorWithExposedKey =
   (props: AESEncryptedData & { base64Key: string }) => Promise<string>;
+
+export type UnionCardResponse = {
+  encryptedAgreement: BackendEncryptedMessage;
+  encryptedEmail: BackendEncryptedMessage;
+  encryptedEmployerName: BackendEncryptedMessage;
+  encryptedName: BackendEncryptedMessage;
+  encryptedPhone: BackendEncryptedMessage;
+  id: string;
+  signature: string;
+  signedAt: Date;
+  userId: string;
+};
+
+export function isUnionCardResponse(object: unknown): object is UnionCardResponse {
+  const unionCard = (object as UnionCardResponse);
+  return unionCard?.id?.length > 0
+    && isBackendEncryptedMessage(unionCard.encryptedAgreement)
+    && isBackendEncryptedMessage(unionCard.encryptedEmail)
+    && isBackendEncryptedMessage(unionCard.encryptedEmployerName)
+    && isBackendEncryptedMessage(unionCard.encryptedName)
+    && isBackendEncryptedMessage(unionCard.encryptedPhone)
+    && unionCard.signature?.length > 0
+    && isDate(unionCard.signedAt)
+    && unionCard.userId?.length > 0;
+}
+
+export type UnionCard = Decrypt<UnionCardResponse>;
