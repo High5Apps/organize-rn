@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Share, StyleSheet, Text } from 'react-native';
 import {
   ButtonRow, LockingAwareScrollView, PrimaryButton, QRCodeControl,
-  ScreenBackground, SecondaryButton,
+  ScreenBackground, SecondaryButton, useHeaderButton,
 } from '../../components';
 import type { ConnectScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -44,6 +44,12 @@ const useStyles = () => {
 
 export default function ConnectScreen({ navigation }: ConnectScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
+
+  useHeaderButton({
+    iconName: 'badge',
+    navigation,
+    onPress: useCallback(() => navigation.navigate('UnionCard'), [navigation]),
+  });
 
   const { styles } = useStyles();
 
