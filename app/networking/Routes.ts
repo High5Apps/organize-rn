@@ -59,6 +59,8 @@ export const commentThreadURI = (commentId: string) => `${commentURI(commentId)}
 export const commentUpvotesURI = (commentId: string) => `${commentURI(commentId)}/upvotes`;
 export const repliesURI = (commentId: string) => `${commentURI(commentId)}/comments`;
 
+export const unionCardsURI = `${apiRoute}/union_cards`;
+
 export const usersURI = `${apiRoute}/users`;
 export const userUri = (userId: string) => `${usersURI}/${userId}`;
 
