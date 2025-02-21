@@ -230,6 +230,9 @@ export default function UnionCardScreen() {
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
+            <Text style={[styles.text, styles.agreement]}>
+              Your union officers can view signed cards.
+            </Text>
           </View>
         </>
       )}
