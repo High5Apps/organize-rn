@@ -81,6 +81,10 @@ export function CurrentUser(
     })
   );
 
+  const getEccPublicKey = async () => (
+    keys.ecc.getPublicKey(authenticationKeyId)
+  );
+
   const logOut = async () => {
     const jwt = await currentUserBase.createAuthToken({ scope: '*' });
     const { errorMessage } = await leaveOrg({ jwt });
@@ -141,6 +145,7 @@ export function CurrentUser(
     e2eDecrypt,
     e2eDecryptMany,
     e2eEncryptMany,
+    getEccPublicKey,
     logOut,
     org,
     refresh,
