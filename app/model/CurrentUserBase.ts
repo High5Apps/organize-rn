@@ -16,6 +16,10 @@ export default function CurrentUserBase({
 }: CurrentUserBaseData) {
   const keys = Keys();
 
+  const sign = (
+    { message }: { message: string },
+  ) => keys.ecc.sign({ message, publicKeyId: authenticationKeyId });
+
   async function createAuthToken({
     currentTime: maybeCurrentTime, scope, timeToLiveSeconds: maybeTTL,
   }: CreateAuthTokenProps): Promise<string> {
@@ -28,10 +32,6 @@ export default function CurrentUserBase({
     const currentTime = maybeCurrentTime ?? new Date().getTime();
     const timeToLiveSeconds = maybeTTL ?? defaultAuthTokenTTLSeconds;
 
-    const signer = (
-      { message }: { message: string },
-    ) => keys.ecc.sign({ message, publicKeyId: authenticationKeyId });
-
     const expirationSecondsSinceEpoch = (
       (currentTime / 1000) + timeToLiveSeconds
     );
@@ -39,7 +39,7 @@ export default function CurrentUserBase({
     const jwt = JWT({
       expirationSecondsSinceEpoch,
       scope,
-      signer,
+      signer: sign,
       subject: id,
     });
     const jwtString = await jwt.toString();
@@ -64,5 +64,6 @@ export default function CurrentUserBase({
     encryptedGroupKey,
     id,
     localEncryptionKeyId,
+    sign,
   };
 }
