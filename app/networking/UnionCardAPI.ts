@@ -5,12 +5,12 @@ import { unionCardsURI } from './Routes';
 import { Authorization, E2EEncryptor, isCreateModelResponse } from './types';
 
 type Props = {
-  agreement: string;
-  email: string;
-  employerName: string;
+  agreement: string | undefined;
+  email: string | undefined;
+  employerName: string | undefined;
   e2eEncrypt: E2EEncryptor;
-  name: string;
-  phone: string;
+  name: string | undefined;
+  phone: string | undefined;
   signature: string;
   signedAt: Date;
 };
@@ -32,11 +32,11 @@ export async function createUnionCard({
     encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
     encryptedPhone,
   ] = await Promise.all([
-    encrypt(agreement, e2eEncrypt),
-    encrypt(email, e2eEncrypt),
-    encrypt(employerName, e2eEncrypt),
-    encrypt(name, e2eEncrypt),
-    encrypt(phone, e2eEncrypt),
+    agreement ? encrypt(agreement, e2eEncrypt) : undefined,
+    email ? encrypt(email, e2eEncrypt) : undefined,
+    employerName ? encrypt(employerName, e2eEncrypt) : undefined,
+    name ? encrypt(name, e2eEncrypt) : undefined,
+    phone ? encrypt(phone, e2eEncrypt) : undefined,
   ]);
   const response = await post({
     bodyObject: {
@@ -45,7 +45,7 @@ export async function createUnionCard({
       encryptedEmployerName,
       encryptedName,
       encryptedPhone,
-      signature,
+      signatureBytes: signature,
       signedAt,
     },
     jwt,

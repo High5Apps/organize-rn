@@ -5,7 +5,9 @@ import {
   useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
-import { getErrorMessage, useOrg } from '../../model';
+import {
+  formatDate, getErrorMessage, useOrg, useUnionCard,
+} from '../../model';
 
 export const MAX_EMAIL_LENGTH = 100;
 export const MAX_NAME_LENGTH = 100;
@@ -19,13 +21,9 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     agreement: {
-      color: colors.label,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
       textAlign: 'center',
     },
     button: {
-      alignSelf: 'flex-end',
       flex: 0,
       height: sizes.buttonHeight,
       paddingHorizontal: spacing.m,
@@ -36,6 +34,20 @@ const useStyles = () => {
     },
     section: {
       rowGap: spacing.s,
+    },
+    signedAt: {
+      flex: 1,
+      textAlign: 'right',
+    },
+    signRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      columnGap: spacing.m,
+    },
+    text: {
+      color: colors.label,
+      fontSize: font.sizes.body,
+      fontFamily: font.weights.regular,
     },
   });
 
@@ -50,7 +62,11 @@ function useUnionCardInfo({
   const [name, setName] = useState<string>();
   const [orgName, setOrgName] = useState<string>();
   const [phone, setPhone] = useState<string>();
+  const [signedAt, setSignedAt] = useState<Date>();
+
   const agreement = `By tapping Sign, I authorize ${orgName ?? '<org_name>'} to represent me for the purpose of collective bargaining with ${employerName ?? '<employer_name>'}.`;
+
+  const { createUnionCard } = useUnionCard();
 
   const { org, refreshOrg } = useOrg();
   const refresh = async () => {
@@ -79,6 +95,22 @@ function useUnionCardInfo({
     setOrgName(org.name);
   }, [org]);
 
+  const sign = async () => {
+    setLoading(true);
+    setResult('none');
+
+    try {
+      const unionCard = await createUnionCard({
+        agreement, email, employerName, name, phone,
+      });
+      setSignedAt(unionCard.signedAt);
+    } catch (error) {
+      setResult('error', { error });
+    }
+
+    setLoading(false);
+  };
+
   return {
     agreement,
     email,
@@ -90,6 +122,8 @@ function useUnionCardInfo({
     setEmployerName,
     setName,
     setPhone,
+    sign,
+    signedAt,
   };
 }
 
@@ -103,7 +137,7 @@ export default function UnionCardScreen() {
   } = useRequestProgress({ removeWhenInactive: true });
   const {
     agreement, email, employerName, name, orgName, phone, setEmail,
-    setEmployerName, setName, setPhone,
+    setEmployerName, setName, setPhone, sign, signedAt,
   } = useUnionCardInfo({ setLoading, setResult });
   const showForm = !!orgName;
 
@@ -195,18 +229,23 @@ export default function UnionCardScreen() {
           </View>
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
-            <Text style={styles.agreement}>{agreement}</Text>
+            <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
           </View>
         </>
       )}
       <RequestProgress />
       {showForm && (
-        <PrimaryButton
-          iconName="draw"
-          label="Sign"
-          onPress={() => console.log('sign')}
-          style={styles.button}
-        />
+        <View style={styles.signRow}>
+          <Text style={[styles.text, styles.signedAt]}>
+            {signedAt && `Signed on ${formatDate(signedAt, 'dateOnlyShort')}`}
+          </Text>
+          <PrimaryButton
+            iconName="draw"
+            label="Sign"
+            onPress={sign}
+            style={styles.button}
+          />
+        </View>
       )}
     </KeyboardAvoidingScreenBackground>
   );
