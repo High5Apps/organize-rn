@@ -129,19 +129,12 @@ function useUnionCardInfo({
 
 type InputName = 'email' | 'employerName' | 'name' | 'phone';
 
-export default function UnionCardScreen() {
+function useFocusedInput() {
   const [focusedInput, setFocusedInput] = useState<InputName | null>(null);
 
-  const {
-    loading, RequestProgress, setLoading, setResult,
-  } = useRequestProgress({ removeWhenInactive: true });
-  const {
-    agreement, email, employerName, name, orgName, phone, setEmail,
-    setEmployerName, setName, setPhone, sign, signedAt,
-  } = useUnionCardInfo({ setLoading, setResult });
-  const showForm = !!orgName;
+  const focused = (inputName: InputName) => (focusedInput === inputName);
 
-  const { styles } = useStyles();
+  const onFocus = (inputName: InputName) => () => setFocusedInput(inputName);
 
   const onSubmitEditing = useCallback((inputName: InputName | null) => (() => {
     let nextInput: InputName | null = null;
@@ -155,6 +148,22 @@ export default function UnionCardScreen() {
     setFocusedInput(nextInput);
   }), []);
 
+  return { focused, onFocus, onSubmitEditing };
+}
+
+export default function UnionCardScreen() {
+  const {
+    loading, RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+  const {
+    agreement, email, employerName, name, orgName, phone, setEmail,
+    setEmployerName, setName, setPhone, sign, signedAt,
+  } = useUnionCardInfo({ setLoading, setResult });
+  const showForm = !!orgName;
+
+  const { styles } = useStyles();
+  const { focused, onFocus, onSubmitEditing } = useFocusedInput();
+
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {showForm && (
@@ -167,10 +176,10 @@ export default function UnionCardScreen() {
               autoCorrect={false}
               autoFocus={false}
               editable={!loading}
-              focused={focusedInput === 'name'}
+              focused={focused('name')}
               maxLength={MAX_NAME_LENGTH}
               onChangeText={setName}
-              onFocus={() => setFocusedInput('name')}
+              onFocus={onFocus('name')}
               onSubmitEditing={onSubmitEditing('name')}
               placeholder="Abe Lincoln"
               submitBehavior="submit"
@@ -183,10 +192,11 @@ export default function UnionCardScreen() {
               autoComplete="tel"
               autoFocus={false}
               editable={!loading}
-              focused={focusedInput === 'phone'}
+              focused={focused('phone')}
               keyboardType="phone-pad"
               maxLength={MAX_PHONE_LENGTH}
               onChangeText={setPhone}
+              onFocus={onFocus('phone')}
               onSubmitEditing={onSubmitEditing('phone')}
               placeholder="5551234567"
               submitBehavior="submit"
@@ -201,10 +211,11 @@ export default function UnionCardScreen() {
               autoCorrect={false}
               autoFocus={false}
               editable={!loading}
-              focused={focusedInput === 'email'}
+              focused={focused('email')}
               keyboardType="email-address"
               maxLength={MAX_EMAIL_LENGTH}
               onChangeText={setEmail}
+              onFocus={onFocus('email')}
               onSubmitEditing={onSubmitEditing('email')}
               placeholder="abe.lincoln@whitehouse.gov"
               submitBehavior="submit"
@@ -219,9 +230,10 @@ export default function UnionCardScreen() {
               autoFocus={false}
               editable={!loading}
               enterKeyHint="done"
-              focused={focusedInput === 'employerName'}
+              focused={focused('employerName')}
               maxLength={MAX_EMPLOYER_NAME_LENGTH}
               onChangeText={setEmployerName}
+              onFocus={onFocus('employerName')}
               onSubmitEditing={onSubmitEditing('employerName')}
               placeholder="Acme, Inc."
               value={employerName}
