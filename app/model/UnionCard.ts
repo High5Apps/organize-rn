@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useCurrentUser } from './context';
-import { createUnionCard as create, UnionCard } from '../networking';
+import {
+  createUnionCard as create, fetchUnionCard, UnionCard,
+} from '../networking';
 import getErrorMessage from './ErrorMessage';
 
 type CreateProps = Partial<
@@ -72,5 +74,21 @@ export default function useUnionCard() {
     }
   }, [currentUser]);
 
-  return { createUnionCard, unionCard };
+  const refreshUnionCard = useCallback(async () => {
+    if (!currentUser) { throw new Error('Expected currentUser to be set'); }
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { e2eDecrypt } = currentUser;
+    const {
+      errorMessage, unionCard: fetchedUnionCard,
+    } = await fetchUnionCard({ e2eDecrypt, jwt });
+
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
+    }
+
+    setUnionCard(fetchedUnionCard);
+  }, [currentUser]);
+
+  return { createUnionCard, refreshUnionCard, unionCard };
 }

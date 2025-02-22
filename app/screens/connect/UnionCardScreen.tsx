@@ -66,7 +66,7 @@ function useUnionCardInfo({
 
   const agreement = `By tapping Sign, I authorize ${orgName ?? '<org_name>'} to represent me for the purpose of collective bargaining with ${employerName ?? '<employer_name>'}.`;
 
-  const { createUnionCard, unionCard } = useUnionCard();
+  const { createUnionCard, refreshUnionCard, unionCard } = useUnionCard();
 
   const { org, refreshOrg } = useOrg();
   const refresh = async () => {
@@ -74,7 +74,7 @@ function useUnionCardInfo({
     setResult('none');
 
     try {
-      await refreshOrg();
+      await Promise.all([refreshOrg(), refreshUnionCard()]);
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', {
@@ -91,9 +91,14 @@ function useUnionCardInfo({
   useEffect(() => {
     if (!org) { return; }
 
-    setEmployerName(org.employerName);
     setOrgName(org.name);
-  }, [org]);
+
+    setEmail(unionCard?.email);
+    setEmployerName(org.employerName ?? unionCard?.employerName);
+    setName(unionCard?.name);
+    setPhone(unionCard?.phone);
+    setSignedAt(unionCard?.signedAt);
+  }, [org, unionCard]);
 
   const sign = async () => {
     setLoading(true);
@@ -109,10 +114,6 @@ function useUnionCardInfo({
 
     setLoading(false);
   };
-
-  useEffect(() => {
-    setSignedAt(unionCard?.signedAt);
-  }, [unionCard]);
 
   return {
     agreement,
