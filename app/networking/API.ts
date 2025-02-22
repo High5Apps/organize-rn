@@ -6,6 +6,7 @@ import type {
 
 export enum Status {
   Success = 200,
+  NoContent = 204,
   Unauthorized = 401,
 }
 

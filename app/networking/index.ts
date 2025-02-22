@@ -22,7 +22,7 @@ export {
   appStoreURI, blogURI, connectURI, privacyPolicyURI, termsOfServiceURI,
 } from './Routes';
 export { createTerm } from './TermAPI';
-export { createUnionCard } from './UnionCardAPI';
+export { createUnionCard, fetchUnionCard } from './UnionCardAPI';
 export { default as createOrUpdateUpvote } from './UpvoteAPI';
 export {
   createUser, fetchUsers, getUser, leaveOrg,
