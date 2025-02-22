@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useCurrentUser } from './context';
 import { createUnionCard as create, UnionCard } from '../networking';
 import getErrorMessage from './ErrorMessage';
@@ -8,6 +8,8 @@ type CreateProps = Partial<
 >;
 
 export default function useUnionCard() {
+  const [unionCard, setUnionCard] = useState<UnionCard | undefined>();
+
   const { currentUser } = useCurrentUser();
 
   const createUnionCard = useCallback(async ({
@@ -66,9 +68,9 @@ export default function useUnionCard() {
         signedAt: signedAt!,
         userId: currentUser.id,
       };
-      return createdUnionCard;
+      setUnionCard(createdUnionCard);
     }
   }, [currentUser]);
 
-  return { createUnionCard };
+  return { createUnionCard, unionCard };
 }
