@@ -64,7 +64,7 @@ function useUnionCardInfo({
   const [phone, setPhone] = useState<string>();
   const [signedAt, setSignedAt] = useState<Date>();
 
-  const agreement = `By tapping Sign, I authorize ${orgName ?? '<org_name>'} to represent me for the purpose of collective bargaining with ${employerName ?? '<employer_name>'}.`;
+  const agreement = `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}.`;
 
   const { createUnionCard, refreshUnionCard, unionCard } = useUnionCard();
 
