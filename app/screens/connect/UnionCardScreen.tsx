@@ -49,6 +49,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
+    textSecondary: {
+      color: colors.labelSecondary,
+    },
   });
 
   return { styles };
@@ -64,7 +67,7 @@ function useUnionCardInfo({
   const [phone, setPhone] = useState<string>();
   const [signedAt, setSignedAt] = useState<Date>();
 
-  const agreement = `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}.`;
+  const agreement = `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
 
   const { createUnionCard, refreshUnionCard, unionCard } = useUnionCard();
 
@@ -247,8 +250,8 @@ export default function UnionCardScreen() {
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
-            <Text style={[styles.text, styles.agreement]}>
-              Your union officers can view signed cards.
+            <Text style={[styles.text, styles.agreement, styles.textSecondary]}>
+              Your union officers can view signed cards
             </Text>
           </View>
         </>
