@@ -163,6 +163,7 @@ export default function UnionCardScreen() {
     agreement, email, employerName, name, orgName, phone, setEmail,
     setEmployerName, setName, setPhone, sign, signedAt,
   } = useUnionCardInfo({ setLoading, setResult });
+  const inputsEditable = !loading && !signedAt;
   const showForm = !!orgName;
 
   const { styles } = useStyles();
@@ -179,7 +180,7 @@ export default function UnionCardScreen() {
               autoComplete="name"
               autoCorrect={false}
               autoFocus={false}
-              editable={!loading}
+              editable={inputsEditable}
               focused={focused('name')}
               maxLength={MAX_NAME_LENGTH}
               onChangeText={setName}
@@ -195,7 +196,7 @@ export default function UnionCardScreen() {
             <TextInputRow
               autoComplete="tel"
               autoFocus={false}
-              editable={!loading}
+              editable={inputsEditable}
               focused={focused('phone')}
               keyboardType="phone-pad"
               maxLength={MAX_PHONE_LENGTH}
@@ -214,7 +215,7 @@ export default function UnionCardScreen() {
               autoComplete="email"
               autoCorrect={false}
               autoFocus={false}
-              editable={!loading}
+              editable={inputsEditable}
               focused={focused('email')}
               keyboardType="email-address"
               maxLength={MAX_EMAIL_LENGTH}
@@ -232,7 +233,7 @@ export default function UnionCardScreen() {
               autoCapitalize="words"
               autoCorrect={false}
               autoFocus={false}
-              editable={!loading}
+              editable={inputsEditable}
               enterKeyHint="done"
               focused={focused('employerName')}
               maxLength={MAX_EMPLOYER_NAME_LENGTH}
