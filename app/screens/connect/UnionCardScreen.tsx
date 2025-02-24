@@ -29,7 +29,7 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
     },
     container: {
-      margin: spacing.m,
+      padding: spacing.m,
       rowGap: spacing.m,
     },
     section: {
