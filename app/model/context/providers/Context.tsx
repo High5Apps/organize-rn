@@ -24,11 +24,11 @@ export default function Context({ children }: PropsWithChildren<{}>) {
                   <FlagReportContextProvider>
                     <ModerationEventContextProvider>
                       <CachedValueContextProvider>
-                        <KeyboardProvider>
-                          <SafeAreaProvider>
+                        <SafeAreaProvider>
+                          <KeyboardProvider>
                             {children}
-                          </SafeAreaProvider>
-                        </KeyboardProvider>
+                          </KeyboardProvider>
+                        </SafeAreaProvider>
                       </CachedValueContextProvider>
                     </ModerationEventContextProvider>
                   </FlagReportContextProvider>
