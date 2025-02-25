@@ -78,7 +78,9 @@ function useUnionCardInfo({
   const [phone, setPhone] = useState<string>();
   const [signedAt, setSignedAt] = useState<Date>();
 
-  const { createUnionCard, refreshUnionCard, unionCard } = useUnionCard();
+  const {
+    createUnionCard, refreshUnionCard, removeUnionCard, unionCard,
+  } = useUnionCard();
 
   const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
 
@@ -107,16 +109,19 @@ function useUnionCardInfo({
 
     setOrgName(org.name);
 
-    setEmail(unionCard?.email);
-    setEmployerName(org.employerName ?? unionCard?.employerName);
-    setName(unionCard?.name);
-    setPhone(unionCard?.phone);
-    setSignedAt(unionCard?.signedAt);
-    if (unionCard?.signedAt) {
-      setSignOrUndoResult('success', {
-        message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
-      });
+    if (!unionCard) {
+      setSignedAt(undefined);
+      return;
     }
+
+    setEmail(unionCard.email);
+    setEmployerName(org.employerName ?? unionCard.employerName);
+    setName(unionCard.name);
+    setPhone(unionCard.phone);
+    setSignedAt(unionCard.signedAt);
+    setSignOrUndoResult('success', {
+      message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
+    });
   }, [org, unionCard]);
 
   const sign = async () => {
@@ -127,6 +132,19 @@ function useUnionCardInfo({
       await createUnionCard({
         agreement, email, employerName, name, phone,
       });
+    } catch (error) {
+      setSignOrUndoResult('error', { error });
+    }
+
+    setSigningOrUndoing(false);
+  };
+
+  const undo = async () => {
+    setSigningOrUndoing(true);
+    setSignOrUndoResult('none');
+
+    try {
+      await removeUnionCard();
     } catch (error) {
       setSignOrUndoResult('error', { error });
     }
@@ -146,6 +164,7 @@ function useUnionCardInfo({
     setPhone,
     sign,
     signedAt,
+    undo,
   };
 }
 
@@ -188,7 +207,7 @@ export default function UnionCardScreen() {
   } = useRequestProgress({ removeWhenInactive: true });
   const {
     agreement, email, employerName, name, phone, setEmail, setEmployerName,
-    setName, setPhone, sign, signedAt,
+    setName, setPhone, sign, signedAt, undo,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
@@ -280,12 +299,21 @@ export default function UnionCardScreen() {
             </Text>
           </View>
           <View style={styles.signRow}>
-            <PrimaryButton
-              iconName="draw"
-              label="Sign"
-              onPress={sign}
-              style={styles.button}
-            />
+            {signedAt ? (
+              <PrimaryButton
+                iconName="restart-alt"
+                label="Undo"
+                onPress={undo}
+                style={styles.button}
+              />
+            ) : (
+              <PrimaryButton
+                iconName="draw"
+                label="Sign"
+                onPress={sign}
+                style={styles.button}
+              />
+            )}
             <SignOrUndoProgress
               messageStyle={styles.signOrUndoProgressMessage}
               style={styles.signOrUndoProgress}
