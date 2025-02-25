@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useCurrentUser } from './context';
 import {
   createUnionCard as create, fetchUnionCard, UnionCard,
+  removeUnionCard as remove,
 } from '../networking';
 import getErrorMessage from './ErrorMessage';
 
@@ -90,5 +91,20 @@ export default function useUnionCard() {
     setUnionCard(fetchedUnionCard);
   }, [currentUser]);
 
-  return { createUnionCard, refreshUnionCard, unionCard };
+  const removeUnionCard = useCallback(async () => {
+    if (!currentUser) { throw new Error('Expected currentUser to be set'); }
+
+    const jwt = await currentUser.createAuthToken({ scope: '*' });
+    const { errorMessage } = await remove({ jwt });
+
+    if (errorMessage !== undefined) {
+      throw new Error(errorMessage);
+    }
+
+    setUnionCard(undefined);
+  }, [currentUser]);
+
+  return {
+    createUnionCard, refreshUnionCard, unionCard, removeUnionCard,
+  };
 }
