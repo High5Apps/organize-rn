@@ -38,10 +38,12 @@ type GetProps = HeaderProps & {
   uri: string;
 };
 
-export const get = async ({ jwt, uri, sharerJwt }: GetProps) => fetch(uri, {
-  method: 'GET',
-  headers: headers({ jwt, sharerJwt }),
-});
+const getOrDestroy = async (method: 'GET' | 'DELETE', {
+  jwt, uri, sharerJwt,
+}: GetProps) => fetch(uri, { method, headers: headers({ jwt, sharerJwt }) });
+
+export const get = async (props: GetProps) => getOrDestroy('GET', props);
+export const destroy = async (props: GetProps) => getOrDestroy('DELETE', props);
 
 type PostProps = HeaderProps & {
   bodyObject?: any;
