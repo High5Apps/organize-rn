@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-  ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle,
+  ActivityIndicator, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle,
 } from 'react-native';
 import useTheme from '../../Theme';
 import { getErrorMessage } from '../../model';
@@ -74,10 +74,13 @@ export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
   const { colors, styles } = useStyles();
 
   type RequestProgressProps = {
+    messageStyle?: StyleProp<TextStyle>;
     style?: StyleProp<ViewStyle>;
   };
 
-  const RequestProgress = useCallback(({ style }: RequestProgressProps) => {
+  const RequestProgress = useCallback(({
+    messageStyle, style,
+  }: RequestProgressProps) => {
     const isVisible = (resultType !== 'none') || loading;
     const remove = removeWhenInactive && !isVisible;
     return remove ? null : (
@@ -92,6 +95,7 @@ export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
               (resultType === 'success') && styles.success,
               (resultType === 'warning') && styles.error,
               (resultType === 'info') && styles.info,
+              messageStyle,
             ]}
           >
             {resultMessage}

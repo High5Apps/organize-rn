@@ -35,13 +35,17 @@ const useStyles = () => {
     section: {
       rowGap: spacing.s,
     },
-    signedAt: {
+    signOrUndoProgress: {
+      alignItems: 'flex-end',
       flex: 1,
+    },
+    signOrUndoProgressMessage: {
+      paddingHorizontal: 0,
       textAlign: 'right',
     },
     signRow: {
       alignItems: 'center',
-      flexDirection: 'row',
+      flexDirection: 'row-reverse',
       columnGap: spacing.m,
     },
     text: {
@@ -57,9 +61,16 @@ const useStyles = () => {
   return { styles };
 };
 
+type Props = {
+  setRefreshing: ReturnType<typeof useRequestProgress>['setLoading'];
+  setRefreshResult: ReturnType<typeof useRequestProgress>['setResult'];
+  setSigningOrUndoing: ReturnType<typeof useRequestProgress>['setLoading'];
+  setSignOrUndoResult: ReturnType<typeof useRequestProgress>['setResult'];
+};
+
 function useUnionCardInfo({
-  setLoading, setResult,
-}: Pick<ReturnType<typeof useRequestProgress>, 'setLoading' | 'setResult'>) {
+  setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
+}: Props) {
   const [email, setEmail] = useState<string>();
   const [employerName, setEmployerName] = useState<string>();
   const [name, setName] = useState<string>();
@@ -73,20 +84,20 @@ function useUnionCardInfo({
 
   const { org, refreshOrg } = useOrg();
   const refresh = async () => {
-    setLoading(true);
-    setResult('none');
+    setRefreshing(true);
+    setRefreshResult('none');
 
     try {
       await Promise.all([refreshOrg(), refreshUnionCard()]);
     } catch (error) {
       const errorMessage = getErrorMessage(error);
-      setResult('error', {
+      setRefreshResult('error', {
         message: `${errorMessage}\nTap to try again`,
         onPress: refresh,
       });
     }
 
-    setLoading(false);
+    setRefreshing(false);
   };
 
   useEffect(() => { refresh().catch(console.error); }, []);
@@ -101,21 +112,26 @@ function useUnionCardInfo({
     setName(unionCard?.name);
     setPhone(unionCard?.phone);
     setSignedAt(unionCard?.signedAt);
+    if (unionCard?.signedAt) {
+      setSignOrUndoResult('success', {
+        message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
+      });
+    }
   }, [org, unionCard]);
 
   const sign = async () => {
-    setLoading(true);
-    setResult('none');
+    setSigningOrUndoing(true);
+    setSignOrUndoResult('none');
 
     try {
       await createUnionCard({
         agreement, email, employerName, name, phone,
       });
     } catch (error) {
-      setResult('error', { error });
+      setSignOrUndoResult('error', { error });
     }
 
-    setLoading(false);
+    setSigningOrUndoing(false);
   };
 
   return {
@@ -123,7 +139,6 @@ function useUnionCardInfo({
     email,
     employerName,
     name,
-    orgName,
     phone,
     setEmail,
     setEmployerName,
@@ -160,21 +175,31 @@ function useFocusedInput() {
 
 export default function UnionCardScreen() {
   const {
-    loading, RequestProgress, setLoading, setResult,
+    loading: refreshing,
+    RequestProgress: RefreshProgress,
+    setLoading: setRefreshing,
+    setResult: setRefreshResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const {
-    agreement, email, employerName, name, orgName, phone, setEmail,
-    setEmployerName, setName, setPhone, sign, signedAt,
-  } = useUnionCardInfo({ setLoading, setResult });
-  const inputsEditable = !loading && !signedAt;
-  const showForm = !!orgName;
+    loading: signingOrUndoing,
+    RequestProgress: SignOrUndoProgress,
+    setLoading: setSigningOrUndoing,
+    setResult: setSignOrUndoResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+  const {
+    agreement, email, employerName, name, phone, setEmail, setEmployerName,
+    setName, setPhone, sign, signedAt,
+  } = useUnionCardInfo({
+    setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
+  });
+  const inputsEditable = !signingOrUndoing && !signedAt;
 
   const { styles } = useStyles();
   const { focused, onFocus, onSubmitEditing } = useFocusedInput();
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      {showForm && (
+      {refreshing ? <RefreshProgress /> : (
         <>
           <View style={styles.section}>
             <HeaderText>Name</HeaderText>
@@ -254,21 +279,19 @@ export default function UnionCardScreen() {
               Your union officers can view signed cards
             </Text>
           </View>
+          <View style={styles.signRow}>
+            <PrimaryButton
+              iconName="draw"
+              label="Sign"
+              onPress={sign}
+              style={styles.button}
+            />
+            <SignOrUndoProgress
+              messageStyle={styles.signOrUndoProgressMessage}
+              style={styles.signOrUndoProgress}
+            />
+          </View>
         </>
-      )}
-      <RequestProgress />
-      {showForm && (
-        <View style={styles.signRow}>
-          <Text style={[styles.text, styles.signedAt]}>
-            {signedAt && `Signed on ${formatDate(signedAt, 'dateOnlyShort')}`}
-          </Text>
-          <PrimaryButton
-            iconName="draw"
-            label="Sign"
-            onPress={sign}
-            style={styles.button}
-          />
-        </View>
       )}
     </KeyboardAvoidingScreenBackground>
   );
