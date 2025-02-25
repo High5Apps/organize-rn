@@ -1,5 +1,5 @@
 import {
-  decrypt, encrypt, get, post, Status,
+  decrypt, destroy, encrypt, get, post, Status,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
@@ -137,4 +137,26 @@ export async function fetchUnionCard({
   };
 
   return { unionCard };
+}
+
+type RemoveReturn = {
+  errorMessage?: string;
+};
+
+export async function removeUnionCard({
+  jwt,
+}: Authorization): Promise<RemoveReturn> {
+  const uri = unionCardURI;
+  const response = await destroy({ jwt, uri });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
 }
