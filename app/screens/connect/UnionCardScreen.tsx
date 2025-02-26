@@ -74,6 +74,7 @@ function useUnionCardInfo({
   const [email, setEmail] = useState<string>();
   const [employerName, setEmployerName] = useState<string>();
   const [name, setName] = useState<string>();
+  const [orgEmployerName, setOrgEmployerName] = useState<string>();
   const [orgName, setOrgName] = useState<string>();
   const [phone, setPhone] = useState<string>();
   const [signedAt, setSignedAt] = useState<Date>();
@@ -113,6 +114,8 @@ function useUnionCardInfo({
   useEffect(() => {
     if (!org) { return; }
 
+    setOrgEmployerName(org.employerName);
+    setEmployerName(org.employerName);
     setOrgName(org.name);
 
     if (!unionCard) {
@@ -121,7 +124,7 @@ function useUnionCardInfo({
     }
 
     setEmail(unionCard.email);
-    setEmployerName(org.employerName ?? unionCard.employerName);
+    setEmployerName(unionCard.employerName);
     setName(unionCard.name);
     setPhone(unionCard.phone);
     setSignedAt(unionCard.signedAt);
@@ -174,6 +177,7 @@ function useUnionCardInfo({
     email,
     employerName,
     name,
+    orgEmployerName,
     phone,
     setEmail,
     setEmployerName,
@@ -223,7 +227,7 @@ export default function UnionCardScreen() {
     setResult: setSignOrUndoResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const {
-    agreement, email, employerName, name, phone, setEmail,
+    agreement, email, employerName, name, orgEmployerName, phone, setEmail,
     setEmployerName, setName, setPhone, sign, signedAt, undo,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
@@ -291,6 +295,7 @@ export default function UnionCardScreen() {
               value={email}
             />
           </View>
+          {!orgEmployerName && (
           <View style={styles.section}>
             <HeaderText>Employer name</HeaderText>
             <TextInputRow
@@ -308,6 +313,7 @@ export default function UnionCardScreen() {
               value={employerName}
             />
           </View>
+          )}
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
