@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleProp, StyleSheet, Text, View, ViewStyle,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../Theme';
 
@@ -45,6 +47,7 @@ const useStyles = () => {
 
 type WarningBullet = {
   iconName: string;
+  iconStyle?: StyleProp<ViewStyle>;
   message: string;
 };
 
@@ -59,9 +62,9 @@ export default function WarningView({ warning, warningBullets }: Props) {
     <View style={styles.container}>
       <Icon name="warning-amber" style={styles.iconWarning} />
       <Text style={styles.textHeadline}>{warning}</Text>
-      {warningBullets.map(({ iconName, message }) => (
+      {warningBullets.map(({ iconName, iconStyle, message }) => (
         <View key={iconName} style={styles.bulletRow}>
-          <Icon name={iconName} style={styles.iconBullet} />
+          <Icon name={iconName} style={[styles.iconBullet, iconStyle]} />
           <Text style={styles.text}>{message}</Text>
         </View>
       ))}
