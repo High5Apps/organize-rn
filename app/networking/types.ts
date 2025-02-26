@@ -593,7 +593,7 @@ export function isPermissionResponse(object: unknown): object is PermissionRespo
 }
 
 export type PermissionScope = 'blockMembers' | 'createElections' | 'editOrg'
-| 'editPermissions' | 'moderate';
+| 'editPermissions' | 'moderate' | 'viewUnionCards';
 
 type PermissionData = {
   offices: OfficeCategory[];

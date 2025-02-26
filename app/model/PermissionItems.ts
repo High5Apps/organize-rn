@@ -32,6 +32,11 @@ const permissionItems: PermissionItem[] = [
     scope: 'moderate',
     title: 'Moderate',
   },
+  {
+    iconName: 'badge',
+    scope: 'viewUnionCards',
+    title: 'View union cards',
+  },
 ];
 
 export default permissionItems;
