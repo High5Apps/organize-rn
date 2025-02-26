@@ -10,7 +10,10 @@ const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these too
 
 function useLeadItems() {
   const { can, ready, refreshMyPermissions } = useMyPermissions({
-    scopes: ['blockMembers', 'editOrg', 'editPermissions', 'moderate'],
+    scopes: [
+      'blockMembers', 'editOrg', 'editPermissions', 'moderate',
+      'viewUnionCards',
+    ],
   });
 
   const leadItems = useMemo(() => {
@@ -39,6 +42,14 @@ function useLeadItems() {
         destination: 'Permissions',
         iconName: 'lock-open',
         title: 'Permissions',
+      });
+    }
+
+    if (can('viewUnionCards')) {
+      items.push({
+        destination: 'UnionCards',
+        iconName: 'badge',
+        title: 'Union cards',
       });
     }
 

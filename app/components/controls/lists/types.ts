@@ -1,5 +1,5 @@
 export type LeadItem = {
-  destination: 'EditOrg' | 'Permissions' | 'Moderation';
+  destination: 'EditOrg' | 'Permissions' | 'Moderation' | 'UnionCards';
   iconName: string;
   title: string;
 };

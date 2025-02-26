@@ -268,6 +268,7 @@ export type LeadStackParamList = {
   Moderation: undefined;
   Permission: PermissionScreenParams;
   Permissions: undefined;
+  UnionCards: undefined;
 };
 
 export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
@@ -283,6 +284,7 @@ export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
 export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
 export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
 export type PermissionsScreenProps = LeadStackScreenProps<'Permissions'>;
+export type UnionCardsScreenProps = LeadStackScreenProps<'UnionCards'>;
 
 export type FlagReportTabsParamList = {
   FlagReportsHandled: undefined;

@@ -4,7 +4,7 @@ import { LeadStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import {
   BlockMemberScreen, BlockedMembersScreen, EditOrgScreen, LeadScreen,
-  ModerationScreen, PermissionScreen, PermissionsScreen,
+  ModerationScreen, PermissionScreen, PermissionsScreen, UnionCardsScreen,
 } from '../screens';
 import { toAction } from '../model';
 import FlagReportTabs from './FlagReportTabs';
@@ -49,6 +49,11 @@ export default function LeadStack() {
         }}
       />
       <Stack.Screen name="Permissions" component={PermissionsScreen} />
+      <Stack.Screen
+        name="UnionCards"
+        component={UnionCardsScreen}
+        options={{ title: 'Union Cards' }}
+      />
     </Stack.Navigator>
   );
 }
