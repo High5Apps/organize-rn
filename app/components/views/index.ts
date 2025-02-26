@@ -33,3 +33,4 @@ export { default as Scrim } from './Scrim';
 export { default as StatusBar } from './StatusBar';
 export { default as TabBarIcon } from './TabBarIcon';
 export { default as TextBoldener } from './TextBoldener';
+export { default as WarningView } from './WarningView';
