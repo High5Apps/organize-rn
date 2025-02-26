@@ -112,25 +112,27 @@ function useUnionCardInfo({
   useEffect(() => { refresh().catch(console.error); }, []);
 
   useEffect(() => {
-    if (!org) { return; }
+    if (org) {
+      setOrgEmployerName(org.employerName);
+      setOrgName(org.name);
 
-    setOrgEmployerName(org.employerName);
-    setEmployerName(org.employerName);
-    setOrgName(org.name);
-
-    if (!unionCard) {
-      setSignedAt(undefined);
-      return;
+      if (org.employerName) {
+        setEmployerName(org.employerName);
+      }
     }
 
-    setEmail(unionCard.email);
-    setEmployerName(unionCard.employerName);
-    setName(unionCard.name);
-    setPhone(unionCard.phone);
-    setSignedAt(unionCard.signedAt);
-    setSignOrUndoResult('success', {
-      message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
-    });
+    if (unionCard) {
+      setEmail(unionCard.email);
+      setEmployerName(unionCard.employerName);
+      setName(unionCard.name);
+      setPhone(unionCard.phone);
+      setSignedAt(unionCard.signedAt);
+      setSignOrUndoResult('success', {
+        message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
+      });
+    } else {
+      setSignedAt(undefined);
+    }
   }, [org, unionCard]);
 
   const sign = async () => {
