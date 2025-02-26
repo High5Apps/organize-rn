@@ -6,7 +6,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  formatDate, getErrorMessage, useOrg, useUnionCard,
+  formatDate, getErrorMessage, useMyPermissions, useOrg, useUnionCard,
 } from '../../model';
 
 export const MAX_EMAIL_LENGTH = 100;
@@ -84,13 +84,19 @@ function useUnionCardInfo({
 
   const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
 
-  const { org, refreshOrg } = useOrg();
+  const { org, refreshOrg, updateOrg } = useOrg();
+  const { can, refreshMyPermissions } = useMyPermissions({
+    scopes: ['editOrg'],
+  });
+
   const refresh = async () => {
     setRefreshing(true);
     setRefreshResult('none');
 
     try {
-      await Promise.all([refreshOrg(), refreshUnionCard()]);
+      await Promise.all([
+        refreshOrg(), refreshUnionCard(), refreshMyPermissions(),
+      ]);
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setRefreshResult('error', {
@@ -129,9 +135,20 @@ function useUnionCardInfo({
     setSignOrUndoResult('none');
 
     try {
-      await createUnionCard({
-        agreement, email, employerName, name, phone,
-      });
+      const [createUnionCardResult] = await Promise.allSettled([
+        createUnionCard({
+          agreement, email, employerName, name, phone,
+        }),
+        can('editOrg') && (org?.employerName !== employerName) && updateOrg({
+          employerName,
+        }),
+      ]);
+
+      // Ignore updateOrg errors as long as createUnionCard succeeds
+      if (createUnionCardResult.status === 'rejected') {
+        const errorMessage = getErrorMessage(createUnionCardResult.reason);
+        throw new Error(errorMessage);
+      }
     } catch (error) {
       setSignOrUndoResult('error', { error });
     }
@@ -206,8 +223,8 @@ export default function UnionCardScreen() {
     setResult: setSignOrUndoResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const {
-    agreement, email, employerName, name, phone, setEmail, setEmployerName,
-    setName, setPhone, sign, signedAt, undo,
+    agreement, email, employerName, name, phone, setEmail,
+    setEmployerName, setName, setPhone, sign, signedAt, undo,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
