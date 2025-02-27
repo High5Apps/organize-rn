@@ -769,6 +769,7 @@ export type UnionCardResponse = {
   encryptedName: BackendEncryptedMessage;
   encryptedPhone: BackendEncryptedMessage;
   id: string;
+  publicKeyBytes: string;
   signatureBytes: string;
   signedAt: Date;
   userId: string;
@@ -782,6 +783,7 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
     && isBackendEncryptedMessage(unionCard.encryptedEmployerName)
     && isBackendEncryptedMessage(unionCard.encryptedName)
     && isBackendEncryptedMessage(unionCard.encryptedPhone)
+    && unionCard.publicKeyBytes?.length > 0
     && unionCard.signatureBytes?.length > 0
     && isDate(unionCard.signedAt)
     && unionCard.userId?.length > 0;

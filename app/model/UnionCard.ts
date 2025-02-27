@@ -22,15 +22,17 @@ export default function useUnionCard() {
 
     let errorMessage: string | undefined;
     let id: string | undefined;
+    let publicKeyBytes: string | undefined;
     let signatureBytes: string | undefined;
     let signedAt: Date | undefined;
     try {
-      const publicKey = await currentUser.getEccPublicKey();
+      publicKeyBytes = await currentUser.getEccPublicKey();
 
       signedAt = new Date();
       const signedAtIso8601 = signedAt.toISOString();
       const columns = [
-        name, email, phone, agreement, signedAtIso8601, employerName, publicKey,
+        name, email, phone, agreement, signedAtIso8601, employerName,
+        publicKeyBytes,
       ];
       const csvRowWithoutSignature = columns.map((c) => `"${c}"`).join(',');
       signatureBytes = await currentUser.sign({
@@ -67,6 +69,7 @@ export default function useUnionCard() {
         id: id!,
         name: name!,
         phone: phone!,
+        publicKeyBytes: publicKeyBytes!,
         signatureBytes: signatureBytes!,
         signedAt: signedAt!,
         userId: currentUser.id,
