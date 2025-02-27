@@ -7,7 +7,7 @@ import {
 import getErrorMessage from './ErrorMessage';
 
 type CreateProps = Partial<
-  Omit<UnionCard, 'id' | 'userId' | 'signature' | 'signedAt'>
+  Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'signedAt'>
 >;
 
 export default function useUnionCard() {
@@ -22,7 +22,7 @@ export default function useUnionCard() {
 
     let errorMessage: string | undefined;
     let id: string | undefined;
-    let signature: string | undefined;
+    let signatureBytes: string | undefined;
     let signedAt: Date | undefined;
     try {
       const publicKey = await currentUser.getEccPublicKey();
@@ -33,7 +33,7 @@ export default function useUnionCard() {
         name, email, phone, agreement, signedAtIso8601, employerName, publicKey,
       ];
       const csvRowWithoutSignature = columns.map((c) => `"${c}"`).join(',');
-      signature = await currentUser.sign({
+      signatureBytes = await currentUser.sign({
         message: csvRowWithoutSignature,
       });
 
@@ -48,7 +48,7 @@ export default function useUnionCard() {
         jwt,
         name,
         phone,
-        signature,
+        signatureBytes,
         signedAt,
       }));
     } catch (error) {
@@ -67,7 +67,7 @@ export default function useUnionCard() {
         id: id!,
         name: name!,
         phone: phone!,
-        signature: signature!,
+        signatureBytes: signatureBytes!,
         signedAt: signedAt!,
         userId: currentUser.id,
       };

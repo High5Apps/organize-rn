@@ -16,7 +16,7 @@ type Props = {
   e2eEncrypt: E2EEncryptor;
   name: string | undefined;
   phone: string | undefined;
-  signature: string;
+  signatureBytes: string;
   signedAt: Date;
 };
 
@@ -29,7 +29,7 @@ type Return = {
 };
 
 export async function createUnionCard({
-  agreement, email, employerName, e2eEncrypt, jwt, name, phone, signature,
+  agreement, email, employerName, e2eEncrypt, jwt, name, phone, signatureBytes,
   signedAt,
 }: Props & Authorization): Promise<Return> {
   const [
@@ -49,7 +49,7 @@ export async function createUnionCard({
       encryptedEmployerName,
       encryptedName,
       encryptedPhone,
-      signatureBytes: signature,
+      signatureBytes,
       signedAt,
     },
     jwt,
@@ -109,7 +109,7 @@ export async function fetchUnionCard({
 
   const {
     encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
-    encryptedPhone, signatureBytes,
+    encryptedPhone,
   } = json;
   const [agreement, email, employerName, name, phone] = await Promise.all([
     decrypt(encryptedAgreement, e2eDecrypt),
@@ -124,7 +124,6 @@ export async function fetchUnionCard({
     encryptedEmployerName: unusedEN,
     encryptedName: unusedN,
     encryptedPhone: unusedP,
-    signatureBytes: unusedSB,
     ...unionCard
   } = {
     ...json,
@@ -133,7 +132,6 @@ export async function fetchUnionCard({
     employerName,
     name,
     phone,
-    signature: signatureBytes,
   };
 
   return { unionCard };

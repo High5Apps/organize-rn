@@ -787,6 +787,4 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
     && unionCard.userId?.length > 0;
 }
 
-export type UnionCard = Omit<Decrypt<UnionCardResponse>, 'signatureBytes'> & {
-  signature: string;
-};
+export type UnionCard = Decrypt<UnionCardResponse>;
