@@ -23,7 +23,7 @@ export {
 } from './Routes';
 export { createTerm } from './TermAPI';
 export {
-  createUnionCard, fetchUnionCard, removeUnionCard,
+  createUnionCard, fetchUnionCard, fetchUnionCards, removeUnionCard,
 } from './UnionCardAPI';
 export { default as createOrUpdateUpvote } from './UpvoteAPI';
 export {

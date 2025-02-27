@@ -790,3 +790,16 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
 }
 
 export type UnionCard = Decrypt<UnionCardResponse>;
+
+type UnionCardIndexResponse = {
+  unionCards: UnionCardResponse[];
+  meta: PaginationData;
+};
+
+export function isUnionCardIndexResponse(object: unknown): object is UnionCardIndexResponse {
+  const response = (object as UnionCardIndexResponse);
+  return response?.unionCards
+    && Array.isArray(response.unionCards)
+    && response.unionCards.every(isUnionCardResponse)
+    && isPaginationData(response?.meta);
+}

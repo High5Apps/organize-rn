@@ -1,12 +1,13 @@
 import {
-  decrypt, destroy, encrypt, get, post, Status,
+  decrypt, decryptMany, destroy, encrypt, get, post, Status,
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
 import { unionCardsURI, unionCardURI } from './Routes';
 import {
-  Authorization, E2EDecryptor, E2EEncryptor, isCreateModelResponse,
-  isUnionCardResponse, UnionCard,
+  Authorization, E2EDecryptor, E2EEncryptor, E2EMultiDecryptor,
+  isCreateModelResponse, isUnionCardIndexResponse, isUnionCardResponse,
+  PaginationData, UnionCard,
 } from './types';
 
 type Props = {
@@ -135,6 +136,78 @@ export async function fetchUnionCard({
   };
 
   return { unionCard };
+}
+
+type IndexProps = {
+  createdAtOrBefore: Date;
+  e2eDecryptMany: E2EMultiDecryptor;
+  page: number;
+};
+
+type IndexReturn = {
+  errorMessage?: never;
+  paginationData: PaginationData;
+  unionCards: UnionCard[];
+} | {
+  errorMessage: string;
+  paginationData?: never;
+  unionCards?: never;
+};
+
+export async function fetchUnionCards({
+  createdAtOrBefore, e2eDecryptMany, jwt, page,
+}: IndexProps & Authorization): Promise<IndexReturn> {
+  const uri = new URL(unionCardsURI);
+  uri.searchParams.set('created_at_or_before', createdAtOrBefore.toISOString());
+  uri.searchParams.set('page', page.toString());
+
+  const response = await get({ jwt, uri: uri.href });
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isUnionCardIndexResponse(json)) {
+    throw new Error('Failed to parse Union Cards from response');
+  }
+
+  const { unionCards: fetchedUnionCards, meta: paginationData } = json;
+  const encryptedAgreements = fetchedUnionCards.map(
+    (u) => u.encryptedAgreement,
+  );
+  const encryptedEmails = fetchedUnionCards.map((u) => u.encryptedEmail);
+  const encryptedEmployerNames = fetchedUnionCards.map(
+    (u) => u.encryptedEmployerName,
+  );
+  const encryptedNames = fetchedUnionCards.map((u) => u.encryptedName);
+  const encryptedPhones = fetchedUnionCards.map((u) => u.encryptedPhone);
+  const [agreements, emails, employerNames, names, phones] = await Promise.all([
+    decryptMany(encryptedAgreements, e2eDecryptMany),
+    decryptMany(encryptedEmails, e2eDecryptMany),
+    decryptMany(encryptedEmployerNames, e2eDecryptMany),
+    decryptMany(encryptedNames, e2eDecryptMany),
+    decryptMany(encryptedPhones, e2eDecryptMany),
+  ]);
+  const unionCards = fetchedUnionCards.map(
+    ({
+      encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
+      encryptedPhone, ...u
+    }, i) => ({
+      ...u,
+      agreement: agreements[i]!,
+      email: emails[i]!,
+      employerName: employerNames[i]!,
+      name: names[i]!,
+      phone: phones[i]!,
+    }),
+  );
+
+  return { paginationData, unionCards };
 }
 
 type RemoveReturn = {
