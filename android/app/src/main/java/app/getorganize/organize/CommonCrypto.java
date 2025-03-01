@@ -18,7 +18,9 @@ import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 class CommonCrypto {
     static  final String ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore";
@@ -100,9 +102,19 @@ class CommonCrypto {
 
     static String toPemString(PublicKey publicKey) {
         byte[] keyBytes = publicKey.getEncoded();
-        String publicKeyBase64 = Base64.encodeToString(keyBytes, Base64.DEFAULT);
+        String publicKeyBase64 = Base64.encodeToString(keyBytes, Base64.DEFAULT | Base64.NO_WRAP)
+                .replaceAll(".{1,64}",  "$0\n");
         String publicKeyPem = PEM_PUBLIC_KEY_HEADER + publicKeyBase64 + PEM_PUBLIC_KEY_FOOTER;
         return publicKeyPem;
+    }
+
+    static PublicKey fromPemString(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        String publicKeyBase64 = pem.replace(PEM_PUBLIC_KEY_HEADER, "")
+                .replace(PEM_PUBLIC_KEY_FOOTER, "");
+        byte[] keyBytes = fromBase64(publicKeyBase64);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        return keyFactory.generatePublic(spec);
     }
 
     static class CommonCryptoException extends Exception {

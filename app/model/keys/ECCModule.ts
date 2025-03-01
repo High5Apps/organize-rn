@@ -7,6 +7,9 @@ export interface ECCInterface {
   generateKeys(publicKeyId: string): Promise<string>;
   getPublicKey(publicKeyId: string): Promise<string>;
   sign(publicKeyId: string, message: string): Promise<string>;
+  verify(
+    publicKey: string, message: string, signature: string,
+  ): Promise<boolean>;
 }
 
 export default ECCModule as ECCInterface;

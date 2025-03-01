@@ -74,6 +74,12 @@ export default function Keys() {
         const messageSignature = await ECCKeychain.sign(publicKeyId, message);
         return messageSignature;
       },
+      async verify({
+        message, publicKey, signature,
+      }: { message: string; publicKey: string; signature: string; }) {
+        const isValid = await ECCKeychain.verify(publicKey, message, signature);
+        return isValid;
+      },
     },
     rsa: {
       async create() {

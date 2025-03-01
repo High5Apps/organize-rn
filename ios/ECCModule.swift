@@ -159,4 +159,29 @@ class ECCModule: NSObject {
 
     resolve(signedMessage)
   }
+  
+  @objc
+  func verify(_ publicKey: String, message: String, signature: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+    print("Verifying message \(message) with signature \(signature)")
+
+    guard let publicKey = try? P256.Signing.PublicKey(pemRepresentation: publicKey) else {
+      reject(ECC_ERROR_CODE, "Failed to create ECDSA PublicKey", nil)
+      return
+    }
+    
+    guard let data = Data(base64Encoded: signature) else {
+      reject(ECC_ERROR_CODE, "Failed to base64 decode signature", nil)
+      return
+    }
+    
+    guard let signature = try? P256.Signing.ECDSASignature(rawRepresentation: data) else {
+      reject(ECC_ERROR_CODE, "Failed to create ECDSASignature", nil)
+      return
+    }
+    
+    let messageData = Data(message.utf8)
+    let digest = SHA256.hash(data: messageData)
+    let isValid = publicKey.isValidSignature(signature, for: digest)
+    resolve(isValid)
+  }
 }

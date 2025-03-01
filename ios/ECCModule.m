@@ -35,4 +35,12 @@ RCT_EXTERN_METHOD(
   rejecter: (RCTPromiseRejectBlock) reject
 );
 
+RCT_EXTERN_METHOD(
+  verify: (NSString *) publicKey
+  message: (NSString *) message
+  signature: (NSString *) signature
+  resolver: (RCTPromiseResolveBlock) resolve
+  rejecter: (RCTPromiseRejectBlock) reject
+);
+
 @end

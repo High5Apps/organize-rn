@@ -21,6 +21,14 @@ async function generateKeys(publicKeyId: string): Promise<PublicKey> {
 
 async function getPublicKey(publicKeyId: string): Promise<string> {
   const publicKey = await ECCModule.getPublicKey(publicKeyId);
+  console.log('getPublicKey');
+
+  // This is needed because some native modules (e.g. iOS) may not include a
+  // trailing end-of-line character in their implementation of the PEM formatter
+  if (!publicKey.endsWith('\n')) {
+    return `${publicKey}\n`;
+  }
+
   return publicKey;
 }
 
@@ -29,9 +37,19 @@ async function sign(publicKeyId: string, message: string): Promise<string> {
   return signedMessage;
 }
 
+async function verify(
+  publicKey: string,
+  message: string,
+  signature: string,
+): Promise<boolean> {
+  const isValid = await ECCModule.verify(publicKey, message, signature);
+  return isValid;
+}
+
 export default {
   deletePrivateKey,
   generateKeys,
   getPublicKey,
   sign,
+  verify,
 };
