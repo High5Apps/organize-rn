@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
-import { ReactTestRenderer, act, create } from 'react-test-renderer';
+import { render, screen } from '@testing-library/react-native';
 import { CurrentUserData, isCurrentUserData } from '../../../../../app/model';
 import useStoredCurrentUserData, {
   getStoredCurrentUserData, storeCurrentUserData,
@@ -88,7 +88,7 @@ function TestComponent({
       <Text testID={storedCurrentUserDataTestId}>
         {storedCurrentUserData && storedCurrentUserData.id}
       </Text>
-      <Text testID={intializedTestId}>{initialized}</Text>
+      <Text testID={intializedTestId}>{initialized.toString()}</Text>
     </>
   );
 }
@@ -96,21 +96,14 @@ function TestComponent({
 async function renderTestComponent({
   initialCurrentUserData, newCurrentUserData,
 }: Props) {
-  let renderer: ReactTestRenderer | undefined;
-  await act(async () => {
-    renderer = create(
-      <TestComponent
-        initialCurrentUserData={initialCurrentUserData}
-        newCurrentUserData={newCurrentUserData}
-      />,
-    );
-  });
-  const root = renderer?.root;
-  function findByTestId(testID: string) {
-    return root?.findByProps({ testID }).props.children;
-  }
-  const storedCurrentUserDataId = findByTestId(storedCurrentUserDataTestId);
-  const initialized = findByTestId(intializedTestId);
+  render(
+    <TestComponent
+      initialCurrentUserData={initialCurrentUserData}
+      newCurrentUserData={newCurrentUserData}
+    />,
+  );
+  const storedCurrentUserDataId = await screen.findByTestId(storedCurrentUserDataTestId);
+  const initialized = await screen.findByTestId(intializedTestId);
   return { storedCurrentUserDataId, initialized };
 }
 
@@ -121,7 +114,7 @@ describe('useStoredCurrentUserData', () => {
   describe('initialized', () => {
     it('is true after storedCurrentUserData is initialized', async () => {
       const { initialized } = await renderTestComponent({});
-      expect(initialized).toBeTruthy();
+      expect(initialized).toHaveTextContent('true');
     });
   });
 
@@ -131,19 +124,20 @@ describe('useStoredCurrentUserData', () => {
       const {
         storedCurrentUserDataId,
       } = await renderTestComponent({ initialCurrentUserData });
-      expect(storedCurrentUserDataId).toBe(initialCurrentUserData.id);
+      expect(storedCurrentUserDataId)
+        .toHaveTextContent(initialCurrentUserData.id);
     });
 
     it('is initialized by getStoredCurrentUserData when prop absent', async () => {
       const currentUserData = fakeCurrentUserData;
       await storeCurrentUserData(currentUserData);
       const { storedCurrentUserDataId } = await renderTestComponent({});
-      expect(storedCurrentUserDataId).toBe(currentUserData.id);
+      expect(storedCurrentUserDataId).toHaveTextContent(currentUserData.id);
     });
 
     it('is initially null when prop absent and no storedCurrentUserData', async () => {
       const { storedCurrentUserDataId } = await renderTestComponent({});
-      expect(storedCurrentUserDataId).toBeNull();
+      expect(storedCurrentUserDataId).toBeEmptyElement();
     });
   });
 
@@ -154,7 +148,7 @@ describe('useStoredCurrentUserData', () => {
         initialCurrentUserData: fakeCurrentUserData,
         newCurrentUserData,
       });
-      expect(storedCurrentUserDataId).toBe(newCurrentUserData.id);
+      expect(storedCurrentUserDataId).toHaveTextContent(newCurrentUserData.id);
     });
 
     it('should not clear stored current user data', async () => {

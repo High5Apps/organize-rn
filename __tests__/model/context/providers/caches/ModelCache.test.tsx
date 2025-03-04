@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { ReactTestRenderer, act, create } from 'react-test-renderer';
+import { render, screen } from '@testing-library/react-native';
 import useModelCache from '../../../../../app/model/context/providers/caches/ModelCache';
 import { getFakePost } from '../../../../FakeData';
 import { Post } from '../../../../../app/model';
@@ -48,19 +48,14 @@ function TestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
   );
 }
 
-async function renderTestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
-  let renderer: ReactTestRenderer | undefined;
-  await act(async () => {
-    renderer = create((
-      <TestComponent
-        postToUpdate={postToUpdate}
-        posts={posts}
-        postsToUpdate={postsToUpdate}
-      />
-    ));
-  });
-  const root = renderer?.root;
-  return { root };
+function renderTestComponent({ postToUpdate, posts, postsToUpdate }: Props) {
+  render((
+    <TestComponent
+      postToUpdate={postToUpdate}
+      posts={posts}
+      postsToUpdate={postsToUpdate}
+    />
+  ));
 }
 
 describe('usePostCache', () => {
@@ -71,33 +66,30 @@ describe('usePostCache', () => {
   };
   const postsToUpdate = ['3', '4', '5'].map((postId) => getFakePost(postId, 0));
 
-  it('should contain initially cached posts', async () => {
-    const { root } = await renderTestComponent({ posts });
+  it('should contain initially cached posts', () => {
+    renderTestComponent({ posts });
     posts.forEach(({ id }) => {
       const testID = id;
-      const text = root?.findByProps({ testID }).props.children;
-      expect(text).toBe(0);
+      expect(screen.getByTestId(testID)).toHaveTextContent('0');
     });
   });
 
-  it('caching new posts should not erase old posts', async () => {
+  it('caching new posts should not erase old posts', () => {
     const allPosts = [...posts, ...postsToUpdate];
 
-    const { root } = await renderTestComponent({ posts, postsToUpdate });
+    renderTestComponent({ posts, postsToUpdate });
     allPosts.forEach(({ id }) => {
       const testID = id;
-      const text = root?.findByProps({ testID }).props.children;
-      expect(text).toBe(0);
+      expect(screen.getByTestId(testID)).toHaveTextContent('0');
     });
   });
 
-  it('should update previously cached posts', async () => {
-    const { root } = await renderTestComponent({ postToUpdate, posts });
+  it('should update previously cached posts', () => {
+    renderTestComponent({ postToUpdate, posts });
     posts.forEach(({ id }) => {
       const testID = id;
-      const text = root?.findByProps({ testID }).props.children;
-      const expectedScore = (testID === postToUpdate.id) ? 1 : 0;
-      expect(text).toBe(expectedScore);
+      const expectedScore = (testID === postToUpdate.id) ? '1' : '0';
+      expect(screen.getByTestId(testID)).toHaveTextContent(expectedScore);
     });
   });
 });

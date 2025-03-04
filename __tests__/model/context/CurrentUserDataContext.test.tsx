@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
-import { act, create, ReactTestRenderer } from 'react-test-renderer';
+import { render, screen } from '@testing-library/react-native';
 import { CurrentUserData } from '../../../app/model';
 import { fakeCurrentUserData, fakeOtherCurrentUserData } from '../../FakeData';
 import {
@@ -29,19 +29,14 @@ type Props = {
   initialCurrentUserData?: CurrentUserData;
 };
 
-async function renderTestComponent({ initialCurrentUserData }: Props) {
-  let renderer: ReactTestRenderer | undefined;
-  await act(async () => {
-    renderer = create((
-      <CurrentUserDataContextProvider
-        initialCurrentUserData={initialCurrentUserData}
-      >
-        <TestComponent />
-      </CurrentUserDataContextProvider>
-    ));
-  });
-  const root = renderer?.root;
-  return { root };
+function renderTestComponent({ initialCurrentUserData }: Props) {
+  render((
+    <CurrentUserDataContextProvider
+      initialCurrentUserData={initialCurrentUserData}
+    >
+      <TestComponent />
+    </CurrentUserDataContextProvider>
+  ));
 }
 
 const defaultReturnValue = {
@@ -51,57 +46,53 @@ const defaultReturnValue = {
 };
 
 describe('CurrentUserDataContext', () => {
-  it('uses user prop to initialize useCurrentUser', async () => {
+  it('uses user prop to initialize useCurrentUser', () => {
     mockUseStoredCurrentUserData.mockReturnValue(defaultReturnValue);
     const initialCurrentUserData = fakeCurrentUserData;
-    await renderTestComponent({ initialCurrentUserData });
+    renderTestComponent({ initialCurrentUserData });
     expect(mockUseStoredCurrentUserData)
       .toHaveBeenCalledWith(initialCurrentUserData);
   });
 
-  it('renders nothing until currentUser intialized', async () => {
+  it('renders nothing until currentUser intialized', () => {
     mockUseStoredCurrentUserData.mockReturnValue({
       ...defaultReturnValue,
       initialized: false,
     });
-    const { root } = await renderTestComponent({});
-    expect(root?.children).toHaveLength(0);
-    const children = root?.findAllByType(TestComponent);
-    expect(children?.length).toBeFalsy();
+    renderTestComponent({});
+    expect(screen.queryByTestId(testID)).toBeNull();
   });
 
-  it('renders children after currentUser initialized', async () => {
+  it('renders children after currentUser initialized', () => {
     mockUseStoredCurrentUserData.mockReturnValue({
       ...defaultReturnValue,
       initialized: true,
     });
-    const { root } = await renderTestComponent({});
-    expect(root?.children).not.toHaveLength(0);
-    const children = root?.findByType(TestComponent);
-    expect(children).toBeTruthy();
+    renderTestComponent({});
+    expect(screen.getByTestId(testID)).not.toBeNull();
   });
 
   describe('useCurrentUserDataContext', () => {
-    it('contains storedUser from useStoredUser', async () => {
+    it('contains storedUser from useStoredUser', () => {
       const storedCurrentUserData = fakeCurrentUserData;
       mockUseStoredCurrentUserData.mockReturnValue({
         ...defaultReturnValue,
         storedCurrentUserData,
         initialized: true,
       });
-      const { root } = await renderTestComponent({});
-      const storedUserId = root?.findByProps({ testID }).props.children;
-      expect(storedUserId).toBe(storedCurrentUserData.id);
+      renderTestComponent({});
+      expect(screen.getByTestId(testID))
+        .toHaveTextContent(storedCurrentUserData.id);
     });
 
-    it('contains setStoredUser from useStoredUser', async () => {
+    it('contains setStoredUser from useStoredUser', () => {
       mockUseStoredCurrentUserData.mockReturnValue({
         ...defaultReturnValue,
         initialized: true,
       });
       const mockSetStoredCurrentUserData = defaultReturnValue.setStoredCurrentUserData;
       expect(mockSetStoredCurrentUserData).not.toHaveBeenCalled();
-      await renderTestComponent({});
+      renderTestComponent({});
       expect(mockSetStoredCurrentUserData).toHaveBeenCalled();
     });
   });
