@@ -16,6 +16,9 @@ end
 
 inhibit_all_warnings!
 
+# Minimize the number of react-native-file-access APIs requiring privacy reasons
+$RNFANoPrivacyAPI = true
+
 target 'Organize' do
   config = use_native_modules!
 
