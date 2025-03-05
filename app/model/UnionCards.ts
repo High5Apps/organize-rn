@@ -45,18 +45,24 @@ export default function useUnionCards() {
 
       const response = await fetchUnionCards(page, createdAtOrBefore);
       hasNextPage = response.hasNextPage;
+      const pageHasEntries = !!response.unionCards?.length;
 
-      if (response.unionCards) {
-        if (page === 1) {
-          const formattedDate = formatDate(createdAtOrBefore, 'fullFileName');
-          const name = `union-cards_${formattedDate}.csv`;
-          await createReplacement({ name });
-          await appendToReplacement({ data: HEADER_ROW });
-          shouldCommit = true;
+      if (page === 1) {
+        if (!pageHasEntries) {
+          throw new Error('No one has signed a union card yet');
         }
 
-        const results = await verifyAll({ unionCards: response.unionCards });
-        const rows = response.unionCards.map((unionCard, i) => {
+        const formattedDate = formatDate(createdAtOrBefore, 'fullFileName');
+        const name = `union-cards_${formattedDate}.csv`;
+        await createReplacement({ name });
+        await appendToReplacement({ data: HEADER_ROW });
+        shouldCommit = true;
+      }
+
+      if (pageHasEntries) {
+        const unionCards = response.unionCards!;
+        const results = await verifyAll({ unionCards });
+        const rows = unionCards.map((unionCard, i) => {
           const { message, verified } = results[i];
           const signature = unionCard.signatureBytes;
           return `${message},"${signature}","${verified}"\n`;

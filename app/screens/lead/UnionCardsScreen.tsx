@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  LockingScrollView, PrimaryButton, ScreenBackground, WarningView,
+  LockingScrollView, PrimaryButton, ScreenBackground, SecondaryButton,
+  useRequestProgress, WarningView,
 } from '../../components';
 import useTheme from '../../Theme';
+import { useUnionCards } from '../../model';
 
 const useStyles = () => {
   const { colors, sizes, spacing } = useTheme();
@@ -12,12 +14,20 @@ const useStyles = () => {
   const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
 
   const styles = StyleSheet.create({
-    button: {
+    buttonPrimary: {
       bottom: buttonMargin,
       end: buttonMargin,
       height: sizes.buttonHeight,
       paddingHorizontal: buttonMargin,
       position: 'absolute',
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      columnGap: spacing.m,
+    },
+    buttonSecondary: {
+      paddingHorizontal: spacing.m,
     },
     container: {
       backgroundColor: colors.fill,
@@ -39,7 +49,25 @@ const useStyles = () => {
 };
 
 export default function UnionCardsScreen() {
+  const { filePath, recreateFile } = useUnionCards();
+  const {
+    loading, RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+  const disableSecondaryButtons = !filePath || loading;
+
   const { styles } = useStyles();
+
+  const onDownloadPressed = async () => {
+    setLoading(true);
+    setResult('none');
+
+    try {
+      await recreateFile();
+      setLoading(false);
+    } catch (error) {
+      setResult('error', { error });
+    }
+  };
 
   return (
     <ScreenBackground>
@@ -67,13 +95,30 @@ export default function UnionCardsScreen() {
               },
             ]}
           />
+          <View style={styles.buttonRow}>
+            <SecondaryButton
+              disabled={disableSecondaryButtons}
+              iconName="description"
+              label="Open"
+              onPress={() => console.log('open')}
+              style={styles.buttonSecondary}
+            />
+            <SecondaryButton
+              disabled={disableSecondaryButtons}
+              iconName="share"
+              label="Share"
+              onPress={() => console.log('share')}
+              style={styles.buttonSecondary}
+            />
+          </View>
+          <RequestProgress />
         </View>
       </LockingScrollView>
       <PrimaryButton
         iconName="download"
         label="Download"
-        onPress={() => console.log('download')}
-        style={styles.button}
+        onPress={onDownloadPressed}
+        style={styles.buttonPrimary}
       />
     </ScreenBackground>
   );
