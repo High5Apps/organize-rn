@@ -5,6 +5,7 @@ import {
   removeUnionCard as remove,
 } from '../networking';
 import getErrorMessage from './ErrorMessage';
+import useUnionCardSignatures from './UnionCardSignatures';
 
 type CreateProps = Partial<
   Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'signedAt'>
@@ -14,6 +15,7 @@ export default function useUnionCard() {
   const [unionCard, setUnionCard] = useState<UnionCard | undefined>();
 
   const { currentUser } = useCurrentUser();
+  const { createSignature } = useUnionCardSignatures();
 
   const createUnionCard = useCallback(async ({
     agreement, email, employerName, name, phone,
@@ -29,14 +31,8 @@ export default function useUnionCard() {
       publicKeyBytes = await currentUser.getEccPublicKey();
 
       signedAt = new Date();
-      const signedAtIso8601 = signedAt.toISOString();
-      const columns = [
-        name, email, phone, agreement, signedAtIso8601, employerName,
-        publicKeyBytes,
-      ];
-      const csvRowWithoutSignature = columns.map((c) => `"${c}"`).join(',');
-      signatureBytes = await currentUser.sign({
-        message: csvRowWithoutSignature,
+      signatureBytes = await createSignature({
+        agreement, email, employerName, phone, name, publicKeyBytes, signedAt,
       });
 
       const jwt = await currentUser.createAuthToken({ scope: '*' });
