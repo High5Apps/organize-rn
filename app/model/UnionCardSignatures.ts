@@ -2,6 +2,20 @@ import { UnionCard } from '../networking';
 import { useCurrentUser } from './context';
 import { Keys } from './keys';
 
+// Comma, newline, and double quotes are all special characters in CSV files
+const NEEDS_ESCAPING_REGEX = /["\n,]/;
+
+function escapeCSVField(value?: string): string {
+  if (value === undefined) { return ''; }
+
+  const needsEscaping = NEEDS_ESCAPING_REGEX.test(value);
+  if (!needsEscaping) { return value; }
+
+  // Escape any existing double quotes by doubling them and wrap the field in
+  // double quotes
+  return `"${value.replaceAll('"', '""')}"`;
+}
+
 type CreateSignatureProps = Partial<
   Omit<UnionCard, 'id' | 'userId' | 'signatureBytes'>
 >;
@@ -17,7 +31,7 @@ export default function useUnionCardSignatures() {
       name, email, phone, agreement, signedAt?.toISOString(), employerName,
       publicKeyBytes,
     ];
-    const unsignedRow = columns.map((c) => `"${c}"`).join(',');
+    const unsignedRow = columns.map(escapeCSVField).join(',');
     return unsignedRow;
   }
 
