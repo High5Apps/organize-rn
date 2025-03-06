@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
+import Share from 'react-native-share';
 import {
   LockingScrollView, PrimaryButton, ScreenBackground, SecondaryButton,
   useRequestProgress, WarningView,
@@ -85,6 +86,23 @@ export default function UnionCardsScreen() {
     }
   };
 
+  const onSharePressed = async () => {
+    if (!filePath) { return; }
+
+    setResult('none');
+
+    try {
+      await Share.open({
+        failOnCancel: false,
+        showAppsToView: true,
+        type: 'text/csv',
+        url: `file://${filePath}`,
+      });
+    } catch (error) {
+      setResult('error', { error });
+    }
+  };
+
   return (
     <ScreenBackground>
       <LockingScrollView
@@ -123,7 +141,7 @@ export default function UnionCardsScreen() {
               disabled={disableSecondaryButtons}
               iconName="share"
               label="Share"
-              onPress={() => console.log('share')}
+              onPress={onSharePressed}
               style={styles.buttonSecondary}
             />
           </View>
