@@ -219,6 +219,7 @@ export default function UnionCardScreen() {
   const {
     loading: refreshing,
     RequestProgress: RefreshProgress,
+    result: refreshingResult,
     setLoading: setRefreshing,
     setResult: setRefreshResult,
   } = useRequestProgress({ removeWhenInactive: true });
@@ -241,7 +242,8 @@ export default function UnionCardScreen() {
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      {refreshing ? <RefreshProgress /> : (
+      <RefreshProgress />
+      {!refreshing && (refreshingResult !== 'error') && (
         <>
           <View style={styles.section}>
             <HeaderText>Name</HeaderText>
