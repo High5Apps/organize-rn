@@ -1696,6 +1696,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNFileViewer (2.1.5):
+    - React-Core
   - RNReanimated (3.16.7):
     - DoubleConversion
     - glog
@@ -1958,6 +1960,7 @@ DEPENDENCIES:
   - ReactNativeFileAccess (from `../node_modules/react-native-file-access`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -2119,6 +2122,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNFileViewer:
+    :path: "../node_modules/react-native-file-viewer"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -2205,6 +2210,7 @@ SPEC CHECKSUMS:
   ReactNativeFileAccess: 39fbf8b01ad9e1cefbd98b99caeb1df80a156704
   RNCAsyncStorage: 50a24d7ae3bcba70a39f600366dbb23ca9ccf81c
   RNDateTimePicker: b49449a7da91211c6fcc60acd346a0ddf0d25256
+  RNFileViewer: 4b5d83358214347e4ab2d4ca8d5c1c90d869e251
   RNReanimated: 8a4ea733f88a33379150eb2e73b375e14de81e84
   RNScreens: 5a1573ceb1a13b2d0663cbfb42cb4aa8803554eb
   RNSVG: 2089e8b3a145acb2f392017279790f007f934567

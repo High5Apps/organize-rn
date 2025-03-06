@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import FileViewer from 'react-native-file-viewer';
 import {
   LockingScrollView, PrimaryButton, ScreenBackground, SecondaryButton,
   useRequestProgress, WarningView,
@@ -69,6 +70,21 @@ export default function UnionCardsScreen() {
     }
   };
 
+  const onOpenPressed = async () => {
+    if (!filePath) { return; }
+
+    setResult('none');
+
+    try {
+      await FileViewer.open(filePath, {
+        showAppsSuggestions: true,
+        showOpenWithDialog: true,
+      });
+    } catch (error) {
+      setResult('error', { error });
+    }
+  };
+
   return (
     <ScreenBackground>
       <LockingScrollView
@@ -100,7 +116,7 @@ export default function UnionCardsScreen() {
               disabled={disableSecondaryButtons}
               iconName="description"
               label="Open"
-              onPress={() => console.log('open')}
+              onPress={onOpenPressed}
               style={styles.buttonSecondary}
             />
             <SecondaryButton
