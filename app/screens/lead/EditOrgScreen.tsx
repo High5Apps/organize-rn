@@ -125,6 +125,7 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Org name</HeaderText>
             <TextInputRow
+              autoCapitalize="words"
               autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
@@ -138,9 +139,13 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Org email</HeaderText>
             <TextInputRow
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect={false}
               autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
+              keyboardType="email-address"
               maxLength={emailStep.maxLength}
               onChangeText={setEmail}
               placeholder={emailPlaceholder}
@@ -165,6 +170,8 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Employer name</HeaderText>
             <TextInputRow
+              autoCapitalize="words"
+              autoCorrect={false}
               autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
