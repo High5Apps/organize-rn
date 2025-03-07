@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Dirs, FileSystem, Util } from 'react-native-file-access';
+import getErrorMessage from './ErrorMessage';
 
 export const REPLACEMENT_FILE_EXTENSION = 'replacement';
 
@@ -103,4 +104,18 @@ export default function useReplaceableFile({
   return {
     appendToReplacement, commitReplacement, createReplacement, filePath, ready,
   };
+}
+
+export async function deleteAllDocuments() {
+  const fileNames = await FileSystem.ls(Dirs.DocumentDir);
+  const unlinkPromises = fileNames
+    .map((name) => `${Dirs.DocumentDir}/${name}`)
+    .map(FileSystem.unlink);
+  const results = await Promise.allSettled(unlinkPromises);
+  const firstFailure = results
+    .find((r) => r.status === 'rejected') as PromiseRejectedResult | undefined;
+  if (firstFailure) {
+    const errorMessage = getErrorMessage(firstFailure.reason);
+    throw new Error(errorMessage);
+  }
 }

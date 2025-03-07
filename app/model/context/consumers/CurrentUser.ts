@@ -12,6 +12,7 @@ import {
   verifyOrg,
 } from '../../../networking';
 import getErrorMessage from '../../ErrorMessage';
+import { deleteAllDocuments } from '../../ReplaceableFile';
 
 export function CurrentUser(
   currentUserData: CurrentUserData,
@@ -31,17 +32,30 @@ export function CurrentUser(
     connectionCount, id, joinedAt, offices, pseudonym, recruitCount,
   });
 
+  async function deleteDocuments() {
+    let succeeded = false;
+
+    try {
+      await deleteAllDocuments();
+      succeeded = true;
+    } catch (error) {
+      console.error(error);
+    }
+
+    return succeeded;
+  }
+
   const keys = Keys();
 
   async function deleteKeys() {
     let succeeded = false;
 
     try {
-      const results = await Promise.all([
+      const results = await Promise.allSettled([
         keys.ecc.delete(authenticationKeyId),
         keys.rsa.delete(localEncryptionKeyId),
       ]);
-      succeeded = results.every((result) => result);
+      succeeded = results.every((result) => result.status === 'fulfilled');
     } catch (error) {
       console.error(error);
     }
@@ -92,7 +106,7 @@ export function CurrentUser(
       throw new Error(errorMessage);
     }
 
-    await deleteKeys();
+    await Promise.allSettled([deleteKeys(), deleteDocuments()]);
     storeCurrentUserData(null);
     setCurrentUserData(null);
     AsyncStorage.clear();
