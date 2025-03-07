@@ -21,7 +21,6 @@ async function generateKeys(publicKeyId: string): Promise<PublicKey> {
 
 async function getPublicKey(publicKeyId: string): Promise<string> {
   const publicKey = await ECCModule.getPublicKey(publicKeyId);
-  console.log('getPublicKey');
 
   // This is needed because some native modules (e.g. iOS) may not include a
   // trailing end-of-line character in their implementation of the PEM formatter
