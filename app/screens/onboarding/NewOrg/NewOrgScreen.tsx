@@ -46,8 +46,9 @@ const useStyles = () => {
 export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const currentStep = route.params.step;
   const {
-    body, header, headline, iconName, maxLength, message, messageMultiline,
-    param, paramType, placeholder, title,
+    autoCaptitalize, autoComplete, autoCorrect, body, header, headline,
+    iconName, keyboardType, maxLength, message, messageMultiline, param,
+    placeholder, title,
   } = NewOrgSteps[currentStep];
   const initialInput: string = route.params[param]?.toString() || '';
 
@@ -67,8 +68,6 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
 
   const TextInput = messageMultiline ? MultilineTextInput : TextInputRow;
 
-  const isEmail = paramType === 'email';
-
   return (
     <ScreenBackground>
       <LockingScrollView
@@ -87,11 +86,11 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         </Text>
         <HeaderText style={styles.headerText}>{header}</HeaderText>
         <TextInput
-          autoCapitalize={isEmail ? 'none' : 'sentences'}
-          autoComplete={isEmail ? 'email' : 'off'}
-          autoCorrect={!isEmail}
+          autoCapitalize={autoCaptitalize}
+          autoComplete={autoComplete}
+          autoCorrect={autoCorrect}
           autoFocus={false}
-          keyboardType={isEmail ? 'email-address' : 'default'}
+          keyboardType={keyboardType}
           maxLength={maxLength}
           onChangeText={setInput}
           onSubmitEditing={() => {

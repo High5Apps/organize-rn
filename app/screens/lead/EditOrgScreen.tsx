@@ -125,10 +125,13 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Org name</HeaderText>
             <TextInputRow
-              autoCapitalize="words"
+              autoCapitalize={nameStep.autoCaptitalize}
+              autoComplete={nameStep.autoComplete}
+              autoCorrect={nameStep.autoCorrect}
               autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
+              keyboardType={nameStep.keyboardType}
               maxLength={nameStep.maxLength}
               onChangeText={setName}
               placeholder={namePlaceholder}
@@ -139,13 +142,13 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Org email</HeaderText>
             <TextInputRow
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect={false}
+              autoCapitalize={emailStep.autoCaptitalize}
+              autoComplete={emailStep.autoComplete}
+              autoCorrect={emailStep.autoCorrect}
               autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
-              keyboardType="email-address"
+              keyboardType={emailStep.keyboardType}
               maxLength={emailStep.maxLength}
               onChangeText={setEmail}
               placeholder={emailPlaceholder}
@@ -156,8 +159,12 @@ export default function EditOrgScreen() {
           <View style={styles.section}>
             <HeaderText>Org memeber definition</HeaderText>
             <MultilineTextInput
+              autoCapitalize={memberDefinitionStep.autoCaptitalize}
+              autoComplete={memberDefinitionStep.autoComplete}
+              autoCorrect={memberDefinitionStep.autoCorrect}
               editable={!loading}
               enablesReturnKeyAutomatically
+              keyboardType={memberDefinitionStep.keyboardType}
               maxLength={memberDefinitionStep.maxLength}
               onChangeText={setMemberDefinition}
               placeholder={definitionPlaceholder}
