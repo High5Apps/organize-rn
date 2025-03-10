@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { fetchOrg, updateOrg as updateBackendOrg } from '../networking';
-import { Org, OrgGraph } from './types';
+import { Org } from './types';
 import { useCurrentUser } from './context';
 
 type UpdateProps = {
@@ -13,7 +13,6 @@ type UpdateProps = {
 
 export default function useOrg() {
   const [org, setOrg] = useState<Org>();
-  const [orgGraph, setOrgGraph] = useState<OrgGraph>();
 
   const { currentUser, setCurrentUser } = useCurrentUser();
 
@@ -23,15 +22,11 @@ export default function useOrg() {
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecrypt } = currentUser;
     const {
-      errorMessage, org: fetchedOrg, orgGraph: fetchedOrgGraph,
+      errorMessage, org: fetchedOrg,
     } = await fetchOrg({ e2eDecrypt, jwt });
 
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
-    }
-
-    if (!isEqual(orgGraph, fetchedOrgGraph)) {
-      setOrgGraph(fetchedOrgGraph);
     }
 
     if (!isEqual(org, fetchedOrg)) {
@@ -41,7 +36,7 @@ export default function useOrg() {
         return { ...previousCurrentUser, org: fetchedOrg };
       });
     }
-  }, [currentUser, org, orgGraph]);
+  }, [currentUser, org]);
 
   const updateOrg = useCallback(async ({
     email, employerName, memberDefinition, name,
@@ -71,10 +66,5 @@ export default function useOrg() {
     setCurrentUser({ ...currentUser, org: updatedOrg });
   }, [currentUser, org]);
 
-  const nodeCount = (orgGraph?.userIds ?? []).length;
-  const hasMultipleNodes = nodeCount > 1;
-
-  return {
-    org, orgGraph, hasMultipleNodes, refreshOrg, updateOrg,
-  };
+  return { org, refreshOrg, updateOrg };
 }

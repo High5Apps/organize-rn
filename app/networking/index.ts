@@ -12,7 +12,7 @@ export {
 export { createNomination, updateNomination } from './NominationAPI';
 export { fetchOffices } from './OfficeAPI';
 export {
-  createOrg, fetchOrg, updateOrg, verifyOrg,
+  createOrg, fetchOrg, fetchOrgGraph, updateOrg, verifyOrg,
 } from './OrgAPI';
 export {
   createPermission, fetchPermission, fetchMyPermissions,

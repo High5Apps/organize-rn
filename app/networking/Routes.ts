@@ -41,6 +41,7 @@ export const officesURI = `${apiRoute}/offices`;
 
 export const orgsURI = `${apiRoute}/orgs`;
 export const orgURI = `${apiRoute}/org`;
+export const orgGraphURI = `${orgURI}/graph`;
 
 export const permissionsURI = `${apiRoute}/permissions`;
 export const permissionURI = (scope: PermissionScope) => {

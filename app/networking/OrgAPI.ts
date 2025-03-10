@@ -3,10 +3,13 @@ import {
 } from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
-import { orgURI, orgsURI, verifyURI } from './Routes';
+import {
+  orgGraphURI, orgURI, orgsURI, verifyURI,
+} from './Routes';
 import {
   Authorization, E2EDecryptor, E2EEncryptor, isBackendEncryptedMessage,
-  isCreateModelResponse, isOrgResponse, Org, OrgGraph, UnpublishedOrg,
+  isCreateModelResponse, isOrgGraph, isOrgResponse, Org, OrgGraph,
+  UnpublishedOrg,
 } from './types';
 
 type Props = Authorization & UnpublishedOrg & {
@@ -58,11 +61,9 @@ type FetchOrgProps = Authorization & {
 type FetchOrgReturn = {
   errorMessage?: never;
   org: Org;
-  orgGraph: OrgGraph;
 } | {
   errorMessage: string;
   org?: never;
-  orgGraph?: never;
 };
 
 export async function fetchOrg({
@@ -98,13 +99,43 @@ export async function fetchOrg({
     encryptedEmployerName: unusedEEN,
     encryptedName: unusedEN,
     encryptedMemberDefinition: unusedEMD,
-    graph: orgGraph,
     ...org
   } = {
     ...json, employerName, name, memberDefinition,
   };
 
-  return { org, orgGraph };
+  return { org };
+}
+
+type FetchOrgGraphReturn = {
+  errorMessage?: never;
+  orgGraph: OrgGraph;
+} | {
+  errorMessage: string;
+  orgGraph?: never;
+};
+
+export async function fetchOrgGraph({
+  jwt,
+}: Authorization): Promise<FetchOrgGraphReturn> {
+  const uri = orgGraphURI;
+  const response = await get({ jwt, uri });
+
+  const text = await response.text();
+  const json = fromJson(text, {
+    convertIso8601ToDate: true,
+    convertSnakeToCamel: true,
+  });
+
+  if (!response.ok) {
+    return parseFirstErrorOrThrow(json);
+  }
+
+  if (!isOrgGraph(json)) {
+    throw new Error('Failed to parse Org graph from response');
+  }
+
+  return { orgGraph: json };
 }
 
 export type UpdateProps = {

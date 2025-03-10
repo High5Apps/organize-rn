@@ -6,8 +6,8 @@ import {
 } from '../../components';
 import type { OrgScreenProps } from '../../navigation';
 import {
-  getErrorMessage, useCurrentUser, useOrg, useSelectedUser, useUsers,
-  useVisGraphData,
+  getErrorMessage, useCurrentUser, useOrg, useOrgGraph, useSelectedUser,
+  useUsers, useVisGraphData,
 } from '../../model';
 
 export default function OrgScreen({ navigation, route }: OrgScreenProps) {
@@ -25,9 +25,8 @@ export default function OrgScreen({ navigation, route }: OrgScreenProps) {
   const {
     users: officers, fetchFirstPageOfUsers: fetchOfficers, ready: officersReady,
   } = useUsers({ filter: 'officer', sort: 'office' });
-  const {
-    hasMultipleNodes, orgGraph, refreshOrg,
-  } = useOrg();
+  const { refreshOrg } = useOrg();
+  const { orgGraph, refreshOrgGraph, hasMultipleNodes } = useOrgGraph();
   const { selectedUser, setSelectedUserId } = useSelectedUser(orgGraph);
   const { options, visGraphData } = useVisGraphData({
     officers: officersReady ? officers : undefined, orgGraph,
@@ -38,12 +37,13 @@ export default function OrgScreen({ navigation, route }: OrgScreenProps) {
     await Promise.all([
       currentUser?.refresh().catch(console.error),
       fetchOfficers().catch(console.error),
-      refreshOrg().catch((error) => {
+      refreshOrg().catch(console.error),
+      refreshOrgGraph().catch((error) => {
         const errorMessage = getErrorMessage(error);
         setGraphError(errorMessage);
       }),
     ]);
-  }, [fetchOfficers, refreshOrg]);
+  }, [fetchOfficers, refreshOrg, refreshOrgGraph]);
 
   useEffect(() => { onRefresh(); }, []);
 

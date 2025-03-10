@@ -146,7 +146,6 @@ export function isOrgGraph(object: unknown): object is OrgGraph {
 }
 
 export type OrgResponse = {
-  graph: OrgGraph,
   id: string,
   email?: string;
   encryptedEmployerName?: BackendEncryptedMessage;
@@ -156,8 +155,7 @@ export type OrgResponse = {
 
 export function isOrgResponse(object: unknown): object is OrgResponse {
   const response = (object as OrgResponse);
-  return isOrgGraph(response?.graph)
-    && response.id?.length > 0
+  return response.id?.length > 0
     && ((response.email === undefined) || response.email.length > 0)
     && ((response.encryptedEmployerName === undefined)
       || isBackendEncryptedMessage(response.encryptedEmployerName))
@@ -165,7 +163,7 @@ export function isOrgResponse(object: unknown): object is OrgResponse {
     && isBackendEncryptedMessage(response.encryptedMemberDefinition);
 }
 
-export type Org = Decrypt<Omit<OrgResponse, 'graph'>>;
+export type Org = Decrypt<OrgResponse>;
 
 export function isOrg(object: unknown): object is Org {
   const org = (object as Org);
