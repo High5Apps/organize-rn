@@ -294,7 +294,7 @@ export default function UnionCardScreen() {
               onChangeText={setEmail}
               onFocus={onFocus('email')}
               onSubmitEditing={onSubmitEditing('email')}
-              placeholder="abe.lincoln@whitehouse.gov"
+              placeholder="email@example.com"
               submitBehavior="submit"
               value={email}
             />
