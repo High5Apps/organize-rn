@@ -26,6 +26,8 @@ const palette = {
   grayLight0: '#909090',
   grayLight1: '#D9D9D9',
   grayLight2: '#FFFFFF',
+  orangeLight: '#FF9500',
+  orangeDark: '#FF9F0A',
 };
 
 const weights = Platform.select({
@@ -57,6 +59,7 @@ const lightTheme = {
     primary: palette.purpleDark0,
     separator: palette.grayLight0,
     success: palette.green,
+    warning: palette.orangeLight,
   },
   font: {
     sizes: {
@@ -115,6 +118,7 @@ const darkTheme = {
     office,
     primary: palette.purpleLight0,
     separator: palette.grayDark0,
+    warning: palette.orangeDark,
   },
 };
 

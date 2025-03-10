@@ -24,6 +24,9 @@ const useStyles = () => {
     success: {
       color: colors.success,
     },
+    warning: {
+      color: colors.warning,
+    },
   });
 
   return { colors, styles };
@@ -93,7 +96,7 @@ export default function useRequestProgress({ removeWhenInactive }: Props = {}) {
               styles.message,
               (resultType === 'error') && styles.error,
               (resultType === 'success') && styles.success,
-              (resultType === 'warning') && styles.error,
+              (resultType === 'warning') && styles.warning,
               (resultType === 'info') && styles.info,
               messageStyle,
             ]}

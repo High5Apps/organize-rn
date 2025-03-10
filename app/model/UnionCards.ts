@@ -40,6 +40,7 @@ export default function useUnionCards() {
     let page = 0;
     let hasNextPage = true;
     let shouldCommit = false;
+    let verificationFailureCount = 0;
     while (hasNextPage) {
       page += 1; // First page starts at 1
 
@@ -69,12 +70,17 @@ export default function useUnionCards() {
         });
         const data = rows.join();
         await appendToReplacement({ data });
+
+        verificationFailureCount += results
+          .filter(({ verified }) => !verified).length;
       }
     }
 
     if (shouldCommit) {
       await commitReplacement();
     }
+
+    return { verificationFailureCount };
   }
 
   return { filePath, ready, recreateFile };

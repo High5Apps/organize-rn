@@ -64,7 +64,11 @@ export default function UnionCardsScreen() {
     setResult('none');
 
     try {
-      await recreateFile();
+      const { verificationFailureCount } = await recreateFile();
+      if (verificationFailureCount) {
+        const message = `Failed to verify ${verificationFailureCount} union card signature${(verificationFailureCount > 1) ? 's' : ''}. To fix this, update your app and then try again.`;
+        setResult('warning', { message });
+      }
       setLoading(false);
     } catch (error) {
       setResult('error', { error });
