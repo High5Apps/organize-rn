@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-webview/apple/RNCWebView.mm b/node_modules/react-native-webview/apple/RNCWebView.mm
+index f9d080e..10d90ee 100644
+--- a/node_modules/react-native-webview/apple/RNCWebView.mm
++++ b/node_modules/react-native-webview/apple/RNCWebView.mm
+@@ -244,7 +244,7 @@ - (instancetype)initWithFrame:(CGRect)frame
+                 webViewEventEmitter->onHttpError(data);
+             }
+         };
+-        self.contentView = _view;
++        [self addSubview:_view];
+     }
+     return self;
+ }
+@@ -488,6 +488,12 @@ - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &
+     [super updateProps:props oldProps:oldProps];
+ }
+ 
++-(void)layoutSubviews
++{
++  [super layoutSubviews];
++  _view.frame = self.bounds;
++}
++
+ - (void)handleCommand:(nonnull const NSString *)commandName args:(nonnull const NSArray *)args {
+     RCTRNCWebViewHandleCommand(self, commandName, args);
+ }

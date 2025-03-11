@@ -49,7 +49,7 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-vis-network": "^2.0.0",
     "react-native-vision-camera": "^4.6.4",
-    "react-native-webview": "^13.13.1",
+    "react-native-webview": "^13.13.4",
     "use-debounce": "^10.0.0",
     "uuid": "^11.0.5"
   },
