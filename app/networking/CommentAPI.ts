@@ -31,7 +31,7 @@ export async function createComment({
 
   const encryptedBody = await encrypt(body, e2eEncrypt);
   const response = await post({
-    bodyObject: { encryptedBody }, jwt, uri,
+    bodyObject: { comment: { encryptedBody } }, jwt, uri,
   });
   const text = await response.text();
   const json = fromJson(text, {

@@ -37,7 +37,7 @@ export async function createFlag({
   const uri = flagsURI;
 
   const response = await post({
-    bodyObject: { flaggableId, flaggableType }, jwt, uri,
+    bodyObject: { flag: { flaggableId, flaggableType } }, jwt, uri,
   });
   if (!response.ok) {
     const text = await response.text();

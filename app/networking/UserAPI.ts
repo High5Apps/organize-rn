@@ -24,7 +24,7 @@ export async function createUser({
 }: CreateProps): Promise<CreateReturn> {
   const response = await post({
     uri: usersURI,
-    bodyObject: { publicKeyBytes: authenticationKey },
+    bodyObject: { user: { publicKeyBytes: authenticationKey } },
   });
 
   const text = await response.text();

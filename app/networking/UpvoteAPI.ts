@@ -26,8 +26,7 @@ export default async function createOrUpdateUpvote({
     throw new Error('createUpvote expected exactly one upvotable');
   }
 
-  const bodyObject = { value };
-  const response = await post({ bodyObject, jwt, uri });
+  const response = await post({ bodyObject: { upvote: { value } }, jwt, uri });
 
   if (!response.ok) {
     const text = await response.text();

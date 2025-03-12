@@ -45,13 +45,15 @@ export async function createUnionCard({
   ]);
   const response = await post({
     bodyObject: {
-      encryptedAgreement,
-      encryptedEmail,
-      encryptedEmployerName,
-      encryptedName,
-      encryptedPhone,
-      signatureBytes,
-      signedAt,
+      unionCard: {
+        encryptedAgreement,
+        encryptedEmail,
+        encryptedEmployerName,
+        encryptedName,
+        encryptedPhone,
+        signatureBytes,
+        signedAt,
+      },
     },
     jwt,
     uri: unionCardsURI,

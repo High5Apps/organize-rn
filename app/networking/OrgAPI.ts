@@ -34,7 +34,7 @@ export async function createOrg({
     encrypt(memberDefinition, e2eEncrypt),
   ]);
   const response = await post({
-    bodyObject: { email, encryptedName, encryptedMemberDefinition },
+    bodyObject: { org: { email, encryptedName, encryptedMemberDefinition } },
     jwt,
     uri: orgsURI,
   });

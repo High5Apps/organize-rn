@@ -27,7 +27,9 @@ export async function createModerationEvent({
   const uri = moderationEventsURI;
 
   const response = await post({
-    bodyObject: { action, moderatableId, moderatableType }, jwt, uri,
+    bodyObject: { moderationEvent: { action, moderatableId, moderatableType } },
+    jwt,
+    uri,
   });
 
   const text = await response.text();
