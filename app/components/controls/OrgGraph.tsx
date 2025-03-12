@@ -2,8 +2,9 @@ import React, {
   Dispatch, SetStateAction, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import VisNetwork, { Data, Options, VisNetworkRef } from 'react-native-vis-network';
-import { useCurrentUser } from '../../model';
+import VisNetwork, {
+  Data, Options, VisNetworkRef,
+} from 'react-native-vis-network';
 import useTheme from '../../Theme';
 import { ErrorMessage, useOrgGraphProgressBar } from '../views';
 import { useOrgGraphClickHandler } from './handlers';
@@ -39,8 +40,6 @@ export default function OrgGraph({
 }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const { currentUser } = useCurrentUser();
-
   const { colors, styles } = useStyles();
   const { primary } = colors;
 
@@ -64,8 +63,6 @@ export default function OrgGraph({
   useEffect(() => {
     onRenderingProgressChanged?.(progress);
   }, [progress]);
-
-  if (!currentUser) { throw new Error('Expected currentUser'); }
 
   const Component = useMemo(() => {
     if (visGraphData) {
