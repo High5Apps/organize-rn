@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   Camera, Code, useCameraDevice, useCameraPermission, useCodeScanner,
 } from 'react-native-vision-camera';
@@ -44,20 +44,19 @@ export default function QRCamera({
   let content;
   if (device) {
     content = (
-      // This View is required as a workaround on iOS until this issue is fixed:
-      // https://github.com/mrousavy/react-native-vision-camera/issues/1964
-      <View style={StyleSheet.absoluteFill}>
-        <Camera
-          codeScanner={codeScanner}
-          device={device}
-          isActive={enabled}
-          // Waiting for cameraInitialized is a workaround on Android until this
-          // issue is fixed:
-          // https://github.com/mrousavy/react-native-vision-camera/issues/1964
-          onInitialized={() => setCameraInitialized(true)}
-          style={cameraInitialized && StyleSheet.absoluteFill}
-        />
-      </View>
+      <Camera
+        codeScanner={codeScanner}
+        device={device}
+        isActive={enabled}
+        // Waiting for cameraInitialized on Android but NOT iOS is a workaround
+        // until this issue is fixed:
+        // https://github.com/mrousavy/react-native-vision-camera/issues/1964
+        onInitialized={() => setCameraInitialized(true)}
+        style={
+          (cameraInitialized || Platform.OS !== 'android')
+            && StyleSheet.absoluteFill
+        }
+      />
     );
   } else {
     content = (
