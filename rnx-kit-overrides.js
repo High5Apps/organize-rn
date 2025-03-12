@@ -8,5 +8,9 @@ module.exports = {
       name: 'react-native-screens',
       version: '^4.6.0',
     },
+    webview: {
+      name: 'react-native-webview',
+      version: '^13.13.4',
+    },
   },
 };
