@@ -80,7 +80,7 @@ android {
         applicationId "app.getorganize.organize"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
+        versionCode 8
         versionName "2.3.0"
 
         // https://github.com/mrousavy/react-native-vision-camera/issues/3177#issuecomment-2346035370
