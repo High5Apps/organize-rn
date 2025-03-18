@@ -97,6 +97,9 @@
 14. Wait until both reviews succeed
     - You'll receive email updates for iOS
     - Android only sends email updates for rejections, but reviews typically succeed within 24 hours
+    - If the iOS review is rejected:
+        - Rotate and update the iOS demo mode codes using steps 17 and 11.
+        - Reviewers will NOT respond to your messages until you click **Add for Review > Resubmit to App Review**. This is true even if you're just requesting clarifications and haven't yet changed anything with the metadata or build.
 15. Release the new Android version
     1. In **Chrome**, open the [Google Play Console](https://play.google.com/console/developers/?pli=1)
     2. Click **Organize: Modern Labor Unions > Publishing Overview > Publish \<n\> changes > Publish changes**
