@@ -79,8 +79,7 @@
     5. Scroll down to the **What's new in This Version** field and enter: "Minor bug fixes and improvements"
     6. Scroll down the the **Build** section and click **Add Build**
     7. Select the build with the expected version number, then click **Done**
-        - If the expected build version isn't present, you need to wait for Apple to
-      finish analyzing the newly uploaded build. This could be up to 30 minutes after completing step 4 above. You'll receive an email once it's analyzed.
+        - If the expected build version isn't present, you need to wait for Apple to finish analyzing the newly uploaded build. This could be up to 30 minutes after completing step 5 above. You'll receive an email once it's analyzed.
 11. Update the iOS demo mode credentials
     1. Scroll down to the **App Review Information** section
     2. Update the **User name** field to be the *second* demo mode email
@@ -91,7 +90,7 @@
     2. Verify that the changes look correct
     3. Click **Submit to App Review**
 13. Cleanup
-    1. Close the demo mode credentials file opened in step 6 above
+    1. Close the demo mode credentials file opened in step 7 above
     2. Discard any uncommitted changes (app-release.aab file and the Xcode scheme changes)
     3. Re-enable developer settings by updating `ENABLE_DEVELOPER_SETTINGS` in `.env` to `true`
 14. Wait until both reviews succeed
@@ -107,7 +106,7 @@
     1. Open [App Store Connect](https://appstoreconnect.apple.com/) and log in if needed
     2. Click **Apps > Organize: Modern Labor Unions > Release this version > Release**
 17. Rotate the demo mode credentials
-    1. Use step 6 above to open the demo mode credentials file
+    1. Use step 7 above to open the demo mode credentials file
     2. Use the password generator of your password manager to create new emails and passwords
     3. Close the file to save your changes and re-encrypt the file
     4. Create a new commit similar to https://github.com/High5Apps/organize-backend/commit/bea238f
