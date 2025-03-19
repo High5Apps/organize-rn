@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, TextInputProps, View,
+} from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextInputRow,
   useRequestProgress,
@@ -193,8 +195,17 @@ function useUnionCardInfo({
 
 type InputName = 'email' | 'employerName' | 'name' | 'phone';
 
-function useFocusedInput() {
+type FocusedInputProps = {
+  shouldHideEmployerNameInput: boolean;
+};
+function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
   const [focusedInput, setFocusedInput] = useState<InputName | null>(null);
+
+  function enterKeyHint(inputName: InputName): TextInputProps['enterKeyHint'] {
+    const isLastVisibleInput = (inputName === 'employerName')
+      || (inputName === 'email' && shouldHideEmployerNameInput);
+    return isLastVisibleInput ? 'done' : 'next';
+  }
 
   const focused = (inputName: InputName) => (focusedInput === inputName);
 
@@ -212,7 +223,17 @@ function useFocusedInput() {
     setFocusedInput(nextInput);
   }), []);
 
-  return { focused, onFocus, onSubmitEditing };
+  function submitBehavior(
+    inputName: InputName,
+  ): TextInputProps['submitBehavior'] {
+    const shouldBlur = (inputName === 'employerName')
+      || (inputName === 'email' && shouldHideEmployerNameInput);
+    return shouldBlur ? 'blurAndSubmit' : 'submit';
+  }
+
+  return {
+    enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
+  };
 }
 
 export default function UnionCardScreen() {
@@ -236,9 +257,12 @@ export default function UnionCardScreen() {
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
   const inputsEditable = !signingOrUndoing && !signedAt;
+  const shouldHideEmployerNameInput = !!orgEmployerName;
 
   const { styles } = useStyles();
-  const { focused, onFocus, onSubmitEditing } = useFocusedInput();
+  const {
+    enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
+  } = useFocusedInput({ shouldHideEmployerNameInput });
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
@@ -253,13 +277,14 @@ export default function UnionCardScreen() {
               autoCorrect={false}
               autoFocus={false}
               editable={inputsEditable}
+              enterKeyHint={enterKeyHint('name')}
               focused={focused('name')}
               maxLength={MAX_NAME_LENGTH}
               onChangeText={setName}
               onFocus={onFocus('name')}
               onSubmitEditing={onSubmitEditing('name')}
               placeholder="Abe Lincoln"
-              submitBehavior="submit"
+              submitBehavior={submitBehavior('name')}
               value={name}
             />
           </View>
@@ -269,6 +294,7 @@ export default function UnionCardScreen() {
               autoComplete="tel"
               autoFocus={false}
               editable={inputsEditable}
+              enterKeyHint={enterKeyHint('phone')}
               focused={focused('phone')}
               keyboardType="phone-pad"
               maxLength={MAX_PHONE_LENGTH}
@@ -276,7 +302,7 @@ export default function UnionCardScreen() {
               onFocus={onFocus('phone')}
               onSubmitEditing={onSubmitEditing('phone')}
               placeholder="5551234567"
-              submitBehavior="submit"
+              submitBehavior={submitBehavior('phone')}
               value={phone}
             />
           </View>
@@ -288,6 +314,7 @@ export default function UnionCardScreen() {
               autoCorrect={false}
               autoFocus={false}
               editable={inputsEditable}
+              enterKeyHint={enterKeyHint('email')}
               focused={focused('email')}
               keyboardType="email-address"
               maxLength={MAX_EMAIL_LENGTH}
@@ -295,11 +322,11 @@ export default function UnionCardScreen() {
               onFocus={onFocus('email')}
               onSubmitEditing={onSubmitEditing('email')}
               placeholder="email@example.com"
-              submitBehavior="submit"
+              submitBehavior={submitBehavior('email')}
               value={email}
             />
           </View>
-          {!orgEmployerName && (
+          {!shouldHideEmployerNameInput && (
           <View style={styles.section}>
             <HeaderText>Employer name</HeaderText>
             <TextInputRow
@@ -307,13 +334,14 @@ export default function UnionCardScreen() {
               autoCorrect={false}
               autoFocus={false}
               editable={inputsEditable}
-              enterKeyHint="done"
+              enterKeyHint={enterKeyHint('employerName')}
               focused={focused('employerName')}
               maxLength={MAX_EMPLOYER_NAME_LENGTH}
               onChangeText={setEmployerName}
               onFocus={onFocus('employerName')}
               onSubmitEditing={onSubmitEditing('employerName')}
               placeholder="Acme, Inc."
+              submitBehavior={submitBehavior('employerName')}
               value={employerName}
             />
           </View>
