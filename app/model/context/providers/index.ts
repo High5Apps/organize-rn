@@ -9,4 +9,5 @@ export { useFlagReportContext } from './FlagReportContext';
 export { useModerationEventContext } from './ModerationEventContext';
 export { useMyPermissionContext } from './MyPermissionContext';
 export { usePostContext } from './PostContext';
+export { useUnionCardContext } from './UnionCardContext';
 export { useUserContext } from './UserContext';

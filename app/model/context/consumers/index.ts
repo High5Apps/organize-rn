@@ -22,4 +22,5 @@ export { default as useMyPermissions } from './MyPermissions';
 export { default as usePost } from './Post';
 export { default as usePosts } from './Posts';
 export { default as useSelectedUser } from './SelectedUser';
+export { default as useUnionCard } from './UnionCard';
 export { default as useUsers } from './Users';

@@ -1,18 +1,22 @@
-import { useCallback, useState } from 'react';
-import { useCurrentUser } from './context';
+import { useCallback } from 'react';
+import useCurrentUser from './CurrentUser';
 import {
   createUnionCard as create, fetchUnionCard, UnionCard,
   removeUnionCard as remove,
-} from '../networking';
-import getErrorMessage from './ErrorMessage';
-import useUnionCardSignatures from './UnionCardSignatures';
+} from '../../../networking';
+import getErrorMessage from '../../ErrorMessage';
+import useUnionCardSignatures from '../../UnionCardSignatures';
+import { useUnionCardContext } from '../providers';
 
 type CreateProps = Partial<
   Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'signedAt'>
 >;
 
 export default function useUnionCard() {
-  const [unionCard, setUnionCard] = useState<UnionCard | undefined>();
+  const {
+    cacheUnionCard, clearCachedUnionCard, getCachedUnionCard,
+  } = useUnionCardContext();
+  const unionCard = getCachedUnionCard();
 
   const { currentUser } = useCurrentUser();
   const { createSignature } = useUnionCardSignatures();
@@ -70,7 +74,7 @@ export default function useUnionCard() {
         signedAt: signedAt!,
         userId: currentUser.id,
       };
-      setUnionCard(createdUnionCard);
+      cacheUnionCard(createdUnionCard);
     }
   }, [currentUser]);
 
@@ -87,7 +91,7 @@ export default function useUnionCard() {
       throw new Error(errorMessage);
     }
 
-    setUnionCard(fetchedUnionCard);
+    cacheUnionCard(fetchedUnionCard!);
   }, [currentUser]);
 
   const removeUnionCard = useCallback(async () => {
@@ -100,7 +104,7 @@ export default function useUnionCard() {
       throw new Error(errorMessage);
     }
 
-    setUnionCard(undefined);
+    clearCachedUnionCard();
   }, [currentUser]);
 
   return {

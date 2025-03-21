@@ -21,7 +21,6 @@ export { default as usePrependedModels } from './PrependedModels';
 export { default as useReplaceableFile } from './ReplaceableFile';
 export { default as useSettings } from './Settings';
 export { default as useUpvote } from './Upvote';
-export { default as useUnionCard } from './UnionCard';
 export { default as useUnionCards } from './UnionCards';
 export { default as useVisGraphData } from './VisGraphData';
 export { default as useVoteUpdater } from './VoteUpdater';

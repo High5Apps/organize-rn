@@ -11,6 +11,7 @@ import { BallotContextProvider } from './BallotContext';
 import { MyPermissionContextProvider } from './MyPermissionContext';
 import { FlagReportContextProvider } from './FlagReportContext';
 import { ModerationEventContextProvider } from './ModerationEventContext';
+import { UnionCardContextProvider } from './UnionCardContext';
 
 export default function Context({ children }: PropsWithChildren<{}>) {
   return (
@@ -23,13 +24,15 @@ export default function Context({ children }: PropsWithChildren<{}>) {
                 <MyPermissionContextProvider>
                   <FlagReportContextProvider>
                     <ModerationEventContextProvider>
-                      <CachedValueContextProvider>
-                        <SafeAreaProvider>
-                          <KeyboardProvider>
-                            {children}
-                          </KeyboardProvider>
-                        </SafeAreaProvider>
-                      </CachedValueContextProvider>
+                      <UnionCardContextProvider>
+                        <CachedValueContextProvider>
+                          <SafeAreaProvider>
+                            <KeyboardProvider>
+                              {children}
+                            </KeyboardProvider>
+                          </SafeAreaProvider>
+                        </CachedValueContextProvider>
+                      </UnionCardContextProvider>
                     </ModerationEventContextProvider>
                   </FlagReportContextProvider>
                 </MyPermissionContextProvider>

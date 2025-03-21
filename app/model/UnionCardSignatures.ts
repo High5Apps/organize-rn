@@ -1,5 +1,5 @@
 import { UnionCard } from '../networking';
-import { useCurrentUser } from './context';
+import useCurrentUser from './context/consumers/CurrentUser';
 import { Keys } from './keys';
 
 // Comma, newline, and double quotes are all special characters in CSV files
