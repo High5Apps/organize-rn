@@ -116,7 +116,11 @@ function useUnionCardInfo({
     setRefreshing(false);
   };
 
-  useEffect(() => { refresh().catch(console.error); }, []);
+  useEffect(() => {
+    if (!unionCard) {
+      refresh().catch(console.error);
+    }
+  }, []);
 
   useEffect(() => {
     if (org) {

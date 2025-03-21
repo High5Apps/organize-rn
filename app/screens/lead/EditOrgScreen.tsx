@@ -42,6 +42,7 @@ function useOrgInfo({
   const [employerName, setEmployerName] = useState<string | undefined>();
   const [memberDefinition, setMemberDefinition] = useState('');
   const [name, setName] = useState('');
+  const [orgRefreshed, setOrgRefreshed] = useState(false);
 
   const { org, refreshOrg, updateOrg } = useOrg();
   const refresh = async () => {
@@ -50,6 +51,7 @@ function useOrgInfo({
 
     try {
       await refreshOrg();
+      setOrgRefreshed(true);
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', {
@@ -93,7 +95,7 @@ function useOrgInfo({
     employerName,
     memberDefinition,
     name,
-    org,
+    orgRefreshed,
     setEmail,
     setEmployerName,
     setMemberDefinition,
@@ -107,8 +109,8 @@ export default function EditOrgScreen() {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress();
   const {
-    email, employerName, memberDefinition, name, org, setEmail, setEmployerName,
-    setMemberDefinition, setName, updateOrgInfo,
+    email, employerName, memberDefinition, name, orgRefreshed, setEmail,
+    setEmployerName, setMemberDefinition, setName, updateOrgInfo,
   } = useOrgInfo({ setLoading, setResult });
 
   const [nameStep, memberDefinitionStep, emailStep] = NewOrgSteps;
@@ -120,7 +122,7 @@ export default function EditOrgScreen() {
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      {org && (
+      {orgRefreshed && (
         <>
           <View style={styles.section}>
             <HeaderText>Org name</HeaderText>

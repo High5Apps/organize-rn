@@ -1,7 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import isEqual from 'react-fast-compare';
 import { fetchOrg, updateOrg as updateBackendOrg } from '../networking';
-import { Org } from './types';
 import { useCurrentUser } from './context';
 
 type UpdateProps = {
@@ -12,8 +11,6 @@ type UpdateProps = {
 };
 
 export default function useOrg() {
-  const [org, setOrg] = useState<Org>();
-
   const { currentUser, setCurrentUser } = useCurrentUser();
 
   const refreshOrg = useCallback(async () => {
@@ -29,20 +26,20 @@ export default function useOrg() {
       throw new Error(errorMessage);
     }
 
-    if (!isEqual(org, fetchedOrg)) {
-      setOrg(fetchedOrg);
+    if (!isEqual(currentUser.org, fetchedOrg)) {
       setCurrentUser((previousCurrentUser) => {
         if (previousCurrentUser === null) { return null; }
         return { ...previousCurrentUser, org: fetchedOrg };
       });
     }
-  }, [currentUser, org]);
+  }, [currentUser]);
 
   const updateOrg = useCallback(async ({
     email, employerName, memberDefinition, name,
   }: UpdateProps) => {
-    if (!currentUser || !org) {
-      throw new Error('Expected currentUser to be set');
+    const org = currentUser?.org;
+    if (!org) {
+      throw new Error('Expected currentUser and org to be set');
     }
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -62,9 +59,8 @@ export default function useOrg() {
       memberDefinition: memberDefinition ?? org.memberDefinition,
       name: name ?? org.name,
     };
-    setOrg(updatedOrg);
     setCurrentUser({ ...currentUser, org: updatedOrg });
-  }, [currentUser, org]);
+  }, [currentUser]);
 
-  return { org, refreshOrg, updateOrg };
+  return { org: currentUser?.org, refreshOrg, updateOrg };
 }
