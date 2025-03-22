@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextInputProps } from 'react-native';
 import { useDebounce } from 'use-debounce';
 import { TextInputRow } from './text';
 import useTheme from '../../Theme';
@@ -19,10 +19,10 @@ const useStyles = () => {
 type Props = {
   disabled?: boolean;
   onDebouncedQueryChanged?: ((text: string) => void) | undefined;
-};
+} & TextInputProps;
 
 export default function SearchBar({
-  disabled = false, onDebouncedQueryChanged = () => null,
+  disabled = false, onDebouncedQueryChanged = () => null, ...textInputProps
 }: Props) {
   const [value, setValue] = useState<string | undefined>();
   const [debouncedQuery] = useDebounce(value, 500);
@@ -39,13 +39,15 @@ export default function SearchBar({
       autoFocus={false}
       containerStyle={styles.textInputContainer}
       editable={!disabled}
+      enterKeyHint="search"
       iconEndDisabled={((value?.length ?? 0) === 0) || disabled}
       iconEndName="close"
       iconEndOnPress={() => setValue('')}
       onChangeText={setValue}
       placeholder="Search"
-      returnKeyType="search"
       value={value}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...textInputProps}
     />
   );
 }
