@@ -3,10 +3,13 @@ import React, {
 } from 'react';
 import { UnionCard } from '../../../networking';
 
+type CacheableUnionCard = UnionCard
+  | Partial<Omit<UnionCard, 'signedAt' | 'signatureBytes'>>;
+
 type UnionCardContextType = {
-  cacheUnionCard: (unionCard: UnionCard) => void;
+  cacheUnionCard: (unionCard: CacheableUnionCard) => void;
   clearCachedUnionCard: () => void;
-  getCachedUnionCard: () => UnionCard | undefined;
+  getCachedUnionCard: () => CacheableUnionCard | undefined;
 };
 
 const UnionCardContext = createContext<UnionCardContextType>({
@@ -18,7 +21,7 @@ const UnionCardContext = createContext<UnionCardContextType>({
 export function UnionCardContextProvider({
   children,
 }: PropsWithChildren<{}>) {
-  const [unionCard, setUnionCard] = useState<UnionCard | undefined>();
+  const [unionCard, setUnionCard] = useState<CacheableUnionCard | undefined>();
 
   const unionCardContext = useMemo<UnionCardContextType>(() => ({
     cacheUnionCard: setUnionCard,

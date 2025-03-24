@@ -13,9 +13,7 @@ type CreateProps = Partial<
 >;
 
 export default function useUnionCard() {
-  const {
-    cacheUnionCard, clearCachedUnionCard, getCachedUnionCard,
-  } = useUnionCardContext();
+  const { cacheUnionCard, getCachedUnionCard } = useUnionCardContext();
   const unionCard = getCachedUnionCard();
 
   const { currentUser } = useCurrentUser();
@@ -106,10 +104,20 @@ export default function useUnionCard() {
       throw new Error(errorMessage);
     }
 
-    clearCachedUnionCard();
-  }, [currentUser]);
+    if (unionCard && ('signedAt' in unionCard)) {
+      // Remove agreement too so that it can be recreated if org info changed
+      const {
+        agreement, signedAt, signatureBytes, ...unsignedUnionCard
+      } = unionCard;
+      cacheUnionCard(unsignedUnionCard);
+    }
+  }, [currentUser, unionCard]);
 
   return {
-    createUnionCard, refreshUnionCard, unionCard, removeUnionCard,
+    cacheUnionCard,
+    createUnionCard,
+    refreshUnionCard,
+    unionCard,
+    removeUnionCard,
   };
 }

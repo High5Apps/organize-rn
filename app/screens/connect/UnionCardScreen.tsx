@@ -78,21 +78,27 @@ type Props = {
 function useUnionCardInfo({
   setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
 }: Props) {
-  const [email, setEmail] = useState<string>();
-  const [employerName, setEmployerName] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [orgEmployerName, setOrgEmployerName] = useState<string>();
-  const [orgName, setOrgName] = useState<string>();
-  const [phone, setPhone] = useState<string>();
-  const [signedAt, setSignedAt] = useState<Date>();
-
   const {
-    createUnionCard, refreshUnionCard, removeUnionCard, unionCard,
+    cacheUnionCard, createUnionCard, refreshUnionCard, removeUnionCard,
+    unionCard,
   } = useUnionCard();
-
-  const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
+  const {
+    email, employerName: cardEmployerName, name, phone,
+  } = unionCard ?? {};
+  const signedAt = (unionCard && ('signedAt' in unionCard))
+    ? unionCard.signedAt : undefined;
+  const setEmail = (e: string) => cacheUnionCard({ ...unionCard, email: e });
+  const setEmployerName = (en: string) => cacheUnionCard({
+    ...unionCard, employerName: en,
+  });
+  const setName = (n: string) => cacheUnionCard({ ...unionCard, name: n });
+  const setPhone = (p: string) => cacheUnionCard({ ...unionCard, phone: p });
 
   const { org, refreshOrg, updateOrg } = useOrg();
+  const { employerName: orgEmployerName, name: orgName } = org ?? {};
+  const employerName = cardEmployerName || orgEmployerName;
+  const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
+
   const { can, refreshMyPermissions } = useMyPermissions({
     scopes: ['editOrg'],
   });
@@ -117,34 +123,18 @@ function useUnionCardInfo({
   };
 
   useEffect(() => {
-    if (!unionCard) {
+    if (!signedAt) {
       refresh().catch(console.error);
     }
   }, []);
 
   useEffect(() => {
-    if (org) {
-      setOrgEmployerName(org.employerName);
-      setOrgName(org.name);
-
-      if (org.employerName) {
-        setEmployerName(org.employerName);
-      }
-    }
-
-    if (unionCard) {
-      setEmail(unionCard.email);
-      setEmployerName(unionCard.employerName);
-      setName(unionCard.name);
-      setPhone(unionCard.phone);
-      setSignedAt(unionCard.signedAt);
+    if (signedAt) {
       setSignOrUndoResult('success', {
-        message: `Signed on ${formatDate(unionCard.signedAt, 'dateOnlyShort')}`,
+        message: `Signed on ${formatDate(signedAt, 'dateOnlyShort')}`,
       });
-    } else {
-      setSignedAt(undefined);
     }
-  }, [org, unionCard]);
+  }, [signedAt]);
 
   const sign = async () => {
     setSigningOrUndoing(true);
