@@ -91,7 +91,9 @@ export default function useUnionCard() {
       throw new Error(errorMessage);
     }
 
-    cacheUnionCard(fetchedUnionCard!);
+    if (fetchedUnionCard) {
+      cacheUnionCard(fetchedUnionCard);
+    }
   }, [currentUser]);
 
   const removeUnionCard = useCallback(async () => {
