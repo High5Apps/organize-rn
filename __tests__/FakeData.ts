@@ -42,6 +42,7 @@ export const fakeGroupKey = 'abcdefgxp3bzF+yoN7zTzEzmipJW6xKnPKFASWKJr5Q=';
 
 export function getFakePost(postId: string, score: number): Post {
   return {
+    body: undefined,
     category: 'general',
     createdAt: new Date(),
     deletedAt: null,

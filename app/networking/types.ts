@@ -207,7 +207,7 @@ export type PostIndexPost = {
   candidateId: string | null;
   createdAt: Date;
   deletedAt: Date | null;
-  encryptedBody?: BackendEncryptedMessage;
+  encryptedBody: BackendEncryptedMessage | null;
   encryptedTitle: BackendEncryptedMessage;
   id: string;
   myVote: VoteState;
@@ -223,6 +223,8 @@ function isPostIndexPost(object: unknown): object is PostIndexPost {
     && post.category?.length > 0
     && (post.deletedAt === null || isDate(post.deletedAt))
     && post.pseudonym?.length > 0
+    && (post.encryptedBody === null
+      || isBackendEncryptedMessage(post.encryptedBody))
     && isBackendEncryptedMessage(post.encryptedTitle)
     && post.userId?.length > 0
     && isDate(post.createdAt)
