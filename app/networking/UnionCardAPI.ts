@@ -15,6 +15,7 @@ type Props = {
   email: string | undefined;
   employerName: string | undefined;
   e2eEncrypt: E2EEncryptor;
+  homeAddress: string | undefined;
   name: string | undefined;
   phone: string | undefined;
   signatureBytes: string;
@@ -30,16 +31,17 @@ type Return = {
 };
 
 export async function createUnionCard({
-  agreement, email, employerName, e2eEncrypt, jwt, name, phone, signatureBytes,
-  signedAt,
+  agreement, email, employerName, e2eEncrypt, homeAddress, jwt, name, phone,
+  signatureBytes, signedAt,
 }: Props & Authorization): Promise<Return> {
   const [
-    encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
-    encryptedPhone,
+    encryptedAgreement, encryptedEmail, encryptedEmployerName,
+    encryptedHomeAddress, encryptedName, encryptedPhone,
   ] = await Promise.all([
     agreement ? encrypt(agreement, e2eEncrypt) : undefined,
     email ? encrypt(email, e2eEncrypt) : undefined,
     employerName ? encrypt(employerName, e2eEncrypt) : undefined,
+    homeAddress ? encrypt(homeAddress, e2eEncrypt) : undefined,
     name ? encrypt(name, e2eEncrypt) : undefined,
     phone ? encrypt(phone, e2eEncrypt) : undefined,
   ]);
@@ -49,6 +51,7 @@ export async function createUnionCard({
         encryptedAgreement,
         encryptedEmail,
         encryptedEmployerName,
+        encryptedHomeAddress,
         encryptedName,
         encryptedPhone,
         signatureBytes,
@@ -111,13 +114,17 @@ export async function fetchUnionCard({
   }
 
   const {
-    encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
-    encryptedPhone,
+    encryptedAgreement, encryptedEmail, encryptedEmployerName,
+    encryptedHomeAddress, encryptedName, encryptedPhone,
   } = json;
-  const [agreement, email, employerName, name, phone] = await Promise.all([
+  const [
+    agreement, email, employerName, homeAddress, name, phone,
+  ] = await Promise.all([
     decrypt(encryptedAgreement, e2eDecrypt),
     decrypt(encryptedEmail, e2eDecrypt),
     decrypt(encryptedEmployerName, e2eDecrypt),
+    encryptedHomeAddress
+      ? decrypt(encryptedHomeAddress, e2eDecrypt) : undefined,
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedPhone, e2eDecrypt),
   ]);
@@ -125,6 +132,7 @@ export async function fetchUnionCard({
     encryptedAgreement: unusedA,
     encryptedEmail: unusedE,
     encryptedEmployerName: unusedEN,
+    encryptedHomeAddress: unusedHA,
     encryptedName: unusedN,
     encryptedPhone: unusedP,
     ...unionCard
@@ -133,6 +141,7 @@ export async function fetchUnionCard({
     agreement,
     email,
     employerName,
+    homeAddress,
     name,
     phone,
   };
@@ -186,24 +195,31 @@ export async function fetchUnionCards({
   const encryptedEmployerNames = fetchedUnionCards.map(
     (u) => u.encryptedEmployerName,
   );
+  const encryptedHomeAddresses = fetchedUnionCards.map(
+    (u) => u.encryptedHomeAddress,
+  );
   const encryptedNames = fetchedUnionCards.map((u) => u.encryptedName);
   const encryptedPhones = fetchedUnionCards.map((u) => u.encryptedPhone);
-  const [agreements, emails, employerNames, names, phones] = await Promise.all([
+  const [
+    agreements, emails, employerNames, homeAddresses, names, phones,
+  ] = await Promise.all([
     decryptMany(encryptedAgreements, e2eDecryptMany),
     decryptMany(encryptedEmails, e2eDecryptMany),
     decryptMany(encryptedEmployerNames, e2eDecryptMany),
+    decryptMany(encryptedHomeAddresses, e2eDecryptMany),
     decryptMany(encryptedNames, e2eDecryptMany),
     decryptMany(encryptedPhones, e2eDecryptMany),
   ]);
   const unionCards = fetchedUnionCards.map(
     ({
-      encryptedAgreement, encryptedEmail, encryptedEmployerName, encryptedName,
-      encryptedPhone, ...u
+      encryptedAgreement, encryptedEmail, encryptedEmployerName,
+      encryptedHomeAddress, encryptedName, encryptedPhone, ...u
     }, i) => ({
       ...u,
       agreement: agreements[i]!,
       email: emails[i]!,
       employerName: employerNames[i]!,
+      homeAddress: homeAddresses[i]!,
       name: names[i]!,
       phone: phones[i]!,
     }),

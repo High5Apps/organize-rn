@@ -28,7 +28,14 @@ export type Decrypt<T> = T extends ReadonlyArray<any> ? T : (
         K extends DecryptableKey<K & string> ? (
           T[K] extends BackendEncryptedMessage ? string : (
             T[K] extends (BackendEncryptedMessage | undefined)
-              ? (string | undefined) : never
+              ? (string | undefined) : (
+                T[K] extends (BackendEncryptedMessage | null)
+                  // (string | undefined) is needed instead of (string | null)
+                  // here because API.decryptMany can't differentiate between
+                  // null and undefined values after crossing and re-crossing
+                  // the native bridge.
+                  ? (string | undefined) : never
+              )
           )
         ) : (T[K] extends Date ? T[K] : (
           T[K] extends (Date | undefined) ? T[K] : (
@@ -764,6 +771,7 @@ export type UnionCardResponse = {
   encryptedAgreement: BackendEncryptedMessage;
   encryptedEmail: BackendEncryptedMessage;
   encryptedEmployerName: BackendEncryptedMessage;
+  encryptedHomeAddress: BackendEncryptedMessage | null;
   encryptedName: BackendEncryptedMessage;
   encryptedPhone: BackendEncryptedMessage;
   id: string;
@@ -779,6 +787,8 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
     && isBackendEncryptedMessage(unionCard.encryptedAgreement)
     && isBackendEncryptedMessage(unionCard.encryptedEmail)
     && isBackendEncryptedMessage(unionCard.encryptedEmployerName)
+    && (unionCard.encryptedHomeAddress === null
+        || isBackendEncryptedMessage(unionCard.encryptedHomeAddress))
     && isBackendEncryptedMessage(unionCard.encryptedName)
     && isBackendEncryptedMessage(unionCard.encryptedPhone)
     && unionCard.publicKeyBytes?.length > 0
