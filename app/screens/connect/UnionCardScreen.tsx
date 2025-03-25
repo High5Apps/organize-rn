@@ -3,8 +3,8 @@ import {
   StyleSheet, Text, TextInputProps, View,
 } from 'react-native';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
-  TextInputRow, useRequestProgress,
+  ExternallyEditableTextField, HeaderText, KeyboardAvoidingScreenBackground,
+  PrimaryButton, TextInputRow, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
@@ -35,6 +35,9 @@ const useStyles = () => {
       padding: spacing.m,
       rowGap: spacing.m,
     },
+    externallyEditableTextField: {
+      marginStart: spacing.m,
+    },
     section: {
       rowGap: spacing.s,
     },
@@ -55,10 +58,6 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
-    },
-    textButton: {
-      alignSelf: 'flex-start',
-      marginStart: spacing.m,
     },
     textSecondary: {
       color: colors.labelSecondary,
@@ -83,7 +82,7 @@ function useUnionCardInfo({
     unionCard,
   } = useUnionCard();
   const {
-    email, employerName: cardEmployerName, name, phone,
+    email, employerName: cardEmployerName, homeAddress, name, phone,
   } = unionCard ?? {};
   const signedAt = (unionCard && ('signedAt' in unionCard))
     ? unionCard.signedAt : undefined;
@@ -143,7 +142,7 @@ function useUnionCardInfo({
     try {
       const [createUnionCardResult] = await Promise.allSettled([
         createUnionCard({
-          agreement, email, employerName, name, phone,
+          agreement, email, employerName, homeAddress, name, phone,
         }),
         can('editOrg') && (org?.employerName !== employerName) && updateOrg({
           employerName,
@@ -179,6 +178,7 @@ function useUnionCardInfo({
     agreement,
     email,
     employerName,
+    homeAddress,
     name,
     orgEmployerName,
     phone,
@@ -250,8 +250,8 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
     setResult: setSignOrUndoResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const {
-    agreement, email, employerName, name, orgEmployerName, phone, setEmail,
-    setEmployerName, setName, setPhone, sign, signedAt, undo,
+    agreement, email, employerName, homeAddress, name, orgEmployerName, phone,
+    setEmail, setEmployerName, setName, setPhone, sign, signedAt, undo,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
@@ -347,12 +347,13 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
           )}
           <View style={styles.section}>
             <HeaderText>Home Address</HeaderText>
-            <TextButton
-              containerStyle={styles.textButton}
+            <ExternallyEditableTextField
+              disabled={!inputsEditable}
               onPress={() => navigation.navigate('HomeAddress')}
-            >
-              Search for address
-            </TextButton>
+              prompt="Search for address"
+              style={styles.externallyEditableTextField}
+              value={homeAddress}
+            />
           </View>
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
