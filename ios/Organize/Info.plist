@@ -49,7 +49,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Organize uses your camera to scan QR membership codes.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is not needed. Please decline this request.</string>
+	<string>Organize uses your location to help autocomplete your home address.</string>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>

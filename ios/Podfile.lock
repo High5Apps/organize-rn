@@ -1210,6 +1210,27 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-geolocation (3.4.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-get-random-values (1.11.0):
     - React-Core
   - react-native-keyboard-controller (1.16.3):
@@ -1943,6 +1964,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -2068,6 +2090,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-get-random-values:
     :path: "../node_modules/react-native-get-random-values"
   react-native-keyboard-controller:
@@ -2196,6 +2220,7 @@ SPEC CHECKSUMS:
   React-logger: 02e5802824aa9b15cb7df42e10a91abead83cd8d
   React-Mapbuffer: 99bd566147aaa78e872568be53ebca8a4449ddae
   React-microtasksnativemodule: 51e7813abf875408a0f367e473a65bbab6aa8481
+  react-native-geolocation: 66ddfd59066bb9365d0899967adc0a2cf2d0e6b2
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-keyboard-controller: ef961ec64ab79481c0244a1ccd45afc516ec6d65
   react-native-pager-view: cda3e94765176877702695c4b8c4b5ca69cb2f16
