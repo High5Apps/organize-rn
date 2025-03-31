@@ -4,7 +4,7 @@ import {
   KeyboardAvoidingScreenBackground, PrimaryButton, SearchBar, TextButton,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useGeolocation, useUnionCard } from '../../model';
+import { useUnionCard } from '../../model';
 import type { HomeAddressScreenProps } from '../../navigation';
 
 export const MAX_HOME_ADDRESS_LENGTH = 100;
@@ -52,8 +52,6 @@ export default function HomeAddressScreen({
     ...unionCard, homeAddress: address,
   });
 
-  const { openPermissionSettings, permissionStatus } = useGeolocation();
-
   const { styles } = useStyles();
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
@@ -66,17 +64,15 @@ export default function HomeAddressScreen({
         onChangeText={setAddress}
         placeholder="555 Main Street, Unit 55, Seattle, WA"
       />
-      {permissionStatus === 'denied' && (
-        <View style={styles.textSection}>
-          <Text style={styles.text}>Want autocomplete?</Text>
-          <TextButton
-            onPress={openPermissionSettings}
-            style={styles.textButton}
-          >
-            Enable location permission
-          </TextButton>
-        </View>
-      )}
+      <View style={styles.textSection}>
+        <Text style={styles.text}>Want autocomplete?</Text>
+        <TextButton
+          onPress={() => console.log('Enable location permission')}
+          style={styles.textButton}
+        >
+          Enable location permission
+        </TextButton>
+      </View>
       <PrimaryButton
         iconName="done"
         label="Done"
