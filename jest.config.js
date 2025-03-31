@@ -127,7 +127,6 @@ module.exports = {
   // The paths to modules that run some code to configure or set up the testing environment before each test
   setupFiles: [
     "<rootDir>/__tests__/jestSetupMockAsyncStorage.ts",
-    "<rootDir>/__tests__/jestSetupMockReactNativeGeolocation.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeFileAccess.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeFileViewer.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeKeyboardController.ts",
