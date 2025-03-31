@@ -52,13 +52,13 @@
     12. Click **next > Save**
 7. Access the demo mode credentials
     1. Open your local `organize-backend` repo in **VSCode**
-    2. Start your local `organize-backend` development server with `dc up`
-    3. Click the blue **><** button in the bottom left corner, then click **Attach to a Running Container**
+    2. If not present already, copy/paste the **Organize production RAILS_MASTER_KEY_API** from your password manager into the `RAILS_MASTER_KEY_API` of your `.env` file
+    3. Start your local `organize-backend` development server with `dc up`
+    4. Click the blue **><** button in the bottom left corner, then click **Attach to a Running Container**
         - For more info see <https://code.visualstudio.com/docs/devcontainers/attach-container>
-    4. Select **/organize-backend-api-1**
-    5. Click **Terminal > New Terminal**
-    6. Copy/paste but don't run the following command: `RAILS_MASTER_KEY="paste_key_here" VISUAL="code --wait" bin/rails credentials:edit --environment production`
-    7. Copy/paste the **Organize production RAILS_MASTER_KEY_API** from your password manager as `paste_key_here` then run the command
+    5. Select **/organize-backend-api-1**
+    6. Click **Terminal > New Terminal**
+    7. Run `VISUAL="code --wait" bin/rails credentials:edit --environment production`
 8. Update the Android demo mode credentials
     1. In **Chrome**, open the [Google Play Console](https://play.google.com/console/developers/?pli=1)
     2. Click **Organize: Modern Labor Unions > Monitor and improve > Policy and programs > App content > Actioned**
