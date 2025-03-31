@@ -3,14 +3,13 @@ import {
   StyleSheet, Text, TextInputProps, View,
 } from 'react-native';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
-  TextInputRow, useRequestProgress,
+  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextInputRow,
+  useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
   formatDate, getErrorMessage, useMyPermissions, useOrg, useUnionCard,
 } from '../../model';
-import type { UnionCardScreenProps } from '../../navigation';
 
 export const MAX_EMAIL_LENGTH = 100;
 export const MAX_NAME_LENGTH = 100;
@@ -55,10 +54,6 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
-    },
-    textButton: {
-      alignSelf: 'flex-start',
-      marginStart: spacing.m,
     },
     textSecondary: {
       color: colors.labelSecondary,
@@ -235,7 +230,7 @@ function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
   };
 }
 
-export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
+export default function UnionCardScreen() {
   const {
     loading: refreshing,
     RequestProgress: RefreshProgress,
@@ -345,15 +340,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
             />
           </View>
           )}
-          <View style={styles.section}>
-            <HeaderText>Home Address</HeaderText>
-            <TextButton
-              containerStyle={styles.textButton}
-              onPress={() => navigation.navigate('HomeAddress')}
-            >
-              Search for address
-            </TextButton>
-          </View>
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>

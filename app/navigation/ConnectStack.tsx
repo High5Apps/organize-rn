@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  ConnectScreen, HomeAddressScreen, NewConnectionScreen, UnionCardScreen,
+  ConnectScreen, NewConnectionScreen, UnionCardScreen,
 } from '../screens';
 import { ConnectStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
@@ -14,11 +14,6 @@ export default function ConnectStack() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen component={ConnectScreen} name="Connect" />
-      <Stack.Screen
-        component={HomeAddressScreen}
-        name="HomeAddress"
-        options={{ title: 'Home Address' }}
-      />
       <Stack.Screen
         component={NewConnectionScreen}
         name="NewConnection"
