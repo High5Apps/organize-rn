@@ -7,7 +7,7 @@ import useReplaceableFile from './ReplaceableFile';
 import useUnionCardSignatures from './UnionCardSignatures';
 
 const parentFolder = 'union-cards';
-const HEADER_ROW = 'Name,Email,Phone,Agreement,Signed At,Employer Name,Public Key PEM,Signature,Signature Verified\n';
+const HEADER_ROW = 'Name,Email,Phone,Agreement,Signed At,Employer Name,Public Key PEM,Home Address,Signature,Signature Verified\n';
 
 export default function useUnionCards() {
   const { currentUser } = useCurrentUser();
@@ -64,9 +64,9 @@ export default function useUnionCards() {
         const unionCards = response.unionCards!;
         const results = await verifyAll({ unionCards });
         const rows = unionCards.map((unionCard, i) => {
-          const { message, verified } = results[i];
+          const { paddedMessage, verified } = results[i];
           const signature = unionCard.signatureBytes;
-          return `${message},"${signature}","${verified}"\n`;
+          return `${paddedMessage},"${signature}","${verified}"\n`;
         });
         const data = rows.join();
         await appendToReplacement({ data });
