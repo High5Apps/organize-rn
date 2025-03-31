@@ -20,7 +20,8 @@ export default function useUnionCard() {
   const { createSignature } = useUnionCardSignatures();
 
   const createUnionCard = useCallback(async ({
-    agreement, email, employerName, homeAddress, name, phone,
+    agreement, email, employerName, homeAddressLine1, homeAddressLine2, name,
+    phone,
   }: CreateProps) => {
     if (!currentUser) { throw new Error('Expected current user'); }
 
@@ -45,7 +46,8 @@ export default function useUnionCard() {
         email,
         employerName,
         e2eEncrypt,
-        homeAddress,
+        homeAddressLine1,
+        homeAddressLine2,
         jwt,
         name,
         phone,
@@ -65,7 +67,8 @@ export default function useUnionCard() {
         agreement: agreement!,
         email: email!,
         employerName: employerName!,
-        homeAddress,
+        homeAddressLine1,
+        homeAddressLine2,
         id: id!,
         name: name!,
         phone: phone!,

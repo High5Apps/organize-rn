@@ -773,7 +773,8 @@ export type UnionCardResponse = {
   encryptedAgreement: BackendEncryptedMessage;
   encryptedEmail: BackendEncryptedMessage;
   encryptedEmployerName: BackendEncryptedMessage;
-  encryptedHomeAddress: BackendEncryptedMessage | null;
+  encryptedHomeAddressLine1: BackendEncryptedMessage | null;
+  encryptedHomeAddressLine2: BackendEncryptedMessage | null;
   encryptedName: BackendEncryptedMessage;
   encryptedPhone: BackendEncryptedMessage;
   id: string;
@@ -789,8 +790,10 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
     && isBackendEncryptedMessage(unionCard.encryptedAgreement)
     && isBackendEncryptedMessage(unionCard.encryptedEmail)
     && isBackendEncryptedMessage(unionCard.encryptedEmployerName)
-    && (unionCard.encryptedHomeAddress === null
-        || isBackendEncryptedMessage(unionCard.encryptedHomeAddress))
+    && (unionCard.encryptedHomeAddressLine1 === null
+        || isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine1))
+    && (unionCard.encryptedHomeAddressLine2 === null
+      || isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine2))
     && isBackendEncryptedMessage(unionCard.encryptedName)
     && isBackendEncryptedMessage(unionCard.encryptedPhone)
     && unionCard.publicKeyBytes?.length > 0

@@ -15,7 +15,8 @@ type Props = {
   email: string | undefined;
   employerName: string | undefined;
   e2eEncrypt: E2EEncryptor;
-  homeAddress: string | undefined;
+  homeAddressLine1: string | undefined;
+  homeAddressLine2: string | undefined;
   name: string | undefined;
   phone: string | undefined;
   signatureBytes: string;
@@ -31,17 +32,19 @@ type Return = {
 };
 
 export async function createUnionCard({
-  agreement, email, employerName, e2eEncrypt, homeAddress, jwt, name, phone,
-  signatureBytes, signedAt,
+  agreement, email, employerName, e2eEncrypt, homeAddressLine1,
+  homeAddressLine2, jwt, name, phone, signatureBytes, signedAt,
 }: Props & Authorization): Promise<Return> {
   const [
     encryptedAgreement, encryptedEmail, encryptedEmployerName,
-    encryptedHomeAddress, encryptedName, encryptedPhone,
+    encryptedHomeAddressLine1, encryptedHomeAddressLine2, encryptedName,
+    encryptedPhone,
   ] = await Promise.all([
     agreement ? encrypt(agreement, e2eEncrypt) : undefined,
     email ? encrypt(email, e2eEncrypt) : undefined,
     employerName ? encrypt(employerName, e2eEncrypt) : undefined,
-    homeAddress ? encrypt(homeAddress, e2eEncrypt) : undefined,
+    homeAddressLine1 ? encrypt(homeAddressLine1, e2eEncrypt) : undefined,
+    homeAddressLine2 ? encrypt(homeAddressLine2, e2eEncrypt) : undefined,
     name ? encrypt(name, e2eEncrypt) : undefined,
     phone ? encrypt(phone, e2eEncrypt) : undefined,
   ]);
@@ -51,7 +54,8 @@ export async function createUnionCard({
         encryptedAgreement,
         encryptedEmail,
         encryptedEmployerName,
-        encryptedHomeAddress,
+        encryptedHomeAddressLine1,
+        encryptedHomeAddressLine2,
         encryptedName,
         encryptedPhone,
         signatureBytes,
@@ -115,16 +119,20 @@ export async function fetchUnionCard({
 
   const {
     encryptedAgreement, encryptedEmail, encryptedEmployerName,
-    encryptedHomeAddress, encryptedName, encryptedPhone,
+    encryptedHomeAddressLine1, encryptedHomeAddressLine2, encryptedName,
+    encryptedPhone,
   } = json;
   const [
-    agreement, email, employerName, homeAddress, name, phone,
+    agreement, email, employerName, homeAddressLine1, homeAddressLine2, name,
+    phone,
   ] = await Promise.all([
     decrypt(encryptedAgreement, e2eDecrypt),
     decrypt(encryptedEmail, e2eDecrypt),
     decrypt(encryptedEmployerName, e2eDecrypt),
-    encryptedHomeAddress
-      ? decrypt(encryptedHomeAddress, e2eDecrypt) : undefined,
+    encryptedHomeAddressLine1
+      ? decrypt(encryptedHomeAddressLine1, e2eDecrypt) : undefined,
+    encryptedHomeAddressLine2
+      ? decrypt(encryptedHomeAddressLine2, e2eDecrypt) : undefined,
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedPhone, e2eDecrypt),
   ]);
@@ -132,7 +140,8 @@ export async function fetchUnionCard({
     encryptedAgreement: unusedA,
     encryptedEmail: unusedE,
     encryptedEmployerName: unusedEN,
-    encryptedHomeAddress: unusedHA,
+    encryptedHomeAddressLine1: unusedHAL1,
+    encryptedHomeAddressLine2: unusedHAL2,
     encryptedName: unusedN,
     encryptedPhone: unusedP,
     ...unionCard
@@ -141,7 +150,8 @@ export async function fetchUnionCard({
     agreement,
     email,
     employerName,
-    homeAddress,
+    homeAddressLine1,
+    homeAddressLine2,
     name,
     phone,
   };
@@ -195,31 +205,38 @@ export async function fetchUnionCards({
   const encryptedEmployerNames = fetchedUnionCards.map(
     (u) => u.encryptedEmployerName,
   );
-  const encryptedHomeAddresses = fetchedUnionCards.map(
-    (u) => u.encryptedHomeAddress,
+  const encryptedHomeAddressLine1s = fetchedUnionCards.map(
+    (u) => u.encryptedHomeAddressLine1,
+  );
+  const encryptedHomeAddressLine2s = fetchedUnionCards.map(
+    (u) => u.encryptedHomeAddressLine2,
   );
   const encryptedNames = fetchedUnionCards.map((u) => u.encryptedName);
   const encryptedPhones = fetchedUnionCards.map((u) => u.encryptedPhone);
   const [
-    agreements, emails, employerNames, homeAddresses, names, phones,
+    agreements, emails, employerNames, homeAddressLine1s, homeAddressLine2s,
+    names, phones,
   ] = await Promise.all([
     decryptMany(encryptedAgreements, e2eDecryptMany),
     decryptMany(encryptedEmails, e2eDecryptMany),
     decryptMany(encryptedEmployerNames, e2eDecryptMany),
-    decryptMany(encryptedHomeAddresses, e2eDecryptMany),
+    decryptMany(encryptedHomeAddressLine1s, e2eDecryptMany),
+    decryptMany(encryptedHomeAddressLine2s, e2eDecryptMany),
     decryptMany(encryptedNames, e2eDecryptMany),
     decryptMany(encryptedPhones, e2eDecryptMany),
   ]);
   const unionCards = fetchedUnionCards.map(
     ({
       encryptedAgreement, encryptedEmail, encryptedEmployerName,
-      encryptedHomeAddress, encryptedName, encryptedPhone, ...u
+      encryptedHomeAddressLine1, encryptedHomeAddressLine2, encryptedName,
+      encryptedPhone, ...u
     }, i) => ({
       ...u,
       agreement: agreements[i]!,
       email: emails[i]!,
       employerName: employerNames[i]!,
-      homeAddress: homeAddresses[i]!,
+      homeAddressLine1: homeAddressLine1s[i]!,
+      homeAddressLine2: homeAddressLine2s[i]!,
       name: names[i]!,
       phone: phones[i]!,
     }),
