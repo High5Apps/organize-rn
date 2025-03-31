@@ -12,6 +12,8 @@ import {
 } from '../../model';
 
 export const MAX_EMAIL_LENGTH = 100;
+export const MAX_HOME_ADDRESS_LINE1_LENGTH = 100;
+export const MAX_HOME_ADDRESS_LINE2_LENGTH = 100;
 export const MAX_NAME_LENGTH = 100;
 export const MAX_PHONE_LENGTH = 20;
 export const MAX_EMPLOYER_NAME_LENGTH = 50;
@@ -78,13 +80,20 @@ function useUnionCardInfo({
     unionCard,
   } = useUnionCard();
   const {
-    email, employerName: cardEmployerName, name, phone,
+    email, employerName: cardEmployerName, homeAddressLine1, homeAddressLine2,
+    name, phone,
   } = unionCard ?? {};
   const signedAt = (unionCard && ('signedAt' in unionCard))
     ? unionCard.signedAt : undefined;
   const setEmail = (e: string) => cacheUnionCard({ ...unionCard, email: e });
   const setEmployerName = (en: string) => cacheUnionCard({
     ...unionCard, employerName: en,
+  });
+  const setHomeAddressLine1 = (hal1: string) => cacheUnionCard({
+    ...unionCard, homeAddressLine1: hal1,
+  });
+  const setHomeAddressLine2 = (hal2: string) => cacheUnionCard({
+    ...unionCard, homeAddressLine2: hal2,
   });
   const setName = (n: string) => cacheUnionCard({ ...unionCard, name: n });
   const setPhone = (p: string) => cacheUnionCard({ ...unionCard, phone: p });
@@ -138,7 +147,13 @@ function useUnionCardInfo({
     try {
       const [createUnionCardResult] = await Promise.allSettled([
         createUnionCard({
-          agreement, email, employerName, name, phone,
+          agreement,
+          email,
+          employerName,
+          homeAddressLine1,
+          homeAddressLine2,
+          name,
+          phone,
         }),
         can('editOrg') && (org?.employerName !== employerName) && updateOrg({
           employerName,
@@ -174,11 +189,15 @@ function useUnionCardInfo({
     agreement,
     email,
     employerName,
+    homeAddressLine1,
+    homeAddressLine2,
     name,
     orgEmployerName,
     phone,
     setEmail,
     setEmployerName,
+    setHomeAddressLine1,
+    setHomeAddressLine2,
     setName,
     setPhone,
     sign,
@@ -187,7 +206,8 @@ function useUnionCardInfo({
   };
 }
 
-type InputName = 'email' | 'employerName' | 'name' | 'phone';
+type InputName = 'email' | 'employerName' | 'homeAddressLine1'
+  | 'homeAddressLine2' | 'name' | 'phone';
 
 type FocusedInputProps = {
   shouldHideEmployerNameInput: boolean;
@@ -197,7 +217,7 @@ function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
 
   function enterKeyHint(inputName: InputName): TextInputProps['enterKeyHint'] {
     const isLastVisibleInput = (inputName === 'employerName')
-      || (inputName === 'email' && shouldHideEmployerNameInput);
+      || (inputName === 'homeAddressLine2' && shouldHideEmployerNameInput);
     return isLastVisibleInput ? 'done' : 'next';
   }
 
@@ -212,6 +232,10 @@ function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
     } else if (inputName === 'phone') {
       nextInput = 'email';
     } else if (inputName === 'email') {
+      nextInput = 'homeAddressLine1';
+    } else if (inputName === 'homeAddressLine1') {
+      nextInput = 'homeAddressLine2';
+    } else if (inputName === 'homeAddressLine2') {
       nextInput = 'employerName';
     }
     setFocusedInput(nextInput);
@@ -221,7 +245,7 @@ function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
     inputName: InputName,
   ): TextInputProps['submitBehavior'] {
     const shouldBlur = (inputName === 'employerName')
-      || (inputName === 'email' && shouldHideEmployerNameInput);
+      || (inputName === 'homeAddressLine2' && shouldHideEmployerNameInput);
     return shouldBlur ? 'blurAndSubmit' : 'submit';
   }
 
@@ -245,8 +269,9 @@ export default function UnionCardScreen() {
     setResult: setSignOrUndoResult,
   } = useRequestProgress({ removeWhenInactive: true });
   const {
-    agreement, email, employerName, name, orgEmployerName, phone, setEmail,
-    setEmployerName, setName, setPhone, sign, signedAt, undo,
+    agreement, email, employerName, homeAddressLine1, homeAddressLine2, name,
+    orgEmployerName, phone, setEmail, setEmployerName, setHomeAddressLine1,
+    setHomeAddressLine2, setName, setPhone, sign, signedAt, undo,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
@@ -318,6 +343,40 @@ export default function UnionCardScreen() {
               placeholder="email@example.com"
               submitBehavior={submitBehavior('email')}
               value={email}
+            />
+          </View>
+          <View style={styles.section}>
+            <HeaderText>Home address</HeaderText>
+            <TextInputRow
+              autoCapitalize="words"
+              autoComplete="street-address"
+              autoCorrect={false}
+              autoFocus={false}
+              editable={inputsEditable}
+              enterKeyHint={enterKeyHint('homeAddressLine1')}
+              focused={focused('homeAddressLine1')}
+              maxLength={MAX_HOME_ADDRESS_LINE1_LENGTH}
+              onChangeText={setHomeAddressLine1}
+              onFocus={onFocus('homeAddressLine1')}
+              onSubmitEditing={onSubmitEditing('homeAddressLine1')}
+              placeholder="123 Main St, Unit 5"
+              submitBehavior={submitBehavior('homeAddressLine1')}
+              value={homeAddressLine1}
+            />
+            <TextInputRow
+              autoCapitalize="words"
+              autoCorrect={false}
+              autoFocus={false}
+              editable={inputsEditable}
+              enterKeyHint={enterKeyHint('homeAddressLine2')}
+              focused={focused('homeAddressLine2')}
+              maxLength={MAX_HOME_ADDRESS_LINE2_LENGTH}
+              onChangeText={setHomeAddressLine2}
+              onFocus={onFocus('homeAddressLine2')}
+              onSubmitEditing={onSubmitEditing('homeAddressLine2')}
+              placeholder="Seattle, WA, 98111"
+              submitBehavior={submitBehavior('homeAddressLine2')}
+              value={homeAddressLine2}
             />
           </View>
           {!shouldHideEmployerNameInput && (
