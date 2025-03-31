@@ -18,19 +18,13 @@ const useStyles = () => {
 
 type Props = {
   disabled?: boolean;
-  initialValue?: string;
   onDebouncedQueryChanged?: ((text: string) => void) | undefined;
-} & Omit<TextInputProps, 'iconEndDisabled' | 'iconEndOnPress' | 'value'>;
+} & TextInputProps;
 
 export default function SearchBar({
-  disabled = false, initialValue, onDebouncedQueryChanged = () => null,
-  onChangeText, ...textInputProps
+  disabled = false, onDebouncedQueryChanged = () => null, ...textInputProps
 }: Props) {
-  const [value, setValue] = useState<string | undefined>(initialValue);
-  const wrappedSetValue = (text: string) => {
-    setValue(text);
-    onChangeText?.(text);
-  };
+  const [value, setValue] = useState<string | undefined>();
   const [debouncedQuery] = useDebounce(value, 500);
 
   useEffect(() => {
@@ -48,8 +42,8 @@ export default function SearchBar({
       enterKeyHint="search"
       iconEndDisabled={((value?.length ?? 0) === 0) || disabled}
       iconEndName="close"
-      iconEndOnPress={() => wrappedSetValue('')}
-      onChangeText={wrappedSetValue}
+      iconEndOnPress={() => setValue('')}
+      onChangeText={setValue}
       placeholder="Search"
       value={value}
       // eslint-disable-next-line react/jsx-props-no-spreading

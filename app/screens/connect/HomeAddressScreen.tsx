@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
   KeyboardAvoidingScreenBackground, PrimaryButton, SearchBar, TextButton,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useUnionCard } from '../../model';
-import type { HomeAddressScreenProps } from '../../navigation';
 
 export const MAX_HOME_ADDRESS_LENGTH = 100;
 
@@ -44,13 +42,8 @@ const useStyles = () => {
   return { styles };
 };
 
-export default function HomeAddressScreen({
-  navigation,
-}: HomeAddressScreenProps) {
-  const { cacheUnionCard, unionCard } = useUnionCard();
-  const setAddress = (address: string) => cacheUnionCard({
-    ...unionCard, homeAddress: address,
-  });
+export default function HomeAddressScreen() {
+  const [address, setAddress] = useState<string | undefined>();
 
   const { styles } = useStyles();
   return (
@@ -59,9 +52,8 @@ export default function HomeAddressScreen({
         autoCapitalize="words"
         autoComplete="address-line1"
         enterKeyHint="done"
-        initialValue={unionCard?.homeAddress}
         maxLength={MAX_HOME_ADDRESS_LENGTH}
-        onChangeText={setAddress}
+        onDebouncedQueryChanged={setAddress}
         placeholder="555 Main Street, Unit 55, Seattle, WA"
       />
       <View style={styles.textSection}>
@@ -76,7 +68,7 @@ export default function HomeAddressScreen({
       <PrimaryButton
         iconName="done"
         label="Done"
-        onPress={() => navigation.goBack()}
+        onPress={() => console.log({ address })}
         style={styles.button}
       />
     </KeyboardAvoidingScreenBackground>
