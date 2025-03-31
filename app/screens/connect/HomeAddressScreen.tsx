@@ -64,7 +64,7 @@ export default function HomeAddressScreen({
         initialValue={unionCard?.homeAddress}
         maxLength={MAX_HOME_ADDRESS_LENGTH}
         onChangeText={setAddress}
-        placeholder="555 Main St, Apt 55, Seattle, WA"
+        placeholder="555 Main Street, Unit 55, Seattle, WA"
       />
       {permissionStatus === 'denied' && (
         <View style={styles.textSection}>
