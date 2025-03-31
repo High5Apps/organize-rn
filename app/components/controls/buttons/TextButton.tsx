@@ -47,10 +47,7 @@ export default function TextButton({
       disabled={disabled || disabledDuringPress}
       onPress={onPressWrapper}
     >
-      <Text
-        numberOfLines={1}
-        style={[styles.text, disabled && styles.disabled, style]}
-      >
+      <Text style={[styles.text, disabled && styles.disabled, style]}>
         {children}
       </Text>
     </TouchableOpacity>
