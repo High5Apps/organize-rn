@@ -146,15 +146,7 @@ function useUnionCardInfo({
 
     try {
       const [createUnionCardResult] = await Promise.allSettled([
-        createUnionCard({
-          agreement,
-          email,
-          employerName,
-          homeAddressLine1,
-          homeAddressLine2,
-          name,
-          phone,
-        }),
+        createUnionCard({ agreement, employerName }),
         can('editOrg') && (org?.employerName !== employerName) && updateOrg({
           employerName,
         }),

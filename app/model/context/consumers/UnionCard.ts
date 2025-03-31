@@ -8,9 +8,7 @@ import getErrorMessage from '../../ErrorMessage';
 import useUnionCardSignatures from '../../UnionCardSignatures';
 import { useUnionCardContext } from '../providers';
 
-type CreateProps = Partial<
-  Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'signedAt'>
->;
+type CreateProps = Partial<Pick<UnionCard, 'agreement' | 'employerName'>>;
 
 export default function useUnionCard() {
   const { cacheUnionCard, getCachedUnionCard } = useUnionCardContext();
@@ -20,10 +18,13 @@ export default function useUnionCard() {
   const { createSignature } = useUnionCardSignatures();
 
   const createUnionCard = useCallback(async ({
-    agreement, email, employerName, homeAddressLine1, homeAddressLine2, name,
-    phone,
+    agreement, employerName,
   }: CreateProps) => {
     if (!currentUser) { throw new Error('Expected current user'); }
+
+    const {
+      email, phone, name, homeAddressLine1, homeAddressLine2,
+    } = unionCard ?? {};
 
     let errorMessage: string | undefined;
     let id: string | undefined;
@@ -35,7 +36,7 @@ export default function useUnionCard() {
 
       signedAt = new Date();
       signatureBytes = await createSignature({
-        agreement, email, employerName, phone, name, publicKeyBytes, signedAt,
+        ...unionCard, agreement, employerName, publicKeyBytes, signedAt,
       });
 
       const jwt = await currentUser.createAuthToken({ scope: '*' });
@@ -79,7 +80,7 @@ export default function useUnionCard() {
       };
       cacheUnionCard(createdUnionCard);
     }
-  }, [currentUser]);
+  }, [currentUser, unionCard]);
 
   const refreshUnionCard = useCallback(async () => {
     if (!currentUser) { throw new Error('Expected currentUser to be set'); }
