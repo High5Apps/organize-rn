@@ -4,7 +4,7 @@ import { fetchUnionCards as _fetchUnionCards } from '../networking';
 import { useCurrentUser } from './context';
 import { formatDate } from './formatters';
 import useReplaceableFile from './ReplaceableFile';
-import useUnionCardSignatures from './UnionCardSignatures';
+import useUnionCardSignatures, { escapeCSVField } from './UnionCardSignatures';
 
 const parentFolder = 'union-cards';
 const HEADER_ROW = 'Name,Email,Phone,Agreement,Signed At,Employer Name,Public Key PEM,Home Address,Signature,Signature Verified\n';
@@ -66,7 +66,8 @@ export default function useUnionCards() {
         const rows = unionCards.map((unionCard, i) => {
           const { paddedMessage, verified } = results[i];
           const signature = unionCard.signatureBytes;
-          return `${paddedMessage},"${signature}","${verified}"\n`;
+          const escapedSignature = escapeCSVField(signature);
+          return `${paddedMessage},${escapedSignature},${verified}\n`;
         });
         const data = rows.join('');
         await appendToReplacement({ data });

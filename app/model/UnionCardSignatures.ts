@@ -5,7 +5,7 @@ import { Keys } from './keys';
 // Comma, newline, and double quotes are all special characters in CSV files
 const NEEDS_ESCAPING_REGEX = /["\n,]/;
 
-function escapeCSVField(value?: string): string {
+export function escapeCSVField(value?: string): string {
   if (value === undefined) { return ''; }
 
   const needsEscaping = NEEDS_ESCAPING_REGEX.test(value);
