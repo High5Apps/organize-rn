@@ -68,7 +68,7 @@ export default function useUnionCards() {
           const signature = unionCard.signatureBytes;
           return `${paddedMessage},"${signature}","${verified}"\n`;
         });
-        const data = rows.join();
+        const data = rows.join('');
         await appendToReplacement({ data });
 
         verificationFailureCount += results
