@@ -32,15 +32,11 @@ export default function useUnionCardSignatures() {
     agreement, department, email, employerName, homeAddressLine1,
     homeAddressLine2, jobTitle, phone, name, publicKeyBytes, shift, signedAt,
   }: CreateSignatureProps, { padded }: UnsignedDataOptions = {}) {
+    const homeAddress = `${homeAddressLine1}\n${homeAddressLine2}`;
     const columns = [
       name, email, phone, agreement, signedAt?.toISOString(), employerName,
-      publicKeyBytes,
+      publicKeyBytes, homeAddress,
     ];
-    if (homeAddressLine1 && homeAddressLine2) {
-      columns.push(`${homeAddressLine1}\n${homeAddressLine2}`);
-    } else if (padded) {
-      columns.push(undefined);
-    }
     if (jobTitle && shift) {
       columns.push(jobTitle, shift, department);
     } else if (padded) {

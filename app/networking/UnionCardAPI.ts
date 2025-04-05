@@ -147,10 +147,8 @@ export async function fetchUnionCard({
     encryptedDepartment ? decrypt(encryptedDepartment, e2eDecrypt) : undefined,
     decrypt(encryptedEmail, e2eDecrypt),
     decrypt(encryptedEmployerName, e2eDecrypt),
-    encryptedHomeAddressLine1
-      ? decrypt(encryptedHomeAddressLine1, e2eDecrypt) : undefined,
-    encryptedHomeAddressLine2
-      ? decrypt(encryptedHomeAddressLine2, e2eDecrypt) : undefined,
+    decrypt(encryptedHomeAddressLine1, e2eDecrypt),
+    decrypt(encryptedHomeAddressLine2, e2eDecrypt),
     encryptedJobTitle ? decrypt(encryptedJobTitle, e2eDecrypt) : undefined,
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedPhone, e2eDecrypt),

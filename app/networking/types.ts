@@ -774,8 +774,8 @@ export type UnionCardResponse = {
   encryptedDepartment: BackendEncryptedMessage | null;
   encryptedEmail: BackendEncryptedMessage;
   encryptedEmployerName: BackendEncryptedMessage;
-  encryptedHomeAddressLine1: BackendEncryptedMessage | null;
-  encryptedHomeAddressLine2: BackendEncryptedMessage | null;
+  encryptedHomeAddressLine1: BackendEncryptedMessage;
+  encryptedHomeAddressLine2: BackendEncryptedMessage;
   encryptedJobTitle: BackendEncryptedMessage | null;
   encryptedName: BackendEncryptedMessage;
   encryptedPhone: BackendEncryptedMessage;
@@ -796,10 +796,8 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
     && isBackendEncryptedMessage(unionCard.encryptedEmployerName)
     && (unionCard.encryptedDepartment === null
       || isBackendEncryptedMessage(unionCard.encryptedDepartment))
-    && (unionCard.encryptedHomeAddressLine1 === null
-        || isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine1))
-    && (unionCard.encryptedHomeAddressLine2 === null
-      || isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine2))
+    && isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine1)
+    && isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine2)
     && (unionCard.encryptedJobTitle === null
       || isBackendEncryptedMessage(unionCard.encryptedJobTitle))
     && isBackendEncryptedMessage(unionCard.encryptedName)
