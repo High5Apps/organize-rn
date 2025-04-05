@@ -17,7 +17,7 @@ export function escapeCSVField(value?: string): string {
 }
 
 type CreateSignatureProps = Partial<
-  Omit<UnionCard, 'id' | 'userId' | 'signatureBytes'>
+  Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'workGroupId'>
 >;
 
 type UnsignedDataOptions = {
@@ -29,8 +29,8 @@ export default function useUnionCardSignatures() {
   const { verify } = Keys().ecc;
 
   function getUnsignedData({
-    agreement, email, employerName, homeAddressLine1, homeAddressLine2, phone,
-    name, publicKeyBytes, signedAt,
+    agreement, department, email, employerName, homeAddressLine1,
+    homeAddressLine2, jobTitle, phone, name, publicKeyBytes, shift, signedAt,
   }: CreateSignatureProps, { padded }: UnsignedDataOptions = {}) {
     const columns = [
       name, email, phone, agreement, signedAt?.toISOString(), employerName,
@@ -40,6 +40,11 @@ export default function useUnionCardSignatures() {
       columns.push(`${homeAddressLine1}\n${homeAddressLine2}`);
     } else if (padded) {
       columns.push(undefined);
+    }
+    if (jobTitle && shift) {
+      columns.push(jobTitle, shift, department);
+    } else if (padded) {
+      columns.push(undefined, undefined, undefined);
     }
     const unsignedRow = columns.map(escapeCSVField).join(',');
     return unsignedRow;
