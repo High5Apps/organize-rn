@@ -29,7 +29,6 @@ const useStyles = () => {
     },
     textInputDisabled: {
       borderColor: colors.labelSecondary,
-      color: colors.labelSecondary,
     },
   });
 

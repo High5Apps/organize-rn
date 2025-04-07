@@ -88,7 +88,7 @@ export default function TextInputRow(props: Props) {
         {...defaultProps}
         {...props}
         ref={ref}
-        style={[styles.textInput, disabled && styles.textInputDisabled, style]}
+        style={[styles.textInput, style]}
       />
       {iconEndName && (
         <IconButton
