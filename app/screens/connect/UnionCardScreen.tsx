@@ -27,6 +27,7 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     agreement: {
+      marginHorizontal: spacing.m,
       textAlign: 'center',
     },
     button: {
