@@ -24,7 +24,7 @@ export default function useUnionCard() {
 
     const {
       department, email, phone, name, homeAddressLine1, homeAddressLine2,
-      jobTitle, shift,
+      jobTitle, shift, workGroupId,
     } = unionCard ?? {};
 
     let errorMessage: string | undefined;
@@ -32,7 +32,7 @@ export default function useUnionCard() {
     let publicKeyBytes: string | undefined;
     let signatureBytes: string | undefined;
     let signedAt: Date | undefined;
-    let workGroupId: string | undefined;
+    let updatedWorkGroupId: string | undefined;
     try {
       publicKeyBytes = await currentUser.getEccPublicKey();
 
@@ -44,7 +44,7 @@ export default function useUnionCard() {
       const jwt = await currentUser.createAuthToken({ scope: '*' });
       const { e2eEncrypt } = currentUser;
 
-      ({ errorMessage, id, workGroupId } = await create({
+      ({ errorMessage, id, workGroupId: updatedWorkGroupId } = await create({
         agreement,
         department,
         email,
@@ -59,7 +59,7 @@ export default function useUnionCard() {
         shift,
         signatureBytes,
         signedAt,
-        workGroupId,
+        workGroupId: workGroupId ?? undefined,
       }));
     } catch (error) {
       errorMessage = getErrorMessage(error);
@@ -86,7 +86,7 @@ export default function useUnionCard() {
         signatureBytes: signatureBytes!,
         signedAt: signedAt!,
         userId: currentUser.id,
-        workGroupId: workGroupId ?? null,
+        workGroupId: updatedWorkGroupId ?? null,
       };
       cacheUnionCard(createdUnionCard);
     }
