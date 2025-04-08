@@ -3,13 +3,14 @@ import {
   StyleSheet, Text, TextInputProps, View,
 } from 'react-native';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextInputRow,
-  useRequestProgress,
+  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
+  TextInputRow, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
   formatDate, getErrorMessage, useMyPermissions, useOrg, useUnionCard,
 } from '../../model';
+import type { UnionCardScreenProps } from '../../navigation';
 
 export const MAX_EMAIL_LENGTH = 100;
 export const MAX_HOME_ADDRESS_LINE1_LENGTH = 100;
@@ -56,6 +57,9 @@ const useStyles = () => {
       color: colors.label,
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
+    },
+    textButton: {
+      marginStart: spacing.m,
     },
     textSecondary: {
       color: colors.labelSecondary,
@@ -246,7 +250,7 @@ function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
   };
 }
 
-export default function UnionCardScreen() {
+export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
   const {
     loading: refreshing,
     RequestProgress: RefreshProgress,
@@ -391,6 +395,15 @@ export default function UnionCardScreen() {
             />
           </View>
           )}
+          <View style={styles.section}>
+            <HeaderText>Work group</HeaderText>
+            <TextButton
+              onPress={() => navigation.navigate('SelectWorkGroup')}
+              style={styles.textButton}
+            >
+              Select your work group
+            </TextButton>
+          </View>
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
