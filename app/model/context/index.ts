@@ -1,2 +1,2 @@
 export * from './consumers';
-export * from './providers';
+export { Context } from './providers';
