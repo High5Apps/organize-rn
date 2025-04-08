@@ -13,6 +13,7 @@ export type {
   Moderatable, ModeratableType, ModerationEvent, ModerationEventAction,
   MyPermission, OfficeAvailability, OrgGraph, Permission, PermissionScope, Post,
   PostCategory, PostSort, Result, User, UserFilter, UserSort, VoteState,
+  WorkGroup,
 } from '../networking';
 export { OFFICE_CATEGORIES, POST_CATEGORIES, isDefined } from '../networking';
 

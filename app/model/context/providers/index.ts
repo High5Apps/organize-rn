@@ -11,3 +11,4 @@ export { useMyPermissionContext } from './MyPermissionContext';
 export { usePostContext } from './PostContext';
 export { useUnionCardContext } from './UnionCardContext';
 export { useUserContext } from './UserContext';
+export { useWorkGroupContext } from './WorkGroupContext';
