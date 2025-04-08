@@ -19,6 +19,7 @@ export { default as permissionItems, toAction } from './PermissionItems';
 export { default as usePermissionUpdater } from './PermissionUpdater';
 export { default as usePrependedModels } from './PrependedModels';
 export { default as useReplaceableFile } from './ReplaceableFile';
+export { default as useSelectionUpdater } from './SelectionUpdater';
 export { default as useSettings } from './Settings';
 export { default as useUpvote } from './Upvote';
 export { default as useUnionCards } from './UnionCards';

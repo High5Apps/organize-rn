@@ -3,9 +3,9 @@ import getErrorMessage from './ErrorMessage';
 
 type Props = {
   choices?: string[];
-  initialSelection?: string[];
+  initialSelection?: string[] | string;
   maxSelections?: number;
-  onSyncSelection: (selection: string[]) => Promise<void>;
+  onSyncSelection: (selection: string[]) => Promise<void> | void;
   onSyncSelectionError: (errorMessage: string) => void;
 };
 
@@ -15,13 +15,13 @@ function quickDifference<T>(a: T[], b: T[]): T[] {
 }
 
 export default function useSelectionUpdater({
-  choices: maybeChoices, initialSelection, maxSelections: maybeMaxSelections,
-  onSyncSelection, onSyncSelectionError,
+  choices = [], initialSelection = [], maxSelections = 0, onSyncSelection,
+  onSyncSelectionError,
 }: Props) {
-  const maxSelections = maybeMaxSelections ?? 0;
-  const choices = maybeChoices ?? [];
-
-  const selections = useMemo(() => initialSelection, [initialSelection]);
+  const selections: string[] = useMemo(
+    () => ([initialSelection].flat()),
+    [initialSelection],
+  );
   const [
     waitingForDeselections, setWaitingForDeselections,
   ] = useState<string[]>([]);
