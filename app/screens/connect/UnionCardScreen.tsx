@@ -8,7 +8,8 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  formatDate, getErrorMessage, useMyPermissions, useOrg, useUnionCard,
+  formatDate, getErrorMessage, isDefined, useMyPermissions, useOrg,
+  useUnionCard,
 } from '../../model';
 import type { UnionCardScreenProps } from '../../navigation';
 
@@ -58,11 +59,18 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       fontFamily: font.weights.regular,
     },
-    textButton: {
-      marginStart: spacing.m,
+    textButtonEdit: {
+      textAlign: 'right',
     },
     textSecondary: {
       color: colors.labelSecondary,
+    },
+    workGroupDescription: {
+      flex: 1,
+    },
+    workGroupDescriptionRow: {
+      flexDirection: 'row',
+      marginStart: spacing.m,
     },
   });
 
@@ -84,8 +92,8 @@ function useUnionCardInfo({
     unionCard,
   } = useUnionCard();
   const {
-    email, employerName: cardEmployerName, homeAddressLine1, homeAddressLine2,
-    name, phone,
+    department, email, employerName: cardEmployerName, homeAddressLine1,
+    homeAddressLine2, jobTitle, name, phone, shift,
   } = unionCard ?? {};
   const signedAt = (unionCard && ('signedAt' in unionCard))
     ? unionCard.signedAt : undefined;
@@ -106,6 +114,9 @@ function useUnionCardInfo({
   const { employerName: orgEmployerName, name: orgName } = org ?? {};
   const employerName = cardEmployerName || orgEmployerName;
   const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
+  const workGroupDescription = !jobTitle ? undefined : [
+    jobTitle, `${shift} shift`, department,
+  ].filter(isDefined).join(', ');
 
   const { can, refreshMyPermissions } = useMyPermissions({
     scopes: ['editOrg'],
@@ -199,6 +210,7 @@ function useUnionCardInfo({
     sign,
     signedAt,
     undo,
+    workGroupDescription,
   };
 }
 
@@ -268,6 +280,7 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
     agreement, email, employerName, homeAddressLine1, homeAddressLine2, name,
     orgEmployerName, phone, setEmail, setEmployerName, setHomeAddressLine1,
     setHomeAddressLine2, setName, setPhone, sign, signedAt, undo,
+    workGroupDescription,
   } = useUnionCardInfo({
     setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
   });
@@ -397,12 +410,20 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
           )}
           <View style={styles.section}>
             <HeaderText>Work group</HeaderText>
-            <TextButton
-              onPress={() => navigation.navigate('SelectWorkGroup')}
-              style={styles.textButton}
-            >
-              Select your work group
-            </TextButton>
+            <View style={styles.workGroupDescriptionRow}>
+              {workGroupDescription && (
+                <Text style={[styles.text, styles.workGroupDescription]}>
+                  {workGroupDescription}
+                </Text>
+              )}
+              <TextButton
+                disabled={!inputsEditable}
+                onPress={() => navigation.navigate('SelectWorkGroup')}
+                style={workGroupDescription && styles.textButtonEdit}
+              >
+                {workGroupDescription ? 'Edit' : 'Select your work group'}
+              </TextButton>
+            </View>
           </View>
           <View style={styles.section}>
             <HeaderText>Agreement</HeaderText>
