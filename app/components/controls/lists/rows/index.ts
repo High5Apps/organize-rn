@@ -12,3 +12,4 @@ export { default as ResultRow } from './ResultRow';
 export { default as SettingsRow } from './SettingsRow';
 export { default as TransparencyLogRow } from './TransparencyLogRow';
 export { default as UserRow } from './UserRow';
+export { default as WorkGroupRow } from './WorkGroupRow';

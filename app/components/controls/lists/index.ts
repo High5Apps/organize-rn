@@ -17,5 +17,6 @@ export { default as ResultList } from './ResultList';
 export { default as SettingsList } from './SettingsList';
 export { default as TransparencyLogList } from './TransparencyLogList';
 export { default as UserList } from './UserList';
+export { default as WorkGroupList } from './WorkGroupList';
 export { CommentRow, OfficeRow, PostRow } from './rows';
 export * from './types';
