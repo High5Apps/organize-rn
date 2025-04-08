@@ -376,24 +376,24 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
             />
           </View>
           {!shouldHideEmployerNameInput && (
-          <View style={styles.section}>
-            <HeaderText>Employer name</HeaderText>
-            <TextInputRow
-              autoCapitalize="words"
-              autoCorrect={false}
-              autoFocus={false}
-              editable={inputsEditable}
-              enterKeyHint={enterKeyHint('employerName')}
-              focused={focused('employerName')}
-              maxLength={MAX_EMPLOYER_NAME_LENGTH}
-              onChangeText={setEmployerName}
-              onFocus={onFocus('employerName')}
-              onSubmitEditing={onSubmitEditing('employerName')}
-              placeholder="Acme, Inc."
-              submitBehavior={submitBehavior('employerName')}
-              value={employerName}
-            />
-          </View>
+            <View style={styles.section}>
+              <HeaderText>Employer name</HeaderText>
+              <TextInputRow
+                autoCapitalize="words"
+                autoCorrect={false}
+                autoFocus={false}
+                editable={inputsEditable}
+                enterKeyHint={enterKeyHint('employerName')}
+                focused={focused('employerName')}
+                maxLength={MAX_EMPLOYER_NAME_LENGTH}
+                onChangeText={setEmployerName}
+                onFocus={onFocus('employerName')}
+                onSubmitEditing={onSubmitEditing('employerName')}
+                placeholder="Acme, Inc."
+                submitBehavior={submitBehavior('employerName')}
+                value={employerName}
+              />
+            </View>
           )}
           <View style={styles.section}>
             <HeaderText>Work group</HeaderText>
