@@ -259,9 +259,10 @@ export async function fetchUnionCards({
   ]);
   const unionCards = fetchedUnionCards.map(
     ({
-      encryptedAgreement, encryptedEmail, encryptedEmployerName,
-      encryptedHomeAddressLine1, encryptedHomeAddressLine2, encryptedName,
-      encryptedPhone, ...u
+      encryptedAgreement, encryptedDepartment, encryptedEmail,
+      encryptedEmployerName, encryptedHomeAddressLine1,
+      encryptedHomeAddressLine2, encryptedJobTitle, encryptedName,
+      encryptedPhone, encryptedShift, ...u
     }, i) => ({
       ...u,
       agreement: agreements[i]!,
