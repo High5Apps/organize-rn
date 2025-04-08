@@ -22,12 +22,15 @@ const useStyles = () => {
     iconLarge: {
       fontSize: sizes.largeIcon,
     },
+    iconMedium: {
+      fontSize: sizes.mediumIcon,
+    },
   });
 
   return { styles };
 };
 
-type IconSize = 'default' | 'large';
+type IconSize = 'default' | 'large' | 'medium';
 
 type Props = {
   disabled?: boolean;
@@ -58,6 +61,7 @@ export default function IconButton({
           disabled && styles.disabled,
           (iconSize === 'default') && styles.iconDefault,
           (iconSize === 'large') && styles.iconLarge,
+          (iconSize === 'medium') && styles.iconMedium,
         ]}
       />
     </Pressable>
