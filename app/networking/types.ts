@@ -836,3 +836,34 @@ export function isCreateUnionCardResponse(object: unknown): object is CreateUnio
   return response?.id?.length > 0
     && (response.workGroupId === null || response.workGroupId.length > 0);
 }
+
+export type WorkGroupResponse = {
+  encryptedDepartment: BackendEncryptedMessage | null;
+  encryptedJobTitle: BackendEncryptedMessage;
+  encryptedShift: BackendEncryptedMessage;
+  id: string;
+  memberCount: number;
+};
+
+export function isWorkGroupResponse(object: unknown): object is WorkGroupResponse {
+  const workGroup = (object as WorkGroupResponse);
+  return workGroup?.id?.length > 0
+    && (workGroup.encryptedDepartment === null
+      || isBackendEncryptedMessage(workGroup.encryptedDepartment))
+    && isBackendEncryptedMessage(workGroup.encryptedJobTitle)
+    && isBackendEncryptedMessage(workGroup.encryptedShift)
+    && workGroup.memberCount > 0;
+}
+
+export type WorkGroup = Decrypt<WorkGroupResponse>;
+
+type WorkGroupIndexResponse = {
+  workGroups: WorkGroupResponse[];
+};
+
+export function isWorkGroupIndexResponse(object: unknown): object is WorkGroupIndexResponse {
+  const response = (object as WorkGroupIndexResponse);
+  return response?.workGroups
+    && Array.isArray(response.workGroups)
+    && response.workGroups.every(isWorkGroupResponse);
+}

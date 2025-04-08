@@ -30,5 +30,6 @@ export {
   createUser, fetchUsers, getUser, leaveOrg,
 } from './UserAPI';
 export { createVote } from './VoteAPI';
+export { fetchWorkGroups } from './WorkGroupAPI';
 
 export * from './types';
