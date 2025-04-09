@@ -44,7 +44,7 @@ export default function LearnMoreButtonRow({ onPress }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} style={styles.innerContainer}>
-        <Icon name="info-outline" style={styles.icon} />
+        <Icon name="help-outline" style={styles.icon} />
         <Text style={styles.text}>Learn more</Text>
       </TouchableOpacity>
     </View>

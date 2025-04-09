@@ -60,7 +60,7 @@ export default function NominationsScreen({
     LearnMoreOfficeModal, setModalVisible,
   } = useLearnMoreOfficeModal({ officeCategory: ballotPreview.office });
   useHeaderButton({
-    iconName: 'info-outline',
+    iconName: 'help-outline',
     navigation,
     onPress: useCallback(() => setModalVisible(true), []),
   });
