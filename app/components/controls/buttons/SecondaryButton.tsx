@@ -13,7 +13,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     icon: {
       color: colors.primary,
-      fontSize: 24,
+      fontSize: sizes.icon,
       marginHorizontal: spacing.xs,
     },
     pressable: {
