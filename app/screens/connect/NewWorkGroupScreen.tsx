@@ -22,14 +22,23 @@ const useStyles = () => {
     colors, font, sizes, spacing,
   } = useTheme();
 
+  const buttonMargin = spacing.m;
+  const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
+
   const styles = StyleSheet.create({
     addButton: {
-      alignSelf: 'flex-end',
+      bottom: buttonMargin,
+      end: buttonMargin,
       height: sizes.buttonHeight,
-      paddingHorizontal: spacing.m,
+      paddingHorizontal: buttonMargin,
+      position: 'absolute',
     },
     container: {
+      flex: 1,
+    },
+    contentContainerStyle: {
       padding: spacing.m,
+      paddingBottom: buttonBoundingBoxHeight,
       rowGap: spacing.m,
     },
     learnMoreButton: {
@@ -80,7 +89,7 @@ export default function NewWorkGroupScreen({
   } = useFocusedInput({ orderedInputNames: ['jobTitle', 'department'] });
 
   return (
-    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <LearnMoreModal
         body={LEARN_MORE_BODY}
         headline={LEARN_MORE_HEADLINE}
@@ -88,54 +97,58 @@ export default function NewWorkGroupScreen({
         setVisible={setModalVisible}
         visible={modalVisible}
       />
-      <View style={styles.section}>
-        <HeaderText>Job title</HeaderText>
-        <TextInputRow
-          autoCapitalize="words"
-          autoFocus={false}
-          enterKeyHint={enterKeyHint('jobTitle')}
-          focused={focused('jobTitle')}
-          maxLength={MAX_JOB_TITLE_LENGTH}
-          onChangeText={setJobTitle}
-          onFocus={onFocus('jobTitle')}
-          onSubmitEditing={onSubmitEditing('jobTitle')}
-          placeholder="Nurse Practitioner"
-          submitBehavior={submitBehavior('jobTitle')}
-          value={jobTitle}
+      <KeyboardAvoidingScreenBackground
+        contentContainerStyle={styles.contentContainerStyle}
+      >
+        <View style={styles.section}>
+          <HeaderText>Job title</HeaderText>
+          <TextInputRow
+            autoCapitalize="words"
+            autoFocus={false}
+            enterKeyHint={enterKeyHint('jobTitle')}
+            focused={focused('jobTitle')}
+            maxLength={MAX_JOB_TITLE_LENGTH}
+            onChangeText={setJobTitle}
+            onFocus={onFocus('jobTitle')}
+            onSubmitEditing={onSubmitEditing('jobTitle')}
+            placeholder="Nurse Practitioner"
+            submitBehavior={submitBehavior('jobTitle')}
+            value={jobTitle}
+          />
+        </View>
+        <View style={styles.section}>
+          <HeaderText>Department (optional)</HeaderText>
+          <TextInputRow
+            autoCapitalize="words"
+            autoFocus={false}
+            enterKeyHint={enterKeyHint('department')}
+            focused={focused('department')}
+            maxLength={MAX_DEPARTMENT_LENGTH}
+            onChangeText={setDepartment}
+            onFocus={onFocus('department')}
+            onSubmitEditing={onSubmitEditing('department')}
+            placeholder="Intensive Care"
+            submitBehavior={submitBehavior('department')}
+            value={department}
+          />
+        </View>
+        <View style={styles.section}>
+          <HeaderText>Shift</HeaderText>
+          <SegmentedControl
+            onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
+              setShiftIndex(selectedSegmentIndex);
+            }}
+            selectedIndex={shiftIndex}
+            values={SHIFTS}
+          />
+        </View>
+        <SecondaryButton
+          iconName="help-outline"
+          label="Learn More"
+          onPress={() => setModalVisible(true)}
+          style={styles.learnMoreButton}
         />
-      </View>
-      <View style={styles.section}>
-        <HeaderText>Department (optional)</HeaderText>
-        <TextInputRow
-          autoCapitalize="words"
-          autoFocus={false}
-          enterKeyHint={enterKeyHint('department')}
-          focused={focused('department')}
-          maxLength={MAX_DEPARTMENT_LENGTH}
-          onChangeText={setDepartment}
-          onFocus={onFocus('department')}
-          onSubmitEditing={onSubmitEditing('department')}
-          placeholder="Intensive Care"
-          submitBehavior={submitBehavior('department')}
-          value={department}
-        />
-      </View>
-      <View style={styles.section}>
-        <HeaderText>Shift</HeaderText>
-        <SegmentedControl
-          onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
-            setShiftIndex(selectedSegmentIndex);
-          }}
-          selectedIndex={shiftIndex}
-          values={SHIFTS}
-        />
-      </View>
-      <SecondaryButton
-        iconName="help-outline"
-        label="Learn More"
-        onPress={() => setModalVisible(true)}
-        style={styles.learnMoreButton}
-      />
+      </KeyboardAvoidingScreenBackground>
       {jobTitle && (
         <PrimaryButton
           iconName="add"
@@ -144,6 +157,6 @@ export default function NewWorkGroupScreen({
           style={styles.addButton}
         />
       )}
-    </KeyboardAvoidingScreenBackground>
+    </View>
   );
 }
