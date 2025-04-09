@@ -4,12 +4,15 @@ import SegmentedControl from
   '@react-native-segmented-control/segmented-control';
 import { NIL as NIL_UUID } from 'uuid';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextInputRow,
+  HeaderText, KeyboardAvoidingScreenBackground, LearnMoreModal, PrimaryButton,
+  SecondaryButton, TextInputRow,
 } from '../../components';
 import useTheme from '../../Theme';
 import { useFocusedInput, useUnionCard } from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
 
+const LEARN_MORE_BODY = 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.';
+const LEARN_MORE_HEADLINE = "What's a work group?";
 const MAX_DEPARTMENT_LENGTH = 100;
 const MAX_JOB_TITLE_LENGTH = 100;
 const SHIFTS = ['1st', '2nd', '3rd'];
@@ -20,7 +23,7 @@ const useStyles = () => {
   } = useTheme();
 
   const styles = StyleSheet.create({
-    button: {
+    addButton: {
       alignSelf: 'flex-end',
       height: sizes.buttonHeight,
       paddingHorizontal: spacing.m,
@@ -28,6 +31,10 @@ const useStyles = () => {
     container: {
       padding: spacing.m,
       rowGap: spacing.m,
+    },
+    learnMoreButton: {
+      alignSelf: 'center',
+      paddingHorizontal: spacing.s,
     },
     section: {
       rowGap: spacing.s,
@@ -47,6 +54,7 @@ export default function NewWorkGroupScreen({
 }: NewWorkGroupScreenProps) {
   const [department, setDepartment] = useState<string>();
   const [jobTitle, setJobTitle] = useState<string>();
+  const [modalVisible, setModalVisible] = useState(false);
   const [shiftIndex, setShiftIndex] = useState(0);
 
   const { cacheUnionCard, unionCard } = useUnionCard();
@@ -73,6 +81,13 @@ export default function NewWorkGroupScreen({
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
+      <LearnMoreModal
+        body={LEARN_MORE_BODY}
+        headline={LEARN_MORE_HEADLINE}
+        iconName="groups"
+        setVisible={setModalVisible}
+        visible={modalVisible}
+      />
       <View style={styles.section}>
         <HeaderText>Job title</HeaderText>
         <TextInputRow
@@ -115,12 +130,18 @@ export default function NewWorkGroupScreen({
           values={SHIFTS}
         />
       </View>
+      <SecondaryButton
+        iconName="help-outline"
+        label="Learn More"
+        onPress={() => setModalVisible(true)}
+        style={styles.learnMoreButton}
+      />
       {jobTitle && (
         <PrimaryButton
           iconName="add"
           label="Add"
           onPress={onAddPressed}
-          style={styles.button}
+          style={styles.addButton}
         />
       )}
     </KeyboardAvoidingScreenBackground>
