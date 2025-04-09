@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 import {
   FlatList, ListRenderItem, StyleProp, ViewStyle,
 } from 'react-native';
@@ -35,12 +35,15 @@ type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: ReactElement;
   onEditWorkGroupPress?: (workGroup: WorkGroup) => void;
+  onReadyChanged?: (ready: boolean) => void;
 };
 
 export default function WorkGroupList({
   contentContainerStyle, ListFooterComponent, onEditWorkGroupPress,
+  onReadyChanged,
 }: Props) {
   const { ready, refreshWorkGroups, workGroups } = useWorkGroups();
+  useEffect(() => onReadyChanged?.(ready), [ready]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: refreshWorkGroups,

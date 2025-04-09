@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
   PrimaryButton, ScreenBackground, TextButton, useHeaderButton, WorkGroupList,
@@ -43,6 +43,8 @@ const useStyles = () => {
 export default function SelectWorkGroupScreen({
   navigation,
 }: SelectWorkGroupScreenProps) {
+  const [listReady, setListReady] = useState(false);
+
   const { styles } = useStyles();
 
   const onAddWorkGroupPress = useCallback(() => (
@@ -50,6 +52,7 @@ export default function SelectWorkGroupScreen({
   ), [navigation]);
 
   useHeaderButton({
+    disabled: !listReady,
     iconName: 'add',
     navigation,
     onPress: onAddWorkGroupPress,
@@ -68,6 +71,7 @@ export default function SelectWorkGroupScreen({
         contentContainerStyle={styles.contentContainerStyle}
         ListFooterComponent={ListFooterComponent}
         onEditWorkGroupPress={(wg) => console.log(`edit ${JSON.stringify(wg)}`)}
+        onReadyChanged={setListReady}
       />
       <PrimaryButton
         iconName="done"
