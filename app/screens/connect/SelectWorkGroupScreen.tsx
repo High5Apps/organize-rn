@@ -45,9 +45,9 @@ export default function SelectWorkGroupScreen({
 }: SelectWorkGroupScreenProps) {
   const { styles } = useStyles();
 
-  const onAddWorkGroupPress = useCallback(() => {
-    console.log('add work group');
-  }, []);
+  const onAddWorkGroupPress = useCallback(() => (
+    navigation.navigate('NewWorkGroup')
+  ), [navigation]);
 
   useHeaderButton({
     iconName: 'add',

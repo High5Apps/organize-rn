@@ -76,6 +76,7 @@ export type OrgTabsScreenProps<T extends keyof OrgTabsParamList> =
 export type ConnectStackParamList = {
   Connect: undefined;
   NewConnection: QRValueRouteParams | undefined;
+  NewWorkGroup: undefined;
   SelectWorkGroup: undefined;
   UnionCard: undefined;
 };
@@ -88,6 +89,7 @@ export type ConnectStackScreenProps<T extends keyof ConnectStackParamList> =
 
 export type ConnectScreenProps = ConnectStackScreenProps<'Connect'>;
 export type NewConnectionScreenProps = ConnectStackScreenProps<'NewConnection'>;
+export type NewWorkGroupScreenProps = ConnectStackScreenProps<'NewWorkGroup'>;
 export type SelectWorkGroupScreenProps = ConnectStackScreenProps<'SelectWorkGroup'>;
 export type UnionCardScreenProps = ConnectStackScreenProps<'UnionCard'>;
 

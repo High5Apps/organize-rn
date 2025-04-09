@@ -1,7 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  ConnectScreen, NewConnectionScreen, SelectWorkGroupScreen, UnionCardScreen,
+  ConnectScreen, NewConnectionScreen, NewWorkGroupScreen, SelectWorkGroupScreen,
+  UnionCardScreen,
 } from '../screens';
 import { ConnectStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
@@ -18,6 +19,11 @@ export default function ConnectStack() {
         component={NewConnectionScreen}
         name="NewConnection"
         options={{ title: 'Create Connection' }}
+      />
+      <Stack.Screen
+        component={NewWorkGroupScreen}
+        name="NewWorkGroup"
+        options={{ title: 'Add Your Work Group' }}
       />
       <Stack.Screen
         component={SelectWorkGroupScreen}
