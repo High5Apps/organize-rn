@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, TextInputProps, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import SegmentedControl from
   '@react-native-segmented-control/segmented-control';
 import { NIL as NIL_UUID } from 'uuid';
@@ -7,7 +7,7 @@ import {
   HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextInputRow,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useUnionCard } from '../../model';
+import { useFocusedInput, useUnionCard } from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
 
 const MAX_DEPARTMENT_LENGTH = 100;
@@ -42,39 +42,6 @@ const useStyles = () => {
   return { styles };
 };
 
-type InputName = 'department' | 'jobTitle';
-
-function useFocusedInput() {
-  const LAST_INPUT = 'department';
-  const [focusedInput, setFocusedInput] = useState<InputName | null>(null);
-
-  function enterKeyHint(inputName: InputName): TextInputProps['enterKeyHint'] {
-    return (inputName === LAST_INPUT) ? 'done' : 'next';
-  }
-
-  const focused = (inputName: InputName) => (focusedInput === inputName);
-
-  const onFocus = (inputName: InputName) => () => setFocusedInput(inputName);
-
-  const onSubmitEditing = useCallback((inputName: InputName | null) => (() => {
-    let nextInput: InputName | null = null;
-    if (inputName === 'jobTitle') {
-      nextInput = 'department';
-    }
-    setFocusedInput(nextInput);
-  }), []);
-
-  function submitBehavior(
-    inputName: InputName,
-  ): TextInputProps['submitBehavior'] {
-    return (inputName === LAST_INPUT) ? 'blurAndSubmit' : 'submit';
-  }
-
-  return {
-    enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
-  };
-}
-
 export default function NewWorkGroupScreen({
   navigation,
 }: NewWorkGroupScreenProps) {
@@ -102,7 +69,7 @@ export default function NewWorkGroupScreen({
   const { styles } = useStyles();
   const {
     enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
-  } = useFocusedInput();
+  } = useFocusedInput({ orderedInputNames: ['jobTitle', 'department'] });
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>

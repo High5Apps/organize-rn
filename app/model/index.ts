@@ -5,6 +5,7 @@ export { default as useConnection } from './Connection';
 export { default as createCurrentUser } from './CurrentUserCreation';
 export { default as Email } from './Email';
 export { default as getErrorMessage } from './ErrorMessage';
+export { default as useFocusedInput } from './FocusedInput';
 export { default as useFlag } from './Flag';
 export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as useNominations } from './Nominations';

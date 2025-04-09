@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  StyleSheet, Text, TextInputProps, View,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   HeaderText, KeyboardAvoidingScreenBackground, PrimaryButton, TextButton,
   TextInputRow, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  formatDate, getErrorMessage, isDefined, useMyPermissions, useOrg,
-  useUnionCard,
+  formatDate, getErrorMessage, isDefined, useFocusedInput, useMyPermissions,
+  useOrg, useUnionCard,
 } from '../../model';
 import type { UnionCardScreenProps } from '../../navigation';
 
@@ -215,54 +213,6 @@ function useUnionCardInfo({
   };
 }
 
-type InputName = 'email' | 'employerName' | 'homeAddressLine1'
-  | 'homeAddressLine2' | 'name' | 'phone';
-
-type FocusedInputProps = {
-  shouldHideEmployerNameInput: boolean;
-};
-function useFocusedInput({ shouldHideEmployerNameInput }: FocusedInputProps) {
-  const [focusedInput, setFocusedInput] = useState<InputName | null>(null);
-
-  function enterKeyHint(inputName: InputName): TextInputProps['enterKeyHint'] {
-    const isLastVisibleInput = (inputName === 'employerName')
-      || (inputName === 'homeAddressLine2' && shouldHideEmployerNameInput);
-    return isLastVisibleInput ? 'done' : 'next';
-  }
-
-  const focused = (inputName: InputName) => (focusedInput === inputName);
-
-  const onFocus = (inputName: InputName) => () => setFocusedInput(inputName);
-
-  const onSubmitEditing = useCallback((inputName: InputName | null) => (() => {
-    let nextInput: InputName | null = null;
-    if (inputName === 'name') {
-      nextInput = 'phone';
-    } else if (inputName === 'phone') {
-      nextInput = 'email';
-    } else if (inputName === 'email') {
-      nextInput = 'homeAddressLine1';
-    } else if (inputName === 'homeAddressLine1') {
-      nextInput = 'homeAddressLine2';
-    } else if (inputName === 'homeAddressLine2') {
-      nextInput = 'employerName';
-    }
-    setFocusedInput(nextInput);
-  }), []);
-
-  function submitBehavior(
-    inputName: InputName,
-  ): TextInputProps['submitBehavior'] {
-    const shouldBlur = (inputName === 'employerName')
-      || (inputName === 'homeAddressLine2' && shouldHideEmployerNameInput);
-    return shouldBlur ? 'blurAndSubmit' : 'submit';
-  }
-
-  return {
-    enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
-  };
-}
-
 export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
   const {
     loading: refreshing,
@@ -291,7 +241,12 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
   const { styles } = useStyles();
   const {
     enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
-  } = useFocusedInput({ shouldHideEmployerNameInput });
+  } = useFocusedInput({
+    orderedInputNames: [
+      'name', 'phone', 'email', 'homeAddressLine1', 'homeAddressLine2',
+      shouldHideEmployerNameInput ? undefined : 'employerName',
+    ].filter(isDefined),
+  });
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
