@@ -33,19 +33,24 @@ function useWorkGroupSelection(workGroups: WorkGroup[]) {
 
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
+  includeLocalOnlyWorkGroups?: boolean;
   ListFooterComponent?: ReactElement;
   onEditWorkGroupPress?: (workGroup: WorkGroup) => void;
   onLoadingChanged?: (loading: boolean) => void;
   onReadyChanged?: (ready: boolean) => void;
+  onWorkGroupPress?: (workGroup: WorkGroup) => void;
+  selectionEnabled?: boolean;
+  showRowDisclosureIcons?: boolean;
 };
 
 export default function WorkGroupList({
-  contentContainerStyle, ListFooterComponent, onEditWorkGroupPress,
-  onLoadingChanged, onReadyChanged,
+  contentContainerStyle, includeLocalOnlyWorkGroups, ListFooterComponent,
+  onEditWorkGroupPress, onLoadingChanged, onReadyChanged, onWorkGroupPress,
+  selectionEnabled, showRowDisclosureIcons,
 }: Props) {
   const {
     loading, ready, refreshWorkGroups, workGroups,
-  } = useWorkGroups();
+  } = useWorkGroups({ includeLocalOnlyWorkGroups });
   useEffect(() => onLoadingChanged?.(loading), [loading]);
   useEffect(() => onReadyChanged?.(ready), [ready]);
 
@@ -60,9 +65,16 @@ export default function WorkGroupList({
       editable={item.isLocalOnly}
       item={item}
       onEditPress={onEditWorkGroupPress}
-      onPress={onWorkGroupSelected}
-      selectable
-      selected={isSelected(item)}
+      onPress={() => {
+        if (selectionEnabled) {
+          onWorkGroupSelected?.(item);
+        }
+
+        onWorkGroupPress?.(item);
+      }}
+      selectable={selectionEnabled}
+      selected={selectionEnabled && isSelected(item)}
+      showDisclosureIcon={showRowDisclosureIcons}
     />
   ), [isSelected, onEditWorkGroupPress, onWorkGroupSelected]);
 

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { isDefined, WorkGroup } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { IconButton } from '../../buttons';
+import { DisclosureIcon } from '../../../views';
 
 const useStyles = () => {
   const {
@@ -48,10 +49,12 @@ type Props = {
   onPress?: (item: WorkGroup) => void;
   selectable?: boolean;
   selected?: boolean;
+  showDisclosureIcon?: boolean;
 };
 
 export default function WorkGroupRow({
   editable, item, onEditPress, onPress, selectable, selected,
+  showDisclosureIcon,
 }: Props) {
   const {
     department, jobTitle, memberCount, shift,
@@ -87,6 +90,7 @@ export default function WorkGroupRow({
             onPress={() => onEditPress?.(item)}
           />
         )}
+        {showDisclosureIcon && <DisclosureIcon />}
       </View>
     </TouchableHighlight>
   );

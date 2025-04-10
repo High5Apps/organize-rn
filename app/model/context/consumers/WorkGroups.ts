@@ -6,7 +6,13 @@ import { useWorkGroupContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 import useUnionCard from './UnionCard';
 
-export default function useWorkGroups() {
+type Props = {
+  includeLocalOnlyWorkGroups?: boolean;
+};
+
+export default function useWorkGroups({
+  includeLocalOnlyWorkGroups,
+}: Props = {}) {
   const {
     cacheWorkGroup, cacheWorkGroups, getCachedWorkGroup,
   } = useWorkGroupContext();
@@ -36,14 +42,16 @@ export default function useWorkGroups() {
 
     cacheWorkGroups(fetchedWorkGroups);
 
-    // If the user locally added a workgroup but hasn't signed yet, the locally
-    // added work group won't be included in the fetched work groups, so it must
-    // be added manually.
-    const unionCardWorkGroupId = unionCard?.workGroupId ?? undefined;
-    if (!fetchedWorkGroups.find(({ id }) => id === unionCardWorkGroupId)) {
-      const locallyAddedWorkGroup = getCachedWorkGroup(unionCardWorkGroupId);
-      if (locallyAddedWorkGroup) {
-        fetchedWorkGroups.push(locallyAddedWorkGroup);
+    if (includeLocalOnlyWorkGroups) {
+      // If the user locally added a workgroup but hasn't signed yet, the
+      // locally added work group won't be included in the fetched work groups,
+      // so it must be added manually.
+      const unionCardWorkGroupId = unionCard?.workGroupId ?? undefined;
+      if (!fetchedWorkGroups.find(({ id }) => id === unionCardWorkGroupId)) {
+        const locallyAddedWorkGroup = getCachedWorkGroup(unionCardWorkGroupId);
+        if (locallyAddedWorkGroup) {
+          fetchedWorkGroups.push(locallyAddedWorkGroup);
+        }
       }
     }
 

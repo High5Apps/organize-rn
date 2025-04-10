@@ -107,12 +107,14 @@ export default function SelectWorkGroupScreen({
     <ScreenBackground>
       <WorkGroupList
         contentContainerStyle={styles.contentContainerStyle}
+        includeLocalOnlyWorkGroups
         ListFooterComponent={
           shouldDisableAddButtons ? undefined : ListFooterComponent
         }
         onEditWorkGroupPress={navigateToNewWorkGroup}
         onReadyChanged={setListReady}
         onLoadingChanged={setListLoading}
+        selectionEnabled
       />
       <PrimaryButton
         iconName="done"
