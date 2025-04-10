@@ -1,6 +1,7 @@
 export { default as BlockMemberScreen } from './BlockMemberScreen';
 export { default as BlockedMembersScreen } from './BlockedMembersScreen';
 export { default as EditOrgScreen } from './EditOrgScreen';
+export { default as EditWorkGroupsScreen } from './EditWorkGroupsScreen';
 export { default as FlagReportsHandledScreen } from './FlagReportsHandledScreen';
 export { default as FlagReportsPendingScreen } from './FlagReportsPendingScreen';
 export { default as LeadScreen } from './LeadScreen';

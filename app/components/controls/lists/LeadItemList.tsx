@@ -11,8 +11,8 @@ const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these too
 function useLeadItems() {
   const { can, ready, refreshMyPermissions } = useMyPermissions({
     scopes: [
-      'blockMembers', 'editOrg', 'editPermissions', 'moderate',
-      'viewUnionCards',
+      'blockMembers', 'editOrg', 'editPermissions', 'editWorkGroups',
+      'moderate', 'viewUnionCards',
     ],
   });
 
@@ -26,6 +26,14 @@ function useLeadItems() {
         destination: 'EditOrg',
         iconName: 'edit-document',
         title: 'Edit Org info',
+      });
+    }
+
+    if (can('editWorkGroups')) {
+      items.push({
+        destination: 'EditWorkGroups',
+        iconName: 'groups',
+        title: 'Edit work groups',
       });
     }
 

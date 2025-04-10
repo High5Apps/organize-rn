@@ -267,6 +267,7 @@ export type LeadStackParamList = {
   BlockMember: undefined;
   BlockedMembers: undefined | BlockedMembersScreenParams;
   EditOrg: undefined;
+  EditWorkGroups: undefined;
   FlagReportTabs: undefined | NavigatorScreenParams<FlagReportTabsParamList>;
   Lead: undefined;
   Moderation: undefined;
@@ -284,6 +285,7 @@ export type LeadStackScreenProps<T extends keyof LeadStackParamList> =
 export type BlockMemberScreenProps = LeadStackScreenProps<'BlockMember'>;
 export type BlockedMembersScreenProps = LeadStackScreenProps<'BlockedMembers'>;
 export type EditOrgScreenProps = LeadStackScreenProps<'EditOrg'>;
+export type EditWorkGroupsScreenProps = LeadStackScreenProps<'EditWorkGroups'>;
 export type LeadScreenProps = LeadStackScreenProps<'Lead'>;
 export type ModerationScreenProps = LeadStackScreenProps<'Moderation'>;
 export type PermissionScreenProps = LeadStackScreenProps<'Permission'>;
