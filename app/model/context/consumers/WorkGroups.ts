@@ -4,6 +4,7 @@ import useCurrentUser from './CurrentUser';
 import { fetchWorkGroups } from '../../../networking';
 import { useWorkGroupContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
+import useUnionCard from './UnionCard';
 
 export default function useWorkGroups() {
   const {
@@ -15,6 +16,7 @@ export default function useWorkGroups() {
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useCurrentUser();
+  const { unionCard } = useUnionCard();
 
   async function refreshWorkGroups() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
@@ -30,6 +32,17 @@ export default function useWorkGroups() {
     }
 
     cacheWorkGroups(fetchedWorkGroups);
+
+    // If the user locally added a workgroup but hasn't signed yet, the locally
+    // added work group won't be included in the fetched work groups, so it must
+    // be added manually.
+    const unionCardWorkGroupId = unionCard?.workGroupId ?? undefined;
+    if (!fetchedWorkGroups.find(({ id }) => id === unionCardWorkGroupId)) {
+      const locallyAddedWorkGroup = getCachedWorkGroup(unionCardWorkGroupId);
+      if (locallyAddedWorkGroup) {
+        fetchedWorkGroups.push(locallyAddedWorkGroup);
+      }
+    }
 
     // Sort alphabetically by jobTitle, then by shift, then by department with
     // ones lacking departments first, then by member count, then finally by id

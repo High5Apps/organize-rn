@@ -8,7 +8,7 @@ import {
   SecondaryButton, TextInputRow,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useFocusedInput, useUnionCard } from '../../model';
+import { useFocusedInput, useUnionCard, useWorkGroups } from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
 
 const LEARN_MORE_BODY = 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.';
@@ -66,6 +66,7 @@ export default function NewWorkGroupScreen({
   const [modalVisible, setModalVisible] = useState(false);
   const [shiftIndex, setShiftIndex] = useState(0);
 
+  const { cacheWorkGroup } = useWorkGroups();
   const { cacheUnionCard, unionCard } = useUnionCard();
   const onAddPressed = useCallback(() => {
     if (!jobTitle) {
@@ -73,13 +74,15 @@ export default function NewWorkGroupScreen({
       return;
     }
 
-    cacheUnionCard({
-      ...unionCard,
-      department,
-      jobTitle,
-      shift: SHIFTS[shiftIndex],
-      workGroupId: NIL_UUID,
+    const shift = SHIFTS[shiftIndex];
+    const workGroupId = NIL_UUID;
+    cacheWorkGroup({
+      department, id: workGroupId, jobTitle, memberCount: 1, shift,
     });
+    cacheUnionCard({
+      ...unionCard, department, jobTitle, shift, workGroupId,
+    });
+
     navigation.popTo('UnionCard');
   }, [department, jobTitle, navigation, shiftIndex, unionCard]);
 
