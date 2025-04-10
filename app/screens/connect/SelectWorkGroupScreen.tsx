@@ -1,10 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
   PrimaryButton, ScreenBackground, TextButton, useHeaderButton, WorkGroupList,
 } from '../../components';
 import useTheme from '../../Theme';
 import type { SelectWorkGroupScreenProps } from '../../navigation';
+import { useUnionCard, useWorkGroups } from '../../model';
 
 const useStyles = () => {
   const {
@@ -40,38 +43,76 @@ const useStyles = () => {
   return { styles };
 };
 
+function useShouldDisableAddButtons() {
+  const [addedLocalWorkGroup, setAddedLocalWorkGroup] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+  const [listReady, setListReady] = useState(false);
+
+  const { unionCard } = useUnionCard();
+  const { getCachedWorkGroup } = useWorkGroups();
+
+  useEffect(() => {
+    // Reset on pull-to-refresh to prevent a situation where Add buttons are
+    // disabled and no row is editable. Without this reset, this could have
+    // happened if a user added a new work group, tapped Edit to navigate to
+    // this screen, selected a different work group, then did a pull to refresh.
+    if (listLoading) {
+      setAddedLocalWorkGroup(false);
+      return;
+    }
+
+    const workGroup = getCachedWorkGroup(unionCard?.workGroupId ?? undefined);
+    if (workGroup?.isLocalOnly) {
+      setAddedLocalWorkGroup(true);
+    }
+  }, [getCachedWorkGroup, listLoading, unionCard?.workGroupId]);
+
+  return {
+    setListLoading,
+    setListReady,
+    shouldDisableAddButtons: !listReady || listLoading || addedLocalWorkGroup,
+  };
+}
+
 export default function SelectWorkGroupScreen({
   navigation,
 }: SelectWorkGroupScreenProps) {
-  const [listReady, setListReady] = useState(false);
-
   const { styles } = useStyles();
 
-  const onAddWorkGroupPress = useCallback(() => (
+  const navigateToNewWorkGroup = useCallback(() => (
     navigation.navigate('NewWorkGroup')
   ), [navigation]);
 
+  const {
+    setListLoading, setListReady, shouldDisableAddButtons,
+  } = useShouldDisableAddButtons();
+
   useHeaderButton({
-    disabled: !listReady,
+    disabled: shouldDisableAddButtons,
     iconName: 'add',
     navigation,
-    onPress: onAddWorkGroupPress,
+    onPress: navigateToNewWorkGroup,
   });
 
   const ListFooterComponent = useMemo(() => (
     <View style={styles.listFooterComponent}>
       <Text style={styles.text}>Don&apos;t see your work group?</Text>
-      <TextButton onPress={onAddWorkGroupPress}>Add your work group</TextButton>
+      <TextButton onPress={navigateToNewWorkGroup}>
+        Add your work group
+      </TextButton>
     </View>
-  ), [onAddWorkGroupPress]);
+  ), [navigateToNewWorkGroup]);
 
   return (
     <ScreenBackground>
       <WorkGroupList
         contentContainerStyle={styles.contentContainerStyle}
-        ListFooterComponent={ListFooterComponent}
-        onEditWorkGroupPress={(wg) => console.log(`edit ${JSON.stringify(wg)}`)}
+        ListFooterComponent={
+          shouldDisableAddButtons ? undefined : ListFooterComponent
+        }
+        onEditWorkGroupPress={navigateToNewWorkGroup}
         onReadyChanged={setListReady}
+        onLoadingChanged={setListLoading}
       />
       <PrimaryButton
         iconName="done"

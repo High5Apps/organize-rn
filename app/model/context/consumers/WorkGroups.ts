@@ -13,6 +13,7 @@ export default function useWorkGroups() {
   const {
     models: workGroups, setIds: setWorkGroupIds,
   } = useModels<WorkGroup>({ getCachedModel: getCachedWorkGroup });
+  const [loading, setLoading] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
 
   const { currentUser } = useCurrentUser();
@@ -20,6 +21,8 @@ export default function useWorkGroups() {
 
   async function refreshWorkGroups() {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
+
+    setLoading(true);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eDecryptMany } = currentUser;
@@ -56,6 +59,7 @@ export default function useWorkGroups() {
     ));
 
     setWorkGroupIds(getIdsFrom(sortedWorkGroups));
+    setLoading(false);
     setReady(true);
   }
 
@@ -63,6 +67,7 @@ export default function useWorkGroups() {
     cacheWorkGroup,
     cacheWorkGroups,
     getCachedWorkGroup,
+    loading,
     ready,
     refreshWorkGroups,
     workGroups,

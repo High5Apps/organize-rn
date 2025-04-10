@@ -90,7 +90,12 @@ export default function NewWorkGroupScreen({
     const shift = SHIFTS[shiftIndex];
     const workGroupId = NIL_UUID;
     cacheWorkGroup({
-      department, id: workGroupId, jobTitle, memberCount: 1, shift,
+      department,
+      id: workGroupId,
+      isLocalOnly: true,
+      jobTitle,
+      memberCount: 1,
+      shift,
     });
     cacheUnionCard({
       ...unionCard, department, jobTitle, shift, workGroupId,

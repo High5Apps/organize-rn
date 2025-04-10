@@ -35,14 +35,18 @@ type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: ReactElement;
   onEditWorkGroupPress?: (workGroup: WorkGroup) => void;
+  onLoadingChanged?: (loading: boolean) => void;
   onReadyChanged?: (ready: boolean) => void;
 };
 
 export default function WorkGroupList({
   contentContainerStyle, ListFooterComponent, onEditWorkGroupPress,
-  onReadyChanged,
+  onLoadingChanged, onReadyChanged,
 }: Props) {
-  const { ready, refreshWorkGroups, workGroups } = useWorkGroups();
+  const {
+    loading, ready, refreshWorkGroups, workGroups,
+  } = useWorkGroups();
+  useEffect(() => onLoadingChanged?.(loading), [loading]);
   useEffect(() => onReadyChanged?.(ready), [ready]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
@@ -53,6 +57,7 @@ export default function WorkGroupList({
   const { isSelected, onWorkGroupSelected } = useWorkGroupSelection(workGroups);
   const renderItem: ListRenderItem<WorkGroup> = useCallback(({ item }) => (
     <WorkGroupRow
+      editable={item.isLocalOnly}
       item={item}
       onEditPress={onEditWorkGroupPress}
       onPress={onWorkGroupSelected}
