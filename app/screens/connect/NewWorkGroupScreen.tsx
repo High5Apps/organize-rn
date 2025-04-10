@@ -61,10 +61,23 @@ const useStyles = () => {
 export default function NewWorkGroupScreen({
   navigation,
 }: NewWorkGroupScreenProps) {
-  const [department, setDepartment] = useState<string>();
-  const [jobTitle, setJobTitle] = useState<string>();
+  const { getCachedWorkGroup } = useWorkGroups();
+  const {
+    department: initialDepartment,
+    jobTitle: initialJobTitle,
+    shift: initialShift,
+  } = getCachedWorkGroup(NIL_UUID) ?? {};
+  const initialShiftIndex = initialShift
+    ? Math.max(0, SHIFTS.indexOf(initialShift)) : 0;
+
+  const [
+    department, setDepartment,
+  ] = useState<string | undefined>(initialDepartment);
+  const [
+    jobTitle, setJobTitle,
+  ] = useState<string | undefined>(initialJobTitle);
   const [modalVisible, setModalVisible] = useState(false);
-  const [shiftIndex, setShiftIndex] = useState(0);
+  const [shiftIndex, setShiftIndex] = useState(initialShiftIndex);
 
   const { cacheWorkGroup } = useWorkGroups();
   const { cacheUnionCard, unionCard } = useUnionCard();
