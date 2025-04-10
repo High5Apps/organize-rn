@@ -28,6 +28,11 @@ const permissionItems: PermissionItem[] = [
     title: 'Edit permissions',
   },
   {
+    iconName: 'groups',
+    scope: 'editWorkGroups',
+    title: 'Edit work groups',
+  },
+  {
     iconName: 'gavel',
     scope: 'moderate',
     title: 'Moderate',
