@@ -1,26 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import SegmentedControl from
-  '@react-native-segmented-control/segmented-control';
 import { NIL as NIL_UUID } from 'uuid';
 import {
-  HeaderText, KeyboardAvoidingScreenBackground, LearnMoreModal, PrimaryButton,
-  SecondaryButton, TextInputRow,
+  KeyboardAvoidingScreenBackground, LearnMoreModal, PrimaryButton,
+  SecondaryButton, WorkGroupForm, WorkGroupFormInfo,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useFocusedInput, useUnionCard, useWorkGroups } from '../../model';
+import { useUnionCard, useWorkGroups } from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
 
 const LEARN_MORE_BODY = 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.';
 const LEARN_MORE_HEADLINE = "What's a work group?";
-const MAX_DEPARTMENT_LENGTH = 100;
-const MAX_JOB_TITLE_LENGTH = 100;
-const SHIFTS = ['1st', '2nd', '3rd'];
+const NEW_WORK_GROUP_ID = NIL_UUID;
 
 const useStyles = () => {
-  const {
-    colors, font, sizes, spacing,
-  } = useTheme();
+  const { sizes, spacing } = useTheme();
 
   const buttonMargin = spacing.m;
   const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
@@ -45,14 +39,6 @@ const useStyles = () => {
       alignSelf: 'center',
       paddingHorizontal: spacing.s,
     },
-    section: {
-      rowGap: spacing.s,
-    },
-    text: {
-      color: colors.label,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
-    },
   });
 
   return { styles };
@@ -61,34 +47,19 @@ const useStyles = () => {
 export default function NewWorkGroupScreen({
   navigation,
 }: NewWorkGroupScreenProps) {
-  const { getCachedWorkGroup } = useWorkGroups();
-  const {
-    department: initialDepartment,
-    jobTitle: initialJobTitle,
-    shift: initialShift,
-  } = getCachedWorkGroup(NIL_UUID) ?? {};
-  const initialShiftIndex = initialShift
-    ? Math.max(0, SHIFTS.indexOf(initialShift)) : 0;
-
-  const [
-    department, setDepartment,
-  ] = useState<string | undefined>(initialDepartment);
-  const [
-    jobTitle, setJobTitle,
-  ] = useState<string | undefined>(initialJobTitle);
   const [modalVisible, setModalVisible] = useState(false);
-  const [shiftIndex, setShiftIndex] = useState(initialShiftIndex);
+  const [formInfo, setFormInfo] = useState<WorkGroupFormInfo>();
+  const { department, jobTitle, shift } = formInfo ?? {};
 
   const { cacheWorkGroup } = useWorkGroups();
   const { cacheUnionCard, unionCard } = useUnionCard();
   const onAddPressed = useCallback(() => {
-    if (!jobTitle) {
-      console.warn('Expected jobTitle to be set');
+    if (!jobTitle || !shift) {
+      console.warn('Expected jobTitle and shift to be set');
       return;
     }
 
-    const shift = SHIFTS[shiftIndex];
-    const workGroupId = NIL_UUID;
+    const workGroupId = NEW_WORK_GROUP_ID;
     cacheWorkGroup({
       department,
       id: workGroupId,
@@ -102,12 +73,9 @@ export default function NewWorkGroupScreen({
     });
 
     navigation.popTo('UnionCard');
-  }, [department, jobTitle, navigation, shiftIndex, unionCard]);
+  }, [department, jobTitle, navigation, shift, unionCard]);
 
   const { styles } = useStyles();
-  const {
-    enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
-  } = useFocusedInput({ orderedInputNames: ['jobTitle', 'department'] });
 
   return (
     <View style={styles.container}>
@@ -121,48 +89,7 @@ export default function NewWorkGroupScreen({
       <KeyboardAvoidingScreenBackground
         contentContainerStyle={styles.contentContainerStyle}
       >
-        <View style={styles.section}>
-          <HeaderText>Job title</HeaderText>
-          <TextInputRow
-            autoCapitalize="words"
-            autoFocus={false}
-            enterKeyHint={enterKeyHint('jobTitle')}
-            focused={focused('jobTitle')}
-            maxLength={MAX_JOB_TITLE_LENGTH}
-            onChangeText={setJobTitle}
-            onFocus={onFocus('jobTitle')}
-            onSubmitEditing={onSubmitEditing('jobTitle')}
-            placeholder="Nurse Practitioner"
-            submitBehavior={submitBehavior('jobTitle')}
-            value={jobTitle}
-          />
-        </View>
-        <View style={styles.section}>
-          <HeaderText>Department (optional)</HeaderText>
-          <TextInputRow
-            autoCapitalize="words"
-            autoFocus={false}
-            enterKeyHint={enterKeyHint('department')}
-            focused={focused('department')}
-            maxLength={MAX_DEPARTMENT_LENGTH}
-            onChangeText={setDepartment}
-            onFocus={onFocus('department')}
-            onSubmitEditing={onSubmitEditing('department')}
-            placeholder="Intensive Care"
-            submitBehavior={submitBehavior('department')}
-            value={department}
-          />
-        </View>
-        <View style={styles.section}>
-          <HeaderText>Shift</HeaderText>
-          <SegmentedControl
-            onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
-              setShiftIndex(selectedSegmentIndex);
-            }}
-            selectedIndex={shiftIndex}
-            values={SHIFTS}
-          />
-        </View>
+        <WorkGroupForm onChange={setFormInfo} workGroupId={NEW_WORK_GROUP_ID} />
         <SecondaryButton
           iconName="help-outline"
           label="Learn More"

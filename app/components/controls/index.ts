@@ -16,6 +16,7 @@ export { default as SectionHeader, renderSectionHeader } from './SectionHeader';
 export { default as StepperControl } from './StepperControl';
 export { default as useTimeRemainingFooter } from './TimeRemainingFooter';
 export { default as UpvoteControl } from './UpvoteControl';
+export { default as WorkGroupForm } from './WorkGroupForm';
 export * from './buttons';
 export * from './lists';
 export * from './modals';
