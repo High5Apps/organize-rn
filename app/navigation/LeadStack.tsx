@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LeadStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import {
-  BlockMemberScreen, BlockedMembersScreen, EditOrgScreen, EditWorkGroupsScreen,
-  LeadScreen, ModerationScreen, PermissionScreen, PermissionsScreen,
-  UnionCardsScreen,
+  BlockMemberScreen, BlockedMembersScreen, EditOrgScreen, EditWorkGroupScreen,
+  EditWorkGroupsScreen, LeadScreen, ModerationScreen, PermissionScreen,
+  PermissionsScreen, UnionCardsScreen,
 } from '../screens';
 import { toAction } from '../model';
 import FlagReportTabs from './FlagReportTabs';
@@ -32,6 +32,11 @@ export default function LeadStack() {
         name="EditOrg"
         component={EditOrgScreen}
         options={{ title: 'Edit Org' }}
+      />
+      <Stack.Screen
+        name="EditWorkGroup"
+        component={EditWorkGroupScreen}
+        options={{ title: 'Edit Work Group' }}
       />
       <Stack.Screen
         name="EditWorkGroups"
