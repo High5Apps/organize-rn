@@ -2,10 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { EditWorkGroupScreenProps } from '../../navigation';
 import {
-  KeyboardAvoidingScreenBackground, PrimaryButton, WorkGroupForm,
-  WorkGroupFormInfo,
+  KeyboardAvoidingScreenBackground, PrimaryButton, useRequestProgress,
+  WorkGroupForm, WorkGroupFormInfo,
 } from '../../components';
 import useTheme from '../../Theme';
+import { useWorkGroup } from '../../model';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -35,16 +36,31 @@ const useStyles = () => {
 };
 
 export default function EditWorkGroupScreen({
-  route,
+  navigation, route,
 }: EditWorkGroupScreenProps) {
   const { workGroupId } = route.params;
 
   const [formInfo, setFormInfo] = useState<WorkGroupFormInfo>();
   const { department, jobTitle, shift } = formInfo ?? {};
 
-  const onPublishPressed = useCallback(() => {
-    console.log({ department, jobTitle, shift });
-  }, [department, jobTitle, shift]);
+  const { updateWorkGroup } = useWorkGroup(workGroupId);
+
+  const {
+    RequestProgress, setLoading, setResult,
+  } = useRequestProgress({ removeWhenInactive: true });
+
+  const onPublishPressed = useCallback(async () => {
+    setLoading(true);
+    setResult('none');
+
+    try {
+      await updateWorkGroup({ department, jobTitle, shift });
+      setResult('success');
+      navigation.goBack();
+    } catch (error) {
+      setResult('error', { error });
+    }
+  }, [department, jobTitle, navigation, shift]);
 
   const { styles } = useStyles();
 
@@ -54,6 +70,7 @@ export default function EditWorkGroupScreen({
         contentContainerStyle={styles.contentContainerStyle}
       >
         <WorkGroupForm onChange={setFormInfo} workGroupId={workGroupId} />
+        <RequestProgress />
       </KeyboardAvoidingScreenBackground>
       {jobTitle && (
         <PrimaryButton
