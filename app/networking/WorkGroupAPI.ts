@@ -1,9 +1,12 @@
-import { decryptMany, get } from './API';
+import {
+  decryptMany, encrypt, get, patch,
+} from './API';
 import { parseFirstErrorOrThrow } from './ErrorResponse';
 import { fromJson } from './Json';
-import { workGroupsURI } from './Routes';
+import { workGroupsURI, workGroupURI } from './Routes';
 import {
-  Authorization, E2EMultiDecryptor, isWorkGroupIndexResponse, WorkGroup,
+  Authorization, E2EEncryptor, E2EMultiDecryptor, isWorkGroupIndexResponse,
+  WorkGroup,
 } from './types';
 
 type IndexProps = {
@@ -18,7 +21,6 @@ type IndexReturn = {
   workGroups?: never;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export async function fetchWorkGroups({
   e2eDecryptMany, jwt,
 }: IndexProps & Authorization): Promise<IndexReturn> {
@@ -62,4 +64,54 @@ export async function fetchWorkGroups({
   );
 
   return { workGroups };
+}
+
+export type UpdateProps = {
+  department?: string;
+  e2eEncrypt: E2EEncryptor;
+  jobTitle?: string;
+  shift?: string;
+  workGroupId: string;
+};
+
+type UpdateReturn = {
+  errorMessage?: string;
+};
+
+export async function updateWorkGroup({
+  department, e2eEncrypt, jobTitle, jwt, shift, workGroupId,
+}: UpdateProps & Authorization): Promise<UpdateReturn> {
+  if (!department && !jobTitle && !shift) {
+    console.warn('No props were present in updateWorkGroup');
+    return {};
+  }
+
+  const [
+    encryptedDepartment, encryptedJobTitle, encryptedShift,
+  ] = await Promise.all([
+    department ? encrypt(department, e2eEncrypt) : undefined,
+    jobTitle ? encrypt(jobTitle, e2eEncrypt) : undefined,
+    shift ? encrypt(shift, e2eEncrypt) : undefined,
+  ]);
+
+  const response = await patch({
+    bodyObject: {
+      work_group: {
+        encryptedDepartment, encryptedJobTitle, encryptedShift,
+      },
+    },
+    jwt,
+    uri: workGroupURI(workGroupId),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const json = fromJson(text, {
+      convertIso8601ToDate: true,
+      convertSnakeToCamel: true,
+    });
+    return parseFirstErrorOrThrow(json);
+  }
+
+  return {};
 }

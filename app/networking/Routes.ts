@@ -69,3 +69,4 @@ export const userUri = (userId: string) => `${usersURI}/${userId}`;
 export const votesURI = (ballotId: string) => `${ballotURI(ballotId)}/votes`;
 
 export const workGroupsURI = `${apiRoute}/work_groups`;
+export const workGroupURI = (workGroupId: string) => `${workGroupsURI}/${workGroupId}`;
