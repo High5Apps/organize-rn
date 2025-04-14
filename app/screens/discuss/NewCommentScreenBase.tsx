@@ -48,7 +48,7 @@ export default function NewCommentScreenBase({
   commentId, HeaderComponent, onCommentCreated = () => {}, postId,
 }: Props) {
   const cacheKey = getCacheKey({ commentId, postId });
-  const [maybeBody, setBody] = useCachedValue<string | undefined>(cacheKey);
+  const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
 
   const { styles } = useStyles();
   const {
@@ -62,13 +62,8 @@ export default function NewCommentScreenBase({
     setLoading(true);
     setResult('none');
 
-    const strippedBody = maybeBody?.trim() ?? '';
-    setBody(strippedBody);
-
     try {
-      const comment = await createComment({
-        body: strippedBody, commentId, postId,
-      });
+      const comment = await createComment({ body, commentId, postId });
       setBody(undefined);
       const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
       setResult('success', { message });
@@ -89,7 +84,7 @@ export default function NewCommentScreenBase({
         placeholder="What do you think?"
         style={styles.multilineTextInput}
         returnKeyType="default"
-        value={maybeBody}
+        value={body}
       />
       <RequestProgress style={styles.requestProgress} />
       <PrimaryButton

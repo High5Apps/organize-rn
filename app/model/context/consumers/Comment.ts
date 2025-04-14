@@ -3,9 +3,10 @@ import { useCommentContext } from '../providers';
 import useCurrentUser from './CurrentUser';
 import { Comment, createComment as create } from '../../../networking';
 import getErrorMessage from '../../ErrorMessage';
+import { sanitizeMultilineField } from '../../formatters';
 
 type CreateProps = {
-  body: string;
+  body?: string;
   commentId?: string;
   postId: string;
 };
@@ -15,9 +16,11 @@ export default function useComment() {
   const { currentUser } = useCurrentUser();
 
   const createComment = useCallback(async ({
-    body, commentId, postId,
+    body: unsanitizedBody, commentId, postId,
   }: CreateProps) => {
     if (!currentUser) { throw new Error('Expected currentUser'); }
+
+    const body = sanitizeMultilineField(unsanitizedBody);
 
     let errorMessage: string | undefined;
     let newCommentId: string | undefined;
@@ -37,7 +40,7 @@ export default function useComment() {
       const parentComment = getCachedComment(commentId);
       const comment: Comment = {
         blockedAt: null,
-        body,
+        body: body!,
         createdAt: new Date(),
         deletedAt: null,
         depth: parentComment ? (parentComment.depth + 1) : 0,

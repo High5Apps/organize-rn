@@ -10,7 +10,7 @@ import {
 } from './types';
 
 type Props = {
-  body: string;
+  body?: string;
   commentId?: string;
   e2eEncrypt: E2EEncryptor;
   postId: string;
@@ -29,7 +29,7 @@ export async function createComment({
 }: Props & Authorization): Promise<Return> {
   const uri = commentId ? repliesURI(commentId) : commentsURI(postId);
 
-  const encryptedBody = await encrypt(body, e2eEncrypt);
+  const encryptedBody = body ? await encrypt(body, e2eEncrypt) : undefined;
   const response = await post({
     bodyObject: { comment: { encryptedBody } }, jwt, uri,
   });
