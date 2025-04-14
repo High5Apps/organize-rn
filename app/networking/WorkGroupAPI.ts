@@ -67,7 +67,7 @@ export async function fetchWorkGroups({
 }
 
 export type UpdateProps = {
-  department?: string;
+  department: string | undefined;
   e2eEncrypt: E2EEncryptor;
   jobTitle?: string;
   shift?: string;
@@ -89,7 +89,7 @@ export async function updateWorkGroup({
   const [
     encryptedDepartment, encryptedJobTitle, encryptedShift,
   ] = await Promise.all([
-    department ? encrypt(department, e2eEncrypt) : undefined,
+    department ? encrypt(department, e2eEncrypt) : null,
     jobTitle ? encrypt(jobTitle, e2eEncrypt) : undefined,
     shift ? encrypt(shift, e2eEncrypt) : undefined,
   ]);
