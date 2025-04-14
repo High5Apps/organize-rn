@@ -7,6 +7,7 @@ import {
 import getErrorMessage from '../../ErrorMessage';
 import useUnionCardSignatures from '../../UnionCardSignatures';
 import { useUnionCardContext } from '../providers';
+import { sanitizeSingleLineField } from '../../formatters';
 
 type CreateProps = Partial<Pick<UnionCard, 'agreement' | 'employerName'>>;
 
@@ -18,14 +19,23 @@ export default function useUnionCard() {
   const { createSignature } = useUnionCardSignatures();
 
   const createUnionCard = useCallback(async ({
-    agreement, employerName,
+    agreement, employerName: unsanitizedEmployerName,
   }: CreateProps) => {
     if (!currentUser) { throw new Error('Expected current user'); }
 
     const {
-      department, email, phone, name, homeAddressLine1, homeAddressLine2,
-      jobTitle, shift, workGroupId,
+      department, jobTitle, shift, workGroupId,
     } = unionCard ?? {};
+    const email = sanitizeSingleLineField(unionCard?.email);
+    const employerName = sanitizeSingleLineField(unsanitizedEmployerName);
+    const homeAddressLine1 = sanitizeSingleLineField(
+      unionCard?.homeAddressLine1,
+    );
+    const homeAddressLine2 = sanitizeSingleLineField(
+      unionCard?.homeAddressLine2,
+    );
+    const name = sanitizeSingleLineField(unionCard?.name);
+    const phone = sanitizeSingleLineField(unionCard?.phone);
 
     let errorMessage: string | undefined;
     let id: string | undefined;
