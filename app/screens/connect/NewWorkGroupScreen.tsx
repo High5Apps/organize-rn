@@ -6,7 +6,9 @@ import {
   SecondaryButton, WorkGroupForm, WorkGroupFormInfo,
 } from '../../components';
 import useTheme from '../../Theme';
-import { useUnionCard, useWorkGroups } from '../../model';
+import {
+  sanitizeSingleLineField, useUnionCard, useWorkGroups,
+} from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
 
 const LEARN_MORE_BODY = 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.';
@@ -60,16 +62,22 @@ export default function NewWorkGroupScreen({
     }
 
     const workGroupId = NEW_WORK_GROUP_ID;
+    const sanitizedDepartment = sanitizeSingleLineField(department);
+    const sanitizedJobTitle = sanitizeSingleLineField(jobTitle);
     cacheWorkGroup({
-      department,
+      department: sanitizedDepartment,
       id: workGroupId,
       isLocalOnly: true,
-      jobTitle,
+      jobTitle: sanitizedJobTitle!,
       memberCount: 1,
       shift,
     });
     cacheUnionCard({
-      ...unionCard, department, jobTitle, shift, workGroupId,
+      ...unionCard,
+      department: sanitizedDepartment,
+      jobTitle: sanitizedJobTitle,
+      shift,
+      workGroupId,
     });
 
     navigation.popTo('UnionCard');

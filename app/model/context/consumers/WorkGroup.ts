@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { updateWorkGroup as updateBackendWorkGroup } from '../../../networking';
 import useCurrentUser from './CurrentUser';
 import { useWorkGroupContext } from '../providers';
+import { sanitizeSingleLineField } from '../../formatters';
 
 type UpdateProps = {
   department?: string;
@@ -13,14 +14,16 @@ export default function useWorkGroup(workGroupId: string) {
   const { currentUser } = useCurrentUser();
   const { cacheWorkGroup, getCachedWorkGroup } = useWorkGroupContext();
 
-  const updateWorkGroup = useCallback(async ({
-    department, jobTitle, shift,
-  }: UpdateProps) => {
+  const updateWorkGroup = useCallback(async (props: UpdateProps) => {
+    const { shift } = props;
     const previousWorkGroup = getCachedWorkGroup(workGroupId);
 
     if (!currentUser || !previousWorkGroup) {
       throw new Error('Expected currentUser and workGroup to be cached');
     }
+
+    const department = sanitizeSingleLineField(props.department);
+    const jobTitle = sanitizeSingleLineField(props.jobTitle);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eEncrypt } = currentUser;
@@ -35,8 +38,8 @@ export default function useWorkGroup(workGroupId: string) {
     cacheWorkGroup({
       ...previousWorkGroup,
       department,
-      jobTitle: jobTitle ?? previousWorkGroup.jobTitle,
-      shift: shift ?? previousWorkGroup.shift,
+      jobTitle: jobTitle!,
+      shift: shift!,
     });
   }, [cacheWorkGroup, currentUser, workGroupId]);
 
