@@ -7,7 +7,7 @@ import useReplaceableFile from './ReplaceableFile';
 import useUnionCardSignatures, { escapeCSVField } from './UnionCardSignatures';
 
 const parentFolder = 'union-cards';
-const HEADER_ROW = 'Name,Email,Phone,Agreement,Signed At,Employer Name,Public Key PEM,Home Address,Job Title,Shift,Department,Signature,Signature Verified\n';
+const HEADER_ROW = 'Name,Email,Phone,Agreement,Signed At,Employer Name,Public Key PEM,Home Address,Job Title,Shift,Department,Signature (P256 aka secp256r1 in R|S raw representation of the CSV row left of this column),Signature Verified\n';
 
 export default function useUnionCards() {
   const { currentUser } = useCurrentUser();
