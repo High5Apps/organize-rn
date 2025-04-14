@@ -71,38 +71,42 @@ export default function LearnMoreModal({
 }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
   return (
-    <Modal
-      animationType="fade"
-      transparent
-      visible={visible}
-      onRequestClose={() => {
-        setVisible(false);
-      }}
-      statusBarTranslucent
-    >
-      <Scrim onPress={() => setVisible(false)} style={styles.scrim}>
-        <View style={styles.container}>
-          <IconButton
-            iconName="close"
-            iconSize="large"
-            onPress={() => setVisible(false)}
-            style={styles.closeButton}
-          />
-          <Icon name={iconName} style={styles.icon} />
-          <Text style={styles.headline}>
-            {headline}
-          </Text>
-          <LockingScrollView>
-            <View onStartShouldSetResponder={() => true}>
-              {children ?? (
-                <Text style={styles.body}>
-                  {body}
-                </Text>
-              )}
-            </View>
-          </LockingScrollView>
-        </View>
-      </Scrim>
-    </Modal>
+    // HACK: The View below is a workaround for
+    // https://github.com/software-mansion/react-native-reanimated/issues/6659#issuecomment-2704931585
+    <View>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={visible}
+        onRequestClose={() => {
+          setVisible(false);
+        }}
+        statusBarTranslucent
+      >
+        <Scrim onPress={() => setVisible(false)} style={styles.scrim}>
+          <View style={styles.container}>
+            <IconButton
+              iconName="close"
+              iconSize="large"
+              onPress={() => setVisible(false)}
+              style={styles.closeButton}
+            />
+            <Icon name={iconName} style={styles.icon} />
+            <Text style={styles.headline}>
+              {headline}
+            </Text>
+            <LockingScrollView>
+              <View onStartShouldSetResponder={() => true}>
+                {children ?? (
+                  <Text style={styles.body}>
+                    {body}
+                  </Text>
+                )}
+              </View>
+            </LockingScrollView>
+          </View>
+        </Scrim>
+      </Modal>
+    </View>
   );
 }
