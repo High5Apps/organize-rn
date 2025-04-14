@@ -42,7 +42,7 @@ const useStyles = () => {
 };
 
 function usePostTitle(titleParam?: string) {
-  const [title, setTitle] = useCachedValue<string>(CACHE_KEY_TITLE);
+  const [title, setTitle] = useCachedValue<string | undefined>(CACHE_KEY_TITLE);
 
   // If title param was included, override the cached title
   useEffect(() => {
@@ -92,21 +92,9 @@ export default function NewPostScreenBase({
     setLoading(true);
     setResult('none');
 
-    const strippedTitle = title?.trim() ?? '';
-    setTitle(strippedTitle);
-
-    let maybeStrippedBody = body;
-    if (maybeStrippedBody?.length) {
-      maybeStrippedBody = maybeStrippedBody.trim();
-      setBody(maybeStrippedBody);
-    }
-
     try {
       const post = await createPost({
-        body: maybeStrippedBody,
-        candidateId,
-        category: postCategory,
-        title: strippedTitle,
+        body, candidateId, category: postCategory, title,
       });
       resetForm();
       setResult('success', { message: 'Successfully created post' });

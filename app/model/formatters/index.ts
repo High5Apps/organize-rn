@@ -5,7 +5,7 @@ export {
   QRCodeDataFormatter, QRCodeDataParser, QR_CODE_TIME_TO_LIVE_SECONDS,
   useQRValue,
 } from './QRCodeData';
-export { sanitizeSingleLineField } from './Sanitizers';
+export { sanitizeMultilineField, sanitizeSingleLineField } from './Sanitizers';
 export { default as getTenure } from './Tenure';
 export { default as getTimeRemaining } from './TimeRemaining';
 export { default as getShortenedTitles } from './TitleShortener';

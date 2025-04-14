@@ -18,7 +18,7 @@ type Props = {
   candidateId?: string | null;
   category: PostCategory;
   e2eEncrypt: E2EEncryptor;
-  title: string;
+  title?: string;
 };
 
 type Return = {
@@ -35,7 +35,7 @@ export async function createPost({
   body, candidateId, category, e2eEncrypt, jwt, title,
 }: Props & Authorization): Promise<Return> {
   const [encryptedTitle, encryptedBody] = await Promise.all([
-    encrypt(title, e2eEncrypt),
+    title ? encrypt(title, e2eEncrypt) : undefined,
     body ? encrypt(body, e2eEncrypt) : undefined,
   ]);
   const response = await post({

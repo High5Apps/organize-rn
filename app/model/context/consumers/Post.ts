@@ -6,6 +6,9 @@ import {
   createPost as create, fetchPost, PostCategory,
 } from '../../../networking';
 import getErrorMessage from '../../ErrorMessage';
+import {
+  sanitizeMultilineField, sanitizeSingleLineField,
+} from '../../formatters';
 
 type Props = {
   id?: string;
@@ -15,7 +18,7 @@ type CreateProps = {
   body?: string;
   candidateId?: string | null;
   category: PostCategory;
-  title: string;
+  title?: string;
 };
 
 export default function usePost({ id: maybeId }: Props = {}) {
@@ -29,9 +32,12 @@ export default function usePost({ id: maybeId }: Props = {}) {
   const { currentUser } = useCurrentUser();
 
   const createPost = useCallback(async ({
-    body, candidateId, category, title,
+    body: unsanitizedBody, candidateId, category, title: unsanitizedTitle,
   }: CreateProps) => {
     if (!currentUser) { throw new Error('Expected current user'); }
+
+    const body = sanitizeMultilineField(unsanitizedBody);
+    const title = sanitizeSingleLineField(unsanitizedTitle);
 
     let errorMessage: string | undefined;
     let createdAt: Date | undefined;
@@ -60,7 +66,7 @@ export default function usePost({ id: maybeId }: Props = {}) {
         myVote: 1,
         pseudonym: currentUser.pseudonym,
         score: 1,
-        title,
+        title: title!,
         userId: currentUser.id,
       };
       cachePost(createdPost);

@@ -1,4 +1,11 @@
-// eslint-disable-next-line import/prefer-default-export
+export function sanitizeMultilineField(s: string | undefined) {
+  // Convert empty string to undefined
+  if (!s?.length) { return undefined; }
+
+  // Strip whitespace from ends
+  return s.trim();
+}
+
 export function sanitizeSingleLineField(s: string | undefined) {
   // Convert empty string to undefined
   if (!s?.length) { return undefined; }
