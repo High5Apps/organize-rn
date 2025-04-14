@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import isEqual from 'react-fast-compare';
 import { fetchOrg, updateOrg as updateBackendOrg } from '../networking';
 import { useCurrentUser } from './context';
+import { sanitizeSingleLineField } from './formatters';
 
 type UpdateProps = {
   email?: string;
@@ -34,13 +35,16 @@ export default function useOrg() {
     }
   }, [currentUser]);
 
-  const updateOrg = useCallback(async ({
-    email, employerName, memberDefinition, name,
-  }: UpdateProps) => {
+  const updateOrg = useCallback(async (props: UpdateProps) => {
     const org = currentUser?.org;
     if (!org) {
       throw new Error('Expected currentUser and org to be set');
     }
+
+    const email = sanitizeSingleLineField(props.email);
+    const employerName = sanitizeSingleLineField(props.employerName);
+    const memberDefinition = sanitizeSingleLineField(props.memberDefinition);
+    const name = sanitizeSingleLineField(props.name);
 
     const jwt = await currentUser.createAuthToken({ scope: '*' });
     const { e2eEncrypt } = currentUser;
