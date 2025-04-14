@@ -12,16 +12,16 @@ import {
 
 type Props = {
   candidateTitles?: string[];
-  category: BallotCategory;
+  category?: BallotCategory;
   e2eEncrypt: E2EEncryptor;
   e2eEncryptMany: E2EMultiEncryptor;
   maxSelections?: number;
   office?: OfficeCategory;
-  question: string;
+  question?: string;
   nominationsEndAt?: Date;
   termEndsAt?: Date;
   termStartsAt?: Date;
-  votingEndsAt: Date;
+  votingEndsAt?: Date;
 };
 
 type Return = {
@@ -38,7 +38,7 @@ export async function createBallot({
 }: Props & Authorization): Promise<Return> {
   const [encryptedCandidateTitles, encryptedQuestion] = await Promise.all([
     candidateTitles ? encryptMany(candidateTitles, e2eEncryptMany) : [],
-    encrypt(question, e2eEncrypt),
+    question ? encrypt(question, e2eEncrypt) : undefined,
   ]);
 
   const response = await post({

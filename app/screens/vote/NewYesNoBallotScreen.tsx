@@ -63,9 +63,6 @@ export default function NewYesNoBallotScreen({
     setLoading(true);
     setResult('none');
 
-    const strippedQuestion = question?.trim() ?? '';
-    setQuestion(strippedQuestion);
-
     try {
       const ballotPreview = await createBallotPreview({
         candidateTitles: CANDIDATE_TITLES,
@@ -73,7 +70,7 @@ export default function NewYesNoBallotScreen({
           category: BALLOT_CATEGORY,
           nominationsEndAt: null,
           office: null,
-          question: strippedQuestion,
+          question,
           votingEndsAt: votingEnd,
         },
       });

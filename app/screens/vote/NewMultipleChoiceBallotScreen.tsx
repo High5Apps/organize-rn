@@ -74,26 +74,15 @@ export default function NewMultipleChoiceBallotScreen({
     setLoading(true);
     setResult('none');
 
-    const strippedQuestion = question?.trim() ?? '';
-    setQuestion(strippedQuestion);
-
-    const strippedNonemptyCandidates = candidates
-      .map((c) => c.trim())
-      .filter((c) => c.length);
-    const uniqueCandidates = [...new Set(strippedNonemptyCandidates)];
-    setCandidates(
-      uniqueCandidates.length ? uniqueCandidates : initialCandidates,
-    );
-
     try {
       const ballotPreview = await createBallotPreview({
-        candidateTitles: uniqueCandidates,
+        candidateTitles: candidates,
         maxSelections,
         partialBallotPreview: {
           category: BALLOT_CATEGORY,
           nominationsEndAt: null,
           office: null,
-          question: strippedQuestion,
+          question,
           votingEndsAt: votingEnd,
         },
       });
