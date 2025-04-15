@@ -9,12 +9,14 @@ type RequiredModerationEvent = Required<ModerationEvent>;
 type ModerationEventContextType = {
   cacheModerationEvent: (moderationEvent: RequiredModerationEvent) => void;
   cacheModerationEvents: (moderationEvents?: RequiredModerationEvent[]) => void;
+  clearCachedModerationEvents: () => void;
   getCachedModerationEvent: (moderationEventId?: string) => RequiredModerationEvent | undefined;
 };
 
 const ModerationEventContext = createContext<ModerationEventContextType>({
   cacheModerationEvent: () => {},
   cacheModerationEvents: () => {},
+  clearCachedModerationEvents: () => {},
   getCachedModerationEvent: () => undefined,
 });
 
@@ -22,12 +24,19 @@ export function ModerationEventContextProvider({ children }: PropsWithChildren<{
   const {
     cacheModel: cacheModerationEvent,
     cacheModels: cacheModerationEvents,
+    clearCachedModels: clearCachedModerationEvents,
     getCachedModel: getCachedModerationEvent,
   } = useModelCache<RequiredModerationEvent>();
 
   const moderationEventContext = useMemo<ModerationEventContextType>(() => ({
-    cacheModerationEvent, cacheModerationEvents, getCachedModerationEvent,
-  }), [cacheModerationEvent, cacheModerationEvents, getCachedModerationEvent]);
+    cacheModerationEvent,
+    cacheModerationEvents,
+    clearCachedModerationEvents,
+    getCachedModerationEvent,
+  }), [
+    cacheModerationEvent, cacheModerationEvents, clearCachedModerationEvents,
+    getCachedModerationEvent,
+  ]);
 
   return (
     <ModerationEventContext.Provider value={moderationEventContext}>

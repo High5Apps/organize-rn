@@ -1,5 +1,6 @@
 import { CurrentUser } from '../../app/model/context/consumers/CurrentUser';
 import { storeCurrentUserData } from '../../app/model/context/providers/caches/CurrentUserDataStorage';
+import { useResetContext } from '../../app/model/context/providers/Context';
 import { fakeCurrentUserData, fakeJwtString } from '../FakeData';
 import Keys from '../../app/model/keys/Keys';
 import { leaveOrg } from '../../app/networking/UserAPI';
@@ -18,6 +19,11 @@ mockKeys.mockReturnValue({
 jest.mock('../../app/model/context/providers/caches/CurrentUserDataStorage');
 const mockStoreCurrentUserData = storeCurrentUserData as jest.Mock;
 
+jest.mock('../../app/model/context/providers/Context');
+const mockUseResetContext = useResetContext as jest.Mock;
+const mockResetContext = jest.fn();
+mockUseResetContext.mockReturnValue({ resetContext: mockResetContext });
+
 const mockSetCurrentUserData = jest.fn();
 const mockCacheUser = jest.fn();
 
@@ -31,6 +37,7 @@ describe('useCurrentUser', () => {
       fakeCurrentUserData,
       mockSetCurrentUserData,
       mockCacheUser,
+      mockResetContext,
     );
 
     it('should delete keys', async () => {
@@ -39,9 +46,9 @@ describe('useCurrentUser', () => {
       expect(mockRsaDelete).toHaveBeenCalled();
     });
 
-    it('should clear currentUser', async () => {
+    it('should reset context', async () => {
       await mockCurrentUser.logOut();
-      expect(mockSetCurrentUserData).toHaveBeenCalledWith(null);
+      expect(mockResetContext).toHaveBeenCalled();
     });
 
     it('should store null user', async () => {

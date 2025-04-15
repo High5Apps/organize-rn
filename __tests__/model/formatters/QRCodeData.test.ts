@@ -19,7 +19,12 @@ mockCurrentUser.mockReturnValue({
   createAuthToken: mockCreateAuthToken,
   decryptGroupKey: mockDecryptGroupKey,
 });
-const currentUser = CurrentUser(fakeCurrentUserData, () => null, () => null);
+const currentUser = CurrentUser(
+  fakeCurrentUserData,
+  () => null,
+  () => null,
+  () => null,
+);
 const formatter = QRCodeDataFormatter({ currentTime, currentUser });
 
 const consoleWarnSpy = jest.spyOn(global.console, 'warn').mockImplementation();

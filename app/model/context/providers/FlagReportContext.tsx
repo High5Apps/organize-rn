@@ -7,12 +7,14 @@ import { useModelCache } from './caches';
 type FlagReportContextType = {
   cacheFlagReport: (flagReport: FlagReport) => void;
   cacheFlagReports: (flagReports?: FlagReport[]) => void;
+  clearCachedFlagReports: () => void;
   getCachedFlagReport: (id?: string) => FlagReport | undefined;
 };
 
 const FlagReportContext = createContext<FlagReportContextType>({
   cacheFlagReport: () => {},
   cacheFlagReports: () => {},
+  clearCachedFlagReports: () => {},
   getCachedFlagReport: () => undefined,
 });
 
@@ -22,12 +24,19 @@ export function FlagReportContextProvider({
   const {
     cacheModel: cacheFlagReport,
     cacheModels: cacheFlagReports,
+    clearCachedModels: clearCachedFlagReports,
     getCachedModel: getCachedFlagReport,
   } = useModelCache<FlagReport>();
 
   const flagReportsContext = useMemo<FlagReportContextType>(() => ({
-    cacheFlagReport, cacheFlagReports, getCachedFlagReport,
-  }), [cacheFlagReport, cacheFlagReports, getCachedFlagReport]);
+    cacheFlagReport,
+    cacheFlagReports,
+    clearCachedFlagReports,
+    getCachedFlagReport,
+  }), [
+    cacheFlagReport, cacheFlagReports, clearCachedFlagReports,
+    getCachedFlagReport,
+  ]);
 
   return (
     <FlagReportContext.Provider value={flagReportsContext}>

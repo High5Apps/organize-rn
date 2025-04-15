@@ -16,12 +16,14 @@ const addScopeAsId = (myPermission: MyPermission) => ({
 type MyPermissionContextType = {
   cacheMyPermission: (myPermission: MyPermission) => void;
   cacheMyPermissions: (myPermissions?: MyPermission[]) => void;
+  clearCachedMyPermissions: () => void;
   getCachedMyPermission: (scope?: string) => MyPermission | undefined;
 };
 
 const MyPermissionContext = createContext<MyPermissionContextType>({
   cacheMyPermission: () => {},
   cacheMyPermissions: () => {},
+  clearCachedMyPermissions: () => {},
   getCachedMyPermission: () => undefined,
 });
 
@@ -31,6 +33,7 @@ export function MyPermissionContextProvider({
   const {
     cacheModel,
     cacheModels,
+    clearCachedModels,
     getCachedModel,
   } = useModelCache<MyPermissionWithId>();
 
@@ -41,13 +44,14 @@ export function MyPermissionContextProvider({
     cacheMyPermissions: (myPermissions?: MyPermission[]) => cacheModels(
       myPermissions?.map(addScopeAsId),
     ),
+    clearCachedMyPermissions: clearCachedModels,
     getCachedMyPermission: (scope?: string) => {
       const cachedModel = getCachedModel(scope);
       if (!cachedModel) { return undefined; }
       const { id, ...rest } = cachedModel;
       return rest;
     },
-  }), [cacheModel, cacheModels, getCachedModel]);
+  }), [cacheModel, cacheModels, clearCachedModels, getCachedModel]);
 
   return (
     <MyPermissionContext.Provider value={myPermissionContext}>

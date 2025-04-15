@@ -3,7 +3,8 @@ import isEqual from 'react-fast-compare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CurrentUserBase from '../../CurrentUserBase';
 import {
-  storeCurrentUserData, useCurrentUserDataContext, useUserContext,
+  storeCurrentUserData, useCurrentUserDataContext, useResetContext,
+  useUserContext,
 } from '../providers';
 import { Keys } from '../../keys';
 import { CurrentUserData, User } from '../../types';
@@ -18,6 +19,7 @@ export function CurrentUser(
   currentUserData: CurrentUserData,
   setCurrentUserData: Dispatch<SetStateAction<CurrentUserData | null>>,
   cacheUser: (user: User) => void,
+  resetContext: () => void,
 ) {
   const {
     authenticationKeyId, connectionCount, encryptedGroupKey, id, joinedAt,
@@ -108,7 +110,7 @@ export function CurrentUser(
 
     await Promise.allSettled([deleteKeys(), deleteDocuments()]);
     storeCurrentUserData(null);
-    setCurrentUserData(null);
+    resetContext();
     AsyncStorage.clear();
   };
 
@@ -174,10 +176,16 @@ export type CurrentUserType = ReturnType<typeof CurrentUser>;
 export default function useCurrentUser() {
   const { currentUserData, setCurrentUserData } = useCurrentUserDataContext();
   const { cacheUser } = useUserContext();
+  const { resetContext } = useResetContext();
 
   const currentUser = useMemo(() => {
     if (!currentUserData) { return null; }
-    return CurrentUser(currentUserData, setCurrentUserData, cacheUser);
+    return CurrentUser(
+      currentUserData,
+      setCurrentUserData,
+      cacheUser,
+      resetContext,
+    );
   }, [currentUserData]);
 
   return { currentUser, setCurrentUser: setCurrentUserData };

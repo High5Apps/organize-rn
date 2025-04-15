@@ -4,21 +4,25 @@ import React, {
 import { useCachedValueCache } from './caches';
 
 type CachedValueContextType = {
+  clearCachedValues: () => void;
   getCachedValue: (key: string) => any;
   setCachedValue: (key: string, value: any) => void;
 };
 
 const CachedValueContext = createContext<CachedValueContextType>({
+  clearCachedValues: () => {},
   getCachedValue: () => undefined,
   setCachedValue: () => {},
 });
 
 export function CachedValueContextProvider({ children }: PropsWithChildren<{}>) {
-  const { getCachedValue, setCachedValue } = useCachedValueCache();
+  const {
+    clearCachedValues, getCachedValue, setCachedValue,
+  } = useCachedValueCache();
 
   const cachedValueContext = useMemo<CachedValueContextType>(() => ({
-    getCachedValue, setCachedValue,
-  }), [getCachedValue, setCachedValue]);
+    clearCachedValues, getCachedValue, setCachedValue,
+  }), [clearCachedValues, getCachedValue, setCachedValue]);
 
   return (
     <CachedValueContext.Provider value={cachedValueContext}>
