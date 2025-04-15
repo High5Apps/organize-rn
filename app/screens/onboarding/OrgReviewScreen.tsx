@@ -4,7 +4,9 @@ import {
   Agreement, ButtonRow, LockingScrollView, PrimaryButton, ScreenBackground,
   SecondaryButton, useRequestProgress,
 } from '../../components';
-import { NewOrgSteps, createCurrentUser, useCurrentUser } from '../../model';
+import {
+  NewOrgSteps, createCurrentUser, sanitizeSingleLineField, useCurrentUser,
+} from '../../model';
 import type { OrgReviewParams, OrgReviewScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 
@@ -68,7 +70,7 @@ export default function OrgReviewScreen({
   const untrimmedParams: OrgReviewParams = route.params;
   const unpublishedOrg = Object.fromEntries(
     Object.entries(untrimmedParams)
-      .map(([k, v]) => ([k, typeof v === 'string' ? v.trim() : v])),
+      .map(([k, v]) => ([k, sanitizeSingleLineField(v)])),
   ) as OrgReviewParams;
 
   const { styles } = useStyles();
