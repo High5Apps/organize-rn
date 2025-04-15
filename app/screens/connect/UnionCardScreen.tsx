@@ -20,7 +20,7 @@ export const MAX_EMPLOYER_NAME_LENGTH = 50;
 
 const useStyles = () => {
   const {
-    colors, font, sizes, spacing,
+    colors, font, opacity, sizes, spacing,
   } = useTheme();
 
   const styles = StyleSheet.create({
@@ -36,6 +36,9 @@ const useStyles = () => {
     container: {
       padding: spacing.m,
       rowGap: spacing.m,
+    },
+    hidden: {
+      opacity: opacity.hidden,
     },
     section: {
       rowGap: spacing.s,
@@ -375,7 +378,10 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               <TextButton
                 disabled={!inputsEditable}
                 onPress={() => navigation.navigate('SelectWorkGroup')}
-                style={workGroupDescription && styles.textButtonEdit}
+                style={[
+                  workGroupDescription && styles.textButtonEdit,
+                  !inputsEditable && styles.hidden,
+                ]}
               >
                 {workGroupDescription ? 'Edit' : 'Select your work group'}
               </TextButton>
