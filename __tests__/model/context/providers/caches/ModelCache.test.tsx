@@ -20,6 +20,15 @@ describe('usePostCache', () => {
     });
   });
 
+  it('should clear the cache', () => {
+    const { result } = renderHook(useModelCache<Post>);
+    act(() => result.current.cacheModels(posts));
+    act(() => result.current.clearCachedModels());
+    posts.forEach(({ id }) => {
+      expect(result.current.getCachedModel(id)).toBeUndefined();
+    });
+  });
+
   it('caching new posts should not erase old posts', () => {
     const allPosts = [...posts, ...postsToUpdate];
     const { result } = renderHook(useModelCache<Post>);

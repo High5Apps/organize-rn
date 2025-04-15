@@ -13,6 +13,10 @@ function modelsToMap<T extends Model>(models: T[]) {
 export default function useModelCache<T extends Model>() {
   const [modelCache, setModelCache] = useState<Map<string, T>>(new Map());
 
+  function clearCachedModels() {
+    setModelCache(new Map());
+  }
+
   function getCachedModel(id?: string) {
     if (id === undefined) { return undefined; }
     return modelCache.get(id);
@@ -44,5 +48,7 @@ export default function useModelCache<T extends Model>() {
     cacheModels([model]);
   }
 
-  return { cacheModel, cacheModels, getCachedModel };
+  return {
+    cacheModel, cacheModels, clearCachedModels, getCachedModel,
+  };
 }
