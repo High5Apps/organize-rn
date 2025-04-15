@@ -3,6 +3,10 @@ import { useState } from 'react';
 export default function useCachedValueCache() {
   const [cache, setCache] = useState<Map<string, any>>(new Map());
 
+  function clearCachedValues() {
+    setCache(new Map());
+  }
+
   function getCachedValue(key: string): any {
     return cache.get(key);
   }
@@ -15,5 +19,5 @@ export default function useCachedValueCache() {
     });
   }
 
-  return { getCachedValue, setCachedValue };
+  return { clearCachedValues, getCachedValue, setCachedValue };
 }

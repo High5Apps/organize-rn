@@ -17,6 +17,17 @@ describe('useCommentCache', () => {
     });
   });
 
+  it('should clear the cache', () => {
+    const { result } = renderHook(useCachedValueCache);
+    act(() => cachedValues.forEach(
+      (cv, i) => result.current.setCachedValue(i.toString(), cv),
+    ));
+    act(() => result.current.clearCachedValues());
+    cachedValues.map(valueToKey).forEach((key) => {
+      expect(result.current.getCachedValue(key)).toBeUndefined();
+    });
+  });
+
   it('caching new value should not erase old values', async () => {
     const { result } = renderHook(useCachedValueCache);
     act(() => cachedValues.forEach(
