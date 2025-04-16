@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-keyboard-controller/src/components/KeyboardAwareScrollView/index.tsx b/node_modules/react-native-keyboard-controller/src/components/KeyboardAwareScrollView/index.tsx
+index 10e316b..d564219 100644
+--- a/node_modules/react-native-keyboard-controller/src/components/KeyboardAwareScrollView/index.tsx
++++ b/node_modules/react-native-keyboard-controller/src/components/KeyboardAwareScrollView/index.tsx
+@@ -383,7 +383,7 @@ const KeyboardAwareScrollView = forwardRef<
+         onLayout={onScrollViewLayout}
+       >
+         {children}
+-        <Reanimated.View style={view} />
++        {enabled && <Reanimated.View style={view} />}
+       </ScrollViewComponent>
+     );
+   },
