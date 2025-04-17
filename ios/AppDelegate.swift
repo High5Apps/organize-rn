@@ -13,7 +13,9 @@ class AppDelegate: RCTAppDelegate {
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = [:]
     
-    UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "Primary")
+    let primaryColor = UIColor(named: "Primary")
+    UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = primaryColor
+    UIBarButtonItem.appearance().tintColor = primaryColor
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
