@@ -21,6 +21,7 @@ const useStyles = () => {
     },
     innerContainer: {
       alignItems: 'center',
+      columnGap: spacing.s,
       flexDirection: 'row',
     },
     subtitle: {
