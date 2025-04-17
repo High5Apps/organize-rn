@@ -29,7 +29,10 @@ export async function createComment({
 }: Props & Authorization): Promise<Return> {
   const uri = commentId ? repliesURI(commentId) : commentsURI(postId);
 
-  const encryptedBody = body ? await encrypt(body, e2eEncrypt) : undefined;
+  // Use null instead of undefined so the error message "Body can't be blank" is
+  // shown instead of "param is missing or the value is empty: comment"
+  const encryptedBody = body ? await encrypt(body, e2eEncrypt) : null;
+
   const response = await post({
     bodyObject: { comment: { encryptedBody } }, jwt, uri,
   });
