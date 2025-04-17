@@ -42,7 +42,6 @@ export default function NewCandidatesControl({
     <View>
       {candidates.map((candidate, i) => (
         <TextInputRow
-          autoFocus={false}
           editable={!disabled}
           focused={focusedInputIndex === i}
           iconEndDisabled={disabled || candidates.length === 1}

@@ -262,7 +262,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               autoCapitalize="words"
               autoComplete="name"
               autoCorrect={false}
-              autoFocus={false}
               editable={inputsEditable}
               enterKeyHint={enterKeyHint('name')}
               focused={focused('name')}
@@ -279,7 +278,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
             <HeaderText>Phone</HeaderText>
             <TextInputRow
               autoComplete="tel"
-              autoFocus={false}
               editable={inputsEditable}
               enterKeyHint={enterKeyHint('phone')}
               focused={focused('phone')}
@@ -299,7 +297,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect={false}
-              autoFocus={false}
               editable={inputsEditable}
               enterKeyHint={enterKeyHint('email')}
               focused={focused('email')}
@@ -319,7 +316,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               autoCapitalize="words"
               autoComplete="street-address"
               autoCorrect={false}
-              autoFocus={false}
               editable={inputsEditable}
               enterKeyHint={enterKeyHint('homeAddressLine1')}
               focused={focused('homeAddressLine1')}
@@ -334,7 +330,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
             <TextInputRow
               autoCapitalize="words"
               autoCorrect={false}
-              autoFocus={false}
               editable={inputsEditable}
               enterKeyHint={enterKeyHint('homeAddressLine2')}
               focused={focused('homeAddressLine2')}
@@ -353,7 +348,6 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               <TextInputRow
                 autoCapitalize="words"
                 autoCorrect={false}
-                autoFocus={false}
                 editable={inputsEditable}
                 enterKeyHint={enterKeyHint('employerName')}
                 focused={focused('employerName')}

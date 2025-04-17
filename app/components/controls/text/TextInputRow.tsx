@@ -75,7 +75,6 @@ export default function TextInputRow(props: Props) {
   }, [focused]);
 
   const defaultProps = {
-    autoFocus: true,
     placeholderTextColor: colors.labelSecondary,
     returnKeyType: 'next' as const,
     rows: 1,

@@ -77,7 +77,6 @@ export default function NewCommentScreenBase({
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {HeaderComponent}
       <MultilineTextInput
-        autoFocus
         editable={!loading}
         maxLength={MAX_COMMENT_LENGTH}
         onChangeText={setBody}

@@ -130,7 +130,6 @@ export default function EditOrgScreen() {
               autoCapitalize={nameStep.autoCaptitalize}
               autoComplete={nameStep.autoComplete}
               autoCorrect={nameStep.autoCorrect}
-              autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
               keyboardType={nameStep.keyboardType}
@@ -147,7 +146,6 @@ export default function EditOrgScreen() {
               autoCapitalize={emailStep.autoCaptitalize}
               autoComplete={emailStep.autoComplete}
               autoCorrect={emailStep.autoCorrect}
-              autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
               keyboardType={emailStep.keyboardType}
@@ -181,7 +179,6 @@ export default function EditOrgScreen() {
             <TextInputRow
               autoCapitalize="words"
               autoCorrect={false}
-              autoFocus={false}
               editable={!loading}
               enablesReturnKeyAutomatically
               maxLength={EMPLOYER_NAME_MAX_LENGTH}

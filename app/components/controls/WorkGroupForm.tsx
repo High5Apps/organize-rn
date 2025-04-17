@@ -72,7 +72,6 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
         <HeaderText>Job title</HeaderText>
         <TextInputRow
           autoCapitalize="words"
-          autoFocus={false}
           enterKeyHint={enterKeyHint('jobTitle')}
           focused={focused('jobTitle')}
           maxLength={MAX_JOB_TITLE_LENGTH}
@@ -88,7 +87,6 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
         <HeaderText>Department (optional)</HeaderText>
         <TextInputRow
           autoCapitalize="words"
-          autoFocus={false}
           enterKeyHint={enterKeyHint('department')}
           focused={focused('department')}
           maxLength={MAX_DEPARTMENT_LENGTH}

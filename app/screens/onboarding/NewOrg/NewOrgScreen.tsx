@@ -89,7 +89,6 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           autoCapitalize={autoCaptitalize}
           autoComplete={autoComplete}
           autoCorrect={autoCorrect}
-          autoFocus={false}
           keyboardType={keyboardType}
           maxLength={maxLength}
           onChangeText={setInput}

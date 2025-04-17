@@ -36,7 +36,6 @@ export default function SearchBar({
   const { styles } = useStyles();
   return (
     <TextInputRow
-      autoFocus={false}
       containerStyle={styles.textInputContainer}
       editable={!disabled}
       iconEndDisabled={((value?.length ?? 0) === 0) || disabled}
