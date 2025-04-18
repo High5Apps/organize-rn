@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Keyboard, StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import {
-  KeyboardAvoidingScreenBackground, MultilineTextInput, PrimaryButton,
-  useRequestProgress,
+  HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
+  PrimaryButton, useRequestProgress,
 } from '../../components';
 import useTheme from '../../Theme';
 import { MAX_COMMENT_LENGTH, useCachedValue, useComment } from '../../model';
@@ -22,11 +22,12 @@ const useStyles = () => {
     container: {
       rowGap: spacing.m,
     },
-    multilineTextInput: {
-      marginHorizontal: spacing.m,
-    },
     requestProgress: {
       marginHorizontal: spacing.m,
+    },
+    section: {
+      marginHorizontal: spacing.m,
+      rowGap: spacing.s,
     },
   });
 
@@ -76,15 +77,17 @@ export default function NewCommentScreenBase({
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {HeaderComponent}
-      <MultilineTextInput
-        editable={!loading}
-        maxLength={MAX_COMMENT_LENGTH}
-        onChangeText={setBody}
-        placeholder="What do you think?"
-        style={styles.multilineTextInput}
-        returnKeyType="default"
-        value={body}
-      />
+      <View style={styles.section}>
+        <HeaderText>{commentId ? 'Reply' : 'Comment'}</HeaderText>
+        <MultilineTextInput
+          editable={!loading}
+          maxLength={MAX_COMMENT_LENGTH}
+          onChangeText={setBody}
+          placeholder="What do you think?"
+          returnKeyType="default"
+          value={body}
+        />
+      </View>
       <RequestProgress style={styles.requestProgress} />
       <PrimaryButton
         iconName="publish"
