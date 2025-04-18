@@ -69,7 +69,7 @@ export default function useUnionCard() {
         shift,
         signatureBytes,
         signedAt,
-        workGroupId: workGroupId ?? undefined,
+        workGroupId,
       }));
     } catch (error) {
       errorMessage = getErrorMessage(error);
@@ -87,16 +87,16 @@ export default function useUnionCard() {
         employerName: employerName!,
         homeAddressLine1: homeAddressLine1!,
         homeAddressLine2: homeAddressLine2!,
-        jobTitle,
+        jobTitle: jobTitle!,
         id: id!,
         name: name!,
         phone: phone!,
         publicKeyBytes: publicKeyBytes!,
-        shift,
+        shift: shift!,
         signatureBytes: signatureBytes!,
         signedAt: signedAt!,
         userId: currentUser.id,
-        workGroupId: updatedWorkGroupId ?? null,
+        workGroupId: updatedWorkGroupId!,
       };
       cacheUnionCard(createdUnionCard);
     }

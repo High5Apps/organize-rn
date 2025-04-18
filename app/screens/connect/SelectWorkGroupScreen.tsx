@@ -61,7 +61,7 @@ function useShouldDisableAddButtons() {
       return;
     }
 
-    const workGroup = getCachedWorkGroup(unionCard?.workGroupId ?? undefined);
+    const workGroup = getCachedWorkGroup(unionCard?.workGroupId);
     if (workGroup?.isLocalOnly) {
       setAddedLocalWorkGroup(true);
     }

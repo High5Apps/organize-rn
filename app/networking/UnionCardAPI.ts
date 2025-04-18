@@ -34,7 +34,7 @@ type Return = {
 } | {
   errorMessage?: never;
   id: string;
-  workGroupId: string | undefined;
+  workGroupId: string;
 };
 
 export async function createUnionCard({
@@ -93,10 +93,7 @@ export async function createUnionCard({
     throw new Error('Failed to parse union card ID from response');
   }
 
-  return {
-    id: json.id,
-    workGroupId: json.workGroupId ?? undefined,
-  };
+  return json;
 }
 
 type FetchProps = Authorization & {
@@ -149,10 +146,10 @@ export async function fetchUnionCard({
     decrypt(encryptedEmployerName, e2eDecrypt),
     decrypt(encryptedHomeAddressLine1, e2eDecrypt),
     decrypt(encryptedHomeAddressLine2, e2eDecrypt),
-    encryptedJobTitle ? decrypt(encryptedJobTitle, e2eDecrypt) : undefined,
+    decrypt(encryptedJobTitle, e2eDecrypt),
     decrypt(encryptedName, e2eDecrypt),
     decrypt(encryptedPhone, e2eDecrypt),
-    encryptedShift ? decrypt(encryptedShift, e2eDecrypt) : undefined,
+    decrypt(encryptedShift, e2eDecrypt),
   ]);
   const {
     encryptedAgreement: unusedA,
@@ -271,10 +268,10 @@ export async function fetchUnionCards({
       employerName: employerNames[i]!,
       homeAddressLine1: homeAddressLine1s[i]!,
       homeAddressLine2: homeAddressLine2s[i]!,
-      jobTitle: jobTitles[i],
+      jobTitle: jobTitles[i]!,
       name: names[i]!,
       phone: phones[i]!,
-      shift: shifts[i],
+      shift: shifts[i]!,
     }),
   );
 

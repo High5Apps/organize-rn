@@ -46,7 +46,7 @@ export default function useWorkGroups({
       // If the user locally added a workgroup but hasn't signed yet, the
       // locally added work group won't be included in the fetched work groups,
       // so it must be added manually.
-      const unionCardWorkGroupId = unionCard?.workGroupId ?? undefined;
+      const unionCardWorkGroupId = unionCard?.workGroupId;
       if (!fetchedWorkGroups.find(({ id }) => id === unionCardWorkGroupId)) {
         const locallyAddedWorkGroup = getCachedWorkGroup(unionCardWorkGroupId);
         if (locallyAddedWorkGroup) {

@@ -20,10 +20,6 @@ type CreateSignatureProps = Partial<
   Omit<UnionCard, 'id' | 'userId' | 'signatureBytes' | 'workGroupId'>
 >;
 
-type UnsignedDataOptions = {
-  padded?: boolean;
-};
-
 export default function useUnionCardSignatures() {
   const { currentUser } = useCurrentUser();
   const { verify } = Keys().ecc;
@@ -31,17 +27,12 @@ export default function useUnionCardSignatures() {
   function getUnsignedData({
     agreement, department, email, employerName, homeAddressLine1,
     homeAddressLine2, jobTitle, phone, name, publicKeyBytes, shift, signedAt,
-  }: CreateSignatureProps, { padded }: UnsignedDataOptions = {}) {
+  }: CreateSignatureProps) {
     const homeAddress = `${homeAddressLine1}\n${homeAddressLine2}`;
     const columns = [
       name, email, phone, agreement, signedAt?.toISOString(), employerName,
-      publicKeyBytes, homeAddress,
+      publicKeyBytes, homeAddress, jobTitle, shift, department,
     ];
-    if (jobTitle && shift) {
-      columns.push(jobTitle, shift, department);
-    } else if (padded) {
-      columns.push(undefined, undefined, undefined);
-    }
     const unsignedRow = columns.map(escapeCSVField).join(',');
     return unsignedRow;
   }
@@ -57,16 +48,13 @@ export default function useUnionCardSignatures() {
   async function verifyAll({ unionCards }: { unionCards: UnionCard[] }) {
     const messagesToVerify = unionCards.map((unionCard) => ({
       message: getUnsignedData(unionCard),
-      paddedMessage: getUnsignedData(unionCard, { padded: true }),
       publicKey: unionCard.publicKeyBytes,
       signature: unionCard.signatureBytes,
     }));
     const verificationPromises = messagesToVerify.map(verify);
     const verifieds = await Promise.all(verificationPromises);
     const verificationResults = messagesToVerify
-      .map(({ message, paddedMessage }, i) => ({
-        message, paddedMessage, verified: verifieds[i],
-      }));
+      .map(({ message }, i) => ({ message, verified: verifieds[i] }));
     return verificationResults;
   }
 

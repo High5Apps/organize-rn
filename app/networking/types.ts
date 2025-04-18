@@ -776,16 +776,16 @@ export type UnionCardResponse = {
   encryptedEmployerName: BackendEncryptedMessage;
   encryptedHomeAddressLine1: BackendEncryptedMessage;
   encryptedHomeAddressLine2: BackendEncryptedMessage;
-  encryptedJobTitle: BackendEncryptedMessage | null;
+  encryptedJobTitle: BackendEncryptedMessage;
   encryptedName: BackendEncryptedMessage;
   encryptedPhone: BackendEncryptedMessage;
-  encryptedShift: BackendEncryptedMessage | null;
+  encryptedShift: BackendEncryptedMessage;
   id: string;
   publicKeyBytes: string;
   signatureBytes: string;
   signedAt: Date;
   userId: string;
-  workGroupId: string | null;
+  workGroupId: string
 };
 
 export function isUnionCardResponse(object: unknown): object is UnionCardResponse {
@@ -798,17 +798,15 @@ export function isUnionCardResponse(object: unknown): object is UnionCardRespons
       || isBackendEncryptedMessage(unionCard.encryptedDepartment))
     && isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine1)
     && isBackendEncryptedMessage(unionCard.encryptedHomeAddressLine2)
-    && (unionCard.encryptedJobTitle === null
-      || isBackendEncryptedMessage(unionCard.encryptedJobTitle))
+    && isBackendEncryptedMessage(unionCard.encryptedJobTitle)
     && isBackendEncryptedMessage(unionCard.encryptedName)
     && isBackendEncryptedMessage(unionCard.encryptedPhone)
-    && (unionCard.encryptedShift === null
-      || isBackendEncryptedMessage(unionCard.encryptedShift))
+    && isBackendEncryptedMessage(unionCard.encryptedShift)
     && unionCard.publicKeyBytes?.length > 0
     && unionCard.signatureBytes?.length > 0
     && isDate(unionCard.signedAt)
     && unionCard.userId?.length > 0
-    && (unionCard.workGroupId === null || unionCard.workGroupId.length > 0);
+    && unionCard.workGroupId?.length > 0;
 }
 
 export type UnionCard = Decrypt<UnionCardResponse>;
@@ -828,13 +826,13 @@ export function isUnionCardIndexResponse(object: unknown): object is UnionCardIn
 
 export type CreateUnionCardResponse = {
   id: string;
-  workGroupId: string | null;
+  workGroupId: string;
 };
 
 export function isCreateUnionCardResponse(object: unknown): object is CreateUnionCardResponse {
   const response = (object as CreateUnionCardResponse);
   return response?.id?.length > 0
-    && (response.workGroupId === null || response.workGroupId.length > 0);
+    && response.workGroupId?.length > 0;
 }
 
 export type WorkGroupResponse = {

@@ -13,7 +13,7 @@ function useWorkGroupSelection(workGroups: WorkGroup[]) {
   const { cacheUnionCard, unionCard } = useUnionCard();
   const { getSelectionInfo, onRowPressed } = useSelectionUpdater({
     choices: workGroups.map(({ id }) => id),
-    initialSelection: unionCard?.workGroupId ?? undefined,
+    initialSelection: unionCard?.workGroupId,
     onSyncSelection: ([workGroupId]) => {
       const {
         department, jobTitle, shift,

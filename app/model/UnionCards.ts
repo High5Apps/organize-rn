@@ -64,10 +64,10 @@ export default function useUnionCards() {
         const unionCards = response.unionCards!;
         const results = await verifyAll({ unionCards });
         const rows = unionCards.map((unionCard, i) => {
-          const { paddedMessage, verified } = results[i];
+          const { message, verified } = results[i];
           const signature = unionCard.signatureBytes;
           const escapedSignature = escapeCSVField(signature);
-          return `${paddedMessage},${escapedSignature},${verified}\n`;
+          return `${message},${escapedSignature},${verified}\n`;
         });
         const data = rows.join('');
         await appendToReplacement({ data });
