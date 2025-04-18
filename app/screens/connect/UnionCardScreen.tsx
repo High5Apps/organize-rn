@@ -374,7 +374,7 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
                 onPress={() => navigation.navigate('SelectWorkGroup')}
                 style={[
                   workGroupDescription && styles.textButtonEdit,
-                  !inputsEditable && styles.hidden,
+                  signedAt && styles.hidden,
                 ]}
               >
                 {workGroupDescription ? 'Edit' : 'Select your work group'}
