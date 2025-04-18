@@ -6,8 +6,8 @@ import { useCachedValue, usePost } from '../../model';
 import type { Post, PostCategory } from '../../model';
 import useTheme from '../../Theme';
 import {
-  KeyboardAvoidingScreenBackground, MultilineTextInput, PostCategorySelector,
-  PrimaryButton, TextInputRow, useRequestProgress,
+  HeaderText, KeyboardAvoidingScreenBackground, MultilineTextInput,
+  PostCategorySelector, PrimaryButton, TextInputRow, useRequestProgress,
 } from '../../components';
 
 const MAX_TITLE_LENGTH = 140;
@@ -23,18 +23,17 @@ const useStyles = () => {
       alignSelf: 'flex-end',
       flex: 0,
       height: sizes.buttonHeight,
-      marginBottom: spacing.m,
-      marginEnd: spacing.m,
       paddingHorizontal: spacing.m,
     },
     container: {
+      padding: spacing.m,
       rowGap: spacing.m,
-    },
-    multilineTextInput: {
-      marginHorizontal: spacing.m,
     },
     requestProgress: {
       marginHorizontal: spacing.m,
+    },
+    section: {
+      rowGap: spacing.s,
     },
   });
 
@@ -105,15 +104,19 @@ export default function NewPostScreenBase({
   };
 
   return (
-    <KeyboardAvoidingScreenBackground>
+    <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {!initialCategory && (
-        <PostCategorySelector
-          disabled={loading}
-          onSelectionChanged={setPostCategory}
-          selection={postCategory}
-        />
+        <View style={styles.section}>
+          <HeaderText>Category</HeaderText>
+          <PostCategorySelector
+            disabled={loading}
+            onSelectionChanged={setPostCategory}
+            selection={postCategory}
+          />
+        </View>
       )}
-      <View style={styles.container}>
+      <View style={styles.section}>
+        <HeaderText>Title</HeaderText>
         <TextInputRow
           editable={!loading}
           enablesReturnKeyAutomatically // iOS only
@@ -125,31 +128,33 @@ export default function NewPostScreenBase({
               multilineTextInputRef.current?.focus();
             }
           }}
-          placeholder="Title"
+          placeholder="Enter a short title"
           // Prevents dismissing the keyboard when hitting next on Android
           // before entering any input
           submitBehavior="submit"
           value={title}
         />
+      </View>
+      <View style={styles.section}>
+        <HeaderText>Body (optional)</HeaderText>
         <MultilineTextInput
           editable={!loading}
           maxLength={MAX_BODY_LENGTH}
           onChangeText={setBody}
           onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
-          placeholder="Body (optional)"
-          style={styles.multilineTextInput}
+          placeholder="Enter any details that can't fit in the title"
           returnKeyType="default"
           ref={multilineTextInputRef}
           value={body}
         />
-        <RequestProgress style={styles.requestProgress} />
-        <PrimaryButton
-          iconName="publish"
-          label="Publish"
-          onPress={onPublishPressed}
-          style={styles.button}
-        />
       </View>
+      <RequestProgress style={styles.requestProgress} />
+      <PrimaryButton
+        iconName="publish"
+        label="Publish"
+        onPress={onPublishPressed}
+        style={styles.button}
+      />
     </KeyboardAvoidingScreenBackground>
   );
 }
