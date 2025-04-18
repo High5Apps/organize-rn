@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
 import { FlagReport, useCurrentUser, useFlagReports } from '../../../model';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { FlagReportRow } from './rows';
@@ -62,6 +63,9 @@ export default function FlagReportList({ handled, onItemPress }: Props) {
     [onItemPress],
   );
 
+  const listRef = useRef<FlatList<FlagReport>>(null);
+  useScrollToTop(listRef);
+
   return (
     <FlatList
       data={flagReports}
@@ -72,6 +76,7 @@ export default function FlagReportList({ handled, onItemPress }: Props) {
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
       keyboardShouldPersistTaps="handled"
+      ref={listRef}
       refreshControl={refreshControl}
       renderItem={renderItem}
     />
