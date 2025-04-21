@@ -22,6 +22,9 @@ const useStyles = () => {
       paddingHorizontal: spacing.m,
       paddingVertical: spacing.s,
     },
+    disclosureIcon: {
+      alignSelf: 'flex-start',
+    },
     icon: {
       color: colors.primary,
       fontSize: sizes.mediumIcon,
@@ -90,7 +93,7 @@ export default function WorkGroupRow({
             onPress={() => onEditPress?.(item)}
           />
         )}
-        {showDisclosureIcon && <DisclosureIcon />}
+        {showDisclosureIcon && <DisclosureIcon style={styles.disclosureIcon} />}
       </View>
     </TouchableHighlight>
   );
