@@ -1,0 +1,22 @@
+diff --git a/node_modules/react-native/React/Fabric/Mounting/ComponentViews/View/RCTViewComponentView.mm b/node_modules/react-native/React/Fabric/Mounting/ComponentViews/View/RCTViewComponentView.mm
+index 3b004d2..6f158dd 100644
+--- a/node_modules/react-native/React/Fabric/Mounting/ComponentViews/View/RCTViewComponentView.mm
++++ b/node_modules/react-native/React/Fabric/Mounting/ComponentViews/View/RCTViewComponentView.mm
+@@ -529,7 +529,6 @@ - (void)updateLayoutMetrics:(const LayoutMetrics &)layoutMetrics
+   // re-applying individual sub-values which weren't changed.
+   [super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:_layoutMetrics];
+ 
+-  _layoutMetrics = layoutMetrics;
+   _needsInvalidateLayer = YES;
+ 
+   _borderLayer.frame = self.layer.bounds;
+@@ -551,6 +550,9 @@ - (void)updateLayoutMetrics:(const LayoutMetrics &)layoutMetrics
+     auto newTransform = _props->resolveTransform(layoutMetrics);
+     self.layer.transform = RCTCATransform3DFromTransformMatrix(newTransform);
+   }
++
++  // Fix for https://github.com/facebook/react-native/issues/30523
++  _layoutMetrics = layoutMetrics;
+ }
+ 
+ - (BOOL)isJSResponder

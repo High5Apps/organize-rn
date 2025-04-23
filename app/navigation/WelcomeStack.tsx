@@ -5,7 +5,7 @@ import {
   VerificationScreen,
 } from '../screens';
 import type { WelcomeStackParamList } from './types';
-import { SafeAreaPadding, StatusBar } from '../components';
+import { SafeAreaPadding } from '../components';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import useTheme from '../Theme';
 import { useCurrentUser } from '../model';
@@ -26,34 +26,32 @@ export default function WelcomeStack() {
   const initialRouteName = inVerification ? 'Verification' : 'Welcome';
 
   return (
-    <StatusBar backgroundColor={colors.background}>
-      <SafeAreaPadding>
-        <Stack.Navigator
-          initialRouteName={initialRouteName}
-          screenOptions={screenOptions}
-        >
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{ animation: 'none' }}
-          />
-          <Stack.Screen
-            name="NewOrg"
-            component={NewOrgScreen}
-            getId={({ params }) => String(params.step)}
-            options={{ navigationBarColor: colors.fill }}
-          />
-          <Stack.Screen name="OrgReview" component={OrgReview} />
-          <Stack.Screen
-            name="JoinOrg"
-            component={JoinOrgScreen}
-          />
-          <Stack.Screen
-            name="Verification"
-            component={VerificationScreen}
-          />
-        </Stack.Navigator>
-      </SafeAreaPadding>
-    </StatusBar>
+    <SafeAreaPadding>
+      <Stack.Navigator
+        initialRouteName={initialRouteName}
+        screenOptions={screenOptions}
+      >
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ animation: 'none' }}
+        />
+        <Stack.Screen
+          name="NewOrg"
+          component={NewOrgScreen}
+          getId={({ params }) => String(params.step)}
+          options={{ navigationBarColor: colors.fill }}
+        />
+        <Stack.Screen name="OrgReview" component={OrgReview} />
+        <Stack.Screen
+          name="JoinOrg"
+          component={JoinOrgScreen}
+        />
+        <Stack.Screen
+          name="Verification"
+          component={VerificationScreen}
+        />
+      </Stack.Navigator>
+    </SafeAreaPadding>
   );
 }

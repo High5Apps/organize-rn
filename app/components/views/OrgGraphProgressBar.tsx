@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar';
 
 export default function useOrgGraphProgressBar(
   isGraphAvailable: boolean,
-  visNetwork: RefObject<VisNetworkRef>,
+  visNetwork: RefObject<VisNetworkRef | null>,
 ) {
   const [progress, setProgress] = useState(0);
 

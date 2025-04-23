@@ -65,7 +65,7 @@ npm test
 To run just one part of these checks, use `npm run <command>` with one of the scripts in [`package.json`](/package.json).
 
 ### Unit testing
-[Jest](https://jestjs.io/) is used as the unit testing framework. [`react-test-renderer`](https://legacy.reactjs.org/docs/test-renderer.html) is used for unit testing components.
+[Jest](https://jestjs.io/) is used as the unit testing framework. [`@testing-library/react-native`](https://callstack.github.io/react-native-testing-library/) is used for unit testing components.
 
 You can run a subset of the unit tests with `npx jest path/to/directory/or/file`. For example:
 ```sh

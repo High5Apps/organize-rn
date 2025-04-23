@@ -91,7 +91,7 @@ function useInsertedComments(
 }
 
 function useScrollToOffsetOnNewTopLevelComment(
-  listRef: RefObject<FlatList<Comment>>,
+  listRef: RefObject<FlatList<Comment> | null>,
   maybeInsertedCommentIds?: InsertedComment[],
 ) {
   const [offset, setOffset] = useState(0);

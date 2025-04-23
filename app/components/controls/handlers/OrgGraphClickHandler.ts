@@ -55,7 +55,7 @@ type ClickHandlerProps = {
 
 export default function useOrgGraphClickHandler(
   isGraphAvailable: boolean,
-  visNetwork: RefObject<VisNetworkRef>,
+  visNetwork: RefObject<VisNetworkRef | null>,
   hasMultipleNodes: boolean,
   setSelectedUserId: Dispatch<SetStateAction<string | undefined>>,
 ) {

@@ -1,24 +1,11 @@
 import React, { PropsWithChildren } from 'react';
-import { ColorValue, StatusBar as RNStatusBar } from 'react-native';
-import useTheme from '../../Theme';
+import { SystemBars } from 'react-native-edge-to-edge';
 
-type Props = {
-  backgroundColor?: ColorValue;
-};
-
-export default function StatusBar({
-  backgroundColor: maybeBackgroundColor, children,
-}: PropsWithChildren<Props>) {
-  const { colors, isDarkMode } = useTheme();
-
-  // backgroundColor only affects Android
-  const backgroundColor = maybeBackgroundColor ?? colors.fill;
-
-  const barStyle = isDarkMode ? 'light-content' : 'dark-content';
-
+export default function StatusBar({ children }: PropsWithChildren<{}>) {
   return (
     <>
-      <RNStatusBar backgroundColor={backgroundColor} barStyle={barStyle} />
+      {/* eslint-disable-next-line react/style-prop-object */}
+      <SystemBars />
       {children}
     </>
   );

@@ -13,7 +13,7 @@ export default function useReplaceableFile({
 }: Props) {
   const [fileName, setFileName] = useState<string>();
   const [ready, setReady] = useState(false);
-  const replacementFileNameRef = useRef<string>();
+  const replacementFileNameRef = useRef<string>(undefined);
 
   const parentFolder = `${Dirs.DocumentDir}/${parentFolderName}`;
   const fullPath = (name: string) => `${parentFolder}/${name}`;
