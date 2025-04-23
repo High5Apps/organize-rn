@@ -17,7 +17,7 @@ do
   case "$1" in
     --device)
       device_id=$(adb devices | tail -n +2 | grep -m 1 -v emulator | cut -f1)
-      device_flag="--deviceId=$device_id"
+      device_flag="--device=$device_id"
       ;;
     --release)
       mode_flag="--mode=release"
