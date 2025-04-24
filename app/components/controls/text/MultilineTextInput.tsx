@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { RefObject } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 import useTheme from '../../../Theme';
 
@@ -35,7 +35,11 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-function MultilineTextInput(props: TextInputProps, ref: ForwardedRef<TextInput>) {
+type Props = {
+  ref?: RefObject<TextInput | null>
+} & TextInputProps;
+
+function MultilineTextInput(props: Props) {
   const { editable, style } = props;
 
   // Can't use !editable because editable defaults to true when undefined
@@ -54,10 +58,9 @@ function MultilineTextInput(props: TextInputProps, ref: ForwardedRef<TextInput>)
       {...defaultProps}
       {...props}
       multiline
-      ref={ref}
       style={[styles.textInput, disabled && styles.textInputDisabled, style]}
     />
   );
 }
 
-export default forwardRef(MultilineTextInput);
+export default MultilineTextInput;
