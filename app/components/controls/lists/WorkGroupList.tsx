@@ -34,6 +34,7 @@ function useWorkGroupSelection(workGroups: WorkGroup[]) {
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   includeLocalOnlyWorkGroups?: boolean;
+  ListEmptyComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   onEditWorkGroupPress?: (workGroup: WorkGroup) => void;
   onLoadingChanged?: (loading: boolean) => void;
@@ -44,9 +45,9 @@ type Props = {
 };
 
 export default function WorkGroupList({
-  contentContainerStyle, includeLocalOnlyWorkGroups, ListFooterComponent,
-  onEditWorkGroupPress, onLoadingChanged, onReadyChanged, onWorkGroupPress,
-  selectionEnabled, showRowDisclosureIcons,
+  contentContainerStyle, includeLocalOnlyWorkGroups, ListEmptyComponent,
+  ListFooterComponent, onEditWorkGroupPress, onLoadingChanged, onReadyChanged,
+  onWorkGroupPress, selectionEnabled, showRowDisclosureIcons,
 }: Props) {
   const {
     loading, ready, refreshWorkGroups, workGroups,
@@ -84,6 +85,7 @@ export default function WorkGroupList({
       data={workGroups}
       ItemSeparatorComponent={ItemSeparator}
       keyboardShouldPersistTaps="handled"
+      ListEmptyComponent={ready ? ListEmptyComponent : null}
       ListFooterComponent={ready ? ListFooterComponent : null}
       ListHeaderComponent={ListHeaderComponent}
       refreshControl={refreshControl}
