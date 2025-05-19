@@ -10,10 +10,6 @@ export default function useDefaultTopTabOptions() {
   const screenOptions: MaterialTopTabNavigationOptions = {
     lazy: true,
     tabBarActiveTintColor: colors.primary,
-
-    // Workaround for https://github.com/react-navigation/react-navigation/issues/11930
-    tabBarAndroidRipple: { radius: 0 },
-
     tabBarGap: spacing.s,
     tabBarInactiveTintColor: colors.labelSecondary,
     tabBarIndicatorContainerStyle: {

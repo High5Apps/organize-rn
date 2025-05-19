@@ -11,9 +11,6 @@ export { default as LearnMoreButtonRow } from './LearnMoreButtonRow';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as QRCodeButton } from './QRCodeButtton';
 export { default as SecondaryButton } from './SecondaryButton';
-export {
-  default as TabBarButtonWithoutRipple,
-} from './TabBarButtonWithoutRipple';
 export { default as TextButton } from './TextButton';
 export { default as UpvoteButton } from './UpvoteButton';
 export { default as UnblockUserButton } from './UnblockUserButton';

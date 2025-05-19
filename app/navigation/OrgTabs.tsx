@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConnectStack from './ConnectStack';
 import { OrgTabsParamList } from './types';
-import { TabBarButtonWithoutRipple, TabBarIcon } from '../components';
+import { TabBarIcon } from '../components';
 import DiscussStack from './DiscussStack';
 import VoteStack from './VoteStack';
 import OrgStack from './OrgStack';
@@ -18,7 +18,6 @@ export default function OrgTabs() {
     <Tab.Navigator
       screenOptions={{
         tabBarAllowFontScaling: false,
-        tabBarButton: TabBarButtonWithoutRipple,
         headerShown: false,
         tabBarHideOnKeyboard: true,
       }}
