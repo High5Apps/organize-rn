@@ -1,59 +1,67 @@
-diff --git a/node_modules/react-native-keyboard-controller/src/components/KeyboardStickyView/index.tsx b/node_modules/react-native-keyboard-controller/src/components/KeyboardStickyView/index.tsx
-index 0ad5b89..5057cb0 100644
---- a/node_modules/react-native-keyboard-controller/src/components/KeyboardStickyView/index.tsx
-+++ b/node_modules/react-native-keyboard-controller/src/components/KeyboardStickyView/index.tsx
-@@ -1,7 +1,10 @@
- import React, { forwardRef, useMemo } from "react";
--import { Animated } from "react-native";
-+import Reanimated, {
-+  interpolate,
-+  useAnimatedStyle,
-+} from "react-native-reanimated";
+diff --git a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/extensions/ThemedReactContext.kt b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/extensions/ThemedReactContext.kt
+index d974989..0155d1f 100644
+--- a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/extensions/ThemedReactContext.kt
++++ b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/extensions/ThemedReactContext.kt
+@@ -2,6 +2,7 @@ package com.reactnativekeyboardcontroller.extensions
  
--import { useKeyboardAnimation } from "../../hooks";
-+import { useReanimatedKeyboardAnimation } from "../../hooks";
+ import android.content.Context
+ import android.os.Build
++import com.facebook.react.bridge.Arguments
+ import com.facebook.react.bridge.ReactContext
+ import com.facebook.react.bridge.WritableMap
+ import com.facebook.react.modules.core.DeviceEventManagerModule
+@@ -37,6 +38,25 @@ fun ThemedReactContext?.emitEvent(
+   Logger.i("ThemedReactContext", event)
+ }
  
- import type { View, ViewProps } from "react-native";
- 
-@@ -38,29 +41,25 @@ const KeyboardStickyView = forwardRef<
-     },
-     ref,
-   ) => {
--    const { height, progress } = useKeyboardAnimation();
-+    const { height, progress } = useReanimatedKeyboardAnimation();
- 
--    const offset = progress.interpolate({
--      inputRange: [0, 1],
--      outputRange: [closed, opened],
--    });
-+    const stickyViewStyle = useAnimatedStyle(() => {
-+      const offset = interpolate(progress.value, [0, 1], [closed, opened]);
++fun ThemedReactContext?.keepShadowNodesInSync(viewId: Int) {
++  // originally by viewId we should lookup all connected nodes
++  // and send them to JS
++  // but at the moment JS side broadcasts events to all ViewType
++  // instances, so we can send even empty array
++  val tags = intArrayOf(viewId)
 +
-+      return {
-+        transform: [{ translateY: enabled ? height.value + offset : closed }],
-+      };
-+    }, [closed, opened, enabled]);
++  val tagsArray = Arguments.createArray()
++  for (tag in tags) {
++    tagsArray.pushInt(tag)
++  }
++
++  // emit the event to JS to re-sync the trees
++  val onAnimationEndedData = Arguments.createMap()
++  onAnimationEndedData.putArray("tags", tagsArray)
++
++  this?.reactApplicationContext?.emitDeviceEvent("onUserDrivenAnimationEnded", onAnimationEndedData)
++}
++
+ val ThemedReactContext?.appearance: String
+   get() =
+     when {
+diff --git a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/listeners/KeyboardAnimationCallback.kt b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/listeners/KeyboardAnimationCallback.kt
+index 3ff4ed0..81cd40c 100644
+--- a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/listeners/KeyboardAnimationCallback.kt
++++ b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/listeners/KeyboardAnimationCallback.kt
+@@ -20,6 +20,7 @@ import com.reactnativekeyboardcontroller.extensions.dispatchEvent
+ import com.reactnativekeyboardcontroller.extensions.dp
+ import com.reactnativekeyboardcontroller.extensions.emitEvent
+ import com.reactnativekeyboardcontroller.extensions.isKeyboardAnimation
++import com.reactnativekeyboardcontroller.extensions.keepShadowNodesInSync
+ import com.reactnativekeyboardcontroller.extensions.keyboardType
+ import com.reactnativekeyboardcontroller.interactive.InteractiveKeyboardProvider
+ import com.reactnativekeyboardcontroller.log.Logger
+@@ -327,6 +328,8 @@ class KeyboardAnimationCallback(
  
-     const styles = useMemo(
--      () => [
--        {
--          transform: [
--            { translateY: enabled ? Animated.add(height, offset) : closed },
--          ],
--        },
--        style,
--      ],
--      [closed, enabled, height, offset, style],
-+      () => [style, stickyViewStyle],
-+      [style, stickyViewStyle],
-     );
+         // reset to initial state
+         duration = 0
++
++        context.keepShadowNodesInSync(eventPropagationView.id)
+       }
  
-     return (
--      <Animated.View ref={ref} style={styles} {...props}>
-+      <Reanimated.View ref={ref} style={styles} {...props}>
-         {children}
--      </Animated.View>
-+      </Reanimated.View>
-     );
-   },
- );
+     if (isKeyboardInteractive) {
+@@ -401,6 +404,7 @@ class KeyboardAnimationCallback(
+       )
+     }
+     context.emitEvent("KeyboardController::keyboardDidShow", getEventParams(keyboardHeight))
++    context.keepShadowNodesInSync(eventPropagationView.id)
+ 
+     this.persistentKeyboardHeight = keyboardHeight
+   }
