@@ -130,6 +130,7 @@ module.exports = {
     "<rootDir>/__tests__/jestSetupMockReactNativeFileAccess.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeFileViewer.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeKeyboardController.ts",
+    "<rootDir>/__tests__/jestSetupMockReactNativeLocalize.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeVisionCamera.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeSafeAreaContext.ts",
     "<rootDir>/__tests__/jestSetupMockReactNativeShare.ts",

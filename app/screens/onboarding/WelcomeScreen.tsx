@@ -5,6 +5,7 @@ import {
   AutoscaledText, ButtonRow, LockingAwareScrollView, PrimaryButton,
   ScreenBackground, SecondaryButton,
 } from '../../components';
+import { useTranslation } from '../../i18n';
 import type { WelcomeScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 
@@ -39,6 +40,7 @@ const useStyles = () => {
 export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <ScreenBackground>
@@ -48,22 +50,22 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
       >
         <CircleLogo />
         <AutoscaledText style={styles.title}>
-          Organize
+          {t('branding.appName')}
         </AutoscaledText>
         <AutoscaledText style={styles.subtitle}>
-          Form your own labor union
+          {t('valueProposition')}
         </AutoscaledText>
       </LockingAwareScrollView>
       <ButtonRow elevated={buttonRowElevated}>
         <SecondaryButton
           iconName="add"
-          label="Create Org"
+          label={t('action.createOrg')}
           onPress={() => navigation.navigate('NewOrg', { step: 0 })}
           style={styles.button}
         />
         <PrimaryButton
           iconName="qr-code-2"
-          label="Join Org"
+          label={t('action.joinOrg')}
           onPress={() => navigation.navigate('JoinOrg')}
           style={styles.button}
         />
