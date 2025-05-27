@@ -2,6 +2,7 @@ import React from 'react';
 import { Linking, StyleSheet, Text } from 'react-native';
 import useTheme from '../../Theme';
 import { privacyPolicyURI, termsOfServiceURI } from '../../model';
+import { Trans } from '../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -31,20 +32,24 @@ export default function Agreement({ buttonLabel }: Props) {
 
   return (
     <Text style={styles.text}>
-      {`By tapping ${buttonLabel}, I agree to the Organize `}
-      <Text
-        onPress={() => Linking.openURL(termsOfServiceURI)}
-        style={styles.link}
-      >
-        Terms
-      </Text>
-      {' and '}
-      <Text
-        onPress={() => Linking.openURL(privacyPolicyURI)}
-        style={styles.link}
-      >
-        Privacy Policy
-      </Text>
+      <Trans
+        components={{
+          PrivacyLink: (
+            <Text
+              onPress={() => Linking.openURL(privacyPolicyURI)}
+              style={styles.link}
+            />
+          ),
+          TermsLink: (
+            <Text
+              onPress={() => Linking.openURL(termsOfServiceURI)}
+              style={styles.link}
+            />
+          ),
+        }}
+        i18nKey="format.userAgreement"
+        values={{ buttonLabel }}
+      />
     </Text>
   );
 }

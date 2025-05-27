@@ -5,7 +5,7 @@ import { fakeCurrentUserData } from '../FakeData';
 import useCurrentUser from '../../app/model/context/consumers/CurrentUser';
 
 const connectScreenText = 'Share the app';
-const verificationScreenText = 'Account Verification';
+const verificationScreenText = 'Verify Your Account';
 const welcomeScreenText = 'Create Org';
 
 jest.mock('../../app/model/context/consumers/CurrentUser');

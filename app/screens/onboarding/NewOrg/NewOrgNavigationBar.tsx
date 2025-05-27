@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SecondaryButton } from '../../../components';
 import { NewOrgSteps } from '../../../model';
 import useTheme from '../../../Theme';
+import { Trans, useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -43,6 +44,7 @@ export default function NewOrgNavigationBar({
   backPressed, currentStep, nextDisabled = false, nextPressed,
 }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const { bottom: bottomInset } = useSafeAreaInsets();
 
   return (
@@ -50,20 +52,24 @@ export default function NewOrgNavigationBar({
       <View style={styles.container}>
         <SecondaryButton
           iconName="navigate-before"
-          label="Back"
+          label={t('action.navigateBack')}
           onPress={backPressed}
         />
         <Text style={styles.currentStep}>
-          {`Step ${1 + currentStep} `}
-          <Text style={styles.totalSteps}>
-            {/* The extra step is for the review page */}
-            {`of ${1 + NewOrgSteps.length}`}
-          </Text>
+          <Trans
+            components={{ SecondaryText: <Text style={styles.totalSteps} /> }}
+            i18nKey="format.currentStep"
+            style={styles.currentStep}
+            values={{
+              currentStep: 1 + currentStep,
+              totalSteps: 1 + NewOrgSteps.length,
+            }}
+          />
         </Text>
         <SecondaryButton
           disabled={nextDisabled}
           iconName="navigate-next"
-          label="Next"
+          label={t('action.navigateNext')}
           onPress={nextPressed}
           reversed
         />

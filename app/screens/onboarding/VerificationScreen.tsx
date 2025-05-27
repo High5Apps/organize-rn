@@ -8,9 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { Email, useCurrentUser } from '../../model';
-
-const CONTACT_US_BODY = "I'd like to create a new Org on the Organize app. Please send me a verification code!";
-const CONTACT_US_SUBJECT = 'Organize Verification';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const {
@@ -85,37 +83,42 @@ export default function VerificationScreen() {
   }, [code, currentUser]);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Account Verification</Text>
+      <Text style={styles.title}>{t('action.verifyAccount')}</Text>
       <View>
-        <HeaderText style={styles.headerText}>Code</HeaderText>
+        <HeaderText style={styles.headerText}>
+          {t('object.verificationCode')}
+        </HeaderText>
         <TextInputRow
           keyboardType="number-pad"
           maxLength={6}
           onChangeText={setCode}
           onSubmitEditing={Keyboard.dismiss}
-          placeholder="123456"
+          placeholder={t('placeholder.verificationCode')}
           returnKeyType={Platform.OS === 'android' ? 'none' : 'default'}
           value={code}
         />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.message}>Don&apos;t have a code yet?</Text>
+        <Text style={styles.message}>{t('question.verificationCode')}</Text>
         <TextButton
           onPress={Email({
-            body: `${CONTACT_US_BODY}\n\nReference ID: ${currentUser!.org!.id}`,
-            subject: CONTACT_US_SUBJECT,
+            body: t('format.verificationCodeEmailBody', {
+              referenceId: currentUser!.org!.id,
+            }),
+            subject: t('email.subject.verificationCodeRequest'),
           }).openComposer}
           style={styles.textButton}
         >
-          Contact Us
+          {t('action.contactUs')}
         </TextButton>
       </View>
       <PrimaryButton
         iconName="verified"
-        label="Verify"
+        label={t('action.verify')}
         onPress={onVerify}
         style={styles.button}
       />

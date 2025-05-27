@@ -7,6 +7,7 @@ import { QRCodeDataParser, isDefined, isNonNull } from '../../model';
 import { ErrorMessage, FadeInView } from '../views';
 import { FrameButton } from './buttons';
 import { SetQRValue } from './types';
+import { useTranslation } from '../../i18n';
 
 type Props = {
   buttonDisabled?: boolean;
@@ -41,6 +42,8 @@ export default function QRCamera({
   const { hasPermission } = useCameraPermission();
   const device = hasPermission && useCameraDevice('back');
 
+  const { t } = useTranslation();
+
   let content;
   if (device) {
     content = (
@@ -61,7 +64,7 @@ export default function QRCamera({
   } else {
     content = (
       <FadeInView delay={2000}>
-        <ErrorMessage message="No camera found" />
+        <ErrorMessage message={t('error.cameraNotFound')} />
       </FadeInView>
     );
   }

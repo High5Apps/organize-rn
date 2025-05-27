@@ -11,6 +11,7 @@ import type {
 } from '../../../navigation';
 import useTheme from '../../../Theme';
 import NewOrgStepNavigator from './NewOrgStepNavigator';
+import { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -56,6 +57,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const params: NewOrgScreenParams = {
     ...route.params,
@@ -104,7 +106,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
         <Text style={styles.message}>{message}</Text>
         <SecondaryButton
           iconName="help-outline"
-          label="Learn More"
+          label={t('action.learnMore')}
           onPress={() => setModalVisible(true)}
         />
       </LockingScrollView>

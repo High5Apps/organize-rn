@@ -11,6 +11,7 @@ import {
 } from '../../model';
 import type { JoinOrgScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -35,8 +36,6 @@ const useStyles = () => {
   return { styles };
 };
 
-const primaryButtonLabel = 'Join';
-
 export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps) {
   const [buttonRowElevated, setButtonRowElevated] = useState(false);
   const [qrValue, setQRValue] = useQRValue(route.params);
@@ -45,8 +44,11 @@ export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps)
   ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const { setCurrentUser } = useCurrentUser();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
+
+  const primaryButtonLabel = t('action.join');
 
   useEffect(() => {
     if (qrValue) {
@@ -95,7 +97,7 @@ export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps)
         style={styles.scrollView}
       >
         <NewConnectionControl
-          prompt="To join an Org, scan the secret code of a current member."
+          prompt={t('hint.scanToJoin')}
           promptHidden={!!qrValue}
           qrValue={qrValue}
           ReviewComponent={!!qrValue && (
@@ -117,7 +119,7 @@ export default function JoinOrgScreen({ navigation, route }: JoinOrgScreenProps)
         <ButtonRow elevated={buttonRowElevated}>
           <SecondaryButton
             iconName="navigate-before"
-            label="Back"
+            label={t('action.navigateBack')}
             onPress={navigation.goBack}
             style={[styles.button, styles.backButton]}
           />

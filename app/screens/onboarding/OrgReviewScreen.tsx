@@ -9,6 +9,7 @@ import {
 } from '../../model';
 import type { OrgReviewParams, OrgReviewScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -74,10 +75,11 @@ export default function OrgReviewScreen({
   ) as OrgReviewParams;
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const { setCurrentUser } = useCurrentUser();
   const { RequestProgress, setLoading, setResult } = useRequestProgress();
 
-  const buttonLabel = 'Create';
+  const buttonLabel = t('action.create');
 
   const onCreatePressed = async () => {
     setLoading(true);
@@ -99,7 +101,7 @@ export default function OrgReviewScreen({
 
   return (
     <ScreenBackground>
-      <Text style={styles.title}>Review Your Org</Text>
+      <Text style={styles.title}>{t('action.reviewOrg')}</Text>
       <LockingScrollView style={styles.scrollView}>
         {NewOrgSteps.map(({ header, param }) => (
           <View key={param} style={styles.paramContainer}>
@@ -114,7 +116,7 @@ export default function OrgReviewScreen({
         <ButtonRow>
           <SecondaryButton
             iconName="navigate-before"
-            label="Back"
+            label={t('action.navigateBack')}
             onPress={navigation.goBack}
             style={[styles.button, styles.backButton]}
           />
