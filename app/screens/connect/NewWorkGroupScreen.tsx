@@ -10,9 +10,8 @@ import {
   sanitizeSingleLineField, useUnionCard, useWorkGroups,
 } from '../../model';
 import type { NewWorkGroupScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
-const LEARN_MORE_BODY = 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.';
-const LEARN_MORE_HEADLINE = "What's a work group?";
 const NEW_WORK_GROUP_ID = NIL_UUID;
 
 const useStyles = () => {
@@ -84,12 +83,13 @@ export default function NewWorkGroupScreen({
   }, [department, jobTitle, navigation, shift, unionCard]);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
       <LearnMoreModal
-        body={LEARN_MORE_BODY}
-        headline={LEARN_MORE_HEADLINE}
+        body={t('explanation.workGroup')}
+        headline={t('question.workGroup')}
         iconName="groups"
         setVisible={setModalVisible}
         visible={modalVisible}
@@ -100,7 +100,7 @@ export default function NewWorkGroupScreen({
         <WorkGroupForm onChange={setFormInfo} workGroupId={NEW_WORK_GROUP_ID} />
         <SecondaryButton
           iconName="help-outline"
-          label="Learn More"
+          label={t('action.learnMore')}
           onPress={() => setModalVisible(true)}
           style={styles.learnMoreButton}
         />
@@ -108,7 +108,7 @@ export default function NewWorkGroupScreen({
       {jobTitle && (
         <PrimaryButton
           iconName="add"
-          label="Add"
+          label={t('action.add')}
           onPress={onAddPressed}
           style={styles.addButton}
         />

@@ -10,6 +10,7 @@ import {
   useOrg, useUnionCard,
 } from '../../model';
 import type { UnionCardScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 export const MAX_EMAIL_LENGTH = 100;
 export const MAX_HOME_ADDRESS_LINE1_LENGTH = 100;
@@ -89,6 +90,8 @@ type Props = {
 function useUnionCardInfo({
   setRefreshing, setRefreshResult, setSigningOrUndoing, setSignOrUndoResult,
 }: Props) {
+  const { t } = useTranslation();
+
   const {
     cacheUnionCard, createUnionCard, refreshUnionCard, removeUnionCard,
     unionCard,
@@ -115,7 +118,11 @@ function useUnionCardInfo({
   const { org, refreshOrg, updateOrg } = useOrg();
   const { employerName: orgEmployerName, name: orgName } = org ?? {};
   const employerName = cardEmployerName || orgEmployerName;
-  const agreement = unionCard?.agreement ?? `By tapping Sign, I authorize ${orgName || '__________'} to represent me for the purpose of collective bargaining with ${employerName || '__________'}`;
+  const agreement = unionCard?.agreement ?? t('format.unionCardAgreement', {
+    buttonLabel: t('action.sign'),
+    employerName: employerName || '__________',
+    orgName: orgName || '__________',
+  });
   const workGroupDescription = !jobTitle ? undefined : [
     jobTitle, `${shift} shift`, department,
   ].filter(isDefined).join(', ');
@@ -242,6 +249,7 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
   const shouldHideEmployerNameInput = !!orgEmployerName;
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const {
     enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
   } = useFocusedInput({
@@ -257,7 +265,7 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
       {!refreshing && (refreshingResult !== 'error') && (
         <>
           <View style={styles.section}>
-            <HeaderText>Name</HeaderText>
+            <HeaderText>{t('object.name')}</HeaderText>
             <TextInputRow
               autoCapitalize="words"
               autoComplete="name"
@@ -269,13 +277,13 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               onChangeText={setName}
               onFocus={onFocus('name')}
               onSubmitEditing={onSubmitEditing('name')}
-              placeholder="Abe Lincoln"
+              placeholder={t('placeholder.name')}
               submitBehavior={submitBehavior('name')}
               value={name}
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Phone</HeaderText>
+            <HeaderText>{t('object.phoneNumber')}</HeaderText>
             <TextInputRow
               autoComplete="tel"
               editable={inputsEditable}
@@ -286,13 +294,13 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               onChangeText={setPhone}
               onFocus={onFocus('phone')}
               onSubmitEditing={onSubmitEditing('phone')}
-              placeholder="5551234567"
+              placeholder={t('placeholder.phoneNumber')}
               submitBehavior={submitBehavior('phone')}
               value={phone}
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Email</HeaderText>
+            <HeaderText>{t('object.email')}</HeaderText>
             <TextInputRow
               autoCapitalize="none"
               autoComplete="email"
@@ -305,13 +313,13 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               onChangeText={setEmail}
               onFocus={onFocus('email')}
               onSubmitEditing={onSubmitEditing('email')}
-              placeholder="email@example.com"
+              placeholder={t('placeholder.email')}
               submitBehavior={submitBehavior('email')}
               value={email}
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Home address</HeaderText>
+            <HeaderText>{t('object.homeAddress')}</HeaderText>
             <TextInputRow
               autoCapitalize="words"
               autoComplete="street-address"
@@ -323,7 +331,7 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               onChangeText={setHomeAddressLine1}
               onFocus={onFocus('homeAddressLine1')}
               onSubmitEditing={onSubmitEditing('homeAddressLine1')}
-              placeholder="123 Main St, Unit 5"
+              placeholder={t('placeholder.homeAddressLine1')}
               submitBehavior={submitBehavior('homeAddressLine1')}
               value={homeAddressLine1}
             />
@@ -337,14 +345,14 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
               onChangeText={setHomeAddressLine2}
               onFocus={onFocus('homeAddressLine2')}
               onSubmitEditing={onSubmitEditing('homeAddressLine2')}
-              placeholder="Seattle, WA, 98111"
+              placeholder={t('placeholder.homeAddressLine2')}
               submitBehavior={submitBehavior('homeAddressLine2')}
               value={homeAddressLine2}
             />
           </View>
           {!shouldHideEmployerNameInput && (
             <View style={styles.section}>
-              <HeaderText>Employer name</HeaderText>
+              <HeaderText>{t('object.employerName')}</HeaderText>
               <TextInputRow
                 autoCapitalize="words"
                 autoCorrect={false}
@@ -355,14 +363,14 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
                 onChangeText={setEmployerName}
                 onFocus={onFocus('employerName')}
                 onSubmitEditing={onSubmitEditing('employerName')}
-                placeholder="Acme, Inc."
+                placeholder={t('placeholder.employerName')}
                 submitBehavior={submitBehavior('employerName')}
                 value={employerName}
               />
             </View>
           )}
           <View style={styles.section}>
-            <HeaderText>Work group</HeaderText>
+            <HeaderText>{t('object.workGroup')}</HeaderText>
             <View style={styles.workGroupDescriptionRow}>
               {workGroupDescription && (
                 <Text style={[styles.text, styles.workGroupDescription]}>
@@ -377,29 +385,30 @@ export default function UnionCardScreen({ navigation }: UnionCardScreenProps) {
                   signedAt && styles.hidden,
                 ]}
               >
-                {workGroupDescription ? 'Edit' : 'Select your work group'}
+                {t(workGroupDescription
+                  ? 'action.edit' : 'action.selectWorkGroup')}
               </TextButton>
             </View>
           </View>
           <View style={styles.section}>
-            <HeaderText>Agreement</HeaderText>
+            <HeaderText>{t('object.agreement')}</HeaderText>
             <Text style={[styles.text, styles.agreement]}>{agreement}</Text>
             <Text style={[styles.text, styles.agreement, styles.textSecondary]}>
-              Your union officers can view signed cards
+              {t('hint.officersCanReadUnionCards')}
             </Text>
           </View>
           <View style={styles.signRow}>
             {signedAt ? (
               <PrimaryButton
                 iconName="restart-alt"
-                label="Undo"
+                label={t('action.undo')}
                 onPress={undo}
                 style={styles.button}
               />
             ) : (
               <PrimaryButton
                 iconName="draw"
-                label="Sign"
+                label={t('action.sign')}
                 onPress={sign}
                 style={styles.button}
               />

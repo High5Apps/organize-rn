@@ -7,6 +7,7 @@ import {
 import { ConnectionPreview, useConnection, useQRValue } from '../../model';
 import useTheme from '../../Theme';
 import type { NewConnectionScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -39,6 +40,7 @@ export default function NewConnectionScreen({
   ] = useState<ConnectionPreview | null>(null);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const { createConnection } = useConnection({ sharerJwt: qrValue?.jwt });
   const {
     RequestProgress, result, setLoading, setResult,
@@ -61,8 +63,8 @@ export default function NewConnectionScreen({
 
     try {
       const { isReconnection } = await createConnection();
-      const message = isReconnection
-        ? 'Reconnected successfully' : 'Connected successfully';
+      const message = t(isReconnection
+        ? 'result.reconnectionSucceeded' : 'result.connectionSucceeded');
       setResult('success', { message });
     } catch (error) {
       setResult('error', { error });
@@ -76,7 +78,7 @@ export default function NewConnectionScreen({
         style={styles.scrollView}
       >
         <NewConnectionControl
-          prompt="Connect with other members of your Org by scanning their secret code."
+          prompt={t('hint.scanToConnect')}
           promptHidden={!!qrValue}
           qrValue={qrValue}
           ReviewComponent={!!qrValue && (
@@ -96,7 +98,7 @@ export default function NewConnectionScreen({
           {!!qrValue && connectionPreview && (result !== 'success') && (
             <PrimaryButton
               iconName="person-add"
-              label="Connect"
+              label={t('action.connect')}
               onPress={onConnectPressed}
               style={[styles.button]}
             />

@@ -6,6 +6,7 @@ import { useFocusedInput, useWorkGroups } from '../../model';
 import { HeaderText } from '../views';
 import { TextInputRow } from './text';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const MAX_DEPARTMENT_LENGTH = 100;
 const MAX_JOB_TITLE_LENGTH = 100;
@@ -61,6 +62,7 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
   );
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     enterKeyHint, focused, onFocus, onSubmitEditing, submitBehavior,
@@ -69,7 +71,7 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <HeaderText>Job title</HeaderText>
+        <HeaderText>{t('object.jobTitle')}</HeaderText>
         <TextInputRow
           autoCapitalize="words"
           enterKeyHint={enterKeyHint('jobTitle')}
@@ -78,13 +80,13 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
           onChangeText={setJobTitle}
           onFocus={onFocus('jobTitle')}
           onSubmitEditing={onSubmitEditing('jobTitle')}
-          placeholder="Nurse Practitioner"
+          placeholder={t('placeholder.jobTitle')}
           submitBehavior={submitBehavior('jobTitle')}
           value={jobTitle}
         />
       </View>
       <View style={styles.section}>
-        <HeaderText>Department (optional)</HeaderText>
+        <HeaderText>{t('object.optional.department')}</HeaderText>
         <TextInputRow
           autoCapitalize="words"
           enterKeyHint={enterKeyHint('department')}
@@ -93,13 +95,13 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
           onChangeText={setDepartment}
           onFocus={onFocus('department')}
           onSubmitEditing={onSubmitEditing('department')}
-          placeholder="Intensive Care"
+          placeholder={t('placeholder.department')}
           submitBehavior={submitBehavior('department')}
           value={department}
         />
       </View>
       <View style={styles.section}>
-        <HeaderText>Shift</HeaderText>
+        <HeaderText>{t('object.shift')}</HeaderText>
         <SegmentedControl
           onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
             setShiftIndex(selectedSegmentIndex);

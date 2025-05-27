@@ -5,9 +5,11 @@ import {
   QRCodeDataFormatter, QR_CODE_TIME_TO_LIVE_SECONDS, useAppState,
   useCurrentUser,
 } from '../../model';
+import { useTranslation } from '../../i18n';
 
 export default function QRCodeControl() {
   const { currentUser } = useCurrentUser();
+  const { t } = useTranslation();
 
   const [revealed, setRevealed] = useState(false);
   const [qrCodeData, setQRCodeData] = useState<string>('');
@@ -46,7 +48,7 @@ export default function QRCodeControl() {
         setQRCodeData(data);
         setRevealed(true);
       }}
-      prompt={'Tap to reveal\nyour secret code'}
+      prompt={t('hint.tapToRevealCode')}
     />
   );
 }

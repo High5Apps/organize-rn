@@ -8,11 +8,13 @@ import VoteStack from './VoteStack';
 import OrgStack from './OrgStack';
 import LeadStack from './LeadStack';
 import { useCurrentUser } from '../model';
+import { useTranslation } from '../i18n';
 
 const Tab = createBottomTabNavigator<OrgTabsParamList>();
 
 export default function OrgTabs() {
   const { currentUser } = useCurrentUser();
+  const { t } = useTranslation();
 
   return (
     <Tab.Navigator
@@ -27,7 +29,7 @@ export default function OrgTabs() {
         component={ConnectStack}
         options={{
           tabBarIcon: TabBarIcon('person-add'),
-          tabBarLabel: 'Connect',
+          tabBarLabel: t('action.connect'),
         }}
       />
       <Tab.Screen

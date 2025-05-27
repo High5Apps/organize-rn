@@ -8,6 +8,7 @@ import {
 import useTheme from '../../Theme';
 import type { SelectWorkGroupScreenProps } from '../../navigation';
 import { useUnionCard, useWorkGroups } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const {
@@ -78,6 +79,7 @@ export default function SelectWorkGroupScreen({
   navigation,
 }: SelectWorkGroupScreenProps) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const navigateToNewWorkGroup = useCallback(() => (
     navigation.navigate('NewWorkGroup')
@@ -96,9 +98,9 @@ export default function SelectWorkGroupScreen({
 
   const ListFooterComponent = useMemo(() => (
     <View style={styles.listFooterComponent}>
-      <Text style={styles.text}>Don&apos;t see your work group?</Text>
+      <Text style={styles.text}>{t('question.workGroupAbsent')}</Text>
       <TextButton onPress={navigateToNewWorkGroup}>
-        Add your work group
+        {t('action.addWorkGroup')}
       </TextButton>
     </View>
   ), [navigateToNewWorkGroup]);
@@ -118,7 +120,7 @@ export default function SelectWorkGroupScreen({
       />
       <PrimaryButton
         iconName="done"
-        label="Done"
+        label={t('action.complete')}
         onPress={navigation.goBack}
         style={styles.button}
       />

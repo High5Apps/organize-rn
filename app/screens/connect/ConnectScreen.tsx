@@ -7,10 +7,7 @@ import {
 import type { ConnectScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
 import { appStoreURI } from '../../networking';
-
-const SHARE_MESSAGE = `To join our Org:
-1. Get the Organize app at ${appStoreURI()}
-2. Meet me in person to scan my membership code`;
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const {
@@ -52,6 +49,7 @@ export default function ConnectScreen({ navigation }: ConnectScreenProps) {
   });
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <ScreenBackground>
@@ -60,21 +58,21 @@ export default function ConnectScreen({ navigation }: ConnectScreenProps) {
         style={styles.scrollView}
       >
         <QRCodeControl />
-        <Text style={styles.prompt}>
-          Recruit or connect with members by letting them scan your secret code.
-        </Text>
+        <Text style={styles.prompt}>{t('hint.shareToRecruit')}</Text>
       </LockingAwareScrollView>
       <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
         <SecondaryButton
           iconName="qr-code-scanner"
-          label="Scan"
+          label={t('action.scan')}
           onPress={() => navigation.navigate('NewConnection')}
           style={styles.button}
         />
         <PrimaryButton
           iconName="share"
-          label="Share the app"
-          onPress={() => Share.share({ message: SHARE_MESSAGE })}
+          label={t('action.shareApp')}
+          onPress={() => Share.share({
+            message: t('explanation.joinOrg', { appStoreURI }),
+          })}
           style={styles.button}
         />
       </ButtonRow>
