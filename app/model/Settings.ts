@@ -7,14 +7,14 @@ import { SettingsSection } from './types';
 import type { SettingsScreenNavigationProp } from '../navigation';
 import Email from './Email';
 import { blogURI, privacyPolicyURI, termsOfServiceURI } from '../networking';
+import { useTranslation } from '../i18n';
 
-const BUG_REPORT_BODY = 'Please describe the bug and add screenshots if possible. The more you can tell us, the quicker we can fix it.\n\nInclude things like what you expected to happen, what actually happened, and what you were doing in the app right before the bug happened. Thanks!\n\n';
-const BUG_REPORT_SUBJECT = 'Organize Bug Report';
 const REPO_URL = 'https://github.com/High5Apps/organize-rn';
 
 export default function useSettings(): SettingsSection[] {
   const { currentUser } = useCurrentUser();
   const navigation = useNavigation<SettingsScreenNavigationProp>();
+  const { t } = useTranslation();
 
   if (!currentUser) {
     console.warn('Expected current user to be set');
@@ -24,60 +24,60 @@ export default function useSettings(): SettingsSection[] {
   return useMemo(() => {
     const settings = [
       {
-        title: 'Org',
+        title: t('object.org'),
         data: [
           {
             iconName: 'delete',
             onPress: () => navigation.navigate('LeaveOrg'),
-            title: 'Leave Org',
+            title: t('action.leaveOrg'),
           },
           {
             iconName: 'visibility',
             onPress: () => navigation.navigate('TransparencyLog'),
-            title: 'Transparency Log',
+            title: t('object.transparencyLog'),
           },
         ],
       },
       {
-        title: 'Communication',
+        title: t('object.communication'),
         data: [
           {
             iconName: 'mail',
             onPress: Email().openComposer,
-            title: 'Email Organize LLC',
+            title: t('action.emailUs'),
           },
           {
             iconName: 'bug-report',
             onPress: Email({
-              body: BUG_REPORT_BODY,
-              subject: BUG_REPORT_SUBJECT,
+              body: t('email.body.bugReport'),
+              subject: t('email.subject.bugReport'),
             }).openComposer,
-            title: 'Report a Bug',
+            title: t('action.reportBug'),
           },
         ],
       },
       {
-        title: 'About',
+        title: t('hint.about'),
         data: [
           {
             iconName: 'menu-book',
             onPress: () => Linking.openURL(blogURI),
-            title: 'How to Organize',
+            title: t('object.handbookTitle'),
           },
           {
             iconName: 'lock',
             onPress: () => Linking.openURL(privacyPolicyURI),
-            title: 'Privacy Policy',
+            title: t('object.privacyPolicy'),
           },
           {
             iconName: 'description',
             onPress: () => Linking.openURL(termsOfServiceURI),
-            title: 'Terms of Service',
+            title: t('object.termsOfService'),
           },
           {
             iconName: 'code',
             onPress: () => Linking.openURL(REPO_URL),
-            title: 'Source Code',
+            title: t('object.sourceCode'),
           },
         ],
       },
@@ -85,7 +85,7 @@ export default function useSettings(): SettingsSection[] {
 
     if (ENABLE_DEVELOPER_SETTINGS) {
       settings.push({
-        title: 'Developer',
+        title: t('object.developer'),
         data: [
           {
             iconName: 'vpn-key',
@@ -93,12 +93,12 @@ export default function useSettings(): SettingsSection[] {
               const groupKey = await currentUser.decryptGroupKey();
               Share.share({ message: groupKey });
             },
-            title: 'Share Group Key',
+            title: t('action.shareGroupKey'),
           },
         ],
       });
     }
 
     return settings;
-  }, [currentUser, ENABLE_DEVELOPER_SETTINGS]);
+  }, [currentUser, ENABLE_DEVELOPER_SETTINGS, t]);
 }

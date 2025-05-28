@@ -7,6 +7,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { useCurrentUser } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, spacing } = useTheme();
@@ -30,6 +31,7 @@ const useStyles = () => {
 
 export default function LeaveOrgScreen() {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const { currentUser } = useCurrentUser();
   if (!currentUser) { throw new Error('Expected currentUser'); }
@@ -43,28 +45,28 @@ export default function LeaveOrgScreen() {
       <LockingScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <WarningView
-            warning="Warning! If you choose to leave this Org:"
+            warning={t('explanation.warning.leaveOrg.condition')}
             warningBullets={[
               {
                 iconName: 'block',
-                message: "You won't be able to use the app to interact with this Org anymore.",
+                message: t('explanation.warning.leaveOrg.noInteraction'),
               },
               {
                 iconName: 'delete-forever',
-                message: 'All of the text you wrote in your comments and discussions will be permanently deleted.',
+                message: t('explanation.warning.leaveOrg.contentDeletion'),
               },
               {
                 iconName: 'logout',
-                message: 'You will be logged out of the app.',
+                message: t('explanation.warning.leaveOrg.logout'),
               },
             ]}
           />
           <SecondaryButton
             iconName="close"
             iconStyle={styles.button}
-            label="Leave Org"
+            label={t('action.leaveOrg')}
             onPress={ConfirmationAlert({
-              destructiveAction: 'Leave Org',
+              destructiveAction: t('action.leaveOrg'),
               destructiveActionInTitle: 'leave this Org',
               onConfirm: async () => {
                 setResult('none');

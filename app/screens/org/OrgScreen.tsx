@@ -9,6 +9,7 @@ import {
   getErrorMessage, useCurrentUser, useOrg, useOrgGraph, useSelectedUser,
   useUsers, useVisGraphData,
 } from '../../model';
+import { useTranslation } from '../../i18n';
 
 export default function OrgScreen({ navigation, route }: OrgScreenProps) {
   const [graphError, setGraphError] = useState('');
@@ -51,9 +52,10 @@ export default function OrgScreen({ navigation, route }: OrgScreenProps) {
     setSelectedUserId(route.params?.selectedUserId);
   }, [route.params?.selectedUserId]);
 
+  const { t } = useTranslation();
   const ListHeaderComponent = useMemo(() => (
     <>
-      <SectionHeader>Members and connections</SectionHeader>
+      <SectionHeader>{t('object.membersAndConnections')}</SectionHeader>
       <OrgGraph
         hasMultipleNodes={hasMultipleNodes}
         error={graphError}
@@ -67,7 +69,7 @@ export default function OrgScreen({ navigation, route }: OrgScreenProps) {
         visGraphData={visGraphData}
       />
     </>
-  ), [hasMultipleNodes, graphError, selectedUser?.id, visGraphData]);
+  ), [hasMultipleNodes, graphError, selectedUser?.id, visGraphData, t]);
 
   return (
     <ScreenBackground>

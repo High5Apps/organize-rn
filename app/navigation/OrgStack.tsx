@@ -6,11 +6,13 @@ import {
 import { OrgStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import { useCurrentUser } from '../model';
+import { useTranslation } from '../i18n';
 
 const Stack = createNativeStackNavigator<OrgStackParamList>();
 
 export default function OrgStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
+  const { t } = useTranslation();
 
   const { currentUser } = useCurrentUser();
 
@@ -24,13 +26,17 @@ export default function OrgStack() {
       <Stack.Screen
         component={LeaveOrgScreen}
         name="LeaveOrg"
-        options={{ title: 'Leave Org' }}
+        options={{ title: t('action.leaveOrg') }}
       />
-      <Stack.Screen component={SettingsScreen} name="Settings" />
+      <Stack.Screen
+        component={SettingsScreen}
+        name="Settings"
+        options={{ title: t('object.settings') }}
+      />
       <Stack.Screen
         component={TransparencyLogScreen}
         name="TransparencyLog"
-        options={{ title: 'Transparency Log' }}
+        options={{ title: t('object.transparencyLog') }}
       />
     </Stack.Navigator>
   );

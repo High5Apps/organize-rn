@@ -12,6 +12,7 @@ import { ItemSeparator } from '../../views';
 import { UserRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import { renderSectionHeader } from '../SectionHeader';
+import { useTranslation } from '../../../i18n';
 
 type NotableUserSection = {
   title: string;
@@ -72,16 +73,18 @@ export default function NotableUserList({
     throw new Error('Expected current user to be set');
   }
 
+  const { t } = useTranslation();
+
   const sections: NotableUserSection[] = useMemo(() => {
     const notableUserSections: NotableUserSection[] = [];
 
     if (selectedUser) {
       const data = [selectedUser];
-      notableUserSections.push({ title: 'Selected', data });
+      notableUserSections.push({ title: t('modifier.selected'), data });
     }
 
     if (officers.length) {
-      notableUserSections.push({ title: 'Officers', data: officers });
+      notableUserSections.push({ title: t('object.officers'), data: officers });
     }
 
     const currentOrgGraphUser = currentUser.user();
@@ -89,11 +92,11 @@ export default function NotableUserList({
     const isOfficer = offices.length > 0;
     if (!isOfficer) {
       const meData = [currentOrgGraphUser];
-      notableUserSections.push({ title: 'Me', data: meData });
+      notableUserSections.push({ title: t('object.me'), data: meData });
     }
 
     return notableUserSections;
-  }, [colors, currentUser, officers, selectedUser]);
+  }, [colors, currentUser, officers, selectedUser, t]);
 
   const {
     ListHeaderComponent: PullToRefreshErrorMessage, refreshControl,

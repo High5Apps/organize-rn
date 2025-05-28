@@ -5,8 +5,7 @@ import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { TransparencyLogRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import useInfiniteScroll from './InfiniteScroll';
-
-const LIST_EMPTY_MESSAGE = "The moderators haven't blocked anything yet.\n\nYou can check this log to see when a moderator blocks or unblocks flagged content.";
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   onItemPress: (item: ModerationEvent) => void;
@@ -39,9 +38,12 @@ export default function TransparencyLogList({ onItemPress }: Props) {
     onLoadNextPage: fetchNextPageOfModerationEvents,
   });
 
+  const { t } = useTranslation();
   const ListEmptyComponent = useMemo(() => (
-    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
-  ), []);
+    <ListEmptyMessage
+      asteriskDelimitedMessage={t('hint.emptyTransparencyLog')}
+    />
+  ), [t]);
 
   const renderItem: ListRenderItem<ModerationEvent> = useCallback(
     ({ item }) => <TransparencyLogRow item={item} onPress={onItemPress} />,

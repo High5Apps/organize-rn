@@ -53,7 +53,7 @@ export default function OrgTabs() {
         component={OrgStack}
         options={{
           tabBarIcon: TabBarIcon('circle'),
-          tabBarLabel: 'Org',
+          tabBarLabel: t('object.org'),
         }}
       />
       {(currentUser?.offices?.length ?? 0) > 0 && (
