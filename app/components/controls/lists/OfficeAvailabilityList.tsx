@@ -5,8 +5,7 @@ import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { OfficeRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import { renderSectionHeader } from '../SectionHeader';
-
-const LIST_EMPTY_MESSAGE = 'Every office is currently filled or already has an open election.\n\nTry again later';
+import { useTranslation } from '../../../i18n';
 
 type OfficeSection = {
   title: string;
@@ -18,17 +17,20 @@ type Props = {
 };
 
 export default function OfficeAvailabilityList({ onPress }: Props) {
+  const { t } = useTranslation();
   const { fetchOffices, openOffices, ready } = useOfficeAvailability();
 
   const sections: OfficeSection[] = useMemo(() => (
-    [{ title: 'Available', data: openOffices }]
+    [{ title: t('modifier.available'), data: openOffices }]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
   ), [openOffices]);
 
   const ListEmptyComponent = useMemo(() => (
-    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
-  ), []);
+    <ListEmptyMessage
+      asteriskDelimitedMessage={t('hint.emptyAvailableOffices')}
+    />
+  ), [t]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: fetchOffices,

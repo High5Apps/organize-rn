@@ -4,6 +4,7 @@ import { Nomination } from '../../../model';
 import type {
   VoteStackParamList, VoteStackScreenProps,
 } from '../../../navigation';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   currentUserId: string;
@@ -22,6 +23,7 @@ export default function useAnnounceButton<T extends keyof VoteStackParamList>(
     navigation.navigate('NewCandidacyAnnouncement', { ballotId, candidateId });
   }, [navigation, ballotId]);
 
+  const { t } = useTranslation();
   const AnnounceButton = useCallback(({ currentUserId, nomination }: Props) => {
     const { candidate, nominee } = nomination;
     if (!candidate || candidate.postId || currentUserId !== nominee.id) {
@@ -29,7 +31,7 @@ export default function useAnnounceButton<T extends keyof VoteStackParamList>(
     }
     return (
       <TextButton onPress={() => onAnnouncePressed(nomination)}>
-        Announce
+        {t('action.announce')}
       </TextButton>
     );
   }, [onAnnouncePressed]);

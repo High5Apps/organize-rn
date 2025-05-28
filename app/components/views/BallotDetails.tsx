@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { Ballot, formatDate } from '../../model';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, font } = useTheme();
@@ -27,6 +28,7 @@ type Props = {
 
 export default function BallotDetails({ ballot, style }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
   if (!ballot) { return null; }
   const { category, maxCandidateIdsPerVote, votingEndsAt } = ballot;
   const votingEnded = votingEndsAt.getTime() <= new Date().getTime();
@@ -38,8 +40,8 @@ export default function BallotDetails({ ballot, style }: Props) {
     }`
   );
   const multipleSelectionsMessage = votingEnded
-    ? `Up to ${maxCandidateIdsPerVote} winners`
-    : `Select up to ${maxCandidateIdsPerVote}`;
+    ? t('hint.winnersMultiple', { maxCandidateIdsPerVote })
+    : t('hint.voteMultiple', { maxCandidateIdsPerVote });
 
   return (
     <View style={style}>
@@ -49,8 +51,8 @@ export default function BallotDetails({ ballot, style }: Props) {
       {termEndMessage && (<Text style={styles.text}>{termEndMessage}</Text>)}
       {!votingEnded && (
         <>
-          <Text style={styles.text}>Responses will be anonymous</Text>
-          <Text style={styles.text}>Change your mind until voting ends</Text>
+          <Text style={styles.text}>{t('hint.voteAnnonymous')}</Text>
+          <Text style={styles.text}>{t('hint.voteModifiable')}</Text>
         </>
       )}
     </View>

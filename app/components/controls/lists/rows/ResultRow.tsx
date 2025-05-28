@@ -9,6 +9,7 @@ import DecisionButtonsRow from '../../DecisionButtonsRow';
 import { HighlightedCurrentUserRowContainer } from '../../../views';
 import type { DiscussButtonType } from '../../buttons';
 import { ConfirmationAlert } from '../../modals';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const {
@@ -143,6 +144,7 @@ export default function ResultRow({
 }: Props) {
   const { candidate: { postId, title, userId } } = result;
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const IconComponent = useIcon({ maxVoteCount, maxWinners, result });
 
@@ -162,11 +164,11 @@ export default function ResultRow({
     if (shouldShowDecisionButtonRow) {
       return (
         <DecisionButtonsRow
-          acceptLabel="Accept office"
+          acceptLabel={t('action.acceptOffice')}
           onAccept={() => onAccepted(true)}
           onDecline={(
             ConfirmationAlert({
-              destructiveAction: 'Decline',
+              destructiveAction: t('action.decline'),
               destructiveActionInTitle: 'decline office',
               onConfirm: () => onAccepted(false),
             }).show

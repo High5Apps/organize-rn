@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useDebounce } from 'use-debounce';
 import { TextInputRow } from './text';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -34,6 +35,7 @@ export default function SearchBar({
   }, [debouncedQuery]);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   return (
     <TextInputRow
       containerStyle={styles.textInputContainer}
@@ -42,7 +44,7 @@ export default function SearchBar({
       iconEndName="close"
       iconEndOnPress={() => setValue('')}
       onChangeText={setValue}
-      placeholder="Search"
+      placeholder={t('action.search')}
       returnKeyType="search"
       value={value}
     />

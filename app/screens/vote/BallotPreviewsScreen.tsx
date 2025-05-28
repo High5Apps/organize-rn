@@ -6,6 +6,7 @@ import {
 import useTheme from '../../Theme';
 import type { BallotPreviewsScreenProps } from '../../navigation';
 import { appStoreURI, BallotPreview } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -34,6 +35,7 @@ export default function VoteScreen({
 }: BallotPreviewsScreenProps) {
   const prependedBallotId = route.params?.prependedBallotId;
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const onItemPress = useCallback(({
     category, id, nominationsEndAt, votingEndsAt,
@@ -64,7 +66,7 @@ export default function VoteScreen({
       />
       <PrimaryButton
         iconName="add"
-        label="New Vote"
+        label={t('object.new.vote')}
         onPress={() => navigation.navigate('BallotType')}
         style={styles.button}
       />

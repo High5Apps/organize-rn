@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import type { NewCandidacyAnnouncementScreenProps } from '../../navigation';
 import { getOffice, type Post, useBallot } from '../../model';
 import { NewPostScreenBase } from '../discuss';
+import { useTranslation } from '../../i18n';
 
 export default function NewCandidacyAnnouncementScreen({
   navigation, route,
@@ -19,9 +20,12 @@ export default function NewCandidacyAnnouncementScreen({
   );
   if (!nomination) { throw new Error('Expected nomination to have candidate'); }
 
+  const { t } = useTranslation();
   const { pseudonym } = nomination.nominee;
   const officeTitle = getOffice(ballot.office).title;
-  const title = `${pseudonym} is running for ${officeTitle}`;
+  const title = t('placeholder.candidacyAnnouncement', {
+    pseudonym, officeTitle,
+  });
 
   const onPostCreated = useCallback((post: Post) => {
     const updatedNomination = { ...nomination };

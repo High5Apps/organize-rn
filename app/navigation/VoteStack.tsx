@@ -8,54 +8,60 @@ import {
 } from '../screens';
 import { VoteStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
+import { useTranslation } from '../i18n';
 
 const Stack = createNativeStackNavigator<VoteStackParamList>();
 
 export default function VoteStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
+  const { t } = useTranslation();
 
   return (
     <Stack.Navigator
-      screenOptions={screenOptions}
       initialRouteName="BallotPreviews"
+      screenOptions={screenOptions}
     >
-      <Stack.Screen component={BallotScreen} name="Ballot" />
+      <Stack.Screen
+        component={BallotScreen}
+        name="Ballot"
+        options={{ title: t('object.ballot') }}
+      />
       <Stack.Screen
         component={BallotPreviewsScreen}
         name="BallotPreviews"
-        options={{ title: 'Vote' }}
+        options={{ title: t('action.vote') }}
       />
       <Stack.Screen
         component={BallotTypeScreen}
         name="BallotType"
-        options={{ title: 'New Vote' }}
+        options={{ title: t('object.new.vote') }}
       />
       <Stack.Screen
-        name="NewCandidacyAnnouncement"
         component={NewCandidacyAnnouncementScreen}
-        options={{ title: 'New Candidacy Announcement' }}
+        name="NewCandidacyAnnouncement"
+        options={{ title: t('object.new.candidacyAnnouncement') }}
       />
       <Stack.Screen
         component={NewElectionBallotScreen}
         name="NewElectionBallot"
-        options={{ title: 'Election' }}
+        options={{ title: t('object.ballotType.election') }}
       />
       <Stack.Screen
         component={NewYesNoBallotScreen}
         name="NewYesOrNoBallot"
-        options={{ title: 'Yes or No' }}
+        options={{ title: t('object.ballotType.yesOrNo') }}
       />
       <Stack.Screen
         component={NewMultipleChoiceBallotScreen}
         name="NewMultipleChoiceBallot"
-        options={{ title: 'Multiple Choice' }}
+        options={{ title: t('object.ballotType.multipleChoice') }}
       />
       <Stack.Screen
         component={NewNominationScreen}
         name="NewNomination"
         options={{
           headerShadowVisible: false,
-          title: 'Nominate a Candidate',
+          title: t('action.nominateCandidate'),
         }}
       />
       <Stack.Screen
@@ -66,12 +72,12 @@ export default function VoteStack() {
       <Stack.Screen
         component={OfficeAvailabilityScreen}
         name="OfficeAvailability"
-        options={{ title: 'Election Office' }}
+        options={{ title: t('object.electionOffice') }}
       />
       <Stack.Screen
         component={ResultScreen}
         name="Result"
-        options={{ title: 'Results' }}
+        options={{ title: t('object.results') }}
       />
     </Stack.Navigator>
   );

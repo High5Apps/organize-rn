@@ -8,6 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { useBallotPreview } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const BALLOT_CATEGORY = 'election';
 
@@ -68,6 +69,7 @@ export default function NewElectionBallotScreen({
   const { createBallotPreview } = useBallotPreview();
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     LearnMoreOfficeModal, office, setModalVisible,
@@ -79,7 +81,7 @@ export default function NewElectionBallotScreen({
 
   if (!office) { return null; }
 
-  const question = `Who should we elect ${office.title}?`;
+  const question = t('placeholder.question.election', { office: office.title });
 
   const resetForm = () => {
     setNominationsEnd(startOfNextHourIn({ days: 7 }));
@@ -122,18 +124,18 @@ export default function NewElectionBallotScreen({
         contentContainerStyle={styles.container}
         style={styles.scrollView}
       >
-        <HeaderText>Question</HeaderText>
+        <HeaderText>{t('object.question')}</HeaderText>
         <Text style={styles.text}>{question}</Text>
-        <HeaderText>Office</HeaderText>
+        <HeaderText>{t('object.office')}</HeaderText>
         <OfficeRow
           item={office}
           onPress={() => setModalVisible(true)}
           style={styles.officeRow}
-          textButtonLabel="Learn more"
+          textButtonLabel={t('action.learnMore')}
         />
         {officeCategory === 'steward' && (
           <>
-            <HeaderText>Max Winners</HeaderText>
+            <HeaderText>{t('object.maximum.winners')}</HeaderText>
             <StepperControl
               disabled={loading}
               min={1}
@@ -143,28 +145,28 @@ export default function NewElectionBallotScreen({
             />
           </>
         )}
-        <HeaderText>Nominations End On</HeaderText>
+        <HeaderText>{t('object.date.nominationsEnd')}</HeaderText>
         <DateTimeSelector
           dateTime={nominationsEnd}
           disabled={loading}
           setDateTime={setNominationsEnd}
           style={styles.dateTimeSelector}
         />
-        <HeaderText>Voting Ends On</HeaderText>
+        <HeaderText>{t('object.date.votingEnd')}</HeaderText>
         <DateTimeSelector
           dateTime={votingEnd}
           disabled={loading}
           setDateTime={setVotingEnd}
           style={styles.dateTimeSelector}
         />
-        <HeaderText>Term Starts On</HeaderText>
+        <HeaderText>{t('object.date.termStart')}</HeaderText>
         <DateTimeSelector
           dateTime={termStart}
           disabled={loading}
           setDateTime={setTermStart}
           style={styles.dateTimeSelector}
         />
-        <HeaderText>Term Ends On</HeaderText>
+        <HeaderText>{t('object.date.termEnd')}</HeaderText>
         <DateTimeSelector
           dateTime={termEnd}
           disabled={loading}
@@ -174,7 +176,7 @@ export default function NewElectionBallotScreen({
         <RequestProgress />
         <PrimaryButton
           iconName="publish"
-          label="Publish"
+          label={t('action.publish')}
           onPress={onPublishPressed}
           style={styles.button}
         />

@@ -45,7 +45,7 @@ export default function OrgTabs() {
         component={VoteStack}
         options={{
           tabBarIcon: TabBarIcon('how-to-vote'),
-          tabBarLabel: 'Vote',
+          tabBarLabel: t('action.vote'),
         }}
       />
       <Tab.Screen

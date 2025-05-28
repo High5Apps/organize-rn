@@ -12,6 +12,7 @@ import useTimeRemainingFooter from '../TimeRemainingFooter';
 import type { AnnounceButtonType, DiscussButtonType } from '../buttons';
 import usePullToRefresh from './PullToRefresh';
 import { renderSectionHeader } from '../SectionHeader';
+import { useTranslation } from '../../../i18n';
 
 type NominationSection = {
   title: string;
@@ -48,15 +49,17 @@ export default function NominationList({
     acceptOrDeclineNomination, AnnounceButton, currentUser.id, DiscussButton,
   ]);
 
+  const { t } = useTranslation();
+
   const ListEmptyComponent = useMemo(() => {
     if (!ballot?.office) { return null; }
     const officeTitle = getOffice(ballot.office).title;
     return (
       <ListEmptyMessage
-        asteriskDelimitedMessage={`Be the first to **nominate a candidate** for ${officeTitle}.\n\nTap the button below to get started!`}
+        asteriskDelimitedMessage={t('hint.emptyNominations', { officeTitle })}
       />
     );
-  }, [ballot?.office]);
+  }, [ballot?.office, t]);
 
   const { TimeRemainingFooter, refreshTimeRemaining } = useTimeRemainingFooter();
   const ListFooterComponent = useMemo(() => (
@@ -79,9 +82,9 @@ export default function NominationList({
 
   const sections: NominationSection[] = useMemo(() => (
     [
-      { title: 'Accepted by nominee', data: acceptedNominations },
-      { title: 'Sent to nominee', data: pendingNominations },
-      { title: 'Declined by nominee', data: declinedNominations },
+      { title: t('hint.nomination.accepted'), data: acceptedNominations },
+      { title: t('hint.nomination.sent'), data: pendingNominations },
+      { title: t('hint.nomination.declined'), data: declinedNominations },
     ]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)

@@ -6,6 +6,7 @@ import { HighlightedCurrentUserRowContainer } from '../../../views';
 import DecisionButtonsRow from '../../DecisionButtonsRow';
 import type { AnnounceButtonType, DiscussButtonType } from '../../buttons';
 import { ConfirmationAlert } from '../../modals';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -56,6 +57,7 @@ export default function NominationRow({
     accepted, candidate, nominator, nominee,
   } = nomination;
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const showDecisionButtonRow = currentUserId === nominee.id
     && accepted === null;
 
@@ -73,7 +75,7 @@ export default function NominationRow({
           <View style={styles.firstColumn}>
             <Text style={styles.title}>{nominee.pseudonym}</Text>
             <Text style={styles.subtitle}>
-              {`Nominated by ${nominator.pseudonym}`}
+              {t('hint.nomination.byline', { nominator: nominator.pseudonym })}
             </Text>
           </View>
           <DiscussButton postId={candidate?.postId} />
@@ -87,7 +89,7 @@ export default function NominationRow({
             onAccept={() => wrappedOnNominationUpdated(true)}
             onDecline={(
               ConfirmationAlert({
-                destructiveAction: 'Decline',
+                destructiveAction: t('action.decline'),
                 destructiveActionInTitle: 'decline your nomination',
                 onConfirm: () => wrappedOnNominationUpdated(false),
               }).show

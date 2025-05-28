@@ -3,6 +3,7 @@ import TextButton from './TextButton';
 import type {
   VoteStackParamList, VoteStackScreenProps,
 } from '../../../navigation';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   postId?: string | null;
@@ -16,10 +17,13 @@ export default function useDiscussButton<T extends keyof VoteStackParamList>(
       screen: 'Post', initial: false, params: { postId },
     })), [navigation]);
 
+  const { t } = useTranslation();
   const DiscussButton = useCallback(({ postId }: Props) => {
     if (!postId) { return null; }
     return (
-      <TextButton onPress={() => onDiscussPressed(postId)}>Discuss</TextButton>
+      <TextButton onPress={() => onDiscussPressed(postId)}>
+        {t('action.discuss')}
+      </TextButton>
     );
   }, [navigation]);
 

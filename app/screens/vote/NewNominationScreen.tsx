@@ -6,6 +6,7 @@ import {
 import type { NewNominationScreenProps } from '../../navigation';
 import { User, getErrorMessage, useBallot } from '../../model';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -30,6 +31,7 @@ export default function NewNominationScreen({
   const { ballot, createNomination } = useBallot(ballotId);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     RequestProgress, setLoading, setResult,
@@ -58,7 +60,7 @@ export default function NewNominationScreen({
   const onItemPress = useCallback(async (nominee: User) => {
     const { pseudonym } = nominee;
     ConfirmationAlert({
-      destructiveAction: 'Nominate',
+      destructiveAction: t('action.nominate'),
       destructiveActionInTitle: `nominate ${pseudonym}`,
       destructiveButtonStyle: 'default',
       onConfirm: () => onNominate(nominee),

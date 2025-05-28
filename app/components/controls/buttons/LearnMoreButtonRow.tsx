@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useTheme from '../../../Theme';
+import { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const {
@@ -41,11 +42,12 @@ type Props = {
 
 export default function LearnMoreButtonRow({ onPress }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} style={styles.innerContainer}>
         <Icon name="help-outline" style={styles.icon} />
-        <Text style={styles.text}>Learn more</Text>
+        <Text style={styles.text}>{t('action.learnMore')}</Text>
       </TouchableOpacity>
     </View>
   );

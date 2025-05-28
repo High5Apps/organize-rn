@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import useTheme from '../../Theme';
 import { PrimaryButton, SecondaryButton } from './buttons';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, sizes, spacing } = useTheme();
@@ -37,12 +38,13 @@ type Props = {
 export default function DecisionButtonsRow({
   acceptLabel: maybeAcceptLabel, onAccept, onDecline,
 }: Props) {
-  const acceptLabel = maybeAcceptLabel ?? 'Accept';
+  const { t } = useTranslation();
+  const acceptLabel = maybeAcceptLabel ?? t('action.accept');
   const { styles } = useStyles();
   return (
     <View style={styles.container}>
       <SecondaryButton
-        label="Decline"
+        label={t('action.decline')}
         onPress={onDecline}
         style={[styles.button, styles.buttonDecline]}
       />

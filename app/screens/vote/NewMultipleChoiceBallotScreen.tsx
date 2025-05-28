@@ -8,6 +8,7 @@ import {
 import { useBallotPreview, useCachedValue } from '../../model';
 import useTheme from '../../Theme';
 import type { NewMultipleChoiceBallotScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 const BALLOT_CATEGORY = 'multiple_choice';
 const CACHE_KEY_CANDIDATES = 'newMultipleChoiceChoices';
@@ -58,6 +59,7 @@ export default function NewMultipleChoiceBallotScreen({
   const { createBallotPreview } = useBallotPreview();
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     loading, RequestProgress, setLoading, setResult,
@@ -98,25 +100,25 @@ export default function NewMultipleChoiceBallotScreen({
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      <HeaderText>Question</HeaderText>
+      <HeaderText>{t('object.question')}</HeaderText>
       <MultilineTextInput
         editable={!loading}
         enablesReturnKeyAutomatically
         maxLength={MAX_QUESTION_LENGTH}
         onChangeText={setQuestion}
-        placeholder="Which of these should we..."
+        placeholder={t('placeholder.question.multipleChoice')}
         style={styles.multilineTextInput}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
         value={question}
       />
-      <HeaderText>Choices</HeaderText>
+      <HeaderText>{t('object.choice', { count: 100 })}</HeaderText>
       <NewCandidatesControl
         candidates={candidates}
         disabled={loading}
         setCandidates={setCandidates}
       />
-      <HeaderText>Max Selections</HeaderText>
+      <HeaderText>{t('object.maximum.selections')}</HeaderText>
       <StepperControl
         disabled={loading}
         max={Math.max(1, candidates.filter((c) => c.length).length)}
@@ -125,7 +127,7 @@ export default function NewMultipleChoiceBallotScreen({
         style={styles.stepperControl}
         value={maxSelections}
       />
-      <HeaderText>Voting Ends On</HeaderText>
+      <HeaderText>{t('object.date.votingEnd')}</HeaderText>
       <DateTimeSelector
         dateTime={votingEnd}
         disabled={loading}
@@ -135,7 +137,7 @@ export default function NewMultipleChoiceBallotScreen({
       <RequestProgress />
       <PrimaryButton
         iconName="publish"
-        label="Publish"
+        label={t('action.publish')}
         onPress={onPublishPressed}
         style={styles.button}
       />

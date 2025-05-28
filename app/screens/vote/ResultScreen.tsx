@@ -12,6 +12,7 @@ import {
   getErrorMessage, Result, useBallotPreviews, useCurrentUser,
 } from '../../model';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const ERROR_ALERT_TITLE = 'Failed to accept or decline office. Please try again.';
 
@@ -91,6 +92,7 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
   if (!currentUser) { throw new Error('Expected current user'); }
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     LearnMoreOfficeModal, setModalVisible,
@@ -107,9 +109,9 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
 
   const ListEmptyComponent = useMemo(() => (
     <Text style={[styles.text, styles.emptyResultsText]}>
-      No one accepted a nomination
+      {t('hint.nomination.noneAccepted')}
     </Text>
-  ), []);
+  ), [t]);
 
   const ListHeaderComponent = useMemo(() => (
     <View style={styles.header}>

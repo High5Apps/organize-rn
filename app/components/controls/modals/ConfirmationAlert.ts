@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import i18n from '../../../i18n';
 
 type Props = {
   destructiveAction: string;
@@ -18,7 +19,7 @@ export default function ConfirmationAlert({
 
   let subtitle: string | undefined;
   if (maybeSubtitle === undefined) {
-    subtitle = "You can't undo this.";
+    subtitle = i18n.t('hint.inputFinal');
   } else if (maybeSubtitle === null) {
     subtitle = undefined;
   } else {
@@ -31,7 +32,7 @@ export default function ConfirmationAlert({
         title,
         subtitle,
         [
-          { text: 'Cancel', style: 'cancel' },
+          { text: i18n.t('action.cancel'), style: 'cancel' },
           {
             text: destructiveAction,
             onPress: onConfirm,

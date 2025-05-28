@@ -7,14 +7,16 @@ import {
   NominationList, PrimaryButton, ScreenBackground, useAnnounceButton,
   useDiscussButton, useHeaderButton, useLearnMoreOfficeModal,
 } from '../../components';
+import { useTranslation } from '../../i18n';
 
 function useTitleUpdater(
   navigation: NominationScreenProps['navigation'],
   officeCategory: OfficeCategory,
 ) {
+  const { t } = useTranslation();
   useLayoutEffect(() => {
     const office = getOffice(officeCategory);
-    const title = `Nominations for ${office.title}`;
+    const title = t('object.officeNominations', { office: office.title });
     navigation.setOptions({ title });
   }, [navigation, officeCategory]);
 }
@@ -47,6 +49,7 @@ export default function NominationsScreen({
   const { ballotId } = route.params;
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const { getCachedBallotPreview } = useBallotPreviews();
   const ballotPreview = getCachedBallotPreview(ballotId);
@@ -79,7 +82,7 @@ export default function NominationsScreen({
       <LearnMoreOfficeModal />
       <PrimaryButton
         iconName="record-voice-over"
-        label="Nominate"
+        label={t('action.nominate')}
         onPress={() => navigation.navigate('NewNomination', { ballotId })}
         style={styles.button}
       />

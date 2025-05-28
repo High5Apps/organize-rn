@@ -11,8 +11,7 @@ import { BallotPreviewRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import useInfiniteScroll from './InfiniteScroll';
 import { renderSectionHeader } from '../SectionHeader';
-
-const LIST_EMPTY_MESSAGE = 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!';
+import { useTranslation } from '../../../i18n';
 
 type BallotPreviewSection = {
   title: string;
@@ -53,10 +52,12 @@ export default function BallotPreviewList({
     ready,
   });
 
+  const { t } = useTranslation();
+
   const sections: BallotPreviewSection[] = useMemo(() => (
     [
-      { title: 'Active votes', data: activeBallotPreviewsAndPrepended },
-      { title: 'Completed votes', data: inactiveBallotPreviews },
+      { title: t('object.activeVotes'), data: activeBallotPreviewsAndPrepended },
+      { title: t('object.completedVotes'), data: inactiveBallotPreviews },
     ]
       .map((section) => (section.data.length > 0 ? section : undefined))
       .filter(isDefined)
@@ -82,7 +83,9 @@ export default function BallotPreviewList({
   });
 
   const ListEmptyComponent = useMemo(() => (
-    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
+    <ListEmptyMessage
+      asteriskDelimitedMessage={t('hint.emptyBallotPreviews')}
+    />
   ), []);
 
   const renderItem = useCallback(

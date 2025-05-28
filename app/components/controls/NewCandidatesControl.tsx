@@ -4,6 +4,7 @@ import { TextInputRow } from './text';
 import { TextButton } from './buttons';
 import useTheme from '../../Theme';
 import { ConfirmationAlert } from './modals';
+import { useTranslation } from '../../i18n';
 
 const MAX_TITLE_LENGTH = 60;
 
@@ -38,6 +39,7 @@ export default function NewCandidatesControl({
   const appendNewCandidate = () => setCandidates([...candidates, '']);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   return (
     <View>
       {candidates.map((candidate, i) => (
@@ -87,7 +89,7 @@ export default function NewCandidatesControl({
               setFocusedInputIndex(focusedInputIndex + 1);
             }
           }}
-          placeholder={`Choice ${1 + i}`}
+          placeholder={t('placeholder.choice', { n: 1 + i })}
           submitBehavior="submit"
           value={candidate}
         />
@@ -97,7 +99,7 @@ export default function NewCandidatesControl({
         disabled={disabled || !candidates[candidates.length - 1]?.length}
         onPress={appendNewCandidate}
       >
-        Add another choice
+        {t('action.addChoice')}
       </TextButton>
     </View>
   );

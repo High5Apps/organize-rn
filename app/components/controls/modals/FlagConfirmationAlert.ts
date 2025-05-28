@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import ConfirmationAlert from './ConfirmationAlert';
 import { getErrorMessage, useFlag } from '../../../model';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   ballotId?: string;
@@ -15,6 +16,8 @@ export default function FlagConfirmationAlert({
 }: Props) {
   const { createFlag } = useFlag({ ballotId, commentId, postId });
 
+  const { t } = useTranslation();
+
   const show = useCallback(() => {
     let itemName = 'content';
     if (ballotId !== undefined) {
@@ -26,7 +29,7 @@ export default function FlagConfirmationAlert({
     }
 
     ConfirmationAlert({
-      destructiveAction: 'Flag',
+      destructiveAction: t('action.flag'),
       onConfirm: async () => {
         try {
           await createFlag();

@@ -7,6 +7,7 @@ import {
 import { useBallotPreview, useCachedValue } from '../../model';
 import useTheme from '../../Theme';
 import type { NewYesNoBallotScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 const CACHE_KEY_QUESTION = 'newYesNoVoteQuestion';
 const MAX_QUESTION_LENGTH = 140;
@@ -48,6 +49,7 @@ export default function NewYesNoBallotScreen({
   const { createBallotPreview } = useBallotPreview();
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     loading, RequestProgress, setLoading, setResult,
@@ -86,19 +88,19 @@ export default function NewYesNoBallotScreen({
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
-      <HeaderText>Question</HeaderText>
+      <HeaderText>{t('object.question')}</HeaderText>
       <MultilineTextInput
         editable={!loading}
         enablesReturnKeyAutomatically
         maxLength={MAX_QUESTION_LENGTH}
         onChangeText={setQuestion}
-        placeholder="Should we..."
+        placeholder={t('placeholder.question.yesNo')}
         style={styles.multilineTextInput}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
         value={question}
       />
-      <HeaderText>Voting Ends On</HeaderText>
+      <HeaderText>{t('object.date.votingEnd')}</HeaderText>
       <DateTimeSelector
         dateTime={votingEnd}
         disabled={loading}
@@ -108,7 +110,7 @@ export default function NewYesNoBallotScreen({
       <RequestProgress />
       <PrimaryButton
         iconName="publish"
-        label="Publish"
+        label={t('action.publish')}
         onPress={onPublishPressed}
         style={styles.button}
       />
