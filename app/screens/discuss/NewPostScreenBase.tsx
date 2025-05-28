@@ -161,7 +161,7 @@ export default function NewPostScreenBase({
         body, candidateId, category: postCategory, title,
       });
       resetForm();
-      setResult('success', { message: t('result.successfulPostCreation') });
+      setResult('success', { message: t('result.success.create.post') });
       onPostCreated?.(post);
     } catch (error) {
       setResult('error', { error });

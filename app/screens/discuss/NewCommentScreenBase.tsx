@@ -69,8 +69,7 @@ export default function NewCommentScreenBase({
       const comment = await createComment({ body, commentId, postId });
       setBody(undefined);
       const message = t(commentId
-        ? 'result.successfulReplyCreation'
-        : 'result.successfulCommentCreation');
+        ? 'result.success.create.reply' : 'result.success.create.comment');
       setResult('success', { message });
       onCommentCreated?.(comment.id);
     } catch (error) {

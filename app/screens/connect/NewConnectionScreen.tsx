@@ -64,7 +64,7 @@ export default function NewConnectionScreen({
     try {
       const { isReconnection } = await createConnection();
       const message = t(isReconnection
-        ? 'result.reconnectionSucceeded' : 'result.connectionSucceeded');
+        ? 'result.success.reconnection' : 'result.success.connection');
       setResult('success', { message });
     } catch (error) {
       setResult('error', { error });

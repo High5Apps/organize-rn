@@ -57,9 +57,6 @@ const translation: Translation = {
       verificationCodeRequest: 'sOrganize Verification',
     },
   },
-  error: {
-    cameraNotFound: 'sNo camera found',
-  },
   explanation: {
     candidacyAnnouncement: "sIt's your opportunity to explain to your coworkers why they should vote for you.\n\nIf you've got relevant experience or character traits, let them know!\n\nWhat will you do if you win?\n\nWhy are you the best person for the job?",
     demand: "sDemands let you voice how specific things at your workplace should change for the better.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a consensus on which demands are the most important.",
@@ -210,11 +207,18 @@ const translation: Translation = {
     workGroupAbsent: "sDon't see your work group?",
   },
   result: {
-    connectionSucceeded: 'sConnected successfully',
-    reconnectionSucceeded: 'sReconnected successfully',
-    successfulCommentCreation: 'sSuccessfully created comment',
-    successfulPostCreation: 'sSuccessfully created post',
-    successfulReplyCreation: 'sSuccessfully created reply',
+    error: {
+      cameraNotFound: 'sNo camera found',
+    },
+    success: {
+      connection: 'sConnected successfully',
+      create: {
+        comment: 'sSuccessfully created comment',
+        post: 'sSuccessfully created post',
+        reply: 'sSuccessfully created reply',
+      },
+      reconnection: 'sReconnected successfully',
+    },
   },
   valueProposition: 'Crea tu propio sindicato',
 };

@@ -64,7 +64,7 @@ export default function QRCamera({
   } else {
     content = (
       <FadeInView delay={2000}>
-        <ErrorMessage message={t('error.cameraNotFound')} />
+        <ErrorMessage message={t('result.error.cameraNotFound')} />
       </FadeInView>
     );
   }

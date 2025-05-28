@@ -56,9 +56,6 @@ const en = {
         verificationCodeRequest: 'Organize Verification',
       },
     },
-    error: {
-      cameraNotFound: 'No camera found',
-    },
     explanation: {
       candidacyAnnouncement: "It's your opportunity to explain to your coworkers why they should vote for you.\n\nIf you've got relevant experience or character traits, let them know!\n\nWhat will you do if you win?\n\nWhy are you the best person for the job?",
       demand: "Demands let you voice how specific things at your workplace should change for the better.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a consensus on which demands are the most important.",
@@ -209,11 +206,18 @@ const en = {
       workGroupAbsent: "Don't see your work group?",
     },
     result: {
-      connectionSucceeded: 'Connected successfully',
-      reconnectionSucceeded: 'Reconnected successfully',
-      successfulCommentCreation: 'Successfully created comment',
-      successfulPostCreation: 'Successfully created post',
-      successfulReplyCreation: 'Successfully created reply',
+      error: {
+        cameraNotFound: 'No camera found',
+      },
+      success: {
+        connection: 'Connected successfully',
+        create: {
+          comment: 'Successfully created comment',
+          post: 'Successfully created post',
+          reply: 'Successfully created reply',
+        },
+        reconnection: 'Reconnected successfully',
+      },
     },
     valueProposition: 'Form your own labor union',
   },
