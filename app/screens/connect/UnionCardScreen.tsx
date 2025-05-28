@@ -118,7 +118,7 @@ function useUnionCardInfo({
   const { org, refreshOrg, updateOrg } = useOrg();
   const { employerName: orgEmployerName, name: orgName } = org ?? {};
   const employerName = cardEmployerName || orgEmployerName;
-  const agreement = unionCard?.agreement ?? t('format.unionCardAgreement', {
+  const agreement = unionCard?.agreement ?? t('legal.agreement.unionCard', {
     buttonLabel: t('action.sign'),
     employerName: employerName || '__________',
     orgName: orgName || '__________',

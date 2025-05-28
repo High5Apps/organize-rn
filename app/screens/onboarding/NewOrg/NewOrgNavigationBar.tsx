@@ -58,7 +58,7 @@ export default function NewOrgNavigationBar({
         <Text style={styles.currentStep}>
           <Trans
             components={{ SecondaryText: <Text style={styles.totalSteps} /> }}
-            i18nKey="format.currentStep"
+            i18nKey="hint.currentStep"
             style={styles.currentStep}
             values={{
               currentStep: 1 + currentStep,

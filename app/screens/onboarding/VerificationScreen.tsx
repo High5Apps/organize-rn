@@ -106,7 +106,7 @@ export default function VerificationScreen() {
         <Text style={styles.message}>{t('question.verificationCode')}</Text>
         <TextButton
           onPress={Email({
-            body: t('format.verificationCodeEmailBody', {
+            body: t('email.body.verificationCodeRequest', {
               referenceId: currentUser!.org!.id,
             }),
             subject: t('email.subject.verificationCodeRequest'),

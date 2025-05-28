@@ -49,6 +49,9 @@ const en = {
       appName: 'Organize',
     },
     email: {
+      body: {
+        verificationCodeRequest: "I'd like to create a new Org on the Organize app. Please send me a verification code!\n\nReference ID: {{referenceId}}",
+      },
       subject: {
         verificationCodeRequest: 'Organize Verification',
       },
@@ -67,13 +70,8 @@ const en = {
       orgName: 'You can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
       workGroup: 'A work group contains coworkers with the same job title, department, and shift.\n\nWork groups help represent your particular interests during contract negotiations.\n\nIf your workplace is small, your work groups might not have separate departments or shifts.',
     },
-    format: {
-      currentStep: 'Step {{currentStep}} <SecondaryText>of {{totalSteps}}</SecondaryText>',
-      unionCardAgreement: 'By tapping {{buttonLabel}}, I authorize {{orgName}} to represent me for the purpose of collective bargaining with {{employerName}}',
-      userAgreement: 'By tapping {{buttonLabel}}, I agree to the Organize <TermsLink>Terms</TermsLink> and <PrivacyLink>Privacy Policy</PrivacyLink>',
-      verificationCodeEmailBody: "I'd like to create a new Org on the Organize app. Please send me a verification code!\n\nReference ID: {{referenceId}}",
-    },
     hint: {
+      currentStep: 'Step {{currentStep}} <SecondaryText>of {{totalSteps}}</SecondaryText>',
       emptyAvailableOffices: 'Every office is currently filled or already has an open election.\n\nTry again later',
       emptyBallotPreviews: 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!',
       emptyComments: 'Be the first to comment on this',
@@ -100,6 +98,12 @@ const en = {
       voteModifiable: 'Change your mind until voting ends',
       voteMultiple: 'Select up to {{maxCandidateIdsPerVote}}',
       winnersMultiple: 'Up to {{maxCandidateIdsPerVote}} winners',
+    },
+    legal: {
+      agreement: {
+        unionCard: 'By tapping {{buttonLabel}}, I authorize {{orgName}} to represent me for the purpose of collective bargaining with {{employerName}}',
+        user: 'By tapping {{buttonLabel}}, I agree to the Organize <TermsLink>Terms</TermsLink> and <PrivacyLink>Privacy Policy</PrivacyLink>',
+      },
     },
     modifier: {
       available: 'Available',

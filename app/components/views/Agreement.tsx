@@ -47,7 +47,7 @@ export default function Agreement({ buttonLabel }: Props) {
             />
           ),
         }}
-        i18nKey="format.userAgreement"
+        i18nKey="legal.agreement.user"
         values={{ buttonLabel }}
       />
     </Text>
