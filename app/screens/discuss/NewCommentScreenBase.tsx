@@ -6,6 +6,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { MAX_COMMENT_LENGTH, useCachedValue, useComment } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -52,6 +53,7 @@ export default function NewCommentScreenBase({
   const [body, setBody] = useCachedValue<string | undefined>(cacheKey);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const {
     loading, RequestProgress, setLoading, setResult,
   } = useRequestProgress({ removeWhenInactive: true });
@@ -66,7 +68,9 @@ export default function NewCommentScreenBase({
     try {
       const comment = await createComment({ body, commentId, postId });
       setBody(undefined);
-      const message = `Successfully created ${commentId ? 'reply' : 'comment'}`;
+      const message = t(commentId
+        ? 'result.successfulReplyCreation'
+        : 'result.successfulCommentCreation');
       setResult('success', { message });
       onCommentCreated?.(comment.id);
     } catch (error) {
@@ -78,12 +82,14 @@ export default function NewCommentScreenBase({
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {HeaderComponent}
       <View style={styles.section}>
-        <HeaderText>{commentId ? 'Reply' : 'Comment'}</HeaderText>
+        <HeaderText>
+          {t(commentId ? 'object.reply' : 'object.comment', { count: 1 })}
+        </HeaderText>
         <MultilineTextInput
           editable={!loading}
           maxLength={MAX_COMMENT_LENGTH}
           onChangeText={setBody}
-          placeholder="What do you think?"
+          placeholder={t('placeholder.commentBody')}
           returnKeyType="default"
           value={body}
         />
@@ -91,7 +97,7 @@ export default function NewCommentScreenBase({
       <RequestProgress style={styles.requestProgress} />
       <PrimaryButton
         iconName="publish"
-        label="Publish"
+        label={t('action.publish')}
         onPress={onPublishPressed}
         style={styles.button}
       />

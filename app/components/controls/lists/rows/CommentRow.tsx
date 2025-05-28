@@ -14,6 +14,7 @@ import type { PostScreenProps } from '../../../../navigation';
 import {
   HighlightedRowContainer, HyperlinkDetector, LockingScrollView,
 } from '../../../views';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -103,6 +104,7 @@ function CommentRow({
     colors, nestedMarginStart, spacing, styles,
   } = useStyles();
   const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
+  const { t } = useTranslation();
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {
@@ -164,7 +166,7 @@ function CommentRow({
                 disabled={shouldShowAsDisabled}
                 onPress={onReplyPress}
               >
-                Reply
+                {t('action.reply')}
               </TextButton>
             )}
             <FlagTextButton commentId={id} disabled={shouldShowAsDisabled} />

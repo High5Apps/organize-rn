@@ -14,6 +14,7 @@ import {
 import type {
   NewCandidacyAnnouncementScreenProps, NewPostScreenProps,
 } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 const MAX_TITLE_LENGTH = 140;
 const MAX_BODY_LENGTH = 10000;
@@ -78,27 +79,29 @@ function useLearnMoreModal({
     onPress: () => setModalVisible(true),
   });
 
+  const { t } = useTranslation();
+
   let body: string;
   let headline: string;
   let icon: string;
   if (postCategory === 'demands') {
     icon = 'trending-up';
-    headline = "What's a demand?";
-    body = "Demands let you voice how specific things at your workplace should change for the better.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a consensus on which demands are the most important.";
+    headline = t('question.demand');
+    body = t('explanation.demand');
   } else if (postCategory === 'general') {
     if (candidateId) {
       icon = 'campaign';
-      headline = "What's a candidacy announcement?";
-      body = "It's your opportunity to explain to your coworkers why they should vote for you.\n\nIf you've got relevant experience or character traits, let them know!\n\nWhat will you do if you win?\n\nWhy are you the best person for the job?";
+      headline = t('question.candidacyAnnouncement');
+      body = t('explanation.candidacyAnnouncement');
     } else {
       icon = 'question-answer';
-      headline = 'What should we discuss?';
-      body = "You can discuss anything here!\n\nJust try to keep it civil.\n\nYou might not agree with your coworkers on every issue, but at the end of the day you're all in it together.";
+      headline = t('question.discussionTopic');
+      body = t('explanation.discussionTopic');
     }
   } else if (postCategory === 'grievances') {
     icon = 'heart-broken';
-    headline = "What's a grievance?";
-    body = "If you've experienced issues in your workplace, others may have experienced them too.\n\nGrievances offer a chance to shine a light on injustice, unethical behavior, and illegal practices.";
+    headline = t('question.grievance');
+    body = t('explanation.grievance');
   } else {
     throw new Error('Unexpected postCategory');
   }
@@ -139,6 +142,7 @@ export default function NewPostScreenBase({
   const multilineTextInputRef = useRef<TextInput | null>(null);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const resetForm = () => {
     setTitle('');
@@ -157,7 +161,7 @@ export default function NewPostScreenBase({
         body, candidateId, category: postCategory, title,
       });
       resetForm();
-      setResult('success', { message: 'Successfully created post' });
+      setResult('success', { message: t('result.successfulPostCreation') });
       onPostCreated?.(post);
     } catch (error) {
       setResult('error', { error });
@@ -172,7 +176,7 @@ export default function NewPostScreenBase({
       <View style={styles.container}>
         {!initialCategory && (
           <View style={styles.section}>
-            <HeaderText>Category</HeaderText>
+            <HeaderText>{t('object.category')}</HeaderText>
             <PostCategorySelector
               disabled={loading}
               onSelectionChanged={setPostCategory}
@@ -181,7 +185,7 @@ export default function NewPostScreenBase({
           </View>
         )}
         <View style={styles.section}>
-          <HeaderText>Title</HeaderText>
+          <HeaderText>{t('object.title')}</HeaderText>
           <TextInputRow
             editable={!loading}
             enablesReturnKeyAutomatically // iOS only
@@ -193,7 +197,7 @@ export default function NewPostScreenBase({
                 multilineTextInputRef.current?.focus();
               }
             }}
-            placeholder="Enter a short title"
+            placeholder={t('placeholder.discussionTitle')}
             // Prevents dismissing the keyboard when hitting next on Android
             // before entering any input
             submitBehavior="submit"
@@ -201,13 +205,13 @@ export default function NewPostScreenBase({
           />
         </View>
         <View style={styles.section}>
-          <HeaderText>Body (optional)</HeaderText>
+          <HeaderText>{t('object.optional.body')}</HeaderText>
           <MultilineTextInput
             editable={!loading}
             maxLength={MAX_BODY_LENGTH}
             onChangeText={setBody}
             onEndEditing={({ nativeEvent: { text } }) => setBody(text)}
-            placeholder="Enter any details that can't fit in the title"
+            placeholder={t('placeholder.discussionBody')}
             returnKeyType="default"
             ref={multilineTextInputRef}
             value={body}
@@ -216,7 +220,7 @@ export default function NewPostScreenBase({
         <RequestProgress style={styles.requestProgress} />
         <PrimaryButton
           iconName="publish"
-          label="Publish"
+          label={t('action.publish')}
           onPress={onPublishPressed}
           style={styles.button}
         />

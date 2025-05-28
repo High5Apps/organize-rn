@@ -10,6 +10,7 @@ import { ItemSeparator, useRequestProgress } from '../../views';
 import { Comment, useComments } from '../../../model';
 import type { InsertedComment } from '../../../navigation';
 import SectionHeader from '../SectionHeader';
+import { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -127,6 +128,7 @@ export default function CommentList({
   const listRef = useRef<FlatList<Comment>>(null);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
   const { cacheComment, comments, refreshComments } = useComments(postId);
   const {
     allComments: data, resetInsertedComments,
@@ -148,7 +150,7 @@ export default function CommentList({
       resetInsertedComments();
       if (isEmpty) {
         setResult('info', {
-          message: 'Be the first to comment on this',
+          message: t('hint.emptyComments'),
           onPress: emptyListMessageOnPress,
         });
       }
@@ -167,8 +169,8 @@ export default function CommentList({
       >
         {ListHeaderComponent}
       </View>
-      <SectionHeader buttonText="Refresh" onPress={refresh}>
-        Comments
+      <SectionHeader buttonText={t('action.refresh')} onPress={refresh}>
+        {t('object.comment', { count: 100 })}
       </SectionHeader>
       <RequestProgress style={styles.requestProgress} />
     </>
@@ -176,7 +178,7 @@ export default function CommentList({
 
   const renderItem: ListRenderItem<Comment> = useCallback(({ item }) => (
     <CommentRow item={item} onCommentChanged={cacheComment} />
-  ), [cacheComment]);
+  ), [cacheComment, t]);
 
   useEffect(() => {
     listRef.current?.scrollToOffset({ animated: false, offset: 0 });

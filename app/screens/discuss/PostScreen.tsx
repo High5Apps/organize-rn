@@ -9,6 +9,7 @@ import {
 import type { PostScreenProps } from '../../navigation';
 import { getErrorMessage, usePost } from '../../model';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 function toTitleCase(s: string) {
   return s.replace(/(^|\s)\S/g, (c) => c.toUpperCase());
@@ -54,6 +55,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
   });
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   useLayoutEffect(() => {
     if (!post) { return; }
@@ -114,7 +116,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
       ) : <RequestProgress style={styles.requestProgress} />}
       <PrimaryButton
         iconName="add"
-        label="Comment"
+        label={t('object.comment', { count: 1 })}
         onPress={navigateToNewCommentScreen}
         style={styles.button}
       />

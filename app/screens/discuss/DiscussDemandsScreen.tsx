@@ -1,19 +1,22 @@
 import React from 'react';
 import DiscussScreen from './DiscussScreen';
 import type { DiscussDemandsScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 export default function DiscussDemandsScreen({
   navigation, route,
 }: DiscussDemandsScreenProps) {
   const prependedPostId = route.params?.prependedPostId;
 
+  const { t } = useTranslation();
+
   return (
     <DiscussScreen <'Demands'>
       category="demands"
-      emptyListMessage={"Demands let you voice how specific things should **change for the better**.\n\nOver time, Org members' upvotes and downvotes will help everyone come to a **consensus**."}
+      emptyListMessage={t('hint.emptyDemandDiscussions')}
       prependedPostId={prependedPostId}
       navigation={navigation}
-      primaryButtonLabel="Demand"
+      primaryButtonLabel={t('object.demand', { count: 1 })}
       screenName={route.name}
       sort="top"
     />

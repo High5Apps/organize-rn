@@ -6,6 +6,7 @@ import { ItemSeparator } from '../../views';
 import { TextButton } from '../buttons';
 import useTheme from '../../../Theme';
 import usePullToRefresh from './PullToRefresh';
+import { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -35,13 +36,14 @@ export default function CommentThreadList({
   } = usePullToRefresh({ onRefresh: fetchThread, refreshOnMount: true });
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const ListFooterComponent = useCallback(() => (!postId ? null : (
     <TextButton
       containerStyle={styles.viewPostButton}
       onPress={() => onViewPostPressed?.(postId)}
     >
-      View Full Discussion
+      {t('action.viewDiscussion')}
     </TextButton>
   )), [onViewPostPressed, postId]);
 

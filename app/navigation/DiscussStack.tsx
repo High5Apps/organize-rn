@@ -7,24 +7,26 @@ import {
 import { DiscussStackParamList } from './types';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
 import DiscussTabs from './DiscussTabs';
+import { useTranslation } from '../i18n';
 
 const Stack = createNativeStackNavigator<DiscussStackParamList>();
 
 export default function DiscussStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
+  const { t } = useTranslation();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="DiscussTabs"
         component={DiscussTabs}
-        options={{ headerShadowVisible: false, title: 'Discuss' }}
+        options={{ headerShadowVisible: false, title: t('action.discuss') }}
       />
       <Stack.Screen
         name="CommentThread"
         component={CommentThreadScreen}
         getId={({ params }) => params.commentId}
-        options={{ title: 'Comment Thread' }}
+        options={{ title: t('object.commentThread') }}
       />
       <Stack.Screen
         name="NewPost"
@@ -34,13 +36,13 @@ export default function DiscussStack() {
 
           let title: string;
           if (maybeCategory === 'demands') {
-            title = 'New Demand';
+            title = t('object.new.demand');
           } else if (maybeCategory === 'general') {
-            title = 'New General Discussion';
+            title = t('object.new.generalDiscussion');
           } else if (maybeCategory === 'grievances') {
-            title = 'New Grievance';
+            title = t('object.new.grievance');
           } else {
-            title = 'New Discussion';
+            title = t('object.new.discussion');
           }
 
           return { title };
@@ -54,12 +56,12 @@ export default function DiscussStack() {
       <Stack.Screen
         name="NewComment"
         component={NewCommentScreen}
-        options={{ title: 'New Comment' }}
+        options={{ title: t('object.new.comment') }}
       />
       <Stack.Screen
         name="NewReply"
         component={NewReplyScreen}
-        options={{ title: 'New Reply' }}
+        options={{ title: t('object.new.reply') }}
       />
     </Stack.Navigator>
   );

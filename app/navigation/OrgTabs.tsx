@@ -37,7 +37,7 @@ export default function OrgTabs() {
         component={DiscussStack}
         options={{
           tabBarIcon: TabBarIcon('chat-bubble'),
-          tabBarLabel: 'Discuss',
+          tabBarLabel: t('action.discuss'),
         }}
       />
       <Tab.Screen
