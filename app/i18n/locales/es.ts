@@ -189,6 +189,7 @@ const translation: Translation = {
     pending: 'sPending',
     recent: 'sRecent',
     selected: 'sSelected',
+    unknown: 'sUnknown',
   },
   object: {
     activeVotes: 'sActive Votes',

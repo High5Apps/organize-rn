@@ -1,22 +1,23 @@
 import { useEffect, useMemo } from 'react';
 import { useMyPermissions } from './context';
 import { BallotType } from './types';
+import i18n from '../i18n';
 
 const ballotTypes: BallotType[] = [
   {
     category: 'yes_no',
     iconName: 'thumb-up',
-    name: 'Yes or No',
+    name: i18n.t('object.ballotType.yesOrNo'),
   },
   {
     category: 'multiple_choice',
     iconName: 'check-box',
-    name: 'Multiple Choice',
+    name: i18n.t('object.ballotType.multipleChoice'),
   },
   {
     category: 'election',
     iconName: 'person',
-    name: 'Election',
+    name: i18n.t('object.ballotType.election'),
   },
 ];
 
@@ -26,7 +27,7 @@ export function getBallotTypeInfo(category: string): BallotType {
   ) ?? {
     category: 'unknown',
     iconName: 'warning',
-    name: 'Unknown',
+    name: i18n.t('modifier.unknown'),
   };
 }
 

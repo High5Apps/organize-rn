@@ -188,6 +188,7 @@ const en = {
       pending: 'Pending',
       recent: 'Recent',
       selected: 'Selected',
+      unknown: 'Unknown',
     },
     object: {
       activeVotes: 'Active Votes',
