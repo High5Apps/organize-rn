@@ -79,7 +79,7 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
         } catch (error) {
           const errorMessage = getErrorMessage(error);
           setResult('error', {
-            message: `${errorMessage}\nTap to try again`,
+            message: t('result.error.tapToRetry', { errorMessage }),
             onPress: refresh,
           });
         }

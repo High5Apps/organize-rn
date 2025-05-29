@@ -320,6 +320,7 @@ const en = {
     result: {
       error: {
         cameraNotFound: 'No camera found',
+        tapToRetry: '{{errorMessage}}\nTap to try again',
         unblock: 'Failed to unblock. Please try again',
         verifyUnionCard_one: 'Failed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',
         verifyUnionCard_other: 'Failed to verify {{verificationFailureCount}} union card signatures. To fix this, update your app and then try again.',

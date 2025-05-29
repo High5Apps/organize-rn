@@ -142,7 +142,7 @@ function useUnionCardInfo({
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setRefreshResult('error', {
-        message: `${errorMessage}\nTap to try again`,
+        message: t('result.error.tapToRetry', { errorMessage }),
         onPress: refresh,
       });
     }

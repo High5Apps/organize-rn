@@ -57,7 +57,7 @@ function useOrgInfo({
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', {
-        message: `${errorMessage}\nTap to try again`,
+        message: t('result.error.tapToRetry', { errorMessage }),
         onPress: refresh,
       });
     }

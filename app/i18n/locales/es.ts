@@ -321,6 +321,7 @@ const translation: Translation = {
   result: {
     error: {
       cameraNotFound: 'sNo camera found',
+      tapToRetry: 's{{errorMessage}}\nTap to try again',
       unblock: 'sFailed to unblock. Please try again',
       verifyUnionCard_one: 'sFailed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',
       verifyUnionCard_other: 'sFailed to verify {{verificationFailureCount}} union card signatures. To fix this, update your app and then try again.',
