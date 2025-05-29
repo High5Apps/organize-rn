@@ -90,8 +90,8 @@ export default function NominationRow({
             onDecline={(
               ConfirmationAlert({
                 destructiveAction: t('action.decline'),
-                destructiveActionInTitle: 'decline your nomination',
                 onConfirm: () => wrappedOnNominationUpdated(false),
+                title: t('question.confirmation.declineNomination'),
               }).show
             )}
           />

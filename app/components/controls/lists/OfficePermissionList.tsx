@@ -59,9 +59,9 @@ export default function OfficePermissionList({ scope }: Props) {
     if (selected && officeCategories.includes(officeCategory)) {
       ConfirmationAlert({
         destructiveAction: t('action.remove'),
-        destructiveActionInTitle: 'remove this permission',
         onConfirm: () => onRowPressed(officeCategory),
         subtitle: t('explanation.warning.removeSelfPermission'),
+        title: t('question.confirmation.removeSelfPermission'),
       }).show();
     } else {
       onRowPressed(officeCategory);

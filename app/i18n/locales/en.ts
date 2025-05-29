@@ -214,6 +214,7 @@ const en = {
       commentThread: 'Comment Thread',
       communication: 'Communication',
       completedVotes: 'Completed Votes',
+      content: 'Content',
       date: {
         nominationsEnd: 'Nominations End On',
         termEnd: 'Term Ends On',
@@ -313,6 +314,17 @@ const en = {
     },
     question: {
       candidacyAnnouncement: "What's a candidacy announcement?",
+      confirmation: {
+        blockUser: 'Are you sure you want to block {{pseudonym}}?',
+        declineNomination: 'Are you sure you want to decline your nomination?',
+        declineOffice: 'Are you sure you want to decline office?',
+        flag: 'Flag this {{itemName}} as inappropriate?',
+        leaveOrg: 'Are you sure you want to leave this Org?',
+        nominateUser: 'Are you sure you want to nominate {{pseudonym}}?',
+        removeCandidate: 'Are you sure you want to remove this choice: "{{candidate}}"?',
+        removeSelfPermission: 'Are you sure you want to remove this permission?',
+        unblockUser: 'Are you sure you want to unblock {{pseudonym}}?',
+      },
       demand: "What's a demand?",
       discussionTopic: 'What should we discuss?',
       grievance: "What's a grievance?",
@@ -331,6 +343,7 @@ const en = {
     result: {
       error: {
         cameraNotFound: 'No camera found',
+        flag: 'Failed to flag {{itemName}}',
         tapToRetry: '{{errorMessage}}\nTap to try again',
         unblock: 'Failed to unblock. Please try again',
         verifyUnionCard_one: 'Failed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',

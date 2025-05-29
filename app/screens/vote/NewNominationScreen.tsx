@@ -61,9 +61,9 @@ export default function NewNominationScreen({
     const { pseudonym } = nominee;
     ConfirmationAlert({
       destructiveAction: t('action.nominate'),
-      destructiveActionInTitle: `nominate ${pseudonym}`,
       destructiveButtonStyle: 'default',
       onConfirm: () => onNominate(nominee),
+      title: t('question.confirmation.nominateUser', { pseudonym }),
     }).show();
   }, [onNominate]);
 

@@ -19,14 +19,15 @@ export default function FlagConfirmationAlert({
   const { t } = useTranslation();
 
   const show = useCallback(() => {
-    let itemName = 'content';
+    let itemName = t('object.content');
     if (ballotId !== undefined) {
-      itemName = 'ballot';
+      itemName = t('object.ballot');
     } else if (commentId !== undefined) {
-      itemName = 'comment';
+      itemName = t('object.comment');
     } else if (postId !== undefined) {
-      itemName = 'discussion';
+      itemName = t('object.discussion');
     }
+    itemName = itemName.toLocaleLowerCase();
 
     ConfirmationAlert({
       destructiveAction: t('action.flag'),
@@ -36,12 +37,12 @@ export default function FlagConfirmationAlert({
           onSuccess?.();
         } catch (error) {
           const errorMessage = getErrorMessage(error);
-          Alert.alert(`Failed to flag ${itemName}`, errorMessage);
+          Alert.alert(t('result.error.flag', { itemName }), errorMessage);
         }
       },
-      title: `Flag this ${itemName} as inappropriate?`,
+      title: t('question.confirmation.flag', { itemName }),
     }).show();
-  }, [createFlag]);
+  }, [createFlag, t]);
 
   return { show };
 }

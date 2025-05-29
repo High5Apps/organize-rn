@@ -3,20 +3,16 @@ import i18n from '../../../i18n';
 
 type Props = {
   destructiveAction: string;
-  destructiveActionInTitle?: string;
   destructiveButtonStyle?: 'default' | 'destructive';
   onConfirm: () => void;
   subtitle?: string | null;
-  title?: string;
+  title: string;
 };
 
 export default function ConfirmationAlert({
-  destructiveAction, destructiveActionInTitle, destructiveButtonStyle,
-  onConfirm, subtitle: maybeSubtitle, title: maybeTitle,
+  destructiveAction, destructiveButtonStyle, onConfirm, subtitle: maybeSubtitle,
+  title,
 }: Props) {
-  const actionInTitle = destructiveActionInTitle || destructiveAction;
-  const title = maybeTitle ?? `Are you sure you want to ${actionInTitle}?`;
-
   let subtitle: string | undefined;
   if (maybeSubtitle === undefined) {
     subtitle = i18n.t('hint.inputFinal');

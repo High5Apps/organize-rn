@@ -57,9 +57,12 @@ export default function NewCandidatesControl({
               removeCandidate();
             } else {
               ConfirmationAlert({
-                destructiveAction: 'Remove',
-                destructiveActionInTitle: `remove this choice: "${candidate}"`,
+                destructiveAction: t('action.remove'),
                 onConfirm: removeCandidate,
+                title: t(
+                  'question.confirmation.removeCandidate',
+                  { candidate },
+                ),
               }).show();
             }
           }}

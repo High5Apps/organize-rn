@@ -215,6 +215,7 @@ const translation: Translation = {
     commentThread: 'sComment Thread',
     communication: 'sCommunication',
     completedVotes: 'sCompleted Votes',
+    content: 'sContent',
     date: {
       nominationsEnd: 'sNominations End On',
       termEnd: 'sTerm Ends On',
@@ -314,6 +315,17 @@ const translation: Translation = {
   },
   question: {
     candidacyAnnouncement: "sWhat's a candidacy announcement?",
+    confirmation: {
+      blockUser: 'sAre you sure you want to block {{pseudonym}}?',
+      declineNomination: 'sAre you sure you want to decline your nomination?',
+      declineOffice: 'sAre you sure you want to decline office?',
+      flag: 'sFlag this {{itemName}} as inappropriate?',
+      leaveOrg: 'sAre you sure you want to leave this Org?',
+      nominateUser: 'sAre you sure you want to nominate {{pseudonym}}?',
+      removeCandidate: 'sAre you sure you want to remove this choice: "{{candidate}}"?',
+      removeSelfPermission: 'sAre you sure you want to remove this permission?',
+      unblockUser: 'sAre you sure you want to unblock {{pseudonym}}?',
+    },
     demand: "sWhat's a demand?",
     discussionTopic: 'sWhat should we discuss?',
     grievance: "sWhat's a grievance?",
@@ -332,6 +344,7 @@ const translation: Translation = {
   result: {
     error: {
       cameraNotFound: 'sNo camera found',
+      flag: 'sFailed to flag {{itemName}}',
       tapToRetry: 's{{errorMessage}}\nTap to try again',
       unblock: 'sFailed to unblock. Please try again',
       verifyUnionCard_one: 'sFailed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',

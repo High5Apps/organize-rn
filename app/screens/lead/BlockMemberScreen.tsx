@@ -71,9 +71,9 @@ export default function BlockMemberScreen({
     const { pseudonym } = user;
     ConfirmationAlert({
       destructiveAction: t('action.block'),
-      destructiveActionInTitle: `block ${pseudonym}`,
       onConfirm: () => onBlock(user),
       subtitle: t('hint.blockingPreventsOrgAccess'),
+      title: t('question.confirmation.blockUser', { pseudonym }),
     }).show();
   }, [t]);
 

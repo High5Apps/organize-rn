@@ -29,7 +29,6 @@ export default function UnblockUserButton({
 
     ConfirmationAlert({
       destructiveAction: t('action.unblock'),
-      destructiveActionInTitle: `unblock ${moderatable.creator.pseudonym}`,
       onConfirm: async () => {
         setLoading(true);
 
@@ -44,6 +43,9 @@ export default function UnblockUserButton({
         setLoading(false);
       },
       subtitle: t('hint.unblockRemovesRow'),
+      title: t('question.confirmation.unblockUser', {
+        pseudonym: moderatable.creator.pseudonym,
+      }),
     }).show();
   }, [moderationEvent, onUserUnblocked, t]);
 
