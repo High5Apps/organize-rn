@@ -81,9 +81,44 @@ const en = {
       discussionTopic: "You can discuss anything here!\n\nJust try to keep it civil.\n\nYou might not agree with your coworkers on every issue, but at the end of the day you're all in it together.",
       grievance: "If you've experienced issues in your workplace, others may have experienced them too.\n\nGrievances offer a chance to shine a light on injustice, unethical behavior, and illegal practices.",
       joinOrg: 'To join our Org:\n1. Get the Organize app at {{appStoreURI}}\n2. Meet me in person to scan my membership code',
-      potentialMemberDefinition: 'An Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
+      officeDuties: {
+        founder: [
+          'Created the Org',
+          "Performs the duties of all other officers before they're elected",
+        ],
+        president: [
+          'Leads the Org',
+          'Represents the Org in external matters',
+          'Works with the other officers to ensure the well-being of the Org',
+          'Presides over all meetings',
+          'Decides questions of order',
+        ],
+        vice_president: [
+          'Supports the president',
+          "Acts as president when the president's absent",
+        ],
+        secretary: [
+          'Records and reports minutes on the proceedings of all meetings',
+          "Keeps the Org's records up to date",
+        ],
+        treasurer: [
+          'Handles the financial matters of the Org',
+          'Approves spending and reimbursements',
+        ],
+        steward: [
+          'Guides new members',
+          'Listens to members and raises their concerns to other officers',
+          'Advises members during investigatory interviews by management',
+          'Promotes solidarity among all members',
+        ],
+        trustee: [
+          'Audits the bookkeeping of the Org periodically',
+          'Checks the integrity of the treasurer',
+        ],
+      },
       orgEmail: 'The app developers will email this address if they need to contact your Org.\n\nWhether your Org has 10 members or 10,000, this email is the single point of contact for your entire Org.',
       orgName: 'You can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
+      potentialMemberDefinition: 'An Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
       warning: {
         leaveOrg: {
           condition: 'Warning! If you choose to leave this Org:',
@@ -215,6 +250,15 @@ const en = {
       office: 'Office',
       officeNominations: 'Nominations for {{office}}',
       officers: 'Officers',
+      officeType: {
+        founder: 'Founder',
+        president: 'President',
+        secretary: 'Secretary',
+        steward: 'Steward',
+        treasurer: 'Treasurer',
+        trustee: 'Trustee',
+        vicePresident: 'Vice President',
+      },
       optional: {
         body: 'Body (optional)',
         department: 'Department (optional)',
@@ -266,6 +310,7 @@ const en = {
       discussionTopic: 'What should we discuss?',
       grievance: "What's a grievance?",
       potentialMemberDefinition: 'How do I decide who can join?',
+      officeDuties: 'What does a {{officeTitle}} do?',
       orgEmail: 'Why do you need my email?',
       orgName: 'What should I name my Org?',
       verificationCode: "Don't have a code yet?",

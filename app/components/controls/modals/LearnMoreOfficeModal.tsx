@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { OFFICE_DUTIES, OfficeCategory, getOffice } from '../../../model';
+import { OfficeCategory, getOffice } from '../../../model';
 import LearnMoreModal from './LearnMoreModal';
 import { BulletedText } from '../../views';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   officeCategory: OfficeCategory | null;
@@ -9,6 +10,8 @@ type Props = {
 
 export default function useLearnMoreOfficeModal({ officeCategory }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const { t } = useTranslation();
 
   const office = useMemo(
     () => {
@@ -21,11 +24,13 @@ export default function useLearnMoreOfficeModal({ officeCategory }: Props) {
   const LearnMoreOfficeModal = useCallback(() => {
     if (office === null) { return null; }
 
-    const duties = OFFICE_DUTIES[office.type];
+    const duties = t(`explanation.officeDuties.${office.type}`, {
+      returnObjects: true,
+    });
 
     return (
       <LearnMoreModal
-        headline={`What does a ${office.title} do?`}
+        headline={t('question.officeDuties', { officeTitle: office.title })}
         iconName={office.iconName}
         setVisible={setModalVisible}
         visible={modalVisible}

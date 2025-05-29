@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { fetchOffices as fetchOfficesApi } from '../networking';
 import { useCurrentUser } from './context';
 import { Office, OfficeCategory } from './types';
+import i18n from '../i18n';
 
 type OfficeMetadata = {
   iconName: string;
@@ -9,13 +10,34 @@ type OfficeMetadata = {
 };
 
 const officeMetadata: { [key: string]: OfficeMetadata } = {
-  founder: { iconName: 'emoji-objects', title: 'Founder' },
-  president: { iconName: 'stars', title: 'President' },
-  vice_president: { iconName: 'star', title: 'Vice President' },
-  secretary: { iconName: 'border-color', title: 'Secretary' },
-  treasurer: { iconName: 'payments', title: 'Treasurer' },
-  steward: { iconName: 'privacy-tip', title: 'Steward' },
-  trustee: { iconName: 'find-in-page', title: 'Trustee' },
+  founder: {
+    iconName: 'emoji-objects',
+    title: i18n.t('object.officeType.founder'),
+  },
+  president: {
+    iconName: 'stars',
+    title: i18n.t('object.officeType.president'),
+  },
+  vice_president: {
+    iconName: 'star',
+    title: i18n.t('object.officeType.vicePresident'),
+  },
+  secretary: {
+    iconName: 'border-color',
+    title: i18n.t('object.officeType.secretary'),
+  },
+  treasurer: {
+    iconName: 'payments',
+    title: i18n.t('object.officeType.treasurer'),
+  },
+  steward: {
+    iconName: 'privacy-tip',
+    title: i18n.t('object.officeType.steward'),
+  },
+  trustee: {
+    iconName: 'find-in-page',
+    title: i18n.t('object.officeType.trustee'),
+  },
 };
 
 type Options = {

@@ -82,9 +82,44 @@ const translation: Translation = {
     discussionTopic: "sYou can discuss anything here!\n\nJust try to keep it civil.\n\nYou might not agree with your coworkers on every issue, but at the end of the day you're all in it together.",
     grievance: "sIf you've experienced issues in your workplace, others may have experienced them too.\n\nGrievances offer a chance to shine a light on injustice, unethical behavior, and illegal practices.",
     joinOrg: 'sTo join our Org:\n1. Get the Organize app at {{appStoreURI}}\n2. Meet me in person to scan my membership code',
-    potentialMemberDefinition: 'sAn Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
+    officeDuties: {
+      founder: [
+        'sCreated the Org',
+        "sPerforms the duties of all other officers before they're elected",
+      ],
+      president: [
+        'sLeads the Org',
+        'sRepresents the Org in external matters',
+        'sWorks with the other officers to ensure the well-being of the Org',
+        'sPresides over all meetings',
+        'sDecides questions of order',
+      ],
+      vice_president: [
+        'sSupports the president',
+        "sActs as president when the president's absent",
+      ],
+      secretary: [
+        'sRecords and reports minutes on the proceedings of all meetings',
+        "sKeeps the Org's records up to date",
+      ],
+      treasurer: [
+        'sHandles the financial matters of the Org',
+        'sApproves spending and reimbursements',
+      ],
+      steward: [
+        'sGuides new members',
+        'sListens to members and raises their concerns to other officers',
+        'sAdvises members during investigatory interviews by management',
+        'sPromotes solidarity among all members',
+      ],
+      trustee: [
+        'sAudits the bookkeeping of the Org periodically',
+        'sChecks the integrity of the treasurer',
+      ],
+    },
     orgEmail: 'sThe app developers will email this address if they need to contact your Org.\n\nWhether your Org has 10 members or 10,000, this email is the single point of contact for your entire Org.',
     orgName: 'sYou can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
+    potentialMemberDefinition: 'sAn Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
     warning: {
       leaveOrg: {
         condition: 'sWarning! If you choose to leave this Org:',
@@ -216,6 +251,15 @@ const translation: Translation = {
     office: 'sOffice',
     officeNominations: 'sNominations for {{office}}',
     officers: 'sOfficers',
+    officeType: {
+      founder: 'sFounder',
+      president: 'sPresident',
+      secretary: 'sSecretary',
+      steward: 'sSteward',
+      treasurer: 'sTreasurer',
+      trustee: 'sTrustee',
+      vicePresident: 'sVice President',
+    },
     optional: {
       body: 'sBody (optional)',
       department: 'sDepartment (optional)',
@@ -267,6 +311,7 @@ const translation: Translation = {
     discussionTopic: 'sWhat should we discuss?',
     grievance: "sWhat's a grievance?",
     potentialMemberDefinition: 'sHow do I decide who can join?',
+    officeDuties: 'sWhat does a {{officeTitle}} do?',
     orgEmail: 'sWhy do you need my email?',
     orgName: 'sWhat should I name my Org?',
     verificationCode: "sDon't have a code yet?",

@@ -11,7 +11,6 @@ export { default as NewOrgSteps } from './NewOrgSteps';
 export { default as useNominations } from './Nominations';
 export { default as NullUser } from './NullUser';
 export { default as useOfficeAvailability, getOffice } from './Offices';
-export { default as OFFICE_DUTIES } from './OfficeDuties';
 export { default as useOrg } from './Org';
 export { default as useOrgGraph } from './OrgGraph';
 export { default as getCircleColors } from './OrgScreenCircleColors';
