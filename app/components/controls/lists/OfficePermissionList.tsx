@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Alert, ListRenderItemInfo, SectionList } from 'react-native';
 import {
   OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope, getOffice,
-  toAction, useCurrentUser, usePermission, usePermissionUpdater,
+  useCurrentUser, usePermission, usePermissionUpdater,
 } from '../../../model';
 import { ItemSeparator } from '../../views';
 import { OfficeRow } from './rows';
@@ -57,12 +57,11 @@ export default function OfficePermissionList({ scope }: Props) {
     const { offices: officeCategories } = currentUser;
 
     if (selected && officeCategories.includes(officeCategory)) {
-      const scopeAction = toAction(scope);
       ConfirmationAlert({
         destructiveAction: t('action.remove'),
         destructiveActionInTitle: 'remove this permission',
         onConfirm: () => onRowPressed(officeCategory),
-        subtitle: `If you remove this permission from yourself, you won't be able to ${scopeAction} anymore.`,
+        subtitle: t('explanation.warning.removeSelfPermission'),
       }).show();
     } else {
       onRowPressed(officeCategory);

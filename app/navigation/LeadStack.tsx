@@ -7,7 +7,7 @@ import {
   EditWorkGroupsScreen, LeadScreen, ModerationScreen, PermissionScreen,
   PermissionsScreen, UnionCardsScreen,
 } from '../screens';
-import { toAction } from '../model';
+import { usePermissionItems } from '../model';
 import FlagReportTabs from './FlagReportTabs';
 import { useTranslation } from '../i18n';
 
@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator<LeadStackParamList>();
 export default function LeadStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
   const { t } = useTranslation();
+  const { findByScope } = usePermissionItems();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
@@ -27,7 +28,7 @@ export default function LeadStack() {
       <Stack.Screen
         name="BlockMember"
         component={BlockMemberScreen}
-        options={{ title: t('action.blockMember') }}
+        options={{ title: t('action.blockMember', { count: 1 }) }}
       />
       <Stack.Screen
         name="BlockedMembers"
@@ -67,8 +68,11 @@ export default function LeadStack() {
         component={PermissionScreen}
         options={({ route }) => {
           const { scope } = route.params;
-          const scopeAction = toAction(scope);
-          const title = `Who can ${scopeAction}?`;
+          const permissionItem = findByScope(scope);
+          const maybePermission = permissionItem?.title;
+          const title = maybePermission
+            ? t('question.permission.format', { permission: maybePermission })
+            : t('question.permission.unknown');
           return { title };
         }}
       />

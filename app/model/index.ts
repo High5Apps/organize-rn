@@ -15,7 +15,7 @@ export { default as useOrg } from './Org';
 export { default as useOrgGraph } from './OrgGraph';
 export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as usePermission } from './Permission';
-export { default as permissionItems, toAction } from './PermissionItems';
+export { default as usePermissionItems } from './PermissionItems';
 export { default as usePermissionUpdater } from './PermissionUpdater';
 export { default as usePostCategoryTitles } from './PostCategoryTitles';
 export { default as usePrependedModels } from './PrependedModels';

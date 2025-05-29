@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n';
 import type { PermissionScope } from './types';
 
 export type PermissionItem = {
@@ -6,50 +7,49 @@ export type PermissionItem = {
   title: string;
 };
 
-const permissionItems: PermissionItem[] = [
-  {
-    iconName: 'no-accounts',
-    scope: 'blockMembers',
-    title: 'Block members',
-  },
-  {
-    iconName: 'how-to-reg',
-    scope: 'createElections',
-    title: 'Create elections',
-  },
-  {
-    iconName: 'edit-document',
-    scope: 'editOrg',
-    title: 'Edit Org info',
-  },
-  {
-    iconName: 'lock-open',
-    scope: 'editPermissions',
-    title: 'Edit permissions',
-  },
-  {
-    iconName: 'groups',
-    scope: 'editWorkGroups',
-    title: 'Edit work groups',
-  },
-  {
-    iconName: 'gavel',
-    scope: 'moderate',
-    title: 'Moderate',
-  },
-  {
-    iconName: 'badge',
-    scope: 'viewUnionCards',
-    title: 'View union cards',
-  },
-];
+export default function usePermissionItems() {
+  const { t } = useTranslation();
+  const permissionItems: PermissionItem[] = [
+    {
+      iconName: 'no-accounts',
+      scope: 'blockMembers',
+      title: t('action.blockMember', { count: 100 }),
+    },
+    {
+      iconName: 'how-to-reg',
+      scope: 'createElections',
+      title: t('action.createElections'),
+    },
+    {
+      iconName: 'edit-document',
+      scope: 'editOrg',
+      title: t('action.editOrgInfo'),
+    },
+    {
+      iconName: 'lock-open',
+      scope: 'editPermissions',
+      title: t('action.editPermissions'),
+    },
+    {
+      iconName: 'groups',
+      scope: 'editWorkGroups',
+      title: t('action.editWorkGroup', { count: 100 }),
+    },
+    {
+      iconName: 'gavel',
+      scope: 'moderate',
+      title: t('action.moderate'),
+    },
+    {
+      iconName: 'badge',
+      scope: 'viewUnionCards',
+      title: t('action.viewUnionCards'),
+    },
+  ];
 
-export default permissionItems;
+  function findByScope(scope: string) {
+    return permissionItems.find((item) => item.scope === scope);
+  }
 
-export function toAction(scope?: PermissionScope): string {
-  const permissionItem = permissionItems.find(
-    (item) => item.scope === scope,
-  );
-  const itemTitle = permissionItem?.title ?? 'do this';
-  return `${itemTitle[0].toLocaleLowerCase()}${itemTitle.slice(1)}`;
+  return { findByScope, permissionItems };
 }
