@@ -1,4 +1,5 @@
 import i18n, { LanguageDetectorModule } from 'i18next';
+import type { TFunction } from 'i18next';
 import { initReactI18next, Trans, useTranslation } from 'react-i18next';
 import { getLocales } from 'react-native-localize';
 import { en, es } from './locales';
@@ -24,3 +25,4 @@ i18n
 export default i18n;
 
 export { resources, Trans, useTranslation };
+export type { TFunction };

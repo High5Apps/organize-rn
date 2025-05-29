@@ -8,6 +8,7 @@ import {
 } from '../../model';
 import useTheme from '../../Theme';
 import type { BlockMemberScreenProps } from '../../navigation';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -32,6 +33,8 @@ export default function BlockMemberScreen({
   } = useRequestProgress({ removeWhenInactive: true });
 
   const { createModerationEvent } = useModerationEvent();
+
+  const { t } = useTranslation();
 
   const onBlock = useCallback(async (user: User) => {
     setFilteredUserId(user.id);
@@ -67,12 +70,12 @@ export default function BlockMemberScreen({
   const onItemPress = useCallback(async (user: User) => {
     const { pseudonym } = user;
     ConfirmationAlert({
-      destructiveAction: 'Block',
+      destructiveAction: t('action.block'),
       destructiveActionInTitle: `block ${pseudonym}`,
       onConfirm: () => onBlock(user),
-      subtitle: 'This will prevent them from accessing your Org',
+      subtitle: t('hint.blockingPreventsOrgAccess'),
     }).show();
-  }, []);
+  }, [t]);
 
   const { styles } = useStyles();
 

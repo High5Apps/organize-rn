@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import type { BlockedMembersScreenProps } from '../../navigation';
 import { BlockedMemberList, PrimaryButton, ScreenBackground } from '../../components';
 import useTheme from '../../Theme';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -32,6 +33,7 @@ export default function BlockedMembersScreen({
   const prependedModerationEventId = route.params?.prependedModerationEventId;
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <ScreenBackground>
@@ -41,7 +43,7 @@ export default function BlockedMembersScreen({
       />
       <PrimaryButton
         iconName="person-search"
-        label="Select member"
+        label={t('action.selectMember')}
         onPress={() => navigation.navigate('BlockMember')}
         style={styles.button}
       />

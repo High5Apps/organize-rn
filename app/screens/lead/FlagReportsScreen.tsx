@@ -10,9 +10,9 @@ type Props<T extends keyof FlagReportTabsParamList> = {
   navigation: FlagReportTabsScreenProps<T>['navigation'];
 };
 
-export default function DiscussScreen<T extends keyof FlagReportTabsParamList>({
-  handled, navigation,
-}: Props<T>) {
+export default function FlagReportsScreen<
+  T extends keyof FlagReportTabsParamList,
+>({ handled, navigation }: Props<T>) {
   const onItemPress = useCallback((flagReport: FlagReport) => {
     const { flaggable: { category }, id } = flagReport;
 

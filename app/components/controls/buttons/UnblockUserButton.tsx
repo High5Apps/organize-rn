@@ -6,6 +6,7 @@ import {
 } from '../../../model';
 import { useRequestProgress } from '../../views';
 import ConfirmationAlert from '../modals/ConfirmationAlert';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   moderationEvent: ModerationEvent;
@@ -21,11 +22,13 @@ export default function UnblockUserButton({
 
   const { createModerationEvent } = useModerationEvent();
 
+  const { t } = useTranslation();
+
   const onPress = useCallback(async () => {
     const { moderatable } = moderationEvent;
 
     ConfirmationAlert({
-      destructiveAction: 'Unblock',
+      destructiveAction: t('action.unblock'),
       destructiveActionInTitle: `unblock ${moderatable.creator.pseudonym}`,
       onConfirm: async () => {
         setLoading(true);
@@ -35,14 +38,14 @@ export default function UnblockUserButton({
           onUserUnblocked();
         } catch (error) {
           const errorMessage = getErrorMessage(error);
-          Alert.alert('Failed to unblock. Please try again', errorMessage);
+          Alert.alert(t('result.error.unblock'), errorMessage);
         }
 
         setLoading(false);
       },
-      subtitle: 'Unblocking will also remove the row from this list',
+      subtitle: t('hint.unblockRemovesRow'),
     }).show();
-  }, [moderationEvent, onUserUnblocked]);
+  }, [moderationEvent, onUserUnblocked, t]);
 
   return (
     <>
@@ -50,7 +53,7 @@ export default function UnblockUserButton({
       {!loading && (
         <SecondaryButton
           iconName="restart-alt"
-          label="Unblock"
+          label={t('action.unblock')}
           onPress={onPress}
         />
       )}

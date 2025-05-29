@@ -9,6 +9,7 @@ import { OfficeRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import { ConfirmationAlert } from '../modals';
 import { renderSectionHeader } from '../SectionHeader';
+import { useTranslation } from '../../../i18n';
 
 const onSyncSelectionError = (errorMessage: string) => {
   console.error(errorMessage);
@@ -30,11 +31,13 @@ export default function OfficePermissionList({ scope }: Props) {
   } = usePermission({ scope });
   const { currentUser } = useCurrentUser();
 
+  const { t } = useTranslation();
+
   const sections: OfficeSection[] = useMemo(() => {
     if (!permission) { return []; }
 
     const offices = OFFICE_CATEGORIES.map((c) => getOffice(c));
-    return [{ title: 'Officers', data: offices }];
+    return [{ title: t('object.officers'), data: offices }];
   }, [permission]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
@@ -56,7 +59,7 @@ export default function OfficePermissionList({ scope }: Props) {
     if (selected && officeCategories.includes(officeCategory)) {
       const scopeAction = toAction(scope);
       ConfirmationAlert({
-        destructiveAction: 'Remove',
+        destructiveAction: t('action.remove'),
         destructiveActionInTitle: 'remove this permission',
         onConfirm: () => onRowPressed(officeCategory),
         subtitle: `If you remove this permission from yourself, you won't be able to ${scopeAction} anymore.`,
@@ -64,7 +67,7 @@ export default function OfficePermissionList({ scope }: Props) {
     } else {
       onRowPressed(officeCategory);
     }
-  }, [currentUser, getSelectionInfo, onRowPressed]);
+  }, [currentUser, getSelectionInfo, onRowPressed, t]);
 
   const renderItem = useCallback(
     ({ item: office }: ListRenderItemInfo<Office>) => {

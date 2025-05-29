@@ -6,9 +6,7 @@ import { ItemSeparator, ListEmptyMessage } from '../../views';
 import { FlagReportRow } from './rows';
 import usePullToRefresh from './PullToRefresh';
 import useInfiniteScroll from './InfiniteScroll';
-
-const LIST_EMPTY_MESSAGE_PENDING = 'When **members flag content** as **inappropriate**, it shows up here.\n\n**You** and the other **mods decide** if it should be **blocked** or **allowed**.\n\nBlocked content is **hidden** from the **main feeds**, but members can still view it in the **Transparency Log**.';
-const LIST_EMPTY_MESSAGE_HANDLED = 'When you or the other mods allow or block flagged content, it shows up here.';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   handled: boolean;
@@ -44,11 +42,12 @@ export default function FlagReportList({ handled, onItemPress }: Props) {
     onLoadNextPage: fetchNextPageOfFlagReports,
   });
 
-  const listEmptyMessage = handled ? LIST_EMPTY_MESSAGE_HANDLED
-    : LIST_EMPTY_MESSAGE_PENDING;
+  const { t } = useTranslation();
+  const listEmptyMessage = t(handled
+    ? 'hint.emptyHandledFlaggedContent' : 'hint.emptyPendingFlaggedContent');
   const ListEmptyComponent = useCallback(() => (
     <ListEmptyMessage asteriskDelimitedMessage={listEmptyMessage} />
-  ), []);
+  ), [listEmptyMessage]);
 
   const renderItem: ListRenderItem<FlagReport> = useCallback(
     ({ item }) => (

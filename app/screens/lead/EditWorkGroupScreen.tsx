@@ -7,6 +7,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { useWorkGroup } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -63,6 +64,7 @@ export default function EditWorkGroupScreen({
   }, [department, jobTitle, navigation, shift]);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -75,7 +77,7 @@ export default function EditWorkGroupScreen({
       {jobTitle && (
         <PrimaryButton
           iconName="publish"
-          label="Publish"
+          label={t('action.publish')}
           onPress={onPublishPressed}
           style={styles.addButton}
         />

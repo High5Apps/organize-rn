@@ -6,9 +6,9 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { getErrorMessage, NewOrgSteps, useOrg } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const EMPLOYER_NAME_MAX_LENGTH = 50;
-const EMPLOYER_NAME_PLACEHOLDER = 'Acme, Inc.';
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -44,6 +44,8 @@ function useOrgInfo({
   const [name, setName] = useState('');
   const [orgRefreshed, setOrgRefreshed] = useState(false);
 
+  const { t } = useTranslation();
+
   const { org, refreshOrg, updateOrg } = useOrg();
   const refresh = async () => {
     setLoading(true);
@@ -72,7 +74,7 @@ function useOrgInfo({
       await updateOrg({
         email, employerName, memberDefinition, name,
       });
-      setResult('success', { message: 'Successfully updated Org info' });
+      setResult('success', { message: t('result.success.update.orgInfo') });
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', { message: errorMessage });
@@ -119,13 +121,14 @@ export default function EditOrgScreen() {
   const definitionPlaceholder = useMemo(memberDefinitionStep.placeholder, []);
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <KeyboardAvoidingScreenBackground contentContainerStyle={styles.container}>
       {orgRefreshed && (
         <>
           <View style={styles.section}>
-            <HeaderText>Org name</HeaderText>
+            <HeaderText>{nameStep.header}</HeaderText>
             <TextInputRow
               autoCapitalize={nameStep.autoCaptitalize}
               autoComplete={nameStep.autoComplete}
@@ -141,7 +144,7 @@ export default function EditOrgScreen() {
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Org email</HeaderText>
+            <HeaderText>{emailStep.header}</HeaderText>
             <TextInputRow
               autoCapitalize={emailStep.autoCaptitalize}
               autoComplete={emailStep.autoComplete}
@@ -157,7 +160,7 @@ export default function EditOrgScreen() {
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Org memeber definition</HeaderText>
+            <HeaderText>{memberDefinitionStep.header}</HeaderText>
             <MultilineTextInput
               autoCapitalize={memberDefinitionStep.autoCaptitalize}
               autoComplete={memberDefinitionStep.autoComplete}
@@ -175,7 +178,7 @@ export default function EditOrgScreen() {
             />
           </View>
           <View style={styles.section}>
-            <HeaderText>Employer name</HeaderText>
+            <HeaderText>{t('object.employerName')}</HeaderText>
             <TextInputRow
               autoCapitalize="words"
               autoCorrect={false}
@@ -183,14 +186,14 @@ export default function EditOrgScreen() {
               enablesReturnKeyAutomatically
               maxLength={EMPLOYER_NAME_MAX_LENGTH}
               onChangeText={setEmployerName}
-              placeholder={EMPLOYER_NAME_PLACEHOLDER}
+              placeholder={t('placeholder.employerName')}
               returnKeyType="done"
               value={employerName}
             />
           </View>
           <PrimaryButton
             iconName="publish"
-            label="Publish"
+            label={t('action.publish')}
             onPress={updateOrgInfo}
             style={styles.button}
           />

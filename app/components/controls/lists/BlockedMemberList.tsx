@@ -9,8 +9,7 @@ import { BlockedMemberRow } from './rows';
 import { ItemSeparator, ListEmptyMessage } from '../../views';
 import useInfiniteScroll from './InfiniteScroll';
 import usePullToRefresh from './PullToRefresh';
-
-const LIST_EMPTY_MESSAGE = "Blocking members prevents them from accessing your Org.\n\nYou Org hasn't blocked any members.\n\nIf you need to block someone, tap the button below to get started.";
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -66,9 +65,12 @@ export default function BlockedMemberList({
     onLoadNextPage: fetchNextPageOfModerationEvents,
   });
 
+  const { t } = useTranslation();
   const ListEmptyComponent = useMemo(() => (
-    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
-  ), []);
+    <ListEmptyMessage
+      asteriskDelimitedMessage={t('hint.emptyBlockedMembers')}
+    />
+  ), [t]);
 
   const renderItem: ListRenderItem<ModerationEvent> = useCallback(
     ({ item }) => (

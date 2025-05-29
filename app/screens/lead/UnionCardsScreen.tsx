@@ -8,6 +8,7 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import { useUnionCards } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, sizes, spacing } = useTheme();
@@ -58,6 +59,7 @@ export default function UnionCardsScreen() {
   const disableSecondaryButtons = !filePath || loading;
 
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const onDownloadPressed = async () => {
     setLoading(true);
@@ -66,7 +68,9 @@ export default function UnionCardsScreen() {
     try {
       const { verificationFailureCount } = await recreateFile();
       if (verificationFailureCount) {
-        const message = `Failed to verify ${verificationFailureCount} union card signature${(verificationFailureCount > 1) ? 's' : ''}. To fix this, update your app and then try again.`;
+        const message = t('result.error.verifyUnionCard', {
+          count: verificationFailureCount,
+        });
         setResult('warning', { message });
       }
       setLoading(false);
@@ -115,21 +119,25 @@ export default function UnionCardsScreen() {
       >
         <View style={styles.container}>
           <WarningView
-            warning="Warning! Union cards are sensitive info"
+            warning={t('explanation.warning.viewUnionCards.message')}
             warningBullets={[
               {
                 iconName: 'account-balance',
-                message: "Don't share them with anyone but your regional NLRB office.",
+                message: t('explanation.warning.viewUnionCards.doNotShare'),
               },
               {
                 iconName: 'battery-2-bar',
                 iconStyle: styles.iconRotated90Degrees,
-                message: 'At least 30% of potential members must sign union cards before you can request a certification election.',
+                message: t(
+                  'explanation.warning.viewUnionCards.minimumThreshold',
+                ),
               },
               {
                 iconName: 'battery-5-bar',
                 iconStyle: styles.iconRotated90Degrees,
-                message: 'But waiting until you reach 70% makes you way more likely to win.',
+                message: t(
+                  'explanation.warning.viewUnionCards.recommendedThreshold',
+                ),
               },
             ]}
           />
@@ -137,14 +145,14 @@ export default function UnionCardsScreen() {
             <SecondaryButton
               disabled={disableSecondaryButtons}
               iconName="description"
-              label="Open"
+              label={t('action.open')}
               onPress={onOpenPressed}
               style={styles.buttonSecondary}
             />
             <SecondaryButton
               disabled={disableSecondaryButtons}
               iconName="share"
-              label="Share"
+              label={t('action.share')}
               onPress={onSharePressed}
               style={styles.buttonSecondary}
             />
@@ -154,7 +162,7 @@ export default function UnionCardsScreen() {
       </LockingScrollView>
       <PrimaryButton
         iconName="download"
-        label="Download"
+        label={t('action.download')}
         onPress={onDownloadPressed}
         style={styles.buttonPrimary}
       />

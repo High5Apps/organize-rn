@@ -4,6 +4,7 @@ import { ModerationItem } from './types';
 import { IconRow } from './rows';
 import { ItemSeparator } from '../../views';
 import { useMyPermissions } from '../../../model';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   onModerationItemPress: (moderationItem: ModerationItem) => void;
@@ -11,6 +12,7 @@ type Props = {
 
 export default function ModerationItemList({ onModerationItemPress }: Props) {
   const { can } = useMyPermissions({ scopes: ['blockMembers', 'moderate'] });
+  const { t } = useTranslation();
 
   const moderationItems = useMemo(() => {
     const items: ModerationItem[] = [];
@@ -19,7 +21,7 @@ export default function ModerationItemList({ onModerationItemPress }: Props) {
       items.push({
         destination: 'BlockedMembers',
         iconName: 'no-accounts',
-        title: 'Blocked members',
+        title: t('object.blockedMembers'),
       });
     }
 
@@ -27,12 +29,12 @@ export default function ModerationItemList({ onModerationItemPress }: Props) {
       items.push({
         destination: 'FlagReportTabs',
         iconName: 'flag',
-        title: 'Flagged Content',
+        title: t('object.flaggedContent'),
       });
     }
 
     return items;
-  }, [can]);
+  }, [can, t]);
 
   const renderItem: ListRenderItem<ModerationItem> = useCallback(({ item }) => {
     const { iconName, title } = item;

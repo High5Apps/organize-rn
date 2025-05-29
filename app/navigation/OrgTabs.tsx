@@ -62,7 +62,7 @@ export default function OrgTabs() {
           component={LeadStack}
           options={{
             tabBarIcon: TabBarIcon('emoji-people'),
-            tabBarLabel: 'Lead',
+            tabBarLabel: t('action.lead'),
           }}
         />
       )}

@@ -9,46 +9,59 @@ import {
 } from '../screens';
 import { toAction } from '../model';
 import FlagReportTabs from './FlagReportTabs';
+import { useTranslation } from '../i18n';
 
 const Stack = createNativeStackNavigator<LeadStackParamList>();
 
 export default function LeadStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
+  const { t } = useTranslation();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Lead" component={LeadScreen} />
+      <Stack.Screen
+        name="Lead"
+        component={LeadScreen}
+        options={{ title: t('action.lead') }}
+      />
       <Stack.Screen
         name="BlockMember"
         component={BlockMemberScreen}
-        options={{ title: 'Block Member' }}
+        options={{ title: t('action.blockMember') }}
       />
       <Stack.Screen
         name="BlockedMembers"
         component={BlockedMembersScreen}
-        options={{ title: 'Blocked Members' }}
+        options={{ title: t('object.blockedMembers') }}
       />
       <Stack.Screen
         name="EditOrg"
         component={EditOrgScreen}
-        options={{ title: 'Edit Org' }}
+        options={{ title: t('action.editOrg') }}
       />
       <Stack.Screen
         name="EditWorkGroup"
         component={EditWorkGroupScreen}
-        options={{ title: 'Edit Work Group' }}
+        options={{ title: t('action.editWorkGroup') }}
       />
       <Stack.Screen
         name="EditWorkGroups"
         component={EditWorkGroupsScreen}
-        options={{ title: 'Edit Work Groups' }}
+        options={{ title: t('action.editWorkGroups', { context: 'title' }) }}
       />
       <Stack.Screen
         name="FlagReportTabs"
         component={FlagReportTabs}
-        options={{ headerShadowVisible: false, title: 'Flagged Content' }}
+        options={{
+          headerShadowVisible: false,
+          title: t('object.flaggedContent'),
+        }}
       />
-      <Stack.Screen name="Moderation" component={ModerationScreen} />
+      <Stack.Screen
+        name="Moderation"
+        component={ModerationScreen}
+        options={{ title: t('object.moderation') }}
+      />
       <Stack.Screen
         name="Permission"
         component={PermissionScreen}
@@ -59,11 +72,15 @@ export default function LeadStack() {
           return { title };
         }}
       />
-      <Stack.Screen name="Permissions" component={PermissionsScreen} />
+      <Stack.Screen
+        name="Permissions"
+        component={PermissionsScreen}
+        options={{ title: t('object.permissions') }}
+      />
       <Stack.Screen
         name="UnionCards"
         component={UnionCardsScreen}
-        options={{ title: 'Union Cards' }}
+        options={{ title: t('object.unionCard', { count: 100 }) }}
       />
     </Stack.Navigator>
   );

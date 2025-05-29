@@ -7,6 +7,7 @@ import { isDefined, WorkGroup } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { IconButton } from '../../buttons';
 import { DisclosureIcon } from '../../../views';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const {
@@ -64,6 +65,7 @@ export default function WorkGroupRow({
   } = item;
 
   const { colors, styles } = useStyles();
+  const { t } = useTranslation();
 
   return (
     <TouchableHighlight
@@ -83,7 +85,7 @@ export default function WorkGroupRow({
             {[`${shift} shift`, department].filter(isDefined).join(', ')}
           </Text>
           <Text style={[styles.text, styles.textSecondary]}>
-            {`${memberCount} member${memberCount > 1 ? 's' : ''}`}
+            {t('object.memberCount', { count: memberCount })}
           </Text>
         </View>
         {editable && (

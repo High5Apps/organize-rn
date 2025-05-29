@@ -10,6 +10,7 @@ import {
 import useTheme from '../../../../Theme';
 import { DisclosureIcon } from '../../../views';
 import { SecondaryButton } from '../../buttons';
+import { useTranslation, TFunction } from '../../../../i18n';
 
 // This matches the max length for ballots and posts, but not comments, which is
 // much longer.
@@ -86,21 +87,24 @@ const useStyles = () => {
   return { colors, styles };
 };
 
-function getModerationEventDependentValues(moderationEvent?: ModerationEvent) {
+function getModerationEventDependentValues(
+  t: TFunction,
+  moderationEvent?: ModerationEvent,
+) {
   const wasPreviouslyAllowedOrBlocked = moderationEvent?.action === 'allow'
     || moderationEvent?.action === 'block';
 
   let eventActionMessage: string;
   let eventActionIcon: string;
   if (!wasPreviouslyAllowedOrBlocked) {
-    eventActionMessage = 'Pending';
+    eventActionMessage = t('modifier.pending');
     eventActionIcon = 'gavel';
   } else {
     const wasAllowed = moderationEvent.action === 'allow';
 
     eventActionIcon = wasAllowed ? 'check' : 'block';
 
-    const action = (wasAllowed) ? 'Allowed' : 'Blocked';
+    const action = t(wasAllowed ? 'modifier.allowed' : 'modifier.blocked');
     const timeAgo = getMessageAge(moderationEvent.createdAt);
     eventActionMessage = `${action} ${timeAgo}`;
   }
@@ -133,10 +137,11 @@ export default function FlagReportRow({
   const {
     flaggable, flagCount, moderationEvent,
   } = item;
+  const { t } = useTranslation();
   const {
     eventActionIcon, eventActionMessage, isEventInFlight,
     wasPreviouslyAllowedOrBlocked,
-  } = getModerationEventDependentValues(moderationEvent);
+  } = getModerationEventDependentValues(t, moderationEvent);
 
   const title = useMemo(
     () => (flaggable.deletedAt ? '[left Org]'
@@ -219,7 +224,7 @@ export default function FlagReportRow({
             <SecondaryButton
               disabled={isEventInFlight}
               iconName="restart-alt"
-              label="Undo"
+              label={t('action.undo')}
               onPress={() => wrappedOnFlagReportChanged('undo')}
               style={[styles.button, isEventInFlight && styles.buttonHidden]}
             />
@@ -228,14 +233,14 @@ export default function FlagReportRow({
               <SecondaryButton
                 disabled={isEventInFlight}
                 iconName="check"
-                label="Allow"
+                label={t('action.allow')}
                 onPress={() => wrappedOnFlagReportChanged('allow')}
                 style={[styles.button, isEventInFlight && styles.buttonHidden]}
               />
               <SecondaryButton
                 disabled={isEventInFlight}
                 iconName="block"
-                label="Block"
+                label={t('action.block')}
                 onPress={() => wrappedOnFlagReportChanged('block')}
                 style={[styles.button, isEventInFlight && styles.buttonHidden]}
               />

@@ -5,8 +5,7 @@ import { IconRow } from './rows';
 import { LeadItem } from './types';
 import { useMyPermissions } from '../../../model';
 import usePullToRefresh from './PullToRefresh';
-
-const LIST_EMPTY_MESSAGE = "You don't have permission to access any of these tools. You can request permissions from the president or another authorized officer.";
+import { useTranslation } from '../../../i18n';
 
 function useLeadItems() {
   const { can, ready, refreshMyPermissions } = useMyPermissions({
@@ -15,6 +14,8 @@ function useLeadItems() {
       'moderate', 'viewUnionCards',
     ],
   });
+
+  const { t } = useTranslation();
 
   const leadItems = useMemo(() => {
     if (!ready) { return []; }
@@ -25,7 +26,7 @@ function useLeadItems() {
       items.push({
         destination: 'EditOrg',
         iconName: 'edit-document',
-        title: 'Edit Org info',
+        title: t('action.editOrgInfo'),
       });
     }
 
@@ -33,7 +34,7 @@ function useLeadItems() {
       items.push({
         destination: 'EditWorkGroups',
         iconName: 'groups',
-        title: 'Edit work groups',
+        title: t('action.editWorkGroups'),
       });
     }
 
@@ -41,7 +42,7 @@ function useLeadItems() {
       items.push({
         destination: 'Moderation',
         iconName: 'gavel',
-        title: 'Moderation',
+        title: t('object.moderation'),
       });
     }
 
@@ -49,7 +50,7 @@ function useLeadItems() {
       items.push({
         destination: 'Permissions',
         iconName: 'lock-open',
-        title: 'Permissions',
+        title: t('object.permissions'),
       });
     }
 
@@ -57,7 +58,7 @@ function useLeadItems() {
       items.push({
         destination: 'UnionCards',
         iconName: 'badge',
-        title: 'Union cards',
+        title: t('object.unionCard', { count: 100 }),
       });
     }
 
@@ -73,10 +74,11 @@ type Props = {
 
 export default function LeadItemList({ onLeadItemPress }: Props) {
   const { leadItems, ready, refreshMyPermissions } = useLeadItems();
+  const { t } = useTranslation();
 
   const ListEmptyComponent = useMemo(() => (
-    <ListEmptyMessage asteriskDelimitedMessage={LIST_EMPTY_MESSAGE} />
-  ), []);
+    <ListEmptyMessage asteriskDelimitedMessage={t('hint.emptyLeadItems')} />
+  ), [t]);
 
   const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
     onRefresh: refreshMyPermissions,
