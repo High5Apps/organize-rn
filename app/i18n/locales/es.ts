@@ -233,7 +233,7 @@ const translation: Translation = {
     termsOfService: 'sTerms of Service',
     title: 'sTitle',
     transparencyLog: 'sTransparency Log',
-    unionCard: 'sUnion Card',
+    unionCard_one: 'sUnion Card',
     unionCard_other: 'sUnion Cards',
     verificationCode: 'sCode',
     workGroup: 'sWork group',

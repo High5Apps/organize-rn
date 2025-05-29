@@ -39,7 +39,7 @@ export default function ConnectStack() {
       <Stack.Screen
         component={UnionCardScreen}
         name="UnionCard"
-        options={{ title: t('object.unionCard') }}
+        options={{ title: t('object.unionCard', { count: 1 }) }}
       />
     </Stack.Navigator>
   );

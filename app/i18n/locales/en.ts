@@ -232,7 +232,7 @@ const en = {
       termsOfService: 'Terms of Service',
       title: 'Title',
       transparencyLog: 'Transparency Log',
-      unionCard: 'Union Card',
+      unionCard_one: 'Union Card',
       unionCard_other: 'Union Cards',
       verificationCode: 'Code',
       workGroup: 'Work group',
