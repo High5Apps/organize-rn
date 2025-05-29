@@ -37,17 +37,17 @@ export default function LeadStack() {
       <Stack.Screen
         name="EditOrg"
         component={EditOrgScreen}
-        options={{ title: t('action.editOrg') }}
+        options={{ title: t('action.editOrgInfo') }}
       />
       <Stack.Screen
         name="EditWorkGroup"
         component={EditWorkGroupScreen}
-        options={{ title: t('action.editWorkGroup') }}
+        options={{ title: t('action.editWorkGroup', { count: 1 }) }}
       />
       <Stack.Screen
         name="EditWorkGroups"
         component={EditWorkGroupsScreen}
-        options={{ title: t('action.editWorkGroups', { context: 'title' }) }}
+        options={{ title: t('action.editWorkGroup', { count: 100 }) }}
       />
       <Stack.Screen
         name="FlagReportTabs"

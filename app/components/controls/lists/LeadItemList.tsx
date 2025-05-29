@@ -34,7 +34,7 @@ function useLeadItems() {
       items.push({
         destination: 'EditWorkGroups',
         iconName: 'groups',
-        title: t('action.editWorkGroups'),
+        title: t('action.editWorkGroup', { count: 100 }),
       });
     }
 
