@@ -34,7 +34,7 @@ export default function VoteStack() {
       <Stack.Screen
         component={BallotTypeScreen}
         name="BallotType"
-        options={{ title: t('object.new.vote') }}
+        options={{ title: t('object.new.vote', { context: 'title' }) }}
       />
       <Stack.Screen
         component={NewCandidacyAnnouncementScreen}
