@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 import {
   decrypt, decryptMany, encrypt, encryptMany, get, post,
 } from './API';
@@ -207,7 +208,7 @@ export async function fetchBallot({
     }
 
     return {
-      ...candidate, title: title ?? '[Unknown title]',
+      ...candidate, title: title ?? i18n.t('placeholder.unknownTitle'),
     };
   });
 

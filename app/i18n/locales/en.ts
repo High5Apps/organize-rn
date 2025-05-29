@@ -291,9 +291,11 @@ const en = {
       workGroup: 'Work group',
     },
     placeholder: {
+      authorLeftOrg: '[left Org]',
       candidacyAnnouncement: '{{pseudonym}} is running for {{officeTitle}}',
       choice: 'Choice {{n}}',
       commentBody: 'What do you think?',
+      contentBlocked: '[blocked]',
       discussionBody: "Enter any details that can't fit in the title",
       department: 'Intensive Care',
       discussionTitle: 'Enter a short title',
@@ -310,6 +312,7 @@ const en = {
         multipleChoice: 'Which of these should we...',
         yesNo: 'Should we...',
       },
+      unknownTitle: '[unknown title]',
       verificationCode: '123456',
     },
     question: {

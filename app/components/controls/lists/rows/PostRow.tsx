@@ -8,6 +8,7 @@ import UpvoteControl from '../../UpvoteControl';
 import {
   DisclosureIcon, HighlightedCurrentUserRowContainer, LockingScrollView,
 } from '../../../views';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -63,7 +64,8 @@ function PostRow({
   const {
     createdAt, deletedAt, id, myVote, pseudonym, score, userId,
   } = item;
-  const title = deletedAt ? '[left Org]' : item.title;
+  const { t } = useTranslation();
+  const title = deletedAt ? t('placeholder.authorLeftOrg') : item.title;
 
   const { colors, styles } = useStyles();
 

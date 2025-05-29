@@ -6,6 +6,7 @@ import { Post } from '../../model';
 import { PostRow } from './lists';
 import useTheme from '../../Theme';
 import { HyperlinkDetector } from '../views';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -37,10 +38,11 @@ export default function PostWithBody({
   onLayout = () => {}, onPostChanged = () => {}, post,
 }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   if (!post) { return null; }
 
-  const body = post.deletedAt ? '[left Org]' : post.body;
+  const body = post.deletedAt ? t('placeholder.authorLeftOrg') : post.body;
 
   return (
     <View onLayout={onLayout}>

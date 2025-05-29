@@ -144,13 +144,13 @@ export default function FlagReportRow({
   } = getModerationEventDependentValues(t, moderationEvent);
 
   const title = useMemo(
-    () => (flaggable.deletedAt ? '[left Org]'
+    () => (flaggable.deletedAt ? t('placeholder.authorLeftOrg')
       : truncateText({ maxLength: MAX_TITLE_LENGTH, text: flaggable.title })
         // Replace whitespace with space to prevent newlines from affecting
         // layout
         .replace(/\s/g, ' ')
     ),
-    [flaggable.deletedAt, flaggable.title],
+    [flaggable.deletedAt, flaggable.title, t],
   );
 
   const { colors, styles } = useStyles();

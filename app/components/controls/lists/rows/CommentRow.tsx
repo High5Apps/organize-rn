@@ -5,8 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../../../Theme';
 import {
-  BLOCKED_COMMENT_BODY, Comment, DELETED_COMMENT_BODY, MAX_COMMENT_DEPTH,
-  getMessageAge, useCurrentUser,
+  Comment, MAX_COMMENT_DEPTH, getMessageAge, useCurrentUser,
 } from '../../../../model';
 import UpvoteControl from '../../UpvoteControl';
 import { FlagTextButton, TextButton } from '../../buttons';
@@ -85,11 +84,12 @@ function CommentRow({
   } = item;
   const shouldShowAsBlocked = !!blockedAt && !showBlockedContent;
   const shouldShowAsDisabled = !!deletedAt || shouldShowAsBlocked;
+  const { t } = useTranslation();
   let body: string;
   if (deletedAt) {
-    body = DELETED_COMMENT_BODY;
+    body = t('placeholder.authorLeftOrg');
   } else if (shouldShowAsBlocked) {
-    body = BLOCKED_COMMENT_BODY;
+    body = t('placeholder.contentBlocked');
   } else {
     body = item.body;
   }
@@ -104,7 +104,6 @@ function CommentRow({
     colors, nestedMarginStart, spacing, styles,
   } = useStyles();
   const marginStart = disableDepthIndent ? 0 : depth * nestedMarginStart;
-  const { t } = useTranslation();
 
   const navigation = useNavigation<PostScreenProps['navigation']>();
   const onReplyPress = useCallback(() => {

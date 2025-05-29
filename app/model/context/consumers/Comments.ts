@@ -5,8 +5,6 @@ import { fetchComments } from '../../../networking';
 import { useCommentContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 
-export const BLOCKED_COMMENT_BODY = '[blocked]';
-export const DELETED_COMMENT_BODY = '[left Org]';
 export const MAX_COMMENT_DEPTH = 8;
 export const MAX_COMMENT_LENGTH = 10000;
 

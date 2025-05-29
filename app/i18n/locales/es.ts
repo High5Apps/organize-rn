@@ -292,9 +292,11 @@ const translation: Translation = {
     workGroup: 'sWork group',
   },
   placeholder: {
+    authorLeftOrg: 's[left Org]',
     candidacyAnnouncement: 's{{pseudonym}} is running for {{officeTitle}}',
     choice: 'sChoice {{n}}',
     commentBody: 'sWhat do you think?',
+    contentBlocked: 's[blocked]',
     department: 'sIntensive Care',
     discussionBody: "sEnter any details that can't fit in the title",
     discussionTitle: 'sEnter a short title',
@@ -311,6 +313,7 @@ const translation: Translation = {
       multipleChoice: 'sWhich of these should we...',
       yesNo: 'sShould we...',
     },
+    unknownTitle: 's[unknown title]',
     verificationCode: 's123456',
   },
   question: {
