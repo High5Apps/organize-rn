@@ -7,13 +7,9 @@ import {
   useFlagHeaderButton, useRequestProgress,
 } from '../../components';
 import type { PostScreenProps } from '../../navigation';
-import { getErrorMessage, usePost } from '../../model';
+import { getErrorMessage, usePost, usePostCategoryTitles } from '../../model';
 import useTheme from '../../Theme';
 import { useTranslation } from '../../i18n';
-
-function toTitleCase(s: string) {
-  return s.replace(/(^|\s)\S/g, (c) => c.toUpperCase());
-}
 
 const useStyles = () => {
   const { sizes, spacing } = useTheme();
@@ -56,14 +52,15 @@ export default function PostScreen({ navigation, route }: PostScreenProps) {
 
   const { styles } = useStyles();
   const { t } = useTranslation();
+  const postCategoryTitles = usePostCategoryTitles();
 
   useLayoutEffect(() => {
     if (!post) { return; }
 
     const { category } = post;
-    const capitalizedCategory = toTitleCase(category);
-    navigation.setOptions({ title: capitalizedCategory });
-  }, [navigation, post]);
+    const title = postCategoryTitles[category];
+    navigation.setOptions({ title });
+  }, [navigation, post?.category, postCategoryTitles]);
 
   useEffect(
     () => {

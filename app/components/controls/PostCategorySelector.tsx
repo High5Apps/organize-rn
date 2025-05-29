@@ -1,11 +1,9 @@
 import React from 'react';
 import SegmentedControl
   from '@react-native-segmented-control/segmented-control';
-import { POST_CATEGORIES, type PostCategory } from '../../model';
-
-const capitalizedPostCategories = POST_CATEGORIES.map(
-  (pt) => pt.replace(/(^|\s)\S/g, (c) => c.toUpperCase()),
-);
+import {
+  POST_CATEGORIES, usePostCategoryTitles, type PostCategory,
+} from '../../model';
 
 type Props = {
   disabled?: boolean;
@@ -16,6 +14,9 @@ type Props = {
 export default function PostCategorySelector({
   disabled = false, onSelectionChanged = () => {}, selection = 'general',
 }: Props) {
+  const postCategoryTitles = usePostCategoryTitles();
+  const values = POST_CATEGORIES.map((c) => postCategoryTitles[c]);
+
   return (
     <SegmentedControl
       enabled={!disabled}
@@ -25,7 +26,7 @@ export default function PostCategorySelector({
       }}
       onStartShouldSetResponder={() => true}
       selectedIndex={POST_CATEGORIES.indexOf(selection ?? 'general')}
-      values={capitalizedPostCategories}
+      values={values}
     />
   );
 }

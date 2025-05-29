@@ -17,6 +17,7 @@ export { default as getCircleColors } from './OrgScreenCircleColors';
 export { default as usePermission } from './Permission';
 export { default as permissionItems, toAction } from './PermissionItems';
 export { default as usePermissionUpdater } from './PermissionUpdater';
+export { default as usePostCategoryTitles } from './PostCategoryTitles';
 export { default as usePrependedModels } from './PrependedModels';
 export { default as useReplaceableFile } from './ReplaceableFile';
 export { default as useSelectionUpdater } from './SelectionUpdater';
