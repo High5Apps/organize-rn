@@ -121,11 +121,11 @@ const en = {
       inputFinal: "You can't undo this.",
       inputModifiable: 'You can change this later',
       nomination: {
-        accepted: 'Accepted by nominee',
+        accepted: 'Accepted by Nominee',
         byline: 'Nominated by {{nominator}}',
-        declined: 'Declined by nominee',
+        declined: 'Declined by Nominee',
         noneAccepted: 'No one accepted a nomination',
-        sent: 'Sent to nominee',
+        sent: 'Sent to Nominee',
       },
       officersCanReadUnionCards: 'Your union officers can view signed cards',
       scanToConnect: 'Connect with other members of your Org by scanning their secret code.',
@@ -155,7 +155,7 @@ const en = {
       selected: 'Selected',
     },
     object: {
-      activeVotes: 'Active votes',
+      activeVotes: 'Active Votes',
       agreement: 'Agreement',
       ballot: 'Ballot',
       ballotType: {
@@ -171,7 +171,7 @@ const en = {
       comment_other: 'Comments',
       commentThread: 'Comment Thread',
       communication: 'Communication',
-      completedVotes: 'Completed votes',
+      completedVotes: 'Completed Votes',
       date: {
         nominationsEnd: 'Nominations End On',
         termEnd: 'Term Ends On',
@@ -198,7 +198,7 @@ const en = {
       me: 'Me',
       memberCount_one: '{{count}} member',
       memberCount_other: '{{count}} members',
-      membersAndConnections: 'Members and connections',
+      membersAndConnections: 'Members and Connections',
       moderation: 'Moderation',
       name: 'Name',
       new: {

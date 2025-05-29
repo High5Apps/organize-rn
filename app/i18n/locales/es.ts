@@ -122,11 +122,11 @@ const translation: Translation = {
     inputFinal: "sYou can't undo this.",
     inputModifiable: 'sYou can change this later',
     nomination: {
-      accepted: 'sAccepted by nominee',
+      accepted: 'sAccepted by Nominee',
       byline: 'sNominated by {{nominator}}',
-      declined: 'sDeclined by nominee',
+      declined: 'sDeclined by Nominee',
       noneAccepted: 'sNo one accepted a nomination',
-      sent: 'sSent to nominee',
+      sent: 'sSent to Nominee',
     },
     officersCanReadUnionCards: 'sYour union officers can view signed cards',
     scanToConnect: 'sConnect with other members of your Org by scanning their secret code.',
@@ -156,7 +156,7 @@ const translation: Translation = {
     selected: 'sSelected',
   },
   object: {
-    activeVotes: 'sActive votes',
+    activeVotes: 'sActive Votes',
     agreement: 'sAgreement',
     ballot: 'sBallot',
     ballotType: {
@@ -172,7 +172,7 @@ const translation: Translation = {
     comment_other: 'sComments',
     commentThread: 'sComment Thread',
     communication: 'sCommunication',
-    completedVotes: 'sCompleted votes',
+    completedVotes: 'sCompleted Votes',
     date: {
       nominationsEnd: 'sNominations End On',
       termEnd: 'sTerm Ends On',
@@ -199,7 +199,7 @@ const translation: Translation = {
     me: 'sMe',
     memberCount_one: 's{{count}} member',
     memberCount_other: 's{{count}} members',
-    membersAndConnections: 'sMembers and connections',
+    membersAndConnections: 'sMembers and Connections',
     moderation: 'sModeration',
     name: 'sName',
     new: {
