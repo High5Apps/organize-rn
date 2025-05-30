@@ -191,6 +191,7 @@ const en = {
       blocked: 'Blocked',
       general: 'General',
       handled: 'Handled',
+      leftOrg: 'Left Org',
       pending: 'Pending',
       recent: 'Recent',
       selected: 'Selected',

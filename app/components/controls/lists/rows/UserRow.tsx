@@ -8,6 +8,7 @@ import {
   User, getCircleColors, getOffice, getTenure,
 } from '../../../../model';
 import useTheme from '../../../../Theme';
+import { useTranslation } from '../../../../i18n';
 
 const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
 
@@ -122,13 +123,14 @@ export default function UserRow({
   } = item;
   const tenure = getTenure(joinedAt, { blockedAt, leftOrgAt });
 
+  const { t } = useTranslation();
   const joinedOffices = offices.map((o) => getOffice(o).title).join(', ');
   const title = [
     pseudonym,
     joinedOffices,
-    isMe && 'Me',
-    blockedAt && 'Blocked',
-    leftOrgAt && 'Left Org',
+    isMe && t('object.me'),
+    blockedAt && t('modifier.blocked'),
+    leftOrgAt && t('modifier.leftOrg'),
   ].filter((e) => e).join(', ');
 
   const { colors, onTextLayout, styles } = useStyles();

@@ -192,6 +192,7 @@ const translation: Translation = {
     blocked: 'sBlocked',
     general: 'sGeneral',
     handled: 'sHandled',
+    leftOrg: 'sLeft Org',
     pending: 'sPending',
     recent: 'sRecent',
     selected: 'sSelected',
