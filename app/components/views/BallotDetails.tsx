@@ -32,12 +32,11 @@ export default function BallotDetails({ ballot, style }: Props) {
   if (!ballot) { return null; }
   const { category, maxCandidateIdsPerVote, votingEndsAt } = ballot;
   const votingEnded = votingEndsAt.getTime() <= new Date().getTime();
-  const termEndMessage = (category === 'election') && (
-    `Term is from ${
-      formatDate(ballot.termStartsAt, 'dateOnlyShort')
-    } to ${
-      formatDate(ballot.termEndsAt, 'dateOnlyShort')
-    }`
+  const termDurationMessage = (category === 'election') && (
+    t('time.hint.duration.term', {
+      end: formatDate(ballot.termEndsAt, 'dateOnlyShort'),
+      start: formatDate(ballot.termStartsAt, 'dateOnlyShort'),
+    })
   );
   const multipleSelectionsMessage = votingEnded
     ? t('hint.winnersMultiple', { maxCandidateIdsPerVote })
@@ -48,7 +47,9 @@ export default function BallotDetails({ ballot, style }: Props) {
       {maxCandidateIdsPerVote > 1 && (
         <Text style={styles.text}>{multipleSelectionsMessage}</Text>
       )}
-      {termEndMessage && (<Text style={styles.text}>{termEndMessage}</Text>)}
+      {termDurationMessage && (
+        <Text style={styles.text}>{termDurationMessage}</Text>
+      )}
       {!votingEnded && (
         <>
           <Text style={styles.text}>{t('hint.voteAnnonymous')}</Text>

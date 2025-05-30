@@ -399,6 +399,9 @@ const en = {
         },
       },
       hint: {
+        duration: {
+          term: 'Term is from {{start}} to {{end}}',
+        },
         past: {
           nominationsEnd: 'Nominations ended',
           termEnd: 'Term ended',

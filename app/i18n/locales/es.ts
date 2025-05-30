@@ -401,6 +401,9 @@ const translation: Translation = {
       },
     },
     hint: {
+      duration: {
+        term: 'sTerm is from {{start}} to {{end}}',
+      },
       past: {
         nominationsEnd: 'sNominations ended',
         termEnd: 'sTerm ended',
