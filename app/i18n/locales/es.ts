@@ -384,6 +384,21 @@ const translation: Translation = {
       },
     },
   },
+  time: {
+    duration: {
+      narrow: {
+        days: 's{{days}}d',
+        hours: 's{{hours}}h',
+        minutes: 's{{minutes}}m',
+        weeks: 's{{weeks}}w',
+        years: 's{{years}}y',
+      },
+      relative: {
+        past: 's{{duration}} ago',
+      },
+    },
+    now: 'just now',
+  },
   valueProposition: 'Crea tu propio sindicato',
 };
 const es = { translation };

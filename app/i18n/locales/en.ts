@@ -382,6 +382,21 @@ const en = {
         },
       },
     },
+    time: {
+      duration: {
+        narrow: {
+          days: '{{days}}d',
+          hours: '{{hours}}h',
+          minutes: '{{minutes}}m',
+          weeks: '{{weeks}}w',
+          years: '{{years}}y',
+        },
+        relative: {
+          past: '{{duration}} ago',
+        },
+      },
+      now: 'just now',
+    },
     valueProposition: 'Form your own labor union',
   },
 };
