@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  getMessageAge, getModeratableIcon, type ModerationEvent,
+  getMessageAge, getModeratableIcon, type ModeratableType, type ModerationEvent,
 } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { DisclosureIcon } from '../../../views';
@@ -84,9 +84,8 @@ export default function TransparencyLogRow({ item, onPress }: Props) {
       { pseudonym: creator.pseudonym, moderator: moderator.pseudonym },
     );
   } else {
-    const key = category.toLowerCase();
+    const key = category.toLowerCase() as Lowercase<ModeratableType>;
     title = t(
-      // @ts-ignore: Fixes a type issue caused by unknown not taking a moderator
       [
         (isBlocked
           ? `explanation.transparencyLog.block.${key}`
