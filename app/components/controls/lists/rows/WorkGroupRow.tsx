@@ -85,7 +85,7 @@ export default function WorkGroupRow({
             {[`${shift} shift`, department].filter(isDefined).join(', ')}
           </Text>
           <Text style={[styles.text, styles.textSecondary]}>
-            {t('object.memberCount', { count: memberCount })}
+            {t('hint.memberCount', { count: memberCount })}
           </Text>
         </View>
         {editable && (

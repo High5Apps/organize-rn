@@ -179,6 +179,8 @@ const translation: Translation = {
     emptyWorkGroups: 'sNo one has created any work groups yet.\n\nOrg members form work groups when they create and sign union cards.\n\nTo create and sign your union card, tap the **Connect tab**, then tap the **badge icon** in the **top right** corner.',
     inputFinal: "sYou can't undo this.",
     inputModifiable: 'sYou can change this later',
+    memberCount_one: 's{{count}} member',
+    memberCount_other: 's{{count}} members',
     nomination: {
       accepted: 'sAccepted by Nominee',
       byline: 'sNominated by {{nominator}}',
@@ -264,8 +266,6 @@ const translation: Translation = {
       winners: 'sMax winners',
     },
     me: 'sMe',
-    memberCount_one: 's{{count}} member',
-    memberCount_other: 's{{count}} members',
     membersAndConnections: 'sMembers and Connections',
     moderation: 'sModeration',
     name: 'sName',

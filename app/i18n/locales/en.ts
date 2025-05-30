@@ -178,6 +178,8 @@ const en = {
       emptyWorkGroups: 'No one has created any work groups yet.\n\nOrg members form work groups when they create and sign union cards.\n\nTo create and sign your union card, tap the **Connect tab**, then tap the **badge icon** in the **top right** corner.',
       inputFinal: "You can't undo this.",
       inputModifiable: 'You can change this later',
+      memberCount_one: '{{count}} member',
+      memberCount_other: '{{count}} members',
       nomination: {
         accepted: 'Accepted by Nominee',
         byline: 'Nominated by {{nominator}}',
@@ -263,8 +265,6 @@ const en = {
         winners: 'Max winners',
       },
       me: 'Me',
-      memberCount_one: '{{count}} member',
-      memberCount_other: '{{count}} members',
       membersAndConnections: 'Members and Connections',
       moderation: 'Moderation',
       name: 'Name',
