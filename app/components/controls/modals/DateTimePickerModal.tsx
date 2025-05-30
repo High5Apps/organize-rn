@@ -5,6 +5,7 @@ import BaseDateTimePickerModal, {
   CustomConfirmButtonPropTypes, cancelButtonStyles,
 } from 'react-native-modal-datetime-picker';
 import useTheme from '../../../Theme';
+import i18n, { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { colors, isDarkMode, sizes } = useTheme();
@@ -41,6 +42,7 @@ export default function DateTimePickerModal({
   dateTime, setDateTime, setVisible, visible,
 }: Props) {
   const { colors, isDarkMode, styles } = useStyles();
+  const { t } = useTranslation();
 
   const CustomCancelButtonIOS = useCallback((
     props: CustomCancelButtonPropTypes,
@@ -64,12 +66,15 @@ export default function DateTimePickerModal({
     <BaseDateTimePickerModal
       buttonTextColorIOS={colors.primary}
       accentColor={colors.primary}
+      cancelTextIOS={t('action.cancel')}
+      confirmTextIOS={t('action.confirm')}
       customCancelButtonIOS={CustomCancelButtonIOS}
       customConfirmButtonIOS={CustomConfirmButtonIOS}
       date={dateTime}
       display="inline"
       isDarkModeEnabled={isDarkMode}
       isVisible={visible}
+      locale={i18n.language}
       mode="datetime"
       onConfirm={(chosenDate) => {
         setDateTime(chosenDate);

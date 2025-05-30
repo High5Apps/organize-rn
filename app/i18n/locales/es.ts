@@ -14,6 +14,7 @@ const translation: Translation = {
     blockMember_one: 'sBlock Member',
     blockMember_other: 'sBlock Members',
     cancel: 'sCancel',
+    confirm: 'sConfirm',
     complete: 'sDone',
     connect: 'sConnect',
     contactUs: 'sContact us',

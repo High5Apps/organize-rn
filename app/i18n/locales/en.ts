@@ -14,6 +14,7 @@ const en = {
       blockMember_other: 'Block Members',
       cancel: 'Cancel',
       complete: 'Done',
+      confirm: 'Confirm',
       connect: 'Connect',
       contactUs: 'Contact us',
       create: 'Create',
