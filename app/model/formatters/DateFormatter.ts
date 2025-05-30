@@ -1,10 +1,12 @@
-const LOCALE = 'en-US';
+import i18n from '../../i18n';
 
 type DateFormat = 'full' | 'dateOnlyShort' | 'fullFileName';
 
 export default function formatDate(date: Date, format: DateFormat) {
+  const { language } = i18n;
+
   if (format === 'full') {
-    return date.toLocaleString(LOCALE, {
+    return date.toLocaleString(language, {
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
@@ -15,7 +17,7 @@ export default function formatDate(date: Date, format: DateFormat) {
   }
 
   if (format === 'dateOnlyShort') {
-    return date.toLocaleString(LOCALE, {
+    return date.toLocaleString(language, {
       day: 'numeric',
       month: 'numeric',
       year: '2-digit',

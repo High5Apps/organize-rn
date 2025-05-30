@@ -6,7 +6,7 @@ import { en, es } from './locales';
 
 const languageDetector: LanguageDetectorModule = {
   type: 'languageDetector',
-  detect: () => getLocales()[0].languageCode,
+  detect: () => getLocales()[0].languageTag,
 };
 
 const resources = { en, es } as const;
