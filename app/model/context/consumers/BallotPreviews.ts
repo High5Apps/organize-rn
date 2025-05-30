@@ -4,6 +4,7 @@ import { useBallotPreviewContext } from '../providers';
 import useCurrentUser from './CurrentUser';
 import { BallotPreview } from '../../types';
 import useModels, { getIdsFrom } from './Models';
+import i18n from '../../../i18n';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
@@ -139,13 +140,17 @@ export default function useBallotPreviews() {
 }
 
 export const nominationsTimeRemainingFormatter = (timeRemaining: string) => (
-  `${timeRemaining} until nominations end`
+  i18n.t('time.hint.remaining.nominationsEnd', { timeRemaining })
 );
 
-export const nominationsTimeRemainingExpiredFormatter = () => 'Nominations ended';
+export const nominationsTimeRemainingExpiredFormatter = () => (
+  i18n.t('time.hint.past.nominationsEnd')
+);
 
 export const votingTimeRemainingFormatter = (timeRemaining: string) => (
-  `${timeRemaining} until voting ends`
+  i18n.t('time.hint.remaining.votingEnd', { timeRemaining })
 );
 
-export const votingTimeRemainingExpiredFormatter = () => 'Voting ended';
+export const votingTimeRemainingExpiredFormatter = () => (
+  i18n.t('time.hint.past.votingEnd')
+);

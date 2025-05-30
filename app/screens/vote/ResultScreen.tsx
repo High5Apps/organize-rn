@@ -144,10 +144,13 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
 
     const endTime = termStarted ? termEndsAt : termStartsAt;
     const expiredFormatter = () => (
-      `Term ${termStarted ? 'ended' : 'started'}`
+      t(termStarted ? 'time.hint.past.termEnd' : 'time.hint.past.termStart')
     );
-    const formatter = (timeRemaining: string) => (
-      `${timeRemaining} until term ${termStarted ? 'ends' : 'starts'}`
+    const formatter = (timeRemaining: string) => t(
+      termStarted
+        ? 'time.hint.remaining.termEnd'
+        : 'time.hint.remaining.termStart',
+      { timeRemaining },
     );
     return (
       <TimeRemainingFooter

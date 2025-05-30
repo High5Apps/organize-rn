@@ -390,11 +390,27 @@ const translation: Translation = {
         days: 's{{days}}d',
         hours: 's{{hours}}h',
         minutes: 's{{minutes}}m',
+        seconds: 's{{seconds}}s',
         weeks: 's{{weeks}}w',
         years: 's{{years}}y',
       },
       relative: {
         past: 's{{duration}} ago',
+      },
+    },
+    hint: {
+      past: {
+        nominationsEnd: 'sNominations ended',
+        termEnd: 'sTerm ended',
+        termStart: 'sTerm started',
+        votingEnd: 'sVoting ended',
+      },
+      remaining: {
+        default: 's{{timeRemaining}} left',
+        nominationsEnd: 's{{timeRemaining}} until nominations end',
+        termEnd: 's{{timeRemaining}} until term ends',
+        termStart: 's{{timeRemaining}} until term starts',
+        votingEnd: 's{{timeRemaining}} until voting ends',
       },
     },
     now: 'just now',

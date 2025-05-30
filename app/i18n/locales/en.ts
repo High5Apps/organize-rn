@@ -388,11 +388,27 @@ const en = {
           days: '{{days}}d',
           hours: '{{hours}}h',
           minutes: '{{minutes}}m',
+          seconds: '{{seconds}}s',
           weeks: '{{weeks}}w',
           years: '{{years}}y',
         },
         relative: {
           past: '{{duration}} ago',
+        },
+      },
+      hint: {
+        past: {
+          nominationsEnd: 'Nominations ended',
+          termEnd: 'Term ended',
+          termStart: 'Term started',
+          votingEnd: 'Voting ended',
+        },
+        remaining: {
+          default: '{{timeRemaining}} left',
+          nominationsEnd: '{{timeRemaining}} until nominations end',
+          termEnd: '{{timeRemaining}} until term ends',
+          termStart: '{{timeRemaining}} until term starts',
+          votingEnd: '{{timeRemaining}} until voting ends',
         },
       },
       now: 'just now',
