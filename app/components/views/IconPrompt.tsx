@@ -45,9 +45,7 @@ export default function IconPrompt({ iconName, prompt, style = {} }: Props) {
   return (
     <View style={[styles.container, style]}>
       <Icon name={iconName} style={styles.icon} />
-      <Text style={styles.prompt}>
-        {prompt}
-      </Text>
+      <Text style={styles.prompt}>{prompt}</Text>
     </View>
   );
 }

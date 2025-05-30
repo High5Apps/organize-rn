@@ -89,16 +89,10 @@ export default function LearnMoreModal({
             style={styles.closeButton}
           />
           <Icon name={iconName} style={styles.icon} />
-          <Text style={styles.headline}>
-            {headline}
-          </Text>
+          <Text style={styles.headline}>{headline}</Text>
           <LockingScrollView>
             <View onStartShouldSetResponder={() => true}>
-              {children ?? (
-                <Text style={styles.body}>
-                  {body}
-                </Text>
-              )}
+              {children ?? <Text style={styles.body}>{body}</Text>}
             </View>
           </LockingScrollView>
         </View>

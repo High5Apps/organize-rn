@@ -48,12 +48,8 @@ export default function ReviewFrame({ labeledValues }: Props) {
     <LockingScrollView style={styles.lockingAwareScrollView}>
       {labeledValues.map(({ label, value }) => (
         <View key={label} style={styles.valueContainer}>
-          <Text style={[styles.text, styles.label]}>
-            {label}
-          </Text>
-          <Text style={[styles.text, styles.title]}>
-            {value}
-          </Text>
+          <Text style={[styles.text, styles.label]}>{label}</Text>
+          <Text style={[styles.text, styles.title]}>{value}</Text>
         </View>
       ))}
     </LockingScrollView>

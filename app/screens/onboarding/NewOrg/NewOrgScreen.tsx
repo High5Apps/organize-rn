@@ -83,9 +83,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           setVisible={setModalVisible}
           visible={modalVisible}
         />
-        <Text style={styles.title}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <HeaderText style={styles.headerText}>{header}</HeaderText>
         <TextInput
           autoCapitalize={autoCaptitalize}

@@ -33,9 +33,7 @@ export default function PlaceholderScreen({ name }: Props) {
   return (
     <ScreenBackground>
       <View style={styles.container}>
-        <Text style={styles.text}>
-          {name}
-        </Text>
+        <Text style={styles.text}>{name}</Text>
       </View>
     </ScreenBackground>
   );
