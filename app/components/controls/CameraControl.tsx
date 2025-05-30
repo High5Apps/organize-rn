@@ -9,6 +9,7 @@ import { IconPrompt } from '../views';
 import QRCamera from './QRCamera';
 import { SetQRValue } from './types';
 import { FrameButton } from './buttons';
+import i18n from '../../i18n';
 
 type Props = {
   qrValue: QRCodeValue | null;
@@ -18,13 +19,15 @@ type Props = {
 
 function getIconPrompt(cameraPermission: CameraPermissionStatus) {
   let iconName: string = 'qr-code-scanner';
-  let prompt: string = 'Tap to allow\ncamera permissions';
+  let prompt: string;
 
   if (cameraPermission === 'granted') {
-    prompt = 'Tap to show camera';
+    prompt = i18n.t('hint.tapToShowCamera');
   } else if (cameraPermission === 'restricted') {
     iconName = 'error';
-    prompt = "Camera access is restricted on your device. Unfortunately you won't be able to use Organize.";
+    prompt = i18n.t('hint.cameraRestricted');
+  } else {
+    prompt = i18n.t('hint.tapToPermitCamera');
   }
 
   return (
