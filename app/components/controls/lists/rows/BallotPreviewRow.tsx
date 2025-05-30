@@ -11,9 +11,7 @@ import useTheme from '../../../../Theme';
 import {
   DisclosureIcon, HighlightedCurrentUserRowContainer,
 } from '../../../views';
-
-const UNKNOWN_BALLOT_TYPE_TITLE = 'New vote type: you must update your app to see this vote';
-const UNKNOWN_BALLOT_TYPE_SUBTITLE = 'Tap to update your app';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const {
@@ -84,16 +82,16 @@ type Props = {
   onPress?: (item: BallotPreview) => void;
 };
 
-export default function BallotRow({ item, onPress = () => {} }: Props) {
+export default function BallotPreviewRow({ item, onPress = () => {} }: Props) {
   const {
     category, question, userId, nominationsEndAt, votingEndsAt,
   } = item;
   const ballotTypeInfo = getBallotTypeInfo(category);
+  const { t } = useTranslation();
   const title = (ballotTypeInfo.category === 'unknown')
-    ? UNKNOWN_BALLOT_TYPE_TITLE : question;
+    ? t('hint.unknownBallotType') : question;
   const subtitle = (ballotTypeInfo.category === 'unknown')
-    ? UNKNOWN_BALLOT_TYPE_SUBTITLE
-    : getSubtitle(votingEndsAt, nominationsEndAt);
+    ? t('hint.tapToUpdateApp') : getSubtitle(votingEndsAt, nominationsEndAt);
 
   const { colors, styles } = useStyles();
 
