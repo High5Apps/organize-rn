@@ -186,6 +186,12 @@ const translation: Translation = {
       noneAccepted: 'sNo one accepted a nomination',
       sent: 'sSent to Nominee',
     },
+    officeAcceptance: {
+      accepted: 'sAccepted office',
+      declined: 'sDeclined office',
+      elapsed: 'sMissed deadline to accept office',
+      pending: "sHasn't accepted office yet",
+    },
     officersCanReadUnionCards: 'sYour union officers can view signed cards',
     scanToConnect: 'sConnect with other members of your Org by scanning their secret code.',
     scanToJoin: 'sTo join an Org, scan the secret code of a current member.',

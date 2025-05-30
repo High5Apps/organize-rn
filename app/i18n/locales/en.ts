@@ -185,6 +185,12 @@ const en = {
         noneAccepted: 'No one accepted a nomination',
         sent: 'Sent to Nominee',
       },
+      officeAcceptance: {
+        accepted: 'Accepted office',
+        declined: 'Declined office',
+        elapsed: 'Missed deadline to accept office',
+        pending: "Hasn't accepted office yet",
+      },
       officersCanReadUnionCards: 'Your union officers can view signed cards',
       scanToConnect: 'Connect with other members of your Org by scanning their secret code.',
       scanToJoin: 'To join an Org, scan the secret code of a current member.',

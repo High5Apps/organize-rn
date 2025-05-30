@@ -9,7 +9,7 @@ import DecisionButtonsRow from '../../DecisionButtonsRow';
 import { HighlightedCurrentUserRowContainer } from '../../../views';
 import type { DiscussButtonType } from '../../buttons';
 import { ConfirmationAlert } from '../../modals';
-import { useTranslation } from '../../../../i18n';
+import { TFunction, useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const {
@@ -115,20 +115,24 @@ function useIcon({ maxVoteCount, maxWinners, result }: IconProps) {
   ), [iconName, iconStyle, multiSelectionWinnerRank, styles]);
 }
 
-function getOfficeAcceptance(termStartsAt: Date, acceptedOffice?: boolean) {
+function getOfficeAcceptance(
+  t: TFunction,
+  termStartsAt: Date,
+  acceptedOffice?: boolean,
+) {
   if (acceptedOffice) {
-    return 'Accepted office';
+    return t('hint.officeAcceptance.accepted');
   }
 
   if (acceptedOffice === false) {
-    return 'Declined office';
+    return t('hint.officeAcceptance.declined');
   }
 
   if (new Date().getTime() < termStartsAt?.getTime()) {
-    return "Hasn't accepted office yet";
+    return t('hint.officeAcceptance.pending');
   }
 
-  return 'Missed deadline to accept office';
+  return t('hint.officeAcceptance.elapsed');
 }
 
 type Props = IconProps & {
@@ -180,13 +184,13 @@ export default function ResultRow({
     if (shouldShowAcceptance) {
       return (
         <Text style={styles.subtitle}>
-          {getOfficeAcceptance(termStartsAt, acceptedOffice)}
+          {getOfficeAcceptance(t, termStartsAt, acceptedOffice)}
         </Text>
       );
     }
 
     return null;
-  }, [currentUserId, result, onResultUpdated, termStartsAt]);
+  }, [currentUserId, result, onResultUpdated, t, termStartsAt]);
 
   return (
     <HighlightedCurrentUserRowContainer userIds={[userId].filter(isDefined)}>
