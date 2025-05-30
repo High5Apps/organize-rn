@@ -3,10 +3,10 @@ import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import useTheme from '../../../../Theme';
-import { Post, VoteState, getMessageAge } from '../../../../model';
+import { Post, VoteState } from '../../../../model';
 import UpvoteControl from '../../UpvoteControl';
 import {
-  DisclosureIcon, HighlightedCurrentUserRowContainer, LockingScrollView,
+  Byline, DisclosureIcon, HighlightedCurrentUserRowContainer, LockingScrollView,
 } from '../../../views';
 import { useTranslation } from '../../../../i18n';
 
@@ -29,11 +29,6 @@ const useStyles = () => {
     },
     scrollViewContainer: {
       maxHeight: 120,
-    },
-    subtitle: {
-      color: colors.labelSecondary,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
     },
     title: {
       color: colors.label,
@@ -68,9 +63,6 @@ function PostRow({
   const title = deletedAt ? t('placeholder.authorLeftOrg') : item.title;
 
   const { colors, styles } = useStyles();
-
-  const timeAgo = getMessageAge(createdAt);
-  const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const TitleText = (
     <Text
@@ -114,7 +106,7 @@ function PostRow({
         />
         <View style={styles.innerContainer}>
           {TitleView}
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Byline author={pseudonym} createdAt={createdAt} />
         </View>
         {!!onPress && <DisclosureIcon style={styles.icon} />}
       </HighlightedCurrentUserRowContainer>

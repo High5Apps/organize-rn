@@ -4,14 +4,12 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTheme from '../../../../Theme';
-import {
-  Comment, MAX_COMMENT_DEPTH, getMessageAge, useCurrentUser,
-} from '../../../../model';
+import { Comment, MAX_COMMENT_DEPTH, useCurrentUser } from '../../../../model';
 import UpvoteControl from '../../UpvoteControl';
 import { FlagTextButton, TextButton } from '../../buttons';
 import type { PostScreenProps } from '../../../../navigation';
 import {
-  HighlightedRowContainer, HyperlinkDetector, LockingScrollView,
+  Byline, HighlightedRowContainer, HyperlinkDetector, LockingScrollView,
 } from '../../../views';
 import { useTranslation } from '../../../../i18n';
 
@@ -35,11 +33,6 @@ const useStyles = () => {
     },
     scrollViewContainer: {
       maxHeight: 120,
-    },
-    subtitle: {
-      color: colors.labelSecondary,
-      fontSize: font.sizes.body,
-      fontFamily: font.weights.regular,
     },
     textButtonRow: {
       flexDirection: 'row',
@@ -96,9 +89,6 @@ function CommentRow({
 
   // MAX_COMMENT_DEPTH - 1 because depth is 0-indexed
   const hideReplyButton = depth >= (MAX_COMMENT_DEPTH - 1);
-
-  const timeAgo = getMessageAge(createdAt);
-  const subtitle = `By ${pseudonym} ${timeAgo}`;
 
   const {
     colors, nestedMarginStart, spacing, styles,
@@ -157,7 +147,7 @@ function CommentRow({
       />
       <View style={styles.innerContainer}>
         {BodyView}
-        <Text style={styles.subtitle}>{subtitle}</Text>
+        <Byline author={pseudonym} createdAt={createdAt} />
         {!hideTextButtonRow && (
           <View style={styles.textButtonRow}>
             {!hideReplyButton && (
