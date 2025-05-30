@@ -353,6 +353,7 @@ const en = {
         verifyUnionCard_other: 'Failed to verify {{verificationFailureCount}} union card signatures. To fix this, update your app and then try again.',
       },
       success: {
+        checked: '{{value}} ✓',
         connection: 'Connected successfully',
         create: {
           comment: 'Successfully created comment',

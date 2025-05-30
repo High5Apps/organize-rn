@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import TextButton from './TextButton';
 import FlagConfirmationAlert from '../modals/FlagConfirmationAlert';
+import { useTranslation } from '../../../i18n';
 
 type Props = {
   commentId?: string;
@@ -10,16 +11,17 @@ type Props = {
 export default function FlagTextButton({
   commentId, disabled: maybeDisabled,
 }: Props) {
-  const [label, setLabel] = useState<'Flag' | 'Flag ✓'>('Flag');
+  const { t } = useTranslation();
+  const [label, setLabel] = useState(t('action.flag'));
   const [temporarilyDisabled, setTemporarilyDisabled] = useState(false);
   const disabled = !!maybeDisabled || temporarilyDisabled;
 
   const onSuccess = useCallback(() => {
-    setLabel('Flag ✓');
+    setLabel(t('result.success.checked', { value: t('action.flag') }));
     setTemporarilyDisabled(true);
 
     setTimeout(() => {
-      setLabel('Flag');
+      setLabel(t('action.flag'));
       setTemporarilyDisabled(false);
     }, 4000);
   }, []);

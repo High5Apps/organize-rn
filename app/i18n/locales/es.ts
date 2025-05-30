@@ -355,6 +355,7 @@ const translation: Translation = {
 
     },
     success: {
+      checked: 's{{value}} ✓',
       connection: 'sConnected successfully',
       create: {
         comment: 'sSuccessfully created comment',
