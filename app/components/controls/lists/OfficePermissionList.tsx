@@ -11,11 +11,6 @@ import { ConfirmationAlert } from '../modals';
 import { renderSectionHeader } from '../SectionHeader';
 import { useTranslation } from '../../../i18n';
 
-const onSyncSelectionError = (errorMessage: string) => {
-  console.error(errorMessage);
-  Alert.alert('Failed to update the permission', errorMessage);
-};
-
 type OfficeSection = {
   title: string;
   data: Office[];
@@ -44,6 +39,11 @@ export default function OfficePermissionList({ scope }: Props) {
     onRefresh: refreshPermission,
     refreshOnMount: true,
   });
+
+  const onSyncSelectionError = (errorMessage: string) => {
+    console.error(errorMessage);
+    Alert.alert(t('result.error.updatePermission'), errorMessage);
+  };
 
   const { getSelectionInfo, onRowPressed } = usePermissionUpdater({
     onSyncSelectionError, permission, updatePermission,

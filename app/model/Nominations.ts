@@ -6,8 +6,7 @@ import {
 import { UpdateNominationResponse, updateNomination } from '../networking';
 import { useCurrentUser } from './context';
 import getErrorMessage from './ErrorMessage';
-
-const ERROR_ALERT_TITLE = 'Failed to accept or decline nomination. Please try again.';
+import { useTranslation } from '../i18n';
 
 const isNominator = (currentUserId: string, nomination: Nomination) => (
   nomination.nominator.id === currentUserId
@@ -86,6 +85,7 @@ export default function useNominations(
     };
   }, [ballot?.nominations]);
 
+  const { t } = useTranslation();
   const acceptOrDeclineNomination = useCallback(
     async (updatedNomination: NonPendingNomination) => {
       if (!ballot?.nominations) { return; }
@@ -118,7 +118,7 @@ export default function useNominations(
         // On error, revert the ballot back to what it was before the
         // optimistic caching
         cacheBallot(ballot);
-        Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+        Alert.alert(t('result.error.updateNomination'), errorMessage);
       } else if (response?.candidate.id) {
         // Cache the newly created candidate on the nomination
         cacheBallot({
@@ -138,7 +138,7 @@ export default function useNominations(
         });
       }
     },
-    [ballot, cacheBallot, currentUser],
+    [ballot, cacheBallot, currentUser, t],
   );
 
   return {

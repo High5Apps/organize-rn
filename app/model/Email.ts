@@ -1,6 +1,7 @@
 import { Alert, Linking } from 'react-native';
 import getErrorMessage from './ErrorMessage';
 import { isDefined } from './types';
+import i18n from '../i18n';
 
 const SUPPORT_EMAIL = 'GetOrganizeApp@gmail.com';
 const MAILTO_BASE_URL = `mailto:${SUPPORT_EMAIL}`;
@@ -22,7 +23,8 @@ export default function Email({ body, subject }: Props = {}) {
       try {
         await Linking.openURL(urlString);
       } catch (error) {
-        Alert.alert('Failed to open your email app', getErrorMessage(error));
+        const title = i18n.t('result.error.openEmailApp');
+        Alert.alert(title, getErrorMessage(error));
       }
     },
   };

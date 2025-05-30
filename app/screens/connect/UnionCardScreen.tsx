@@ -158,11 +158,11 @@ function useUnionCardInfo({
 
   useEffect(() => {
     if (signedAt) {
-      setSignOrUndoResult('success', {
-        message: `Signed on ${formatDate(signedAt, 'dateOnlyShort')}`,
-      });
+      const date = formatDate(signedAt, 'dateOnlyShort');
+      const message = t('time.hint.past.signed', { date });
+      setSignOrUndoResult('success', { message });
     }
-  }, [signedAt]);
+  }, [signedAt, t]);
 
   const sign = async () => {
     setSigningOrUndoing(true);

@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 import {
   fromBackendEncryptedMessage, get, post, Status,
 } from './API';
@@ -36,7 +37,7 @@ export async function createConnection({
     if (response.status === Status.Unauthorized) {
       // The most legitimate reason for an unauthorized status is that the
       // token expired, so retrying might succeed.
-      errorMessage = 'Connection failed. Please try again.';
+      errorMessage = i18n.t('result.error.connect');
     }
 
     return { errorMessage, status: response.status };

@@ -61,11 +61,11 @@ export default function BlockMemberScreen({
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', {
-        message: `${errorMessage}\nTap here to try again`,
+        message: t('result.error.tapToRetry', { errorMessage }),
         onPress: () => onBlock(user),
       });
     }
-  }, [createModerationEvent, navigation]);
+  }, [createModerationEvent, navigation, t]);
 
   const onItemPress = useCallback(async (user: User) => {
     const { pseudonym } = user;

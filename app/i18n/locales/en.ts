@@ -179,6 +179,7 @@ const en = {
       emptyWorkGroups: 'No one has created any work groups yet.\n\nOrg members form work groups when they create and sign union cards.\n\nTo create and sign your union card, tap the **Connect tab**, then tap the **badge icon** in the **top right** corner.',
       inputFinal: "You can't undo this.",
       inputModifiable: 'You can change this later',
+      listEnd: 'You reached the end',
       memberCount_one: '{{count}} member',
       memberCount_other: '{{count}} members',
       nomination: {
@@ -333,6 +334,7 @@ const en = {
       homeAddressLine1: '123 Main St, Unit 5',
       homeAddressLine2: 'Seattle, WA, 98111',
       jobTitle: 'Nurse Practitioner',
+      local: 'Local {{number}}',
       name: 'Abe Lincoln',
       phoneNumber: '5551234567',
       potentialMemberDefinition: 'An employee of *employer* at *location*',
@@ -375,8 +377,18 @@ const en = {
     result: {
       error: {
         cameraNotFound: 'No camera found',
+        connect: 'Connection failed. Please try again.',
+        createModerationEvent: 'Failed to create moderation event. Please try again',
         flag: 'Failed to flag {{itemName}}',
+        generic: 'Something unexpected happened. Please try again.',
+        openEmailApp: 'Failed to open your email app',
         tapToRetry: '{{errorMessage}}\nTap to try again',
+        updateNomination: 'Failed to accept or decline nomination. Please try again.',
+        updatePermission: 'Failed to update the permission',
+        updateTerm: 'Failed to accept or decline office. Please try again.',
+        updateVote: 'Failed to update your vote. Please try again.',
+        upvotable: '{{upvotableType}}: {{preview}}\n\n{{errorMessage}}',
+        upvote: 'Upvote or Downvote failed. Please try again.',
         unblock: 'Failed to unblock. Please try again',
         verifyUnionCard_one: 'Failed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',
         verifyUnionCard_other: 'Failed to verify {{verificationFailureCount}} union card signatures. To fix this, update your app and then try again.',
@@ -416,6 +428,7 @@ const en = {
         past: {
           modified: '{{modifier}} {{timeAgo}}',
           nominationsEnd: 'Nominations ended',
+          signed: 'Signed on {{date}}',
           termEnd: 'Term ended',
           termStart: 'Term started',
           votingEnd: 'Voting ended',

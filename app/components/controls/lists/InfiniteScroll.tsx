@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { useRequestProgress } from '../../views';
 import useTheme from '../../../Theme';
+import { useTranslation } from '../../../i18n';
 
 // Fetch the next page when the user scrolls to within half the vertical list
 // height of the bottom of the list
@@ -26,6 +27,7 @@ type Props = {
 
 export default function useInfiniteScroll({ getDisabled, onLoadNextPage }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const {
     loading, RequestProgress, result, setLoading, setResult,
@@ -39,7 +41,7 @@ export default function useInfiniteScroll({ getDisabled, onLoadNextPage }: Props
     try {
       const { hasNextPage } = await onLoadNextPage();
       if (!hasNextPage) {
-        setResult('info', { message: 'You reached the end' });
+        setResult('info', { message: t('hint.listEnd') });
       }
     } catch (error) {
       setResult('error', { error });

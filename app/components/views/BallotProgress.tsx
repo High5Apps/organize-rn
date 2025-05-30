@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import useTheme from '../../Theme';
 import { Ballot, getErrorMessage, useBallot } from '../../model';
 import useRequestProgress from './RequestProgress';
+import { useTranslation } from '../../i18n';
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -32,6 +33,8 @@ export default function useBallotProgress({
     RequestProgress: UnstyledRequestProgress, setLoading, setResult,
   } = useRequestProgress();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     async function wrappedUpdateBallot() {
       setResult('none');
@@ -42,7 +45,7 @@ export default function useBallotProgress({
       } catch (error) {
         const errorMessage = getErrorMessage(error);
         setResult('error', {
-          message: `${errorMessage}\nTap here to try again`,
+          message: t('result.error.tapToRetry', { errorMessage }),
           onPress: wrappedUpdateBallot,
         });
       } finally {
@@ -53,7 +56,7 @@ export default function useBallotProgress({
     if (shouldFetchOnMount(ballot)) {
       wrappedUpdateBallot();
     }
-  }, []);
+  }, [t]);
 
   const { styles } = useStyles();
 

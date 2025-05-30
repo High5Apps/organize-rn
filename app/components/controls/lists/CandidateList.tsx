@@ -7,6 +7,7 @@ import { CandidateRow } from './rows';
 import { ItemSeparator } from '../../views';
 import type { DiscussButtonType } from '../buttons';
 import useTheme from '../../../Theme';
+import { useTranslation } from '../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -26,10 +27,6 @@ const useStyles = () => {
   return { styles };
 };
 
-const onSyncSelectionError = (errorMessage: string) => {
-  Alert.alert('Failed to update your vote. Please try again.', errorMessage);
-};
-
 type Props = {
   ballot?: Ballot;
   cacheBallot: (ballot: Ballot) => void;
@@ -47,6 +44,11 @@ export default function CandidateList({
     candidates, maxCandidateIdsPerVote: maybeMaxSelections,
   } = ballot ?? {};
   const { styles } = useStyles();
+  const { t } = useTranslation();
+
+  const onSyncSelectionError = (errorMessage: string) => {
+    Alert.alert(t('result.error.updateVote'), errorMessage);
+  };
 
   const { getSelectionInfo, onRowPressed } = useVoteUpdater({
     ballot, cacheBallot, onSyncSelectionError,
@@ -75,7 +77,7 @@ export default function CandidateList({
   const ListEmptyComponent = useMemo(() => (
     candidates && (
       <Text style={[styles.text, styles.listEmptyMessage]}>
-        No one accepted a nomination
+        {t('hint.nomination.noneAccepted')}
       </Text>
     )
   ), [candidates]);

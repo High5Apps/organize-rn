@@ -14,8 +14,6 @@ import {
 import useTheme from '../../Theme';
 import { useTranslation } from '../../i18n';
 
-const ERROR_ALERT_TITLE = 'Failed to accept or decline office. Please try again.';
-
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
 
@@ -103,9 +101,9 @@ export default function ResultScreen({ navigation, route }: ResultScreenProps) {
       await updateResultOptimistically({ updatedResult });
     } catch (error) {
       const errorMessage = getErrorMessage(error);
-      Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+      Alert.alert(t('result.error.updateTerm'), errorMessage);
     }
-  }, [updateResultOptimistically]);
+  }, [updateResultOptimistically, t]);
 
   const ListEmptyComponent = useMemo(() => (
     <Text style={[styles.text, styles.emptyResultsText]}>

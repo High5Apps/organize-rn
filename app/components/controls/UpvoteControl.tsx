@@ -7,9 +7,9 @@ import { UpvoteButton } from './buttons';
 import {
   VoteState, getErrorMessage, truncateText, useUpvote,
 } from '../../model';
+import { useTranslation } from '../../i18n';
 
 const ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH = 30;
-const ERROR_ALERT_TITLE = 'Upvote or Downvote failed. Please try again.';
 
 const useStyles = () => {
   const { colors, font, sizes } = useTheme();
@@ -48,6 +48,7 @@ export default function UpvoteControl({
   onVoteChanged = () => {}, postId, score, voteState,
 }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
   const [waitingForUp, setWaitingForUp] = useState<boolean>(false);
   const [waitingForDown, setWaitingForDown] = useState<boolean>(false);
@@ -56,13 +57,15 @@ export default function UpvoteControl({
   const { createUpvote, waitingForVoteSate } = useUpvote({ commentId, postId });
 
   const showErrorAlert = (errorMessage: string) => {
-    const upvotableType = postId ? 'Post' : 'Comment';
+    const upvotableType = t(postId ? 'object.discussion' : 'object.comment');
     const preview = truncateText({
       maxLength: ERROR_ITEM_FRIENDLY_DIFFERENTIATOR_MAX_LENGTH,
       text: errorItemFriendlyDifferentiator,
     });
-    const message = `${upvotableType}: ${preview}\n\n${errorMessage}`;
-    Alert.alert(ERROR_ALERT_TITLE, message);
+    const message = t('result.error.upvotable', {
+      errorMessage, preview, upvotableType,
+    });
+    Alert.alert(t('result.error.upvote'), message);
   };
 
   const onPress = async ({ isUpvote }: { isUpvote: boolean }) => {

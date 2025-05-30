@@ -7,11 +7,10 @@ import { useFlagReportContext } from '../providers';
 import useModels, { getIdsFrom } from './Models';
 import getErrorMessage from '../../ErrorMessage';
 import useModerationEvent from './ModerationEvent';
+import { useTranslation } from '../../../i18n';
 
 // Page indexing is 1-based, not 0-based
 const firstPageIndex = 1;
-
-const ERROR_ALERT_TITLE = 'Failed to create moderation event. Please try again';
 
 type Props = {
   handled: boolean;
@@ -35,6 +34,7 @@ export default function useFlagReports({ handled }: Props) {
 
   const { currentUser } = useCurrentUser();
   const { createModerationEvent } = useModerationEvent();
+  const { t } = useTranslation();
 
   async function fetchFirstPageOfFlagReports(): Promise<FetchPageReturn> {
     if (!currentUser) { throw new Error('Expected current user to be set'); }
@@ -128,7 +128,7 @@ export default function useFlagReports({ handled }: Props) {
       // On error, revert the flag report back to what it was before the
       // optimistic caching
       cacheFlagReport(previousFlagReport);
-      Alert.alert(ERROR_ALERT_TITLE, errorMessage);
+      Alert.alert(t('result.error.createModerationEvent'), errorMessage);
     } else if (id) {
       // On success, re-cache the flag report with the id from the backend to
       // indicate that it is no longer in-flight

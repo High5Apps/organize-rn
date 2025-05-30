@@ -180,6 +180,7 @@ const translation: Translation = {
     emptyWorkGroups: 'sNo one has created any work groups yet.\n\nOrg members form work groups when they create and sign union cards.\n\nTo create and sign your union card, tap the **Connect tab**, then tap the **badge icon** in the **top right** corner.',
     inputFinal: "sYou can't undo this.",
     inputModifiable: 'sYou can change this later',
+    listEnd: 'sYou reached the end',
     memberCount_one: 's{{count}} member',
     memberCount_other: 's{{count}} members',
     nomination: {
@@ -334,6 +335,7 @@ const translation: Translation = {
     homeAddressLine1: 's123 Main St, Unit 5',
     homeAddressLine2: 'sSeattle, WA, 98111',
     jobTitle: 'sNurse Practitioner',
+    local: 'sLocal {{number}}',
     name: 'sAbe Lincoln',
     phoneNumber: 's5551234567',
     potentialMemberDefinition: 'sAn employee of *employer* at *location*',
@@ -376,8 +378,18 @@ const translation: Translation = {
   result: {
     error: {
       cameraNotFound: 'sNo camera found',
+      connect: 'sConnection failed. Please try again.',
+      createModerationEvent: 'sFailed to create moderation event. Please try again',
       flag: 'sFailed to flag {{itemName}}',
+      generic: 'sSomething unexpected happened. Please try again.',
+      openEmailApp: 'sFailed to open your email app',
       tapToRetry: 's{{errorMessage}}\nTap to try again',
+      updateNomination: 'sFailed to accept or decline nomination. Please try again.',
+      updatePermission: 'sFailed to update the permission',
+      updateTerm: 'sFailed to accept or decline office. Please try again.',
+      updateVote: 'sFailed to update your vote. Please try again.',
+      upvotable: 's{{upvotableType}}: {{preview}}\n\n{{errorMessage}}',
+      upvote: 'sUpvote or Downvote failed. Please try again.',
       unblock: 'sFailed to unblock. Please try again',
       verifyUnionCard_one: 'sFailed to verify {{verificationFailureCount}} union card signature. To fix this, update your app and then try again.',
       verifyUnionCard_other: 'sFailed to verify {{verificationFailureCount}} union card signatures. To fix this, update your app and then try again.',
@@ -418,6 +430,7 @@ const translation: Translation = {
       past: {
         modified: 's{{modifier}} {{timeAgo}}',
         nominationsEnd: 'sNominations ended',
+        signed: 'sSigned on {{date}}',
         termEnd: 'sTerm ended',
         termStart: 'sTerm started',
         votingEnd: 'sVoting ended',

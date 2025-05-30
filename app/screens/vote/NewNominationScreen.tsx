@@ -51,11 +51,11 @@ export default function NewNominationScreen({
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       setResult('error', {
-        message: `${errorMessage}\nTap here to try again`,
+        message: t('result.error.tapToRetry', { errorMessage }),
         onPress: () => onNominate(nominee),
       });
     }
-  }, [ballot]);
+  }, [ballot, t]);
 
   const onItemPress = useCallback(async (nominee: User) => {
     const { pseudonym } = nominee;

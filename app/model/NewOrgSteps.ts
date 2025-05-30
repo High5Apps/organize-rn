@@ -40,7 +40,9 @@ const NewOrgSteps: NewOrgStep[] = [
     message,
     messageMultiline: false,
     param: 'name',
-    placeholder: () => `Local ${randomIntFromInterval(100, 10000)}`,
+    placeholder: () => i18n.t('placeholder.local', {
+      number: randomIntFromInterval(100, 10000),
+    }),
     title: i18n.t('action.initializeOrgName'),
   },
   {
