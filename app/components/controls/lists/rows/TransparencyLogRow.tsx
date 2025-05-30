@@ -8,6 +8,7 @@ import {
 } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { DisclosureIcon } from '../../../views';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const {
@@ -73,16 +74,28 @@ export default function TransparencyLogRow({ item, onPress }: Props) {
     action, createdAt, moderatable: { category, creator }, moderator,
   } = item;
   const isBlocked = action === 'block';
-  const pastAction = isBlocked ? 'blocked' : 'stopped blocking';
-  let object: string;
-  if (category === 'Post') {
-    object = 'a discussion';
-  } else if (category === 'User') {
-    object = creator.pseudonym;
+  const { t } = useTranslation();
+  let title: string;
+  if (category === 'User') {
+    title = t(
+      isBlocked
+        ? 'explanation.transparencyLog.block.user'
+        : 'explanation.transparencyLog.unblock.user',
+      { pseudonym: creator.pseudonym, moderator: moderator.pseudonym },
+    );
   } else {
-    object = `a ${category.toLowerCase()}`;
+    const key = category.toLowerCase();
+    title = t(
+      // @ts-ignore: Fixes a type issue caused by unknown not taking a moderator
+      [
+        (isBlocked
+          ? `explanation.transparencyLog.block.${key}`
+          : `explanation.transparencyLog.unblock.${key}`),
+        'explanation.transparencyLog.unknown',
+      ],
+      { moderator: moderator.pseudonym },
+    );
   }
-  const title = `${moderator.pseudonym} ${pastAction} ${object}`;
   const actionIcon = isBlocked ? 'block' : 'check';
   const timeAgo = getMessageAge(createdAt);
 

@@ -124,6 +124,21 @@ const en = {
       orgEmail: 'The app developers will email this address if they need to contact your Org.\n\nWhether your Org has 10 members or 10,000, this email is the single point of contact for your entire Org.',
       orgName: 'You can name your Org anything your want, but usually they\'re called locals. For example, you might name your Org "Local 4286" or "Local 552."',
       potentialMemberDefinition: 'An Org is strongest and healthiest once it recruits 70% of the people that fit its potential member definition.\n\nIf your definition is too broad, it\'ll be hard to hit 70%. If your definition is too strict, it\'ll be easier to hit 70%, but your Org may be too small to really benefit from "strength in numbers."\n\nThe most common definition is to include every employee at your workplace who isn\'t in management.',
+      transparencyLog: {
+        block: {
+          ballot: '{{moderator}} blocked a ballot',
+          comment: '{{moderator}} blocked a comment',
+          post: '{{moderator}} blocked a discussion',
+          user: '{{moderator}} blocked {{pseudonym}}',
+        },
+        unblock: {
+          ballot: '{{moderator}} stopped blocking a ballot',
+          comment: '{{moderator}} stopped blocking a comment',
+          post: '{{moderator}} stopped blocking a discussion',
+          user: '{{moderator}} stopped blocking {{pseudonym}}',
+        },
+        unknown: 'Unknown type. You must update your app to see this',
+      },
       warning: {
         leaveOrg: {
           condition: 'Warning! If you choose to leave this Org:',
