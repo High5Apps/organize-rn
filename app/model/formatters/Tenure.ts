@@ -1,3 +1,4 @@
+import i18n from '../../i18n';
 import { isDefined } from '../types';
 
 type Options = {
@@ -22,12 +23,15 @@ export default function getTenure(
   const yearsSinceStart = daysSinceStart / 365;
 
   if (daysSinceStart < 14) {
-    return `${Math.floor(daysSinceStart)}d`;
+    const days = Math.floor(daysSinceStart);
+    return i18n.t('time.duration.narrow.days', { days });
   }
 
   if (daysSinceStart < 365) {
-    return `${Math.floor(weeksSinceStart)}w`;
+    const weeks = Math.floor(weeksSinceStart);
+    return i18n.t('time.duration.narrow.weeks', { weeks });
   }
 
-  return `${Math.floor(yearsSinceStart)}y`;
+  const years = Math.floor(yearsSinceStart);
+  return i18n.t('time.duration.narrow.years', { years });
 }
