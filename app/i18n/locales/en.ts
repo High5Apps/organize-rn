@@ -409,6 +409,7 @@ const en = {
           term: 'Term is from {{start}} to {{end}}',
         },
         past: {
+          modified: '{{modifier}} {{timeAgo}}',
           nominationsEnd: 'Nominations ended',
           termEnd: 'Term ended',
           termStart: 'Term started',

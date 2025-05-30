@@ -411,6 +411,7 @@ const translation: Translation = {
         term: 'sTerm is from {{start}} to {{end}}',
       },
       past: {
+        modified: 's{{modifier}} {{timeAgo}}',
         nominationsEnd: 'sNominations ended',
         termEnd: 'sTerm ended',
         termStart: 'sTerm started',
@@ -424,7 +425,7 @@ const translation: Translation = {
         votingEnd: 's{{timeRemaining}} until voting ends',
       },
     },
-    now: 'just now',
+    now: 'sjust now',
   },
   valueProposition: 'Crea tu propio sindicato',
 };

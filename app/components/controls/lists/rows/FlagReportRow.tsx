@@ -104,9 +104,9 @@ function getModerationEventDependentValues(
 
     eventActionIcon = wasAllowed ? 'check' : 'block';
 
-    const action = t(wasAllowed ? 'modifier.allowed' : 'modifier.blocked');
+    const modifier = t(wasAllowed ? 'modifier.allowed' : 'modifier.blocked');
     const timeAgo = getMessageAge(moderationEvent.createdAt);
-    eventActionMessage = `${action} ${timeAgo}`;
+    eventActionMessage = t('time.hint.past.modified', { modifier, timeAgo });
   }
 
   const isEventInFlight = !!moderationEvent && moderationEvent.id === undefined;

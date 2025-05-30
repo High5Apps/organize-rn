@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ModerationEvent, getMessageAge } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { UnblockUserButton } from '../../buttons';
+import { useTranslation } from '../../../../i18n';
 
 const useStyles = () => {
   const { colors, font, spacing } = useTheme();
@@ -40,8 +41,12 @@ type Props = {
 
 export default function BlockedMemberRow({ item, onItemRemoved }: Props) {
   const { styles } = useStyles();
+  const { t } = useTranslation();
 
-  const subtitle = `Blocked ${getMessageAge(item.createdAt)}`;
+  const timeAgo = getMessageAge(item.createdAt);
+  const subtitle = t('time.hint.past.modified', {
+    modifier: t('modifier.blocked'), timeAgo,
+  });
 
   return (
     <View style={styles.container}>
