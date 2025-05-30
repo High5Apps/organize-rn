@@ -160,6 +160,7 @@ const en = {
     hint: {
       about: 'About',
       blockingPreventsOrgAccess: 'This will prevent them from accessing your Org',
+      byline: 'By {{author}} {{timeAgo}}',
       currentStep: 'Step {{currentStep}} <SecondaryText>of {{totalSteps}}</SecondaryText>',
       emptyAvailableOffices: 'Every office is currently filled or already has an open election.\n\nTry again later',
       emptyBallotPreviews: 'You can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!',

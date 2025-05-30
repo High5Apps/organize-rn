@@ -161,6 +161,7 @@ const translation: Translation = {
   hint: {
     about: 'sAbout',
     blockingPreventsOrgAccess: 'sThis will prevent them from accessing your Org',
+    byline: 'sBy {{author}} {{timeAgo}}',
     currentStep: 'sStep {{currentStep}} <SecondaryText>of {{totalSteps}}</SecondaryText>',
     emptyAvailableOffices: 'sEvery office is currently filled or already has an open election.\n\nTry again later',
     emptyBallotPreviews: 'sYou can **vote on anything** or **elect officers** to represent your Org.\n\nTap the button below to get started!',
