@@ -23,5 +23,7 @@ export { default as usePosts } from './Posts';
 export { default as useSelectedUser } from './SelectedUser';
 export { default as useUnionCard } from './UnionCard';
 export { default as useUsers } from './Users';
-export { default as useWorkGroup } from './WorkGroup';
+export {
+  default as useWorkGroup, getShiftIndex, getShiftName,
+} from './WorkGroup';
 export { default as useWorkGroups } from './WorkGroups';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import SegmentedControl from
   '@react-native-segmented-control/segmented-control';
-import { useFocusedInput, useWorkGroups } from '../../model';
+import { getShiftIndex, useFocusedInput, useWorkGroups } from '../../model';
 import { HeaderText } from '../views';
 import { TextInputRow } from './text';
 import useTheme from '../../Theme';
@@ -10,7 +10,7 @@ import { useTranslation } from '../../i18n';
 
 const MAX_DEPARTMENT_LENGTH = 100;
 const MAX_JOB_TITLE_LENGTH = 100;
-const SHIFTS = ['1st', '2nd', '3rd'];
+const SHIFTS = ['1', '2', '3'];
 
 const useStyles = () => {
   const { spacing } = useTheme();
@@ -45,8 +45,7 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
     jobTitle: initialJobTitle,
     shift: initialShift,
   } = getCachedWorkGroup(workGroupId) ?? {};
-  const initialShiftIndex = initialShift
-    ? Math.max(0, SHIFTS.indexOf(initialShift)) : 0;
+  const initialShiftIndex = getShiftIndex(initialShift);
 
   const [
     department, setDepartment,
@@ -107,7 +106,7 @@ export default function WorkGroupForm({ onChange, workGroupId }: Props) {
             setShiftIndex(selectedSegmentIndex);
           }}
           selectedIndex={shiftIndex}
-          values={SHIFTS}
+          values={t('object.shiftNames', { returnObjects: true })}
         />
       </View>
     </View>

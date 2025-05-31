@@ -3,6 +3,7 @@ import { updateWorkGroup as updateBackendWorkGroup } from '../../../networking';
 import useCurrentUser from './CurrentUser';
 import { useWorkGroupContext } from '../providers';
 import { sanitizeSingleLineField } from '../../formatters';
+import i18n from '../../../i18n';
 
 type UpdateProps = {
   department?: string;
@@ -44,4 +45,18 @@ export default function useWorkGroup(workGroupId: string) {
   }, [cacheWorkGroup, currentUser, workGroupId]);
 
   return { updateWorkGroup };
+}
+
+export function getShiftIndex(shift?: string) {
+  // Default to 0 if shift starts with 0, is undefined, or is NaN
+  const parsedShiftIndex = (parseInt(shift ?? '1', 10) || 1) - 1;
+
+  // Clamp to valid indicies (i.e. 0 to 2)
+  const max = i18n.t('object.shiftNames', { returnObjects: true }).length;
+  return Math.min(Math.max(parsedShiftIndex, 0), max - 1);
+}
+
+export function getShiftName(shift?: string) {
+  const shiftIndex = getShiftIndex(shift);
+  return i18n.t('object.shiftNames', { returnObjects: true })[shiftIndex];
 }

@@ -312,6 +312,7 @@ const translation: Translation = {
     results: 'sResults',
     settings: 'sSettings',
     shift: 'sShift',
+    shiftNames: ['s1st shift', 's2nd shift', 's3rd shift'],
     sourceCode: 'sSource Code',
     termsOfService: 'sTerms of Service',
     title: 'sTitle',

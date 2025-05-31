@@ -6,8 +6,8 @@ import {
 } from '../../components';
 import useTheme from '../../Theme';
 import {
-  formatDate, getErrorMessage, isDefined, useFocusedInput, useMyPermissions,
-  useOrg, useUnionCard,
+  formatDate, getErrorMessage, getShiftName, isDefined, useFocusedInput,
+  useMyPermissions, useOrg, useUnionCard,
 } from '../../model';
 import type { UnionCardScreenProps } from '../../navigation';
 import { useTranslation } from '../../i18n';
@@ -124,7 +124,7 @@ function useUnionCardInfo({
     orgName: orgName || '__________',
   });
   const workGroupDescription = !jobTitle ? undefined : [
-    jobTitle, `${shift} shift`, department,
+    jobTitle, getShiftName(shift), department,
   ].filter(isDefined).join(', ');
 
   const { can, refreshMyPermissions } = useMyPermissions({

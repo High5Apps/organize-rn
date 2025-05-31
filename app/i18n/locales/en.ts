@@ -311,6 +311,7 @@ const en = {
       results: 'Results',
       settings: 'Settings',
       shift: 'Shift',
+      shiftNames: ['1st shift', '2nd shift', '3rd shift'],
       sourceCode: 'Source Code',
       termsOfService: 'Terms of Service',
       title: 'Title',

@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { isDefined, WorkGroup } from '../../../../model';
+import { getShiftName, isDefined, WorkGroup } from '../../../../model';
 import useTheme from '../../../../Theme';
 import { IconButton } from '../../buttons';
 import { DisclosureIcon } from '../../../views';
@@ -82,7 +82,7 @@ export default function WorkGroupRow({
         <View style={styles.textContainer}>
           <Text style={styles.text}>{jobTitle}</Text>
           <Text style={[styles.text, styles.textSecondary]}>
-            {[`${shift} shift`, department].filter(isDefined).join(', ')}
+            {[getShiftName(shift), department].filter(isDefined).join(', ')}
           </Text>
           <Text style={[styles.text, styles.textSecondary]}>
             {t('hint.memberCount', { count: memberCount })}
