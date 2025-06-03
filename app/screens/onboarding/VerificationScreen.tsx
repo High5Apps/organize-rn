@@ -36,14 +36,9 @@ const useStyles = () => {
       fontSize: font.sizes.body,
       textAlign: 'center',
     },
-    textButton: {
-      fontFamily: font.weights.semiBold,
-    },
     textContainer: {
-      alignItems: 'baseline',
+      alignItems: 'center',
       columnGap: spacing.xs,
-      flexDirection: 'row',
-      justifyContent: 'center',
       marginHorizontal: spacing.m,
     },
     title: {
@@ -111,7 +106,6 @@ export default function VerificationScreen() {
             }),
             subject: t('email.subject.verificationCodeRequest'),
           }).openComposer}
-          style={styles.textButton}
         >
           {t('action.contactUs')}
         </TextButton>
