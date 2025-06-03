@@ -364,7 +364,6 @@ const translation: Translation = {
     demand: '¿Qué es una demanda?',
     discussionTopic: '¿Qué deberíamos discutir?',
     grievance: '¿Qué es una denuncia?',
-    potentialMemberDefinition: '¿Cómo decido quién puede unirse?',
     officeDuties: '¿Qué hace un {{officeTitle}}?',
     orgEmail: '¿Por qué necesitan mi correo electrónico?',
     orgName: '¿Cómo debería nombrar a mi Org?',
@@ -372,6 +371,7 @@ const translation: Translation = {
       format: '¿Quién Puede {{permission}}?',
       unknown: '¿Quién Puede Hacer Esto?',
     },
+    potentialMemberDefinition: '¿Cómo decido quién puede unirse?',
     verificationCode: '¿Aún no tienes un código?',
     workGroup: '¿Qué es un grupo de trabajo?',
     workGroupAbsent: '¿No ves tu grupo de trabajo?',
@@ -394,7 +394,6 @@ const translation: Translation = {
       unblock: 'Falló la desbloqueo. Por favor, inténtalo de nuevo',
       verifyUnionCard_one: 'Falló la verificación de {{verificationFailureCount}} firma de tarjeta sindical. Para solucionar esto, actualiza tu aplicación y luego inténtalo de nuevo.',
       verifyUnionCard_other: 'Falló la verificación de {{verificationFailureCount}} firmas de tarjetas sindicales. Para solucionar esto, actualiza tu aplicación y luego inténtalo de nuevo.',
-
     },
     success: {
       checked: '{{value}} ✓',
