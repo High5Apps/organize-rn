@@ -259,7 +259,7 @@ const en = {
       electionOffice: 'Election Office',
       email: 'Email',
       employerName: 'Employer name',
-      flaggedContent: 'Flagged content',
+      flaggedContent: 'Flagged Content',
       grievance_one: 'Grievance',
       grievance_other: 'Grievances',
       handbookTitle: 'How to Organize',
