@@ -52,7 +52,6 @@ const translation: Translation = {
     reply: 'Responder',
     reportBug: 'Reportar un Error',
     reviewOrg: 'Revisar tu Org',
-    scan: 'Escanear',
     search: 'Buscar',
     selectMember: 'Seleccionar miembro',
     selectWorkGroup: 'Seleccionar tu grupo de trabajo',

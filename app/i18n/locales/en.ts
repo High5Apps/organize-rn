@@ -51,7 +51,6 @@ const en = {
       reply: 'Reply',
       reportBug: 'Report a Bug',
       reviewOrg: 'Review Your Org',
-      scan: 'Scan',
       search: 'Search',
       selectMember: 'Select member',
       selectWorkGroup: 'Select your work group',

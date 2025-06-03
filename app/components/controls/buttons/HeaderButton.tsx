@@ -7,18 +7,20 @@ type Props = {
   disabled?: boolean;
   hidden?: boolean;
   iconName: string;
+  left?: boolean;
   navigation: NativeStackNavigationProp<any>;
   onPress: () => void;
 };
 
 export default function useHeaderButton({
-  disabled, hidden, iconName, navigation, onPress,
+  disabled, hidden, iconName, left, navigation, onPress,
 }: Props) {
-  const headerRight = useCallback(() => (hidden ? undefined : (
+  const button = useCallback(() => (hidden ? undefined : (
     <IconButton disabled={disabled} iconName={iconName} onPress={onPress} />
   )), [disabled, hidden, iconName, onPress]);
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerRight });
-  }, [headerRight, navigation.setOptions]);
+    const options = left ? { headerLeft: button } : { headerRight: button };
+    navigation.setOptions(options);
+  }, [button, left, navigation.setOptions]);
 }

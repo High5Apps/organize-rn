@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Share, StyleSheet, Text } from 'react-native';
 import {
-  ButtonRow, LockingAwareScrollView, PrimaryButton, QRCodeControl,
-  ScreenBackground, SecondaryButton, useHeaderButton,
+  LockingScrollView, PrimaryButton, QRCodeControl, ScreenBackground,
+  useHeaderButton,
 } from '../../components';
 import type { ConnectScreenProps } from '../../navigation';
 import useTheme from '../../Theme';
@@ -14,15 +14,19 @@ const useStyles = () => {
     colors, font, sizes, spacing,
   } = useTheme();
 
+  const buttonMargin = spacing.m;
+  const buttonBoundingBoxHeight = 2 * buttonMargin + sizes.buttonHeight;
+
   const styles = StyleSheet.create({
     button: {
-      flex: 0,
+      bottom: buttonMargin,
+      end: buttonMargin,
       height: sizes.buttonHeight,
-      paddingHorizontal: spacing.m,
-      marginHorizontal: spacing.s,
+      paddingHorizontal: buttonMargin,
+      position: 'absolute',
     },
-    buttonRow: {
-      justifyContent: 'space-between',
+    contentContainerStyle: {
+      paddingBottom: buttonBoundingBoxHeight,
     },
     prompt: {
       color: colors.label,
@@ -40,7 +44,15 @@ const useStyles = () => {
 };
 
 export default function ConnectScreen({ navigation }: ConnectScreenProps) {
-  const [buttonRowElevated, setButtonRowElevated] = useState(false);
+  useHeaderButton({
+    iconName: 'qr-code-scanner',
+    left: true,
+    navigation,
+    onPress: useCallback(
+      () => navigation.navigate('NewConnection'),
+      [navigation],
+    ),
+  });
 
   useHeaderButton({
     iconName: 'badge',
@@ -53,29 +65,21 @@ export default function ConnectScreen({ navigation }: ConnectScreenProps) {
 
   return (
     <ScreenBackground>
-      <LockingAwareScrollView
-        onScrollEnabledChanged={setButtonRowElevated}
+      <LockingScrollView
+        contentContainerStyle={styles.contentContainerStyle}
         style={styles.scrollView}
       >
         <QRCodeControl />
         <Text style={styles.prompt}>{t('hint.shareToRecruit')}</Text>
-      </LockingAwareScrollView>
-      <ButtonRow elevated={buttonRowElevated} style={styles.buttonRow}>
-        <SecondaryButton
-          iconName="qr-code-scanner"
-          label={t('action.scan')}
-          onPress={() => navigation.navigate('NewConnection')}
-          style={styles.button}
-        />
-        <PrimaryButton
-          iconName="share"
-          label={t('action.shareApp')}
-          onPress={() => Share.share({
-            message: t('explanation.joinOrg', { appStoreURI }),
-          })}
-          style={styles.button}
-        />
-      </ButtonRow>
+      </LockingScrollView>
+      <PrimaryButton
+        iconName="share"
+        label={t('action.shareApp')}
+        onPress={() => Share.share({
+          message: t('explanation.joinOrg', { appStoreURI }),
+        })}
+        style={styles.button}
+      />
     </ScreenBackground>
   );
 }
