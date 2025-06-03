@@ -19,15 +19,21 @@ export default function FlagConfirmationAlert({
   const { t } = useTranslation();
 
   const show = useCallback(() => {
-    let itemName = t('object.content');
+    let errorTitle: string;
+    let title: string;
     if (ballotId !== undefined) {
-      itemName = t('object.ballot');
+      errorTitle = t('result.error.flag.ballot');
+      title = t('question.confirmation.flag.ballot');
     } else if (commentId !== undefined) {
-      itemName = t('object.comment');
+      errorTitle = t('result.error.flag.comment');
+      title = t('question.confirmation.flag.comment');
     } else if (postId !== undefined) {
-      itemName = t('object.discussion');
+      errorTitle = t('result.error.flag.discussion');
+      title = t('question.confirmation.flag.discussion');
+    } else {
+      errorTitle = t('result.error.flag.content');
+      title = t('question.confirmation.flag.content');
     }
-    itemName = itemName.toLocaleLowerCase();
 
     ConfirmationAlert({
       destructiveAction: t('action.flag'),
@@ -37,10 +43,10 @@ export default function FlagConfirmationAlert({
           onSuccess?.();
         } catch (error) {
           const errorMessage = getErrorMessage(error);
-          Alert.alert(t('result.error.flag', { itemName }), errorMessage);
+          Alert.alert(errorTitle, errorMessage);
         }
       },
-      title: t('question.confirmation.flag', { itemName }),
+      title,
     }).show();
   }, [createFlag, t]);
 
