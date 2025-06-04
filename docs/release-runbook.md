@@ -3,9 +3,9 @@
 1. Add a version bump commit and push
     - Similar to https://github.com/High5Apps/organize-rn/commit/b90df8b
 2. Create a version tag
-    - e.g. `git tag v2.1.0 && git push origin v2.1.0`
+    - e.g. `git tag v2.X.Y && git push origin v2.X.Y`
     - If any issues are found during testing, delete this tag and then recreate it on the final commit that's included in the release
-        - e.g. `git push --delete origin tag v2.1.0 && git tag --delete v2.1.0`
+        - e.g. `git push --delete origin tag v2.X.Y && git tag --delete v2.X.Y`
 3. If needed, create new screenshots
     1. Deploy the new release to Android and iOS physical devices
     2. Create a new Org on the Android device
