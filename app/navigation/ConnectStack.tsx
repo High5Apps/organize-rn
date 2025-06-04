@@ -19,7 +19,7 @@ export default function ConnectStack() {
       <Stack.Screen
         component={ConnectScreen}
         name="Connect"
-        options={{ title: t('action.connect') }}
+        options={{ headerTitleAlign: 'center', title: t('action.connect') }}
       />
       <Stack.Screen
         component={NewConnectionScreen}
