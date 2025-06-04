@@ -85,7 +85,7 @@ const translation: Translation = {
     candidacyAnnouncement: 'Esta es tu oportunidad para explicar a tus compañeros de trabajo por qué deberían votarte.\n\nSi tienes experiencia relevante o rasgos de carácter, ¡hazlo saber!\n\n¿Qué harás si ganas?\n\n¿Por qué eres la mejor persona para el trabajo?',
     demand: 'Las demandas te permiten expresar cómo deberían cambiar las cosas específicas en tu lugar de trabajo para mejorar.\n\nCon el tiempo, los votos a favor y en contra de los miembros de la Org ayudarán a todos a llegar a un consenso sobre qué demandas son las más importantes.',
     discussionTopic: '¡Puedes discutir cualquier cosa aquí!\n\nSolo trata de mantener la calma.\n\nEs posible que no estés de acuerdo con tus compañeros de trabajo en todos los temas, pero al final del día, todos están juntos en esto.',
-    grievance: 'Si has experimentado problemas en tu lugar de trabajo, otros también pueden haberlos experimentado.\n\nLas denuncias ofrecen una oportunidad para arrojar luz sobre la injusticia, el comportamiento poco ético, y las prácticas ilegales.',
+    grievance: 'Si has experimentado problemas en tu lugar de trabajo, otros también pueden haberlos experimentado.\n\nLas denuncias ofrecen una oportunidad para arrojar luz sobre la injusticia, el comportamiento poco ético y las prácticas ilegales.',
     joinOrg: 'Para unirte a nuestra Org:\n1. Descarga la app Organize en {{appStoreURI}}\n2. Reúnete conmigo en persona para escanear mi código de membresía',
     officeDuties: {
       founder: [
@@ -155,7 +155,7 @@ const translation: Translation = {
         recommendedThreshold: 'Pero esperar hasta que alcances el 70% te hará mucho más propenso a ganar.',
       },
     },
-    workGroup: 'Un grupo de trabajo contiene compañeros de trabajo con el mismo título de trabajo, departamento, y turno.\n\nLos grupos de trabajo ayudan a representar tus intereses particulares durante las negociaciones contractuales.\n\nSi tu lugar de trabajo es pequeño, tus grupos de trabajo pueden no tener departamentos o turnos separados.',
+    workGroup: 'Un grupo de trabajo contiene compañeros de trabajo con el mismo título de trabajo, departamento y turno.\n\nLos grupos de trabajo ayudan a representar tus intereses particulares durante las negociaciones contractuales.\n\nSi tu lugar de trabajo es pequeño, tus grupos de trabajo pueden no tener departamentos o turnos separados.',
   },
   hint: {
     about: 'Acerca de',
@@ -169,7 +169,7 @@ const translation: Translation = {
     emptyComments: 'Sé el primero en comentar esto',
     emptyDemandDiscussions: 'Las demandas te permiten expresar cómo deberían **cambiar las cosas para mejorar**.\n\nCon el tiempo, los votos a favor y en contra de los miembros de la Org ayudarán a todos a llegar a un **consenso**.',
     emptyGeneralDiscussions: 'Puedes **discutir cualquier cosa** aquí.\n\nToca el botón de abajo para comenzar!',
-    emptyGrievanceDiscussions: 'Si has experimentado **problemas en tu lugar de trabajo**, otros también pueden haberlos experimentado.\n\nLas denuncias ofrecen una oportunidad para **arrojar luz** sobre la injusticia, el comportamiento poco ético, y las prácticas ilegales.',
+    emptyGrievanceDiscussions: 'Si has experimentado **problemas en tu lugar de trabajo**, otros también pueden haberlos experimentado.\n\nLas denuncias ofrecen una oportunidad para **arrojar luz** sobre la injusticia, el comportamiento poco ético y las prácticas ilegales.',
     emptyHandledFlaggedContent: 'Cuando tú u otros mods permiten o bloquean contenido marcado, aparece aquí.',
     emptyLeadItems: 'No tienes permiso para acceder a ninguna de estas herramientas. Puedes solicitar permisos al presidente u otro funcionario autorizado.',
     emptyNominations: 'Sé el primero en **nominar a un candidato** para {{officeTitle}}.\n\nToca el botón de abajo para comenzar!',
