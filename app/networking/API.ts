@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 import { toJson } from './Json';
 import type {
   AESEncryptedData, BackendEncryptedMessage, E2EDecryptor, E2EEncryptor,
@@ -12,6 +13,7 @@ export enum Status {
 
 const defaultHeaders = {
   Accept: 'application/json',
+  'Accept-Language': i18n.language,
   'Content-Type': 'application/json',
 };
 
