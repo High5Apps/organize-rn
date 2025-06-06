@@ -10,6 +10,7 @@ type Props = {
 
 export default function usePermission({ scope }: Props) {
   const [permission, setPermission] = useState<Permission>();
+  const [ready, setReady] = useState(false);
   const { currentUser } = useCurrentUser();
 
   const refreshPermission = useCallback(async () => {
@@ -23,6 +24,8 @@ export default function usePermission({ scope }: Props) {
     if (errorMessage !== undefined) {
       throw new Error(errorMessage);
     }
+
+    setReady(true);
 
     if (!isEqual(permission, fetchedPermission)) {
       setPermission(fetchedPermission);
@@ -48,5 +51,7 @@ export default function usePermission({ scope }: Props) {
     [currentUser, permission],
   );
 
-  return { permission, refreshPermission, updatePermission };
+  return {
+    permission, ready, refreshPermission, updatePermission,
+  };
 }

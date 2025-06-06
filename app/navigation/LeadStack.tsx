@@ -7,7 +7,6 @@ import {
   EditWorkGroupsScreen, LeadScreen, ModerationScreen, PermissionScreen,
   PermissionsScreen, UnionCardsScreen,
 } from '../screens';
-import { usePermissionItems } from '../model';
 import FlagReportTabs from './FlagReportTabs';
 import { useTranslation } from '../i18n';
 
@@ -16,7 +15,6 @@ const Stack = createNativeStackNavigator<LeadStackParamList>();
 export default function LeadStack() {
   const screenOptions = useDefaultStackNavigatorOptions();
   const { t } = useTranslation();
-  const { findByScope } = usePermissionItems();
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
@@ -66,20 +64,12 @@ export default function LeadStack() {
       <Stack.Screen
         name="Permission"
         component={PermissionScreen}
-        options={({ route }) => {
-          const { scope } = route.params;
-          const permissionItem = findByScope(scope);
-          const maybePermission = permissionItem?.title;
-          const title = maybePermission
-            ? t('question.permission.format', { permission: maybePermission })
-            : t('question.permission.unknown');
-          return { title };
-        }}
+        options={{ title: t('object.permission', { count: 1 }) }}
       />
       <Stack.Screen
         name="Permissions"
         component={PermissionsScreen}
-        options={{ title: t('object.permissions') }}
+        options={{ title: t('object.permission', { count: 100 }) }}
       />
       <Stack.Screen
         name="UnionCards"

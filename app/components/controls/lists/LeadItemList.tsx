@@ -50,7 +50,7 @@ function useLeadItems() {
       items.push({
         destination: 'Permissions',
         iconName: 'lock-open',
-        title: t('object.permissions'),
+        title: t('object.permission', { count: 100 }),
       });
     }
 

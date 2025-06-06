@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { ReactElement, useCallback, useMemo } from 'react';
 import { Alert, ListRenderItemInfo, SectionList } from 'react-native';
 import {
   OFFICE_CATEGORIES, Office, OfficeCategory, PermissionScope, getOffice,
@@ -17,12 +17,15 @@ type OfficeSection = {
 };
 
 type Props = {
+  ListHeaderComponent?: ReactElement;
   scope: PermissionScope;
 };
 
-export default function OfficePermissionList({ scope }: Props) {
+export default function OfficePermissionList({
+  ListHeaderComponent, scope,
+}: Props) {
   const {
-    permission, refreshPermission, updatePermission,
+    permission, ready, refreshPermission, updatePermission,
   } = usePermission({ scope });
   const { currentUser } = useCurrentUser();
 
@@ -35,10 +38,19 @@ export default function OfficePermissionList({ scope }: Props) {
     return [{ title: t('object.officers'), data: offices }];
   }, [permission]);
 
-  const { ListHeaderComponent, refreshControl, refreshing } = usePullToRefresh({
+  const {
+    ListHeaderComponent: PullToRefreshErrorMessage, refreshControl, refreshing,
+  } = usePullToRefresh({
     onRefresh: refreshPermission,
     refreshOnMount: true,
   });
+
+  const CombinedListHeaderComponent = useMemo(() => (
+    <>
+      <PullToRefreshErrorMessage />
+      {ready ? ListHeaderComponent : undefined}
+    </>
+  ), [ListHeaderComponent, PullToRefreshErrorMessage, ready]);
 
   const onSyncSelectionError = (errorMessage: string) => {
     console.error(errorMessage);
@@ -89,7 +101,7 @@ export default function OfficePermissionList({ scope }: Props) {
   return (
     <SectionList
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponent={CombinedListHeaderComponent}
       refreshControl={refreshControl}
       refreshing={refreshing}
       renderItem={renderItem}
