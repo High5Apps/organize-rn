@@ -23,9 +23,11 @@ const useStyles = () => {
       fontFamily: font.weights.regular,
       marginEnd: spacing.m,
     },
+    rowTextContainer: {
+      flexShrink: 1,
+    },
     rowTitleText: {
       color: colors.label,
-      flexShrink: 1,
       fontSize: font.sizes.body,
       fontFamily: font.weights.semiBold,
     },
@@ -50,7 +52,7 @@ export default function BlockedMemberRow({ item, onItemRemoved }: Props) {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.rowTextContainer}>
         <Text style={styles.rowTitleText}>
           {item.moderatable.creator.pseudonym}
         </Text>
