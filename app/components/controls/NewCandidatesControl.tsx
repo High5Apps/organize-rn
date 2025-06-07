@@ -58,11 +58,8 @@ export default function NewCandidatesControl({
             } else {
               ConfirmationAlert({
                 destructiveAction: t('action.remove'),
+                message: t('hint.confirmation.removeCandidate', { candidate }),
                 onConfirm: removeCandidate,
-                title: t(
-                  'question.confirmation.removeCandidate',
-                  { candidate },
-                ),
               }).show();
             }
           }}

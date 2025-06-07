@@ -173,8 +173,8 @@ export default function ResultRow({
           onDecline={(
             ConfirmationAlert({
               destructiveAction: t('action.decline'),
+              message: t('hint.confirmation.declineOffice'),
               onConfirm: () => onAccepted(false),
-              title: t('question.confirmation.declineOffice'),
             }).show
           )}
         />

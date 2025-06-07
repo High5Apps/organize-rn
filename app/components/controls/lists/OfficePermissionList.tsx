@@ -71,9 +71,8 @@ export default function OfficePermissionList({
     if (selected && officeCategories.includes(officeCategory)) {
       ConfirmationAlert({
         destructiveAction: t('action.remove'),
+        message: t('hint.confirmation.removeSelfPermission'),
         onConfirm: () => onRowPressed(officeCategory),
-        subtitle: t('explanation.warning.removeSelfPermission'),
-        title: t('question.confirmation.removeSelfPermission'),
       }).show();
     } else {
       onRowPressed(officeCategory);

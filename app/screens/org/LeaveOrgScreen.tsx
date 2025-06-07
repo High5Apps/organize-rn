@@ -67,6 +67,7 @@ export default function LeaveOrgScreen() {
             label={t('action.leaveOrg')}
             onPress={ConfirmationAlert({
               destructiveAction: t('action.leaveOrg'),
+              message: t('hint.confirmation.leaveOrg'),
               onConfirm: async () => {
                 setResult('none');
                 setLoading(true);
@@ -77,7 +78,6 @@ export default function LeaveOrgScreen() {
                   setResult('error', { error });
                 }
               },
-              title: t('question.confirmation.leaveOrg'),
             }).show}
             textStyle={styles.button}
           />

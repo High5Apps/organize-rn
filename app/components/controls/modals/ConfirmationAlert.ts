@@ -4,29 +4,19 @@ import i18n from '../../../i18n';
 type Props = {
   destructiveAction: string;
   destructiveButtonStyle?: 'default' | 'destructive';
+  message: string;
   onConfirm: () => void;
-  subtitle?: string | null;
-  title: string;
 };
 
 export default function ConfirmationAlert({
-  destructiveAction, destructiveButtonStyle, onConfirm, subtitle: maybeSubtitle,
-  title,
+  destructiveAction, destructiveButtonStyle, message, onConfirm,
 }: Props) {
-  let subtitle: string | undefined;
-  if (maybeSubtitle === undefined) {
-    subtitle = i18n.t('hint.inputFinal');
-  } else if (maybeSubtitle === null) {
-    subtitle = undefined;
-  } else {
-    subtitle = maybeSubtitle;
-  }
-
+  const title = i18n.t('question.confirmation');
   return {
     show: () => {
       Alert.alert(
         title,
-        subtitle,
+        message,
         [
           { text: i18n.t('action.cancel'), style: 'cancel' },
           {

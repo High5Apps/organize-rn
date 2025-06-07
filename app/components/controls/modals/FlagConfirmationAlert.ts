@@ -20,23 +20,24 @@ export default function FlagConfirmationAlert({
 
   const show = useCallback(() => {
     let errorTitle: string;
-    let title: string;
+    let message: string;
     if (ballotId !== undefined) {
       errorTitle = t('result.error.flag.ballot');
-      title = t('question.confirmation.flag.ballot');
+      message = t('hint.confirmation.flag.ballot');
     } else if (commentId !== undefined) {
       errorTitle = t('result.error.flag.comment');
-      title = t('question.confirmation.flag.comment');
+      message = t('hint.confirmation.flag.comment');
     } else if (postId !== undefined) {
       errorTitle = t('result.error.flag.discussion');
-      title = t('question.confirmation.flag.discussion');
+      message = t('hint.confirmation.flag.discussion');
     } else {
       errorTitle = t('result.error.flag.content');
-      title = t('question.confirmation.flag.content');
+      message = t('hint.confirmation.flag.content');
     }
 
     ConfirmationAlert({
       destructiveAction: t('action.flag'),
+      message,
       onConfirm: async () => {
         try {
           await createFlag();
@@ -46,7 +47,6 @@ export default function FlagConfirmationAlert({
           Alert.alert(errorTitle, errorMessage);
         }
       },
-      title,
     }).show();
   }, [createFlag, t]);
 
