@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 
+import i18n from '../i18n';
 import { fetchUnionCards as _fetchUnionCards } from '../networking';
 import { useCurrentUser } from './context';
 import { formatDate } from './formatters';
@@ -50,7 +51,7 @@ export default function useUnionCards() {
 
       if (page === 1) {
         if (!pageHasEntries) {
-          throw new Error('No one has signed a union card yet');
+          throw new Error(i18n.t('result.error.noSignedUnionCards'));
         }
 
         const formattedDate = formatDate(createdAtOrBefore, 'fullFileName');

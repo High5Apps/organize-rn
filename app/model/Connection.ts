@@ -6,8 +6,7 @@ import {
 } from '../networking';
 import getErrorMessage from './ErrorMessage';
 import { Keys } from './keys';
-
-export const OTHER_ORG_ERROR_MESSAGE = "The code you scanned belongs to a member of another Org. You can't connect with people in other Orgs.";
+import i18n from '../i18n';
 
 type Props = {
   sharerJwt?: string;
@@ -64,7 +63,7 @@ export default function useConnection({ sharerJwt }: Props) {
       throw new Error(errorMessage);
     } else if (currentUser?.org) { // Do not check for non-members
       if (currentUser.org.id !== connectionPreview!.org.id) {
-        throw new Error(OTHER_ORG_ERROR_MESSAGE);
+        throw new Error(i18n.t('result.error.scannedOtherOrg'));
       }
     }
 
