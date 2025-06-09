@@ -42,6 +42,12 @@ Components concerned with handling user input
 
 Components unconcerned with handling user input
 
+#### `app/i18n`
+
+Internationalization (i18n) code and locale/translation data. I18n is performed with the [i18next](https://www.i18next.com/) and [react-i18next](https://react.i18next.com/) frameworks.
+
+**Architecture Invariant:** To promote key reuse, i18n keys should describe what the string is semantically instead of describing the component in which the string is used. e.g. `object.ballot` instead of `screen.ballot.title`
+
 #### `app/model`
 
 Code concerned with data management, and manipulation.
