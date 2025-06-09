@@ -16,7 +16,7 @@ const useStyles = () => {
     checkBoxHighlightFix: {
       // This fixes an Android issue where the OfficeRow tap highlight only
       // showed up on the checkbox part of the row
-      backgroundColor: '',
+      backgroundColor: 'transparent',
     },
     container: {
       alignItems: 'center',
