@@ -7,7 +7,6 @@ const translation: Translation = {
     add: 'Añadir',
     addChoice: 'Añadir otra opción',
     addWorkGroup: 'Añadir tu grupo de trabajo',
-    addWorkGroup_title: 'Añadir tu Grupo de Trabajo',
     allow: 'Permitir',
     announce: 'Anunciar',
     block: 'Bloquear',
@@ -55,7 +54,6 @@ const translation: Translation = {
     search: 'Buscar',
     selectMember: 'Seleccionar miembro',
     selectWorkGroup: 'Seleccionar tu grupo de trabajo',
-    selectWorkGroup_title: 'Seleccionar tu Grupo de Trabajo',
     share: 'Compartir',
     shareApp: 'Compartir la app',
     shareGroupKey: 'Compartir la Clave del Grupo',
@@ -297,6 +295,7 @@ const translation: Translation = {
       reply: 'Nueva Respuesta',
       vote: 'Nueva votación',
       vote_title: 'Nueva Votación',
+      workGroup: 'Nuevo Grupo de Trabajo',
     },
     office: 'Oficina',
     officeNominations: 'Nominaciones para {{office}}',
@@ -334,6 +333,9 @@ const translation: Translation = {
     unionCard_other: 'Tarjetas Sindicales',
     verificationCode: 'Código',
     workGroup: 'Grupo de trabajo',
+    your: {
+      workGroup: 'Tu Grupo de Trabajo',
+    },
   },
   placeholder: {
     authorLeftOrg: '[abandonó la Org]',

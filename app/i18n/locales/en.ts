@@ -6,7 +6,6 @@ const en = {
       add: 'Add',
       addChoice: 'Add another choice',
       addWorkGroup: 'Add your work group',
-      addWorkGroup_title: 'Add Your Work Group',
       allow: 'Allow',
       announce: 'Announce',
       block: 'Block',
@@ -54,7 +53,6 @@ const en = {
       search: 'Search',
       selectMember: 'Select member',
       selectWorkGroup: 'Select your work group',
-      selectWorkGroup_title: 'Select Your Work Group',
       share: 'Share',
       shareApp: 'Share the app',
       shareGroupKey: 'Share Group Key',
@@ -296,6 +294,7 @@ const en = {
         reply: 'New Reply',
         vote: 'New vote',
         vote_title: 'New Vote',
+        workGroup: 'New Work Group',
       },
       office: 'Office',
       officeNominations: 'Nominations for {{office}}',
@@ -333,6 +332,9 @@ const en = {
       unionCard_other: 'Union Cards',
       verificationCode: 'Code',
       workGroup: 'Work group',
+      your: {
+        workGroup: 'Your Work Group',
+      },
     },
     placeholder: {
       authorLeftOrg: '[left Org]',

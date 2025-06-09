@@ -29,12 +29,12 @@ export default function ConnectStack() {
       <Stack.Screen
         component={NewWorkGroupScreen}
         name="NewWorkGroup"
-        options={{ title: t('action.addWorkGroup', { context: 'title' }) }}
+        options={{ title: t('object.new.workGroup') }}
       />
       <Stack.Screen
         component={SelectWorkGroupScreen}
         name="SelectWorkGroup"
-        options={{ title: t('action.selectWorkGroup', { context: 'title' }) }}
+        options={{ title: t('object.your.workGroup') }}
       />
       <Stack.Screen
         component={UnionCardScreen}
