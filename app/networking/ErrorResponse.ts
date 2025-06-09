@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 type ErrorResponseType = {
   errorMessages: string[];
 };
@@ -19,7 +21,7 @@ type FirstErrorMessage = {
 
 export function parseFirstErrorOrThrow(json: unknown): FirstErrorMessage {
   if (!isErrorResponse(json)) {
-    throw new Error('Failed to parse error message from json');
+    throw new Error(i18n.t('result.error.unexpectedResponse'));
   }
 
   return {

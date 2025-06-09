@@ -16,28 +16,33 @@ type FromOptions = {
 
 export function fromJson(text: string, options: FromOptions = {}): any {
   const { convertIso8601ToDate, convertSnakeToCamel } = options;
-  return JSON.parse(text, function reviver(key: string, value: any) {
-    let newValue = value;
-    const shouldConvertIso8601ToDate = (
-      convertIso8601ToDate
-        && typeof value === 'string'
-        && ISO_8601_REGEX.test(value)
-    );
+  try {
+    return JSON.parse(text, function reviver(key: string, value: any) {
+      let newValue = value;
+      const shouldConvertIso8601ToDate = (
+        convertIso8601ToDate
+          && typeof value === 'string'
+          && ISO_8601_REGEX.test(value)
+      );
 
-    if (shouldConvertIso8601ToDate) {
-      newValue = new Date(value);
-    }
+      if (shouldConvertIso8601ToDate) {
+        newValue = new Date(value);
+      }
 
-    if (convertSnakeToCamel && /_/.test(key)) {
-      const camelCaseKey = snakeToCamel(key);
-      this[camelCaseKey] = newValue;
+      if (convertSnakeToCamel && /_/.test(key)) {
+        const camelCaseKey = snakeToCamel(key);
+        this[camelCaseKey] = newValue;
 
-      // Returning undefined removes the key
-      newValue = undefined;
-    }
+        // Returning undefined removes the key
+        newValue = undefined;
+      }
 
-    return newValue;
-  });
+      return newValue;
+    });
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
 }
 
 // https://stackoverflow.com/a/75927783/2421313

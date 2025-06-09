@@ -404,6 +404,7 @@ const translation: Translation = {
       upvotable: '{{upvotableType}}: {{preview}}\n\n{{errorMessage}}',
       upvote: 'Falló la votación positiva o negativa. Por favor, inténtalo de nuevo.',
       unblock: 'Falló la desbloqueo. Por favor, inténtalo de nuevo',
+      unexpectedResponse: 'El servidor envió una respuesta inesperada. Por favor, inténtelo de nuevo más tarde.',
       verifyUnionCard_one: 'Falló la verificación de {{verificationFailureCount}} firma de tarjeta sindical. Para solucionar esto, actualiza tu aplicación y luego inténtalo de nuevo.',
       verifyUnionCard_other: 'Falló la verificación de {{verificationFailureCount}} firmas de tarjetas sindicales. Para solucionar esto, actualiza tu aplicación y luego inténtalo de nuevo.',
     },
