@@ -76,7 +76,7 @@ export default function ConnectScreen({ navigation }: ConnectScreenProps) {
         iconName="share"
         label={t('action.shareApp')}
         onPress={() => Share.share({
-          message: t('explanation.joinOrg', { appStoreURI }),
+          message: t('explanation.joinOrg', { appStoreURI: appStoreURI() }),
         })}
         style={styles.button}
       />
