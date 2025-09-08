@@ -21,6 +21,10 @@ const useStyles = () => {
       marginHorizontal: spacing.m,
       marginBottom: spacing.s,
     },
+    learnMoreButton: {
+      alignSelf: 'center',
+      paddingHorizontal: spacing.s,
+    },
     message: {
       color: colors.label,
       fontFamily: font.weights.regular,
@@ -106,6 +110,7 @@ export default function NewOrgScreen({ navigation, route }: NewOrgScreenProps) {
           iconName="help-outline"
           label={t('action.learnMore')}
           onPress={() => setModalVisible(true)}
+          style={styles.learnMoreButton}
         />
       </LockingScrollView>
       <NewOrgNavigationBar
