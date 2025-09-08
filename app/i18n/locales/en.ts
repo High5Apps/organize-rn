@@ -259,7 +259,7 @@ const en = {
       content: 'Content',
       date: {
         nominationsEnd: 'Nominations end on',
-        termEnd: 'Term ends en',
+        termEnd: 'Term ends on',
         termStart: 'Term starts on',
         votingEnd: 'Voting ends on',
       },
