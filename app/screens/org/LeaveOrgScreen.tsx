@@ -14,6 +14,10 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     button: {
+      alignSelf: 'center',
+      paddingHorizontal: spacing.s,
+    },
+    buttonText: {
       color: colors.danger,
     },
     container: {
@@ -63,7 +67,7 @@ export default function LeaveOrgScreen() {
           />
           <SecondaryButton
             iconName="close"
-            iconStyle={styles.button}
+            iconStyle={styles.buttonText}
             label={t('action.leaveOrg')}
             onPress={ConfirmationAlert({
               destructiveAction: t('action.leaveOrg'),
@@ -79,7 +83,8 @@ export default function LeaveOrgScreen() {
                 }
               },
             }).show}
-            textStyle={styles.button}
+            style={styles.button}
+            textStyle={styles.buttonText}
           />
           <RequestProgress />
         </View>
