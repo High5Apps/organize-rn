@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-webview/apple/RNCWebView.mm b/node_modules/react-native-webview/apple/RNCWebView.mm
-index f9d080e..10d90ee 100644
+index 95c0fcc..32579b2 100644
 --- a/node_modules/react-native-webview/apple/RNCWebView.mm
 +++ b/node_modules/react-native-webview/apple/RNCWebView.mm
 @@ -244,7 +244,7 @@ - (instancetype)initWithFrame:(CGRect)frame
@@ -11,7 +11,7 @@ index f9d080e..10d90ee 100644
      }
      return self;
  }
-@@ -488,6 +488,12 @@ - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &
+@@ -497,6 +497,12 @@ - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &
      [super updateProps:props oldProps:oldProps];
  }
  

@@ -1,9 +1,7 @@
 import { Platform } from 'react-native';
 import { DefaultTheme } from '@react-navigation/native';
-import useTheme from '../Theme';
 
 export default function useDefaultStackNavigatorOptions() {
-  const { colors } = useTheme();
   return {
     ...Platform.select({
       ios: {
@@ -11,6 +9,5 @@ export default function useDefaultStackNavigatorOptions() {
         headerTitleStyle: DefaultTheme.fonts.bold,
       },
     }),
-    navigationBarColor: colors.fill,
   };
 }

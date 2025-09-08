@@ -7,18 +7,15 @@ import {
 import type { WelcomeStackParamList } from './types';
 import { SafeAreaPadding } from '../components';
 import useDefaultStackNavigatorOptions from './DefaultStackNavigatorOptions';
-import useTheme from '../Theme';
 import { useCurrentUser } from '../model';
 
 const Stack = createNativeStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStack() {
   const defaultOptions = useDefaultStackNavigatorOptions();
-  const { colors } = useTheme();
   const screenOptions = {
     ...defaultOptions,
     headerShown: false,
-    navigationBarColor: colors.background,
   };
 
   const { currentUser } = useCurrentUser();
@@ -40,7 +37,6 @@ export default function WelcomeStack() {
           name="NewOrg"
           component={NewOrgScreen}
           getId={({ params }) => String(params.step)}
-          options={{ navigationBarColor: colors.fill }}
         />
         <Stack.Screen name="OrgReview" component={OrgReview} />
         <Stack.Screen

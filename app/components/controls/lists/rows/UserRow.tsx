@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  NativeSyntheticEvent, StyleSheet, Text, TextLayoutEventData,
-  TouchableHighlight, View,
+  StyleSheet, Text, TextLayoutEvent, TouchableHighlight, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -18,24 +17,19 @@ const CIRCLE_LINE_HEIGHT_MULTIPLE = 0.8;
 function useCircleHeight(initialHeight: number) {
   const [circleHeight, setCircleHeight] = useState<number>(initialHeight);
   const [marginTop, setMarginTop] = useState<number>(0);
-  const [textLayout, setTextLayout] = useState<TextLayoutEventData>();
+  const [firstLineHeight, setFirstLineHeight] = useState(0);
 
-  function onTextLayout({
-    nativeEvent,
-  }: NativeSyntheticEvent<TextLayoutEventData>) {
-    setTextLayout(nativeEvent);
+  function onTextLayout(event: TextLayoutEvent) {
+    setFirstLineHeight(event.nativeEvent.lines[0].height);
   }
 
   useEffect(() => {
-    if (!textLayout) { return; }
-
-    const { lines } = textLayout;
-    const firstLine = lines[0];
+    if (!firstLineHeight) { return; }
 
     // This centers the circle on the first line text
-    setCircleHeight(CIRCLE_LINE_HEIGHT_MULTIPLE * firstLine.height);
-    setMarginTop(0.5 * (1 - CIRCLE_LINE_HEIGHT_MULTIPLE) * firstLine.height);
-  }, [textLayout]);
+    setCircleHeight(CIRCLE_LINE_HEIGHT_MULTIPLE * firstLineHeight);
+    setMarginTop(0.5 * (1 - CIRCLE_LINE_HEIGHT_MULTIPLE) * firstLineHeight);
+  }, [firstLineHeight]);
 
   return { circleHeight, marginTop, onTextLayout };
 }

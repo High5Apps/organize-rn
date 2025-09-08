@@ -21,19 +21,19 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.0.0",
-    "@react-native-community/datetimepicker": "^8.0.0",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-community/datetimepicker": "^8.4.4",
     "@react-native-segmented-control/segmented-control": "^2.4.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/material-top-tabs": "^7.1.0",
-    "@react-navigation/native": "^7.0.14",
+    "@react-navigation/native": "^7.1.14",
     "@react-navigation/native-stack": "^7.2.0",
     "buffer": "^6.0.3",
     "i18next": "^25.2.0",
-    "react": "19.0.0",
+    "react": "19.1.0",
     "react-fast-compare": "^3.2.2",
     "react-i18next": "^15.5.2",
-    "react-native": "^0.79.0",
+    "react-native": "^0.81.0",
     "react-native-edge-to-edge": "^1.6.0",
     "react-native-file-access": "^3.1.1",
     "react-native-file-viewer": "^2.1.5",
@@ -44,16 +44,16 @@
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-pager-view": "^6.7.1",
     "react-native-qrcode-svg": "^6.3.0",
-    "react-native-reanimated": "^3.17.4",
-    "react-native-safe-area-context": "^5.1.0",
-    "react-native-screens": "^4.9.1",
+    "react-native-reanimated": "^3.18.0",
+    "react-native-safe-area-context": "^5.6.0",
+    "react-native-screens": "^4.11.1",
     "react-native-share": "^12.0.9",
-    "react-native-svg": "^15.11.2",
+    "react-native-svg": "^15.12.1",
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-vis-network": "^2.0.0",
-    "react-native-vision-camera": "^4.6.4",
-    "react-native-webview": "^13.13.4",
+    "react-native-vision-camera": "^4.7.2",
+    "react-native-webview": "^13.14.1",
     "use-debounce": "^10.0.0",
     "uuid": "^11.0.5"
   },
@@ -62,20 +62,19 @@
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@kesills/eslint-config-airbnb-typescript": "^20.0.0",
-    "@react-native-community/cli": "^18.0.0",
-    "@react-native-community/cli-platform-android": "^18.0.0",
-    "@react-native-community/cli-platform-ios": "^18.0.0",
-    "@react-native/babel-preset": "^0.79.0",
-    "@react-native/metro-config": "^0.79.0",
-    "@react-native/typescript-config": "0.79.2",
-    "@rnx-kit/align-deps": "^3.0.5",
+    "@react-native-community/cli": "^20.0.0",
+    "@react-native-community/cli-platform-android": "^20.0.0",
+    "@react-native-community/cli-platform-ios": "^20.0.0",
+    "@react-native/babel-preset": "^0.81.0",
+    "@react-native/metro-config": "^0.81.0",
+    "@react-native/typescript-config": "0.81.1",
+    "@rnx-kit/align-deps": "^3.2.1",
     "@testing-library/react-native": "^13.1.0",
     "@types/jest": "^29.5.13",
-    "@types/node": "^18.11.0",
-    "@types/react": "^19.0.0",
+    "@types/react": "^19.1.0",
     "@types/react-native-vector-icons": "^6.4.10",
-    "@typescript-eslint/eslint-plugin": "^8.24.0",
-    "@typescript-eslint/parser": "^8.24.0",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
     "eslint": "^8.19.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-testing-library": "^7.1.1",
@@ -83,22 +82,24 @@
     "patch-package": "^8.0.0",
     "prettier": "2.8.8",
     "react-native-dotenv": "^3.4.9",
-    "typescript": "5.0.4"
+    "typescript": "^5.8.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "rnx-kit": {
     "kitType": "app",
     "alignDeps": {
       "requirements": [
-        "react-native@0.79"
+        "react-native@0.81"
       ],
       "capabilities": [
+        "animation",
         "babel-preset-react-native",
         "core",
         "core-android",
         "core-ios",
+        "core/metro-config",
         "datetime-picker",
         "jest",
         "navigation/native",
@@ -110,8 +111,7 @@
         "webview"
       ],
       "presets": [
-        "microsoft/react-native",
-        "./rnx-kit-overrides.js"
+        "microsoft/react-native"
       ]
     }
   }
