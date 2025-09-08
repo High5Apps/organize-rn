@@ -4,7 +4,7 @@ import { base64ToBase64Url, base64UrlToBase64 } from './JWT';
 import { isQRCodeValue, type QRCodeValue } from '../types';
 import { connectURI } from '../../networking';
 
-export const QR_CODE_TIME_TO_LIVE_SECONDS = 60;
+export const QR_CODE_TIME_TO_LIVE_SECONDS = 120;
 export const QR_CODE_JWT_SCOPE = 'create:connections';
 
 const JWT_PARAM = 'jwt';
