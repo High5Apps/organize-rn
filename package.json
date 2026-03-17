@@ -10,7 +10,7 @@
     "deeplink:android": "adb shell am start -W -a android.intent.action.VIEW -d https://getorganize.app/$npm_config_path app.getorganize.organize",
     "deeplink:ios": "xcrun simctl openurl booted https://getorganize.app/$npm_config_path",
     "fix-dependencies": "rnx-align-deps --write",
-    "ios": "react-native run-ios --simulator \"iPhone SE (3rd generation)\"",
+    "ios": "react-native run-ios --simulator \"iPhone 16e (26)\"",
     "ios:device": "react-native run-ios --device",
     "ios:device:release": "npm run ios:device -- --mode=Release",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
