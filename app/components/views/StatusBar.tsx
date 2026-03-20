@@ -5,7 +5,7 @@ export default function StatusBar({ children }: PropsWithChildren<{}>) {
   return (
     <>
       {/* eslint-disable-next-line react/style-prop-object */}
-      <SystemBars />
+      <SystemBars style="auto" />
       {children}
     </>
   );

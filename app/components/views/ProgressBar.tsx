@@ -10,7 +10,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     progress: {
       backgroundColor: colors.primary,
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
     },
     track: {
       backgroundColor: `${colors.primary}40`, // 25% opacity in hex

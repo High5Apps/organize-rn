@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
-  Easing, runOnJS, useSharedValue, withTiming, WithTimingConfig,
+  Easing, useSharedValue, withTiming, WithTimingConfig,
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import useTheme from '../../Theme';
 
 const useStyles = () => {
@@ -66,7 +67,7 @@ export default function CountdownClockBorder({
               halfSideConfig,
               (topLeftDone) => {
                 if (!topLeftDone) { return; }
-                runOnJS(onFinished)();
+                scheduleOnRN(onFinished);
               },
             );
           });

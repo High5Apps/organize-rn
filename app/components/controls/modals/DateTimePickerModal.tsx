@@ -22,6 +22,10 @@ const useStyles = () => {
       borderTopColor: colors.separator,
       borderTopWidth: sizes.separator,
     },
+    pickerComponentStyleIOS: {
+      // Fixes datetime picker overflowed the right side of its container on iOS
+      maxWidth: '100%',
+    },
     pickerContainerStyleIOS: {
       borderColor: colors.separator,
       borderWidth: sizes.border,
@@ -81,6 +85,7 @@ export default function DateTimePickerModal({
         setVisible(false);
       }}
       onCancel={() => setVisible(false)}
+      pickerComponentStyleIOS={styles.pickerComponentStyleIOS}
       pickerContainerStyleIOS={styles.pickerContainerStyleIOS}
     />
   );

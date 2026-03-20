@@ -46,7 +46,7 @@ const useStyles = () => {
     rankContainer: {
       alignItems: 'center',
       justifyContent: 'center',
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
     },
     subtitle: {
       color: colors.labelSecondary,

@@ -40,6 +40,8 @@ export function QRCodeDataFormatter({
     searchParams.set(GROUP_KEY_PARAM, base64UrlGroupKey);
 
     // Using hash params ensures that the group key can't be sent to the backend
+    // @ts-ignore - react-native-url-polyfill allows setting .hash, even though
+    // the built-in react-native type is readonly
     url.hash = searchParams.toString();
 
     return url.href;

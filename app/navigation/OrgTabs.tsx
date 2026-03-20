@@ -9,12 +9,14 @@ import OrgStack from './OrgStack';
 import LeadStack from './LeadStack';
 import { useCurrentUser } from '../model';
 import { useTranslation } from '../i18n';
+import { useNavigationTheme } from '../Theme';
 
 const Tab = createBottomTabNavigator<OrgTabsParamList>();
 
 export default function OrgTabs() {
   const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
+  const { fonts } = useNavigationTheme();
 
   return (
     <Tab.Navigator
@@ -22,6 +24,7 @@ export default function OrgTabs() {
         tabBarAllowFontScaling: false,
         headerShown: false,
         tabBarHideOnKeyboard: true,
+        tabBarLabelStyle: fonts.regular,
       }}
     >
       <Tab.Screen
